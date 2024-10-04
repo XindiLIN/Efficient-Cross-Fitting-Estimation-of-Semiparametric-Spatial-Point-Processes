@@ -9,7 +9,7 @@ library(ggplot2)
 library(spatstat)
 
 # load data of capparis
-load("bci.tree1.rdata")
+load("data/bci.tree1.rdata")
 cappfr = bci.tree1[bci.tree1$sp=="cappfr",]
 cappfr = cappfr[!duplicated(cappfr[,c("gx","gy")]),]
 pp_cap = ppp(cappfr$gx,cappfr$gy,window =owin(c(0,1000),c(0,500)))
