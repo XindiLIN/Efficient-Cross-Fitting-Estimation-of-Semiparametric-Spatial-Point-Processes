@@ -1,16 +1,16 @@
-source('semi_spp_functions.R')
+source('code/semi_spp_functions.R')
 
 
 
 #### Description: read in the generated gaussian process as target and nuisance covariates
 generate_simulate_covariate = function(field_1 = NULL,field_2 = NULL,is.small=TRUE,is.independent=TRUE){
   if(is.null(field_1)& is.null(field_2)){
-    simulated_field_1_large = read.csv('simulated_field_1_large.csv')
+    simulated_field_1_large = read.csv('data/simulated_field_1_large.csv')
     simulated_field_1_large$X = NULL
     simulated_field_1_large = as.numeric(simulated_field_1_large)
     simulated_field_1_large = matrix(simulated_field_1_large,nrow = 100,ncol = 100)
     
-    simulated_field_2_large = read.csv('simulated_field_2_large.csv')
+    simulated_field_2_large = read.csv('data/simulated_field_2_large.csv')
     simulated_field_2_large$X = NULL
     simulated_field_2_large = as.numeric(simulated_field_2_large)
     simulated_field_2_large = matrix(simulated_field_2_large,nrow = 100,ncol = 100)

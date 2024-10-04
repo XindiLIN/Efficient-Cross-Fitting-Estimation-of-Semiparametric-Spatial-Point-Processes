@@ -2,7 +2,7 @@
 #### takes 5.82 minutes
 #### implemented on macbook pro 13.3 inch with M1 chip and 8G memory, macOS Ventura Versioin, 13.4.1(c)
 
-source('semi_spp_functions.R')
+source('code/semi_spp_functions.R')
 set.seed(1)
 
 #### Beilschmiedia pendula
@@ -46,7 +46,7 @@ bei.result = data.frame(Estimate = c(bei.est.para,bei.est.semi),
            CI95.lower = c(bei.lower.para,bei.lower.semi),
            CI95.upper = c(bei.upper.para,bei.upper.semi),row.names = c("para","semi"))
 
-write.csv(bei.result, "Beilschmiedia.csv")
+write.csv(bei.result, "output/Beilschmiedia.csv")
 
 
 
@@ -95,5 +95,5 @@ cap.result = data.frame(Estimate = c(cap.est.para,cap.est.semi),
                         CI95.lower = c(cap.lower.para,cap.lower.semi),
                         CI95.upper = c(cap.upper.para,cap.upper.semi),row.names = c("para","semi"))
 
-write.csv(cap.result, "Capparis.csv")
+write.csv(cap.result, "output/Capparis.csv")
 

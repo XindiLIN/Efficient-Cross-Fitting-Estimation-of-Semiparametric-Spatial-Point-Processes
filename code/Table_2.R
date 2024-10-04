@@ -3,7 +3,7 @@
 #### takes about 3.35 hours 
 #### implemented on macbook pro 13.3 inch with M1 chip and 8G memory, macOS Ventura Versioin, 13.4.1(c)
 #### There are 10 warnings like: In newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS,  ... :Fitting terminated with step failure - check results carefully   
-source('simulation_functions.R')
+source('code/simulation_functions.R')
 
 seed=1
 iter=1000
@@ -103,5 +103,5 @@ bias = bias * 100
 
 # output and save the table
 Table_2 = data.frame(Window = window,Covar = covar,Nuisance = nuisance,Bias = bias, rMSE = rMSE,meanSE = meanSE,CP90=CP90,CP95=CP95)
-write.csv(Table_2, "Table_2.csv", row.names=FALSE)
+write.csv(Table_2, "output/Table_2.csv", row.names=FALSE)
 

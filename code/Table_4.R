@@ -3,7 +3,7 @@
 #### takes about 3.105 hours to run
 #### implemented on macbook pro 13.3 inch with M1 chip and 8G memory, macOS Ventura Versioin, 13.4.1(c)
    
-source('simulation_functions.R')
+source('code/simulation_functions.R')
 
 seed=1
 iter=1000
@@ -98,5 +98,5 @@ bias = bias * 100
 # output and save the table
 Table_4 = data.frame(Window = window,Process = process,Model=model,Bias = bias, rMSE = rMSE,
                      meanSE = meanSE,CP90=CP90,CP95=CP95)
-write.csv(Table_4, "Table_4.csv", row.names=FALSE)
+write.csv(Table_4, "output/Table_4.csv", row.names=FALSE)
 

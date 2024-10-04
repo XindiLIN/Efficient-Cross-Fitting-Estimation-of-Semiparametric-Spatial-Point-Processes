@@ -27,7 +27,7 @@ fitted_cap = data.frame(grad=seq(0,0.3,length.out=100),.fitted=predict(gamfit_ca
 
 fitted_bind = fitted_cap %>% bind_rows(fitted_bei) %>% mutate(species=c(rep("Capparis ",dim(fitted_cap)[1]),rep("Beilschmiedia",dim(fitted_bei)[1])))
 
-png("Figure_2.png", width = 800, height = 600)
+png("output/Figure_2.png", width = 800, height = 600)
 
 ggplot(data = fitted_bind,aes(x=grad,y=s.grad.,group=species))+geom_line(aes(colour=species,linetype=species)) +labs(y="Value of the Estimated Nuisance Function")
 

@@ -17,5 +17,5 @@ cov_matrix <- covariance_function(distances)
 simulated_field_1_large <- rmvnorm(n = 1, mean = rep(0, nrow(grid)), sigma = cov_matrix)
 simulated_field_2_large <- rmvnorm(n = 1, mean = rep(0, nrow(grid)), sigma = cov_matrix)
 
-write.csv(simulated_field_1_large, file = "simulated_field_1_large.csv", row.names = FALSE)
-write.csv(simulated_field_2_large, file = "simulated_field_2_large.csv", row.names = FALSE)
+write.csv(simulated_field_1_large, file = "data/simulated_field_1_large.csv", row.names = FALSE)
+write.csv(simulated_field_2_large, file = "data/simulated_field_2_large.csv", row.names = FALSE)

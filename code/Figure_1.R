@@ -1,7 +1,7 @@
 #### system.time: user: 5.776  system: 0.171   elapsed: 5.958 
 #### takes 4.723 seconds
 #### implemented on macbook pro 13.3 inch with M1 chip and 8G memory, macOS Ventura Versioin, 13.4.1(c)
-source('semi_spp_functions.R')
+source('code/semi_spp_functions.R')
 set.seed(1)
 
 # load data of capparis
@@ -30,7 +30,7 @@ intensity.cap.para = predict(ppmfit.cap.para)
 common.min.cap = min(min(intensity.cap.semi$v),min(intensity.cap.para$v))
 common.max.cap = max(max(intensity.cap.semi$v),max(intensity.cap.para$v))
 
-png("Figure_1.png", width = 1200, height = 600)
+png("output/Figure_1.png", width = 1200, height = 600)
 
 par(mfrow = c(2, 2))
 
