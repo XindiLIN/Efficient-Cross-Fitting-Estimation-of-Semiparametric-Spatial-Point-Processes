@@ -29,6 +29,16 @@ fitted_bind = fitted_cap %>% bind_rows(fitted_bei) %>% mutate(species=c(rep("Cap
 
 png("output/Figure_2.png", width = 800, height = 600)
 
-ggplot(data = fitted_bind,aes(x=grad,y=s.grad.,group=species))+geom_line(aes(colour=species,linetype=species)) +labs(y="Value of the Estimated Nuisance Function")
+ggplot(data = fitted_bind,aes(x=grad,y=s.grad.,group=species))+
+  geom_line(aes(colour=species,linetype=species),size=1.5) +
+  labs(x = "Gradient",y="Value of the Estimated Nuisance Function",color='Species',linetype = "Species")+
+  theme(
+    axis.title.x = element_text(size = 16),     # X-axis label size
+    axis.title.y = element_text(size = 16),     # Y-axis label size
+    legend.text = element_text(size = 12),      # Legend entry text size
+    legend.title = element_text(size = 14),      # Legend title size (optional)
+    legend.key.width = unit(3,'line'),
+    legend.position = "bottom"
+  ) 
 
 dev.off()
