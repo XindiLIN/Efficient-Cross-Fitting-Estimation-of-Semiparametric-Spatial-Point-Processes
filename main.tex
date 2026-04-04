@@ -1778,122 +1778,115 @@ Similarly, for fixed $(\mu, p)$, the concentration across the parameter space $B
 \end{lemma}
 
 \begin{proof}
-We prove the result for stochastic $(\mu,p,\theta)$; the case of fixed $(\mu,p)$ follows by the same argument, restricting the chaining to $B_\beta$ only.
+We prove the result by verifying a sub-Gaussian process structure for the deviation process and then applying Dudley's entropy integral theorem. The case of fixed $(\mu,p)$ follows by the same argument restricted to the $B_\beta$ direction.
 
-\noindent\textbf{Step 1: Simultaneous Multi-Scale Nets.}
+\noindent\textbf{Step 1: Deviation Process and Reference Metric.}
 
-We build multi-scale $\epsilon$-nets over all three parameter spaces simultaneously at the same geometric rate. Let $D_\mu$, $D_p$, and $D_\theta = 2C_\beta$ denote the $L_2(P)$-diameter of $\mathcal{F}_\mu$, the $L_2(P)$-diameter of $\mathcal{F}_p$, and the $\|\cdot\|_\infty$-diameter of $B_\beta$, respectively. For each integer $k\geq 0$, set
-$$\epsilon_k^\mu = D_\mu\cdot 2^{-k},\quad \epsilon_k^p = D_p\cdot 2^{-k},\quad \epsilon_k^\theta = D_\theta\cdot 2^{-k},$$
-and let $\mathcal{C}_{\mu,k}$, $\mathcal{C}_{p,k}$, $\mathcal{C}_{\theta,k}$ be minimal $\epsilon_k$-nets of $\mathcal{F}_\mu$ (under $\|\cdot\|_{P,2}$), $\mathcal{F}_p$ (under $\|\cdot\|_{P,2}$), and $B_\beta$ (under $\|\cdot\|_\infty$), respectively. Let $\pi_k^\mu$, $\pi_k^p$, $\pi_k^\theta$ denote the corresponding nearest-point projections, and define the joint projection $\pi_k = (\pi_k^\mu, \pi_k^p, \pi_k^\theta)$. The covering numbers satisfy
-\begin{equation}\label{eq:covering_numbers}
-\ln|\mathcal{C}_{\mu,k}|\leq \mathcal{H}_\mu(k),\quad \ln|\mathcal{C}_{p,k}|\leq \mathcal{H}_p(k),\quad \ln|\mathcal{C}_{\theta,k}|\leq (d+1)k\ln 2 + c_0,
-\end{equation}
-where $\mathcal{H}_\mu(\cdot)$, $\mathcal{H}_p(\cdot)$ denote the metric entropy growth rates of $\mathcal{F}_\mu$, $\mathcal{F}_p$, and the last bound uses $\ln|\mathcal{C}_{\theta,k}|\leq (d+1)\ln(3C_\beta/\epsilon_k^\theta)$.
-
-\noindent\textbf{Step 2: Joint Chaining Decomposition.}
-
-Define the deviation process
-$$Z(\mu,p,\theta) := R_n^{(\delta_n)}(\theta;\mu,p) - R^{(\delta_n)}(\theta;\mu,p).$$
-Since $\pi_k(\mu,p,\theta)\to(\mu,p,\theta)$ in each component norm as $k\to\infty$, the telescoping identity gives
-\begin{equation}\label{eq:joint_chain}
-Z(\mu,p,\theta) = Z(\pi_0(\mu,p,\theta)) + \sum_{k=0}^{\infty}\underbrace{\bigl[Z(\pi_{k+1}(\mu,p,\theta)) - Z(\pi_k(\mu,p,\theta))\bigr]}_{\Delta_k(\mu,p,\theta)}.
+Let $\nu = (\mu,p,\theta)$ denote a joint parameter and define the centered deviation process
+$$Z(\nu) := R_n^{(\delta_n)}(\theta;\mu,p) - R^{(\delta_n)}(\theta;\mu,p) = \frac{1}{n}\sum_{i=1}^n \bigl[\ell^{(\delta_n)}(O_i;\nu) - \mathbb{E}\ell^{(\delta_n)}(O_i;\nu)\bigr].$$
+Define the reference pseudo-metric on $\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta$:
+\begin{equation}\label{eq:d0_metric}
+d_0(\nu_1,\nu_2)^2 := \|\mu_1-\mu_2\|_{P,2}^2 + \|p_1-p_2\|_{P,2}^2 + \|\theta_1-\theta_2\|_\infty^2.
 \end{equation}
 
-\noindent\textbf{Step 3: Bounding Each Level Increment.}
+\noindent\textbf{Step 2: Sub-Gaussian Verification via 4-Layer Decomposition.}
 
-At each level $k$, we decompose the joint increment $\Delta_k(\mu,p,\theta)$ into three directional components via the triangle inequality:
-\begin{align}
-|\Delta_k(\mu,p,\theta)|
-&\leq \underbrace{\bigl|Z(\pi_{k+1}^\mu,\pi_{k+1}^p,\pi_{k+1}^\theta) - Z(\pi_k^\mu,\pi_{k+1}^p,\pi_{k+1}^\theta)\bigr|}_{I_1^{(k)}: \text{ $\mu$-increment}}\nonumber\\
-&\quad + \underbrace{\bigl|Z(\pi_k^\mu,\pi_{k+1}^p,\pi_{k+1}^\theta) - Z(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta)\bigr|}_{I_2^{(k)}: \text{ $p$-increment}}\label{eq:increment_decomp}\\
-&\quad + \underbrace{\bigl|Z(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta) - Z(\pi_k^\mu,\pi_k^p,\pi_k^\theta)\bigr|}_{I_3^{(k)}: \text{ $\theta$-increment}}.\nonumber
-\end{align}
-For each directional increment, we apply the triangle inequality
-$$|Z(\nu_1)-Z(\nu_2)|\leq \bigl|R_n^{(\delta_n)}(\nu_1)-R_n^{(\delta_n)}(\nu_2)\bigr|+\bigl|R^{(\delta_n)}(\nu_1)-R^{(\delta_n)}(\nu_2)\bigr|,$$
-and then invoke Lemma~\ref{lemma:lipschitz_population_risk} for the population term and Lemma~\ref{lemma:lipschitz_empirical_risk} for the empirical term. A key observation is that, in the proof of Lemma~\ref{lemma:lipschitz_empirical_risk}, the fluctuation term ($\sqrt{\sigma_n\tau/n}$ for the $\mu$- and $p$-directions, $\sqrt{\kappa\tau/(n\delta_n)}$ for the $\theta$-direction) arises from the Gaussian-process concentration of $f(U_1,\ldots,U_n)=\frac{1}{n}\sum_i g_i(U_i)$, whose Lipschitz constant is proportional to the \emph{displacement} of the pair being evaluated. Concretely, at chain level $k+1$ the pairs satisfy $\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 3\epsilon_{k+1}^\mu$, $\|\pi_{k+1}^p-\pi_k^p\|_{P,2}\leq 3\epsilon_{k+1}^p$, and $\|\pi_{k+1}^\theta-\pi_k^\theta\|_\infty\leq 3\epsilon_{k+1}^\theta$, so the fluctuation terms are proportional to $\epsilon_{k+1}$ rather than the uniform envelope $C'$. This tighter scaling is what makes the chaining sum converge.
+For any pair $\nu_1=(\mu_1,p_1,\theta_1)$ and $\nu_2=(\mu_2,p_2,\theta_2)$, we bound the $\psi_2$ (sub-Gaussian) Orlicz norm of $\Delta Z := Z(\nu_1) - Z(\nu_2)$ by decomposing the randomness in $\{O_i\}$ into four independent layers, following the same structure as in Lemma~\ref{lemma:concentration_risk}.
 
-\noindent\textit{$\mu$-increment $I_1^{(k)}$.}
-By Lemma~\ref{lemma:lipschitz_population_risk} (w.r.t.\ $\mu$), the population term satisfies deterministically:
-$$\bigl|R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_{k+1}^\mu,\pi_{k+1}^p)-R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)\bigr|\leq 2c^{\prime-1}\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 6c^{\prime-1}\epsilon_{k+1}^\mu.$$
-By Lemma~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $\mu$) applied with threshold $s_k$, with probability at least $1-6e^{-s_k}$:
-$$\bigl|R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_{k+1}^\mu,\pi_{k+1}^p)-R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)\bigr|\leq 2c^{\prime-1}\left(\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}+\epsilon_{k+1}^\mu\sqrt{\frac{4C^{\prime2}s_k\sigma_n}{n}}+2\epsilon_{k+1}^\mu\sqrt{\frac{8C^{\prime2}s_k}{n}}\right),$$
-where we have used $\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 3\epsilon_{k+1}^\mu$ to tighten the fluctuation terms (the Lipschitz constant of the underlying GP function scales with the pair's $L_2(P)$ displacement). Adding both bounds:
-\begin{equation}\label{eq:mu_increment}
-I_1^{(k)}\leq c_\mu\,\epsilon_{k+1}^\mu\left(1+\sqrt{\frac{(1+\sigma_n)s_k}{n}}\right)\leq c_\mu\,\epsilon_{k+1}^\mu\sqrt{\frac{(1+\sigma_n)s_k}{n}},
+\noindent\textit{Layer 1: Outcome noise $\epsilon_i = Y_i - \mu^*(A_i,X_i,S_i)$.}
+The noise-driven part of $\Delta Z$ arises from the $\epsilon_i/p$ term in the doubly robust loss. For the $\mu$-direction this contribution vanishes (the noise term does not depend on $\mu$). For the $p$-direction, the increment is proportional to $(p_1^{-1}-p_2^{-1})\epsilon_i K_{\delta_n}(A_i-a)$; by Lemma~\ref{lemma:noise_concentration} applied with weight $\|p_1^{-1}-p_2^{-1}\|\lesssim c^{\prime-2}\|p_1-p_2\|_{P,2}$,
+\begin{equation}\label{eq:layer1_p}
+\bigl\|W^{(1)}_p\bigr\|_{\psi_2}^2 \lesssim \frac{\sigma_\epsilon^2}{c^{\prime4}}\cdot\frac{\|p_1-p_2\|_{P,2}^2}{n}.
 \end{equation}
-where the last step absorbs the constant $1$ into $\sqrt{s_k}$ for $s_k\geq 1$, and $c_\mu$ is a generic constant depending on $c^{\prime},C^{\prime}$.
+For the $\theta$-direction, the kernel difference $|K_{\delta_n}(A_i-\theta_1(S_i))-K_{\delta_n}(A_i-\theta_2(S_i))|\leq \kappa\|\theta_1-\theta_2\|_\infty/\delta_n$ yields a per-observation variance proxy linear in $\|\theta_1-\theta_2\|_\infty$; therefore the $\theta$-noise term is \emph{sub-exponential} ($\psi_1$) rather than sub-Gaussian ($\psi_2$):
+\begin{equation}\label{eq:layer1_theta}
+\bigl\|W^{(1)}_\theta\bigr\|_{\psi_1} \lesssim \sqrt{\frac{\sigma_\epsilon^2\kappa\,\|\theta_1-\theta_2\|_\infty}{c^{\prime2}n\delta_n}}.
+\end{equation}
+This sub-exponential piece is handled separately via Bernstein's inequality in Step~5.
 
-\noindent\textit{$p$-increment $I_2^{(k)}$.}
-By Lemma~\ref{lemma:lipschitz_population_risk} (w.r.t.\ $p$):
-$$\bigl|R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)-R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_k^p)\bigr|\leq 2c^{\prime-2}C^{\prime}\|\pi_{k+1}^p-\pi_k^p\|_{P,2}\leq 6c^{\prime-2}C^{\prime}\epsilon_{k+1}^p.$$
-By Lemma~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $p$) at threshold $s_k$, with probability at least $1-8e^{-s_k}$:
+\noindent\textit{Layer 2: Treatment $A_i\mid X_i,U_i$.}
+Conditional on $(X_i,U_i)$, the increment $\Delta Z^{(A)}$ is a sum of independent bounded centered variables, each with absolute value at most $c^{\prime-1}C^{\prime}\|\nu_1-\nu_2\|/n$ in the appropriate norm. By Hoeffding's inequality for bounded random variables,
+\begin{equation}\label{eq:layer2}
+\bigl\|W^{(2)}\bigr\|_{\psi_2}^2 \lesssim \frac{C^{\prime2}}{c^{\prime2}}\cdot\frac{d_0(\nu_1,\nu_2)^2}{n}.
+\end{equation}
+
+\noindent\textit{Layer 3: Latent variable $U_i\mid X_i$ (Gaussian process layer).}
+After conditioning on $\{X_i\}$, the vector $(U(S_1),\ldots,U(S_n))$ is a centered Gaussian vector whose covariance satisfies $\|\Sigma\|_{\mathrm{op}}\leq\sigma_n$. The increment $\Delta Z$, viewed as a function $f(U_1,\ldots,U_n)=\frac{1}{n}\sum_i [g_i(U_i;\nu_1)-g_i(U_i;\nu_2)]$ with $g_i$ the $i$-th individual loss contribution, has Lipschitz constant
+$$\|f\|_{\mathrm{Lip}}^2 = \frac{1}{n^2}\sum_{i=1}^n\bigl\|g_i(\cdot;\nu_1)-g_i(\cdot;\nu_2)\bigr\|_{\mathrm{Lip}}^2 \lesssim \frac{C^{\prime2}\,d_0(\nu_1,\nu_2)^2}{n},$$
+where the last bound uses the pointwise Lipschitz property of $g_i$ in $U_i$ (bounded by $C'$ from Assumption~\ref{condition:excess_risk:smooth}). Applying Lemma~\ref{lemma:gaussian_concentration} to the Gaussian vector $(U(S_1),\ldots,U(S_n))$ with spectral norm $\sigma_n$,
+\begin{equation}\label{eq:layer3}
+\bigl\|W^{(3)}\bigr\|_{\psi_2}^2 \lesssim C^2\|f\|_{\mathrm{Lip}}^2\cdot\sigma_n \lesssim \frac{C^{\prime2}\sigma_n\,d_0(\nu_1,\nu_2)^2}{n}.
+\end{equation}
+
+\noindent\textit{Layer 4: Covariates $X_i$.}
+The covariates $X_i$ enter the loss through bounded functions of the nuisance parameters. By Hoeffding's inequality,
+\begin{equation}\label{eq:layer4}
+\bigl\|W^{(4)}\bigr\|_{\psi_2}^2 \lesssim \frac{C^{\prime2}\,d_0(\nu_1,\nu_2)^2}{n}.
+\end{equation}
+
+\noindent\textit{Combining the layers.}
+Since $W^{(1)}_p, W^{(2)}, W^{(3)}, W^{(4)}$ are centered and (conditionally) independent, the $\psi_2$ triangle inequality $\|A+B\|_{\psi_2}\leq\|A\|_{\psi_2}+\|B\|_{\psi_2}$ and equations~\eqref{eq:layer1_p}--\eqref{eq:layer4} give the joint increment bound:
+\begin{equation}\label{eq:sg_increment}
+\bigl\|\Delta Z(\nu_1,\nu_2)\bigr\|_{\psi_2}^2 \lesssim \frac{(1+\sigma_n)\,d_0(\nu_1,\nu_2)^2}{n} + \underbrace{\frac{\sigma_\epsilon^2\kappa\,\|\theta_1-\theta_2\|_\infty}{n\delta_n}}_{\text{sub-exponential }\theta\text{-correction}}.
+\end{equation}
+Ignoring the sub-exponential correction, $Z$ is a sub-Gaussian process with respect to the \emph{intrinsic metric}
+\begin{equation}\label{eq:intrinsic_metric}
+d_{\mathrm{sg}}(\nu_1,\nu_2) := \sqrt{\frac{1+\sigma_n}{n}}\,d_0(\nu_1,\nu_2),\qquad \|Z(\nu_1)-Z(\nu_2)\|_{\psi_2}\leq d_{\mathrm{sg}}(\nu_1,\nu_2).
+\end{equation}
+
+\noindent\textbf{Step 3: Dudley Entropy Integral.}
+
+Since $Z$ is a sub-Gaussian process with intrinsic metric $d_{\mathrm{sg}}$ satisfying~\eqref{eq:intrinsic_metric}, Dudley's entropy integral theorem gives
+\begin{equation}\label{eq:dudley}
+\mathbb{E}\!\sup_{\nu\in\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta} Z(\nu) \lesssim \int_0^{D_{\mathrm{sg}}} \sqrt{\log\mathcal{N}\!\left(\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta,\,d_{\mathrm{sg}},\,u\right)}\,du,
+\end{equation}
+where $D_{\mathrm{sg}}:=\sqrt{(1+\sigma_n)/n}\cdot D_0$ is the $d_{\mathrm{sg}}$-diameter of the joint parameter space. Changing variables $u=\sqrt{(1+\sigma_n)/n}\cdot v$ and using $\mathcal{N}(\mathcal{F},d_{\mathrm{sg}},u)=\mathcal{N}(\mathcal{F},d_0,v)$, the right-hand side of~\eqref{eq:dudley} becomes
+\begin{equation}\label{eq:dudley_reparameterized}
+\sqrt{\frac{1+\sigma_n}{n}}\int_0^{D_0}\sqrt{\log\mathcal{N}(\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta,\,d_0,\,v)}\,dv =: \sqrt{\frac{1+\sigma_n}{n}}\,\mathcal{J},
+\end{equation}
+where $\mathcal{J}$ is the Dudley integral of the joint parameter space under the reference metric $d_0$.
+
+\noindent\textbf{Step 4: Computing the Dudley Integral $\mathcal{J}$.}
+
+The product-space metric entropy factors as $\log\mathcal{N}(\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta,d_0,v)\leq\mathcal{H}_\mu(v)+\mathcal{H}_p(v)+\mathcal{H}_\theta(v)$. For the parametric class $B_\beta=\{\beta^\top(x,u):\|\beta\|_\infty\leq C_\beta\}$ under $\|\cdot\|_\infty$, a standard volumetric argument gives
+$$\mathcal{H}_\theta(v) = \log\mathcal{N}(B_\beta,\|\cdot\|_\infty,v) \leq (d+1)\log\!\left(\frac{3C_\beta}{v}\right).$$
+Integrating against $\sqrt{\mathcal{H}_\theta(v)}$ via the substitution $v=D_\theta e^{-t}$:
+\begin{equation}\label{eq:dudley_theta}
+\int_0^{D_\theta}\sqrt{\mathcal{H}_\theta(v)}\,dv = \sqrt{d+1}\int_0^{D_\theta}\sqrt{\log(D_\theta/v)}\,dv = D_\theta\sqrt{d+1}\cdot\frac{\sqrt{\pi}}{2} = O\!\left(\sqrt{d+1}\right),
+\end{equation}
+where the last equality follows from the standard identity $\int_0^\infty\sqrt{t}\,e^{-t}dt=\Gamma(3/2)=\frac{\sqrt{\pi}}{2}$. For the nonparametric classes $\mathcal{F}_\mu$ and $\mathcal{F}_p$, the integrals $\int_0^{D_\mu}\sqrt{\mathcal{H}_\mu(v)}\,dv$ and $\int_0^{D_p}\sqrt{\mathcal{H}_p(v)}\,dv$ are finite under standard metric entropy conditions on the function classes. Thus $\mathcal{J}<\infty$.
+
+\noindent\textbf{Step 5: High-Probability Bound and Sub-Exponential Correction.}
+
+\noindent\textit{High-probability concentration.}
+The bound~\eqref{eq:dudley_reparameterized} is an expectation bound. Applying Talagrand's concentration inequality for suprema of sub-Gaussian empirical processes, for $t\geq 0$:
+$$\Pr\!\left(\sup_\nu Z(\nu) \geq \mathbb{E}\!\sup_\nu Z(\nu) + t\right) \leq \exp\!\left(-\frac{cnt^2}{1+\sigma_n}\right).$$
+Setting $t=\sqrt{(1+\sigma_n)\tau/n}$ and combining with~\eqref{eq:dudley_reparameterized} yields, with probability at least $1-e^{-\tau}$:
+\begin{equation}\label{eq:hp_main}
+\sup_\nu Z(\nu) \leq \frac{c_1\sqrt{(1+\sigma_n)}}{\sqrt{n}}\bigl(\mathcal{J}+\sqrt{\tau}\bigr).
+\end{equation}
+
+\noindent\textit{Sub-exponential $\theta$-correction.}
+The sub-exponential piece $W^{(1)}_\theta$ identified in~\eqref{eq:layer1_theta} is controlled via Bernstein's inequality. Applying Lemma~\ref{lemma:concentration_kernel_integral} to the kernel-integral deviation and summing over the chaining levels, the contribution of this term to the supremum is bounded, with probability at least $1-e^{-\tau}$, by
+\begin{equation}\label{eq:bernstein_correction}
+c_2\sqrt{\frac{\tau}{n\delta_n}}.
+\end{equation}
+
+\noindent\textbf{Step 6: Net Approximation and Final Assembly.}
+
+The empirical process supremum is over the continuous spaces $\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta$. To account for the error introduced by approximating each $\nu$ by its nearest net point, we apply Lemmas~\ref{lemma:lipschitz_population_risk} and~\ref{lemma:lipschitz_empirical_risk}. For any $\mu$ with $\|\mu-\bar\mu\|_{P,2}\leq\epsilon_\mu$ ($\bar\mu\in\mathcal{C}_\mu$),
+$$|Z(\mu,p,\theta)-Z(\bar\mu,p,\theta)| \leq \bigl|R_n^{(\delta_n)}(\cdot;\mu,p)-R_n^{(\delta_n)}(\cdot;\bar\mu,p)\bigr|+\bigl|R^{(\delta_n)}(\cdot;\mu,p)-R^{(\delta_n)}(\cdot;\bar\mu,p)\bigr| \leq c_3\epsilon_\mu,$$
+where the last inequality uses the Lipschitz constants from Lemmas~\ref{lemma:lipschitz_population_risk} and~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $\mu$). By the same lemmas applied to the $p$- and $\theta$-directions, with probability at least $1-14e^{-\tau}$,
+$$\sup_{\nu}|Z(\nu)| \leq \sup_{\bar\nu\in\mathcal{C}_\mu\times\mathcal{C}_p\times\mathcal{C}_\theta}|Z(\bar\nu)| + c_3\epsilon_\mu + c_4\epsilon_p + c_5\epsilon_\theta.$$
+Applying Lemma~\ref{lemma:concentration_risk} (fixed $\nu$) with a union bound over the $|\mathcal{C}_\mu|\cdot|\mathcal{C}_p|\cdot|\mathcal{C}_\theta|$ net points at level $\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|$ gives, with probability at least $1-8e^{-\tau}$,
+$$\sup_{\bar\nu\in\mathcal{C}_\mu\times\mathcal{C}_p\times\mathcal{C}_\theta}|Z(\bar\nu)|\leq\sqrt{\frac{c_1\sigma_n(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|)}{n}}.$$
+
+Collecting all failure probabilities and combining~\eqref{eq:hp_main},~\eqref{eq:bernstein_correction}, and the net approximation, we obtain the stated bound with probability at least $1-32e^{-\tau}$:
 \begin{align*}
-&\bigl|R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)-R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_k^p)\bigr|\\
-&\leq 2c^{\prime-2}C^{\prime}\!\left(\|\pi_{k+1}^p-\pi_k^p\|_{P,2}+\epsilon_{k+1}^p\sqrt{\frac{4C^{\prime2}s_k\sigma_n}{n}}+2\epsilon_{k+1}^p\sqrt{\frac{8C^{\prime2}s_k}{n}}\right)+\epsilon_{k+1}^p\sqrt{\frac{8s_kc^{\prime-2}\sigma_\epsilon^2}{n}},
+&\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_\beta}\bigl|R_n^{(\delta_n)}(\theta;\mu,p)-R^{(\delta_n)}(\theta;\mu,p)\bigr|\\
+&\leq \sqrt{\frac{c_1\sigma_n}{n}\bigl(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|\bigr)} + c_2\sqrt{\frac{\tau}{n\delta_n}} + c_3\epsilon_\mu + c_4\epsilon_p + c_5\epsilon_\theta.
 \end{align*}
-where the fluctuation terms are again proportional to $\epsilon_{k+1}^p$ (the noise term $\sqrt{8\tau c^{\prime-2}\sigma_\epsilon^2/n}$ in the lemma statement arises from the $\epsilon_i/p$ noise, whose variance w.r.t.\ $p$ changes scales with $\|p_1-p_2\|_{P,2}^2$, cf.\ the Cauchy--Schwarz bound in the proof of Lemma~\ref{lemma:lipschitz_empirical_risk}). Combining:
-\begin{equation}\label{eq:p_increment}
-I_2^{(k)}\leq c_p\,\epsilon_{k+1}^p\sqrt{\frac{(1+\sigma_n)s_k}{n}},
-\end{equation}
-with $c_p$ a generic constant depending on $c^{\prime},C^{\prime},\sigma_\epsilon$.
-
-\noindent\textit{$\theta$-increment $I_3^{(k)}$.}
-By Lemma~\ref{lemma:lipschitz_population_risk} (w.r.t.\ $\theta$):
-$$\bigl|R^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta)-R^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_k^\theta)\bigr|\leq (\mathcal{T}+C^{\prime}+2c^{\prime-1}C^{\prime2})\|\pi_{k+1}^\theta-\pi_k^\theta\|_\infty\leq 3L\,\epsilon_{k+1}^\theta,$$
-where $L:=\mathcal{T}+C^{\prime}+2c^{\prime-1}C^{\prime2}$. By Lemma~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $\theta$) at threshold $s_k$, with probability at least $1-8e^{-s_k}$:
-$$\bigl|R_n^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta)-R_n^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_k^\theta)\bigr|\leq \left(L+\sqrt{\frac{4C^{\prime}\kappa s_k}{n\delta_n}}\right)\cdot 3\epsilon_{k+1}^\theta+\frac{8s_k}{3n}.$$
-Here the fluctuation term $\sqrt{4C'\kappa s_k/(n\delta_n)}$ already scales with $\|\pi_{k+1}^\theta-\pi_k^\theta\|_\infty$ in the kernel integral (cf.\ Lemma~\ref{lemma:concentration_kernel_integral}). Combining both bounds:
-\begin{equation}\label{eq:theta_increment}
-I_3^{(k)}\leq c_\theta\,\epsilon_{k+1}^\theta\left(1+\sqrt{\frac{(1+\sigma_n)s_k}{n}}\right)+c_\theta^{\prime}\,\epsilon_{k+1}^\theta\sqrt{\frac{s_k}{n\delta_n}}+\frac{8s_k}{3n}\leq c_\theta\,\epsilon_{k+1}^\theta\sqrt{\frac{(1+\sigma_n)s_k}{n}}+c_\theta^{\prime}\sqrt{\frac{\epsilon_{k+1}^\theta\,s_k}{n\delta_n}},
-\end{equation}
-where the last step uses $\epsilon_{k+1}^\theta\sqrt{s_k/(n\delta_n)}\geq 8s_k/(3n)$ for the relevant range of $\delta_n$, and $c_\theta,c_\theta'$ are generic constants. The second term, specific to the $\theta$-direction, comes from the kernel density estimation variance via Lemma~\ref{lemma:concentration_kernel_integral}.
-
-\noindent\textbf{Step 4: Union Bound and Summation.}
-
-\noindent\textit{Level entropy.}
-At level $k$, the relevant tuple $(\pi_k^\mu,\pi_{k+1}^\mu,\pi_k^p,\pi_{k+1}^p,\pi_k^\theta,\pi_{k+1}^\theta)$ takes at most $|\mathcal{C}_{\mu,k+1}|^2|\mathcal{C}_{p,k+1}|^2|\mathcal{C}_{\theta,k+1}|^2$ values. A union bound over all such tuples sets
-\begin{equation}\label{eq:level_entropy}
-s_k = \tau + 2\ln|\mathcal{C}_{\mu,k+1}| + 2\ln|\mathcal{C}_{p,k+1}| + 2\ln|\mathcal{C}_{\theta,k+1}| \leq \tau + 2\mathcal{H}_\mu(k+1) + 2\mathcal{H}_p(k+1) + 2(d+1)(k+1)\ln 2 + c_1.
-\end{equation}
-Combining~\eqref{eq:increment_decomp}--\eqref{eq:theta_increment} at $s=s_k$, with probability at least $1-6e^{-\tau}$:
-\begin{equation}\label{eq:level_k_joint}
-\sup_{\mu,p,\theta}|\Delta_k(\mu,p,\theta)|\leq \left[c_\mu\epsilon_{k+1}^\mu+c_p\epsilon_{k+1}^p+c_\theta\epsilon_{k+1}^\theta\right]\sqrt{\frac{(1+\sigma_n)s_k}{n}} + c_\theta^{\prime}\sqrt{\frac{\epsilon_{k+1}^\theta s_k}{n\delta_n}}.
-\end{equation}
-
-\noindent\textit{Summing the chain.}
-Using $\epsilon_{k+1}^\nu = D_\nu 2^{-(k+1)}$ for $\nu\in\{\mu,p,\theta\}$ and writing $s_k \leq \tau + c(k+1)$ (where $c$ absorbs the entropy growth rates via~\eqref{eq:covering_numbers}):
-\begin{align}
-\sum_{k=0}^{\infty}\left[c_\mu\epsilon_{k+1}^\mu+c_p\epsilon_{k+1}^p+c_\theta\epsilon_{k+1}^\theta\right]\sqrt{\frac{(1+\sigma_n)s_k}{n}}
-&\leq \frac{c(1+\sigma_n)^{1/2}}{\sqrt{n}}\underbrace{\left[D_\mu+D_p+D_\theta\right]}_{O(1)}\underbrace{\sum_{k=0}^\infty 2^{-(k+1)}\sqrt{\tau+c(k+1)}}_{\lesssim\,\sqrt{\tau}+C}\label{eq:chain_sum_main}\\
-&\lesssim\frac{c(1+\sigma_n)^{1/2}(\sqrt{\tau}+\mathcal{J})}{\sqrt{n}},\nonumber
-\end{align}
-where $\mathcal{J}:=\sum_{k\geq 0}2^{-(k+1)}\sqrt{c(k+1)}<\infty$ is the discrete Dudley entropy integral over the joint parameter space. For the kernel term:
-\begin{equation}\label{eq:chain_sum_kernel}
-\sum_{k=0}^{\infty}c_\theta^{\prime}\sqrt{\frac{\epsilon_{k+1}^\theta s_k}{n\delta_n}}
-\leq c_\theta^{\prime}\sqrt{\frac{D_\theta}{n\delta_n}}\underbrace{\sum_{k=0}^\infty 2^{-(k+1)/2}\sqrt{\tau+c(k+1)}}_{\lesssim\,\sqrt{\tau}+C^\prime<\infty}\lesssim c_\theta^{\prime}\sqrt{\frac{D_\theta\tau}{n\delta_n}}.
-\end{equation}
-Both series converge since $\sum_{k\geq 0}2^{-k/2}\sqrt{k}<\infty$.
-
-\noindent\textit{Coarsest-level term.}
-At $k=0$, all three nets have $O(1)$ points. By Lemma~\ref{lemma:concentration_risk} applied to the single point $\pi_0(\mu,p,\theta)$, with probability at least $1-8e^{-\tau}$:
-\begin{equation}\label{eq:coarsest}
-\bigl|Z(\pi_0(\mu,p,\theta))\bigr|\leq\sqrt{\frac{c_1\tau}{n}}+\sqrt{\frac{c_2\sigma_n\tau}{n}}.
-\end{equation}
-Crucially, no log-covering-number term appears here: $\sigma_n$ multiplies only $\tau$, not any entropy.
-
-\noindent\textbf{Step 5: Combining Bounds.}
-
-Substituting~\eqref{eq:chain_sum_main},~\eqref{eq:chain_sum_kernel}, and~\eqref{eq:coarsest} into~\eqref{eq:joint_chain} and collecting failure events, with probability at least $1-C\cdot e^{-\tau}$:
-\begin{align}
-\sup_{\mu\in\mathcal{F}_\mu,p\in\mathcal{F}_p,\theta\in B_\beta}\bigl|Z(\mu,p,\theta)\bigr|
-&\leq \sqrt{\frac{c_1\sigma_n\tau}{n}} + \frac{c_2\sqrt{(1+\sigma_n)\tau}}{\sqrt{n}}\,\mathcal{J} + c_3\sqrt{\frac{\tau}{n\delta_n}} + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta,\label{eq:chaining_final}
-\end{align}
-where $\mathcal{J}$ is the discrete Dudley integral that is $O(\sqrt{d+1})$ for the parametric $B_\beta$ class and finite for $\mathcal{F}_\mu,\mathcal{F}_p$ under standard metric entropy conditions. The key improvement over the single-scale union bound is that $\sigma_n$ multiplies only $\tau$ and $\mathcal{J}$ (both $O(1)$ or $O(\sqrt{d})$), whereas the original bound had $\sigma_n$ multiplying the full log-covering-numbers $\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|$, which diverge as $\epsilon_\mu,\epsilon_p,\epsilon_\theta\to 0$. Neglecting lower-order terms, the simplified bound stated in the lemma is:
-\begin{align*}
-    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\beta}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|
-    \leq \frac{c\sqrt{(1+\sigma_n)\tau}\,\mathcal{J}}{\sqrt{n}} + c_3\sqrt{\frac{\tau}{n\delta_n}} + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta.
-\end{align*}
-
+The tighter Dudley-based bound~\eqref{eq:hp_main} shows that the dominant term scales as $\sqrt{(1+\sigma_n)/n}\cdot\mathcal{J}$ with $\mathcal{J}=O(\sqrt{d+1})$ for the parametric class, improving over the single-scale union bound in which $\sigma_n$ multiplies the full log-covering-numbers.
 \end{proof}
 
 
