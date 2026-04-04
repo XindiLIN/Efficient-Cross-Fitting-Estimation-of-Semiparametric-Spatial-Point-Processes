@@ -1701,67 +1701,6 @@ Since the regularization parameters $\lambda_n$ and the kernel bandwidth $\gamma
 
 \XL{I will re-write this Lemma based on chaining, which gives a tighter bound $\sqrt{1/n}$}
 
-\begin{proof}
-We only prove the result for stochastic $\mu,p,\theta$. The result for fixed $\mu,p$ follows similarly. Let $\pi(\mu) \in \mathcal{C}_\mu$, $\pi(p) \in \mathcal{C}_p$, and $\pi(\theta) \in \mathcal{C}_\theta$ be the closest elements in the respective $\epsilon$-nets to $\mu, p,$ and $\theta$. Then, the supremum of the uniform deviation can be decomposed as follows:
-$$\begin{aligned}
-\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\theta; \mu, p) - R^{(\delta_n)}(\theta; \mu, p) \right| \leq & \underbrace{\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\theta; \mu, p) - R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) \right|}_{\text{Empirical Lipschitz Error}} \\
-& + \underbrace{\max_{\pi(\mu), \pi(p), \pi(\theta)} \left| R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) \right|}_{\text{Stochastic Error over Finite Net}} \\
-& + \underbrace{\sup_{\mu, p, \theta} \left| R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\theta; \mu, p) \right|}_{\text{Population Lipschitz Error}}
-\end{aligned}$$
-
-\noindent \textbf{Step 1: Lipschitz Error}
-
-\noindent According to Lemma \ref{lemma:lipschitz_population_risk}, the risk function $\widehat R^{(\delta_n)}(\theta; \mu, p)$ is Lipschitz continuous with respect to $(\mu, p)$ in the $L_2(P)$ norm and  $\theta$ in the $L_\infty$ norm. Thus, it holds that
-\begin{align*}
-    &\sup_{\mu, p, \theta} \left| R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\theta; \mu, p) \right|\\
-    \leq &2c^{\prime-1}\epsilon_\mu + 2c^{\prime-2}C^{\prime}\epsilon_p+ \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}\right)\epsilon_\theta
-\end{align*}
-
-\noindent 
-% By the Lipschitz continuity of the empirical risk $\widehat R_n^{(\delta_n)}(\theta; \mu, p)$ with respect to $(\mu, p)$ under the $L_2(P)$ norm and with respect to $\theta$ under the $L_\infty$ norm with high probability in Lemma \ref{lemma:lipschitz_empirical_risk}, we have that for any $\tau>0$, with probability no less than $1-24e^{-\tau}$, we have
-According to Lemma \ref{lemma:lipschitz_empirical_risk}, $\widehat R_n^{(\delta_n)}(\theta; \mu, p)$ is Lipschitz continuous with respect to $(\mu, p)$ in the $L_2(P)$ norm and $\theta$ in the $L_\infty$ norm with high probability. Thus, for any $\tau > 0$, it holds with probability at least $1-24e^{-\tau}$ that
-\begin{align*}
-    &\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R_n^{(\delta_n)}(\theta; \mu, p) \right|\\
-    \leq & 2c^{\prime-1}\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + 2c^{\prime-2}C^{\prime}\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
-& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}
-\end{align*}
-
-\noindent\textbf{Step 2: Union Bound on $\epsilon$-Net}
-
-
-\noindent To minimize the notation, we define
-$$A_n = \sqrt{\frac{c_1\tau}{n}}+
-    \sqrt{\frac{ c_2\tau\sigma_n}{n}} .$$
-According to Lemma \ref{lemma:concentration_risk}, for any fixed $(\mu,p,\theta)$, we have the concentration inequality of the empirical risk as follows:
-$$\pr\left(\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau}\right)\leq 8e^{-\tau}.$$
-We set a new $\tau^\prime =  \tau + \ln|\mathcal{C}_\theta| + \ln|\mathcal{C}_p| + \ln|\mathcal{C}_\mu|$. Then, the supremum of the empirical deviation has the following concentration bound:
-\begin{align*}
-&\pr\left(\sup_{\mu\in\mathcal{C}_\mu, p\in \mathcal{C}_p,\theta\in \mathcal{C}_\theta}\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau^\prime}\right)\\
-    \leq &|\mathcal{C}_\mu||\mathcal{C}_p||\mathcal{C}_\theta| \pr\left(\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau^\prime}\right)\\
-    \leq & |\mathcal{C}_\mu||\mathcal{C}_p||\mathcal{C}_\theta| 8 e^{-\tau^\prime}\\
-    \leq & 8 e^{-\tau}
-\end{align*}
-The first inequality is obtained by applying the union bound over the $\epsilon$-net of the parameter space.
-
-\noindent\textbf{Step 3: Combining Bounds}
-
-
-\noindent Combining the result in Step 1-2, we have that with probability no less than $1-32e^{-\tau}$
-\begin{align*}
-    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
-    \leq &  \left(\sqrt{\frac{c_1\tau}{n}}+
-    \sqrt{\frac{ c_2\tau\sigma_n}{n}} \right)\sqrt{\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|} \\
-&  + 2c^{\prime-1}\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right) + 2c^{\prime-2}C^{\prime}\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
-& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}
-\end{align*}
-By neglecting these higher-order (faster-vanishing) terms, we obtain the following simplified bound:
-\begin{align*}
-    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
-    \leq &  \sqrt{\frac{ c_1\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
-\end{align*}
-
-
-\end{proof}
 
 \begin{lemma}[Empirical Process Bound Parametric]\label{lemma:empirical_loss_deviation_parametric} Let
 $R_n^{({\delta_n})}(\theta;\mu,p)$ and $R^{({\delta_n})}(\theta;\mu,p)$
