@@ -1778,64 +1778,105 @@ Similarly, for fixed $(\mu, p)$, the concentration across the parameter space $B
 \end{lemma}
 
 \begin{proof}
-We only prove the result for stochastic $\mu,p,\theta$. The result for fixed $\mu,p$ follows similarly. Let $\pi(\mu) \in \mathcal{C}_\mu$, $\pi(p) \in \mathcal{C}_p$, and $\pi(\theta) \in \mathcal{C}_\theta$ be the closest elements in the respective $\epsilon$-nets to $\mu, p,$ and $\theta$. Then, the supremum of the uniform deviation can be decomposed as follows:
-$$\begin{aligned}
-\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\theta; \mu, p) - R^{(\delta_n)}(\theta; \mu, p) \right| \leq & \underbrace{\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\theta; \mu, p) - R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) \right|}_{\text{Empirical Lipschitz Error}} \\
-& + \underbrace{\max_{\pi(\mu), \pi(p), \pi(\theta)} \left| R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) \right|}_{\text{Stochastic Error over Finite Net}} \\
-& + \underbrace{\sup_{\mu, p, \theta} \left| R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\theta; \mu, p) \right|}_{\text{Population Lipschitz Error}}
-\end{aligned}$$
+We prove the result for stochastic $\mu,p,\theta$; the case of fixed $(\mu,p)$ follows by the same argument, omitting the union bounds over $\mathcal{C}_\mu$ and $\mathcal{C}_p$.
 
-\noindent \textbf{Step 1: Lipschitz Error}
+\noindent\textbf{Step 1: Lipschitz Errors.}
 
-\noindent According to Lemma \ref{lemma:lipschitz_population_risk}, the risk function $\widehat R^{(\delta_n)}(\theta; \mu, p)$ is Lipschitz continuous with respect to $(\mu, p)$ in the $L_2(P)$ norm and  $\theta$ in the $L_\infty$ norm. Thus, it holds that
+Let $\pi(\mu)\in\mathcal{C}_\mu$, $\pi(p)\in\mathcal{C}_p$, and $\pi(\theta)\in\mathcal{C}_\theta$ denote the nearest-net projections. Decompose the uniform deviation as
 \begin{align*}
-    &\sup_{\mu, p, \theta} \left| R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\theta; \mu, p) \right|\\
-    \leq &2c^{\prime-1}\epsilon_\mu + 2c^{\prime-2}C^{\prime}\epsilon_p+ \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}\right)\epsilon_\theta
+\sup_{\mu,p,\theta}\bigl|R_n^{(\delta_n)}(\theta;\mu,p)-R^{(\delta_n)}(\theta;\mu,p)\bigr|
+&\leq \underbrace{\sup_{\mu,p,\theta}\bigl|R_n^{(\delta_n)}(\theta;\mu,p)-R_n^{(\delta_n)}(\pi(\theta);\pi(\mu),\pi(p))\bigr|}_{\text{Empirical Lipschitz Error}}\\
+&\quad+\underbrace{\sup_{\mu\in\mathcal{C}_\mu,p\in\mathcal{C}_p}\sup_{\theta\in B_\beta}\bigl|R_n^{(\delta_n)}(\theta;\pi(\mu),\pi(p))-R^{(\delta_n)}(\theta;\pi(\mu),\pi(p))\bigr|}_{\text{Stochastic Error (handled by chaining)}}\\
+&\quad+\underbrace{\sup_{\mu,p,\theta}\bigl|R^{(\delta_n)}(\pi(\theta);\pi(\mu),\pi(p))-R^{(\delta_n)}(\theta;\mu,p)\bigr|}_{\text{Population Lipschitz Error}}
 \end{align*}
+where in the middle term we take the supremum over all $\theta\in B_\beta$, since the $\theta$-complexity will be handled via chaining rather than a single-scale union bound.
 
-\noindent 
-% By the Lipschitz continuity of the empirical risk $\widehat R_n^{(\delta_n)}(\theta; \mu, p)$ with respect to $(\mu, p)$ under the $L_2(P)$ norm and with respect to $\theta$ under the $L_\infty$ norm with high probability in Lemma \ref{lemma:lipschitz_empirical_risk}, we have that for any $\tau>0$, with probability no less than $1-24e^{-\tau}$, we have
-According to Lemma \ref{lemma:lipschitz_empirical_risk}, $\widehat R_n^{(\delta_n)}(\theta; \mu, p)$ is Lipschitz continuous with respect to $(\mu, p)$ in the $L_2(P)$ norm and $\theta$ in the $L_\infty$ norm with high probability. Thus, for any $\tau > 0$, it holds with probability at least $1-24e^{-\tau}$ that
+By Lemma~\ref{lemma:lipschitz_population_risk}, the population Lipschitz error satisfies
+\begin{align*}
+\sup_{\mu,p,\theta}\bigl|R^{(\delta_n)}(\pi(\theta);\pi(\mu),\pi(p))-R^{(\delta_n)}(\theta;\mu,p)\bigr|
+\leq 2c^{\prime-1}\epsilon_\mu + 2c^{\prime-2}C^{\prime}\epsilon_p + \bigl(\mathcal{T}+C^{\prime}+2c^{\prime-1}C^{\prime 2}\bigr)\epsilon_\theta.
+\end{align*}
+By Lemma~\ref{lemma:lipschitz_empirical_risk}, for any $\tau>0$, with probability at least $1-24e^{-\tau}$:
 \begin{align*}
     &\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R_n^{(\delta_n)}(\theta; \mu, p) \right|\\
-    \leq & 2c^{\prime-1}\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + 2c^{\prime-2}C^{\prime}\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
-& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}
+    \leq & 2c^{\prime-1}\!\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + 2c^{\prime-2}C^{\prime}\!\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
+& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}.
 \end{align*}
 
-\noindent\textbf{Step 2: Union Bound on $\epsilon$-Net}
+\noindent\textbf{Step 2: Chaining over $B_\beta$.}
 
+We use a chaining argument to control the stochastic error
+$$\sup_{\mu\in\mathcal{C}_\mu,\,p\in\mathcal{C}_p}\sup_{\theta\in B_\beta}Z(\theta;\mu,p),\quad Z(\theta;\mu,p):=R_n^{(\delta_n)}(\theta;\mu,p)-R^{(\delta_n)}(\theta;\mu,p).$$
+This replaces the single-scale union bound and eliminates the $\sigma_n$ factor from the $\theta$-complexity term.
 
-\noindent To minimize the notation, we define
-$$A_n = \sqrt{\frac{c_1\tau}{n}}+
-    \sqrt{\frac{ c_2\tau\sigma_n}{n}} .$$
-According to Lemma \ref{lemma:concentration_risk}, for any fixed $(\mu,p,\theta)$, we have the concentration inequality of the empirical risk as follows:
-$$\pr\left(\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau}\right)\leq 8e^{-\tau}.$$
-We set a new $\tau^\prime =  \tau + \ln|\mathcal{C}_\theta| + \ln|\mathcal{C}_p| + \ln|\mathcal{C}_\mu|$. Then, the supremum of the empirical deviation has the following concentration bound:
+\noindent\textit{Multi-scale nets.}
+Let $D_\theta = 2C_\beta$ be the $\|\cdot\|_\infty$-diameter of $B_\beta$. For each integer $k\geq 0$ set $\epsilon_k = D_\theta\cdot 2^{-k}$, and let $\mathcal{C}_{\theta,k}$ be a minimal $\epsilon_k$-net of $B_\beta$ under $\|\cdot\|_\infty$, with nearest-point projection $\pi_k:B_\beta\to\mathcal{C}_{\theta,k}$. The covering number satisfies $\ln|\mathcal{C}_{\theta,k}|\leq (d+1)\ln(3C_\beta/\epsilon_k) = (d+1)\bigl[k\ln 2 + \ln(3C_\beta/D_\theta)\bigr]$.
+
+\noindent\textit{Chaining decomposition.}
+Fix $(\mu,p)\in\mathcal{C}_\mu\times\mathcal{C}_p$ and $\theta\in B_\beta$. Telescoping over the chain gives
+\begin{equation}\label{eq:chain_decomp}
+Z(\theta;\mu,p) = Z(\pi_0(\theta);\mu,p) + \sum_{k=0}^{\infty}\bigl[Z(\pi_{k+1}(\theta);\mu,p)-Z(\pi_k(\theta);\mu,p)\bigr],
+\end{equation}
+where the sum is finite because $\pi_k(\theta)\to\theta$ in $\|\cdot\|_\infty$ as $k\to\infty$ and $Z$ is Lipschitz.
+
+\noindent\textit{Bounding chaining increments.}
+For any $(\theta_1,\theta_2)\in B_\beta^2$ with $\|\theta_1-\theta_2\|_\infty\leq \epsilon$, write the increment as
+$$Z(\theta_1;\mu,p)-Z(\theta_2;\mu,p) = \frac{1}{n}\sum_{i=1}^n\xi_i,\quad \xi_i:=\bigl[L_i^{(\delta_n)}(\theta_1;\mu,p)-L_i^{(\delta_n)}(\theta_2;\mu,p)\bigr]-\E[\,\cdot\,],$$
+where each $\xi_i$ is centered. The non-noise part of $L_i(\theta_1)-L_i(\theta_2)$ is bounded in absolute value by $(\mathcal{T}+C^{\prime})\epsilon$ deterministically, contributing variance at most $(\mathcal{T}+C^{\prime})^2\epsilon^2$. For the noise part $\frac{\epsilon_i}{p(A_i|X_i,U_i)}\int_{\theta_2(X_i,U_i)}^{\theta_1(X_i,U_i)}K_{\delta_n}(A_i-a)\,\mathrm{d}a$, an application of Cauchy--Schwarz gives
+$$\left(\int_{\theta_2}^{\theta_1}K_{\delta_n}(A_i-a)\,\mathrm{d}a\right)^{\!2}\leq \epsilon\int_{\theta_2}^{\theta_1}K_{\delta_n}^2(A_i-a)\,\mathrm{d}a \leq \frac{\epsilon\,\|K\|_2^2}{\delta_n},$$
+so the noise part contributes variance at most $c^{\prime-2}\sigma_\epsilon^2\|K\|_2^2\cdot\epsilon/\delta_n$. Combining, there exists a generic constant $c_3$ (depending on $\mathcal{T},C^{\prime},c^{\prime},\sigma_\epsilon,\|K\|_2$) such that $\mathrm{Var}(\xi_i)\leq c_3(\epsilon^2 + \epsilon/\delta_n)$, and the maximum individual deviation is at most $M\epsilon$ for a constant $M$. By Bernstein's inequality, for any $s>0$, with probability at least $1-2e^{-s}$:
+\begin{equation}\label{eq:increment_bound}
+\bigl|Z(\theta_1;\mu,p)-Z(\theta_2;\mu,p)\bigr|\leq c_3\!\left(\epsilon\sqrt{\frac{s}{n}}+\sqrt{\frac{\epsilon\,s}{n\delta_n}}\right).
+\end{equation}
+Note that neither bound involves $\sigma_n$: the Gaussian-process fluctuation of $U_i$ does not enter the concentration of the \emph{increment}, since the $U$-Lipschitz constant of $\E[L_i(\theta_1)-L_i(\theta_2)|X_i,U_i]$ is proportional to $\epsilon$ and vanishes as $\epsilon\to 0$.
+
+\noindent\textit{Union bound at each level.}
+At level $k$, the pair $(\pi_k(\theta),\pi_{k+1}(\theta))$ satisfies $\|\pi_{k+1}(\theta)-\pi_k(\theta)\|_\infty\leq 3\epsilon_{k+1}$. There are at most $|\mathcal{C}_{\theta,k+1}|^2$ such pairs. Set
+$$s_k = \tau + 2\ln|\mathcal{C}_{\theta,k+1}| + \ln|\mathcal{C}_\mu| + \ln|\mathcal{C}_p|.$$
+A union bound over all pairs and over $\mathcal{C}_\mu\times\mathcal{C}_p$, combined with~\eqref{eq:increment_bound} at scale $\epsilon=3\epsilon_{k+1}$, gives: with probability at least $1-2e^{-\tau}$,
+\begin{equation}\label{eq:level_k_bound}
+\sup_{\mu\in\mathcal{C}_\mu,p\in\mathcal{C}_p}\sup_{\theta\in B_\beta}\bigl|Z(\pi_{k+1}(\theta);\mu,p)-Z(\pi_k(\theta);\mu,p)\bigr|\leq c_3\!\left(\epsilon_{k+1}\sqrt{\frac{s_k}{n}}+\sqrt{\frac{\epsilon_{k+1}s_k}{n\delta_n}}\right).
+\end{equation}
+
+\noindent\textit{Coarsest-level term.}
+Since $|\mathcal{C}_{\theta,0}|=O(1)$, a union bound over $\mathcal{C}_{\theta,0}\times\mathcal{C}_\mu\times\mathcal{C}_p$ and Lemma~\ref{lemma:concentration_risk} give, with probability at least $1-8e^{-\tau}$:
+$$\sup_{\mu\in\mathcal{C}_\mu,p\in\mathcal{C}_p}\max_{\pi_0(\theta)\in\mathcal{C}_{\theta,0}}\bigl|Z(\pi_0(\theta);\mu,p)\bigr|\leq \sqrt{\frac{c_1(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|)}{n}}+\sqrt{\frac{c_2\sigma_n(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|)}{n}}.$$
+
+\noindent\textit{Summing the chain.}
+Substituting $\ln|\mathcal{C}_{\theta,k+1}|\leq (d+1)(k+1)$ (absorbing $\ln(3C_\beta/D_\theta)$ into $c_3$) into~\eqref{eq:level_k_bound} and summing over $k\geq 0$ using $\epsilon_{k+1}=D_\theta 2^{-(k+1)}$:
 \begin{align*}
-&\pr\left(\sup_{\mu\in\mathcal{C}_\mu, p\in \mathcal{C}_p,\theta\in \mathcal{C}_\theta}\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau^\prime}\right)\\
-    \leq &|\mathcal{C}_\mu||\mathcal{C}_p||\mathcal{C}_\theta| \pr\left(\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau^\prime}\right)\\
-    \leq & |\mathcal{C}_\mu||\mathcal{C}_p||\mathcal{C}_\theta| 8 e^{-\tau^\prime}\\
-    \leq & 8 e^{-\tau}
+\sum_{k=0}^{\infty}\epsilon_{k+1}\sqrt{\frac{s_k}{n}}
+&\leq \frac{D_\theta}{\sqrt{n}}\left[\sqrt{\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|}\underbrace{\sum_{k=0}^\infty 2^{-(k+1)}}_{=1}+\sqrt{d+1}\underbrace{\sum_{k=0}^\infty 2^{-(k+1)}\sqrt{k+1}}_{<\infty}\right]\\
+&\lesssim \frac{D_\theta}{\sqrt{n}}\bigl(\sqrt{\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|}+\sqrt{d+1}\bigr),
 \end{align*}
-The first inequality is obtained by applying the union bound over the $\epsilon$-net of the parameter space.
-
-\noindent\textbf{Step 3: Combining Bounds}
-
-
-\noindent Combining the result in Step 1-2, we have that with probability no less than $1-32e^{-\tau}$
+and similarly
 \begin{align*}
-    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
-    \leq &  \left(\sqrt{\frac{c_1\tau}{n}}+
-    \sqrt{\frac{ c_2\tau\sigma_n}{n}} \right)\sqrt{\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|} \\
-&  + 2c^{\prime-1}\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right) + 2c^{\prime-2}C^{\prime}\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
-& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}
+\sum_{k=0}^{\infty}\sqrt{\frac{\epsilon_{k+1}s_k}{n\delta_n}}
+&\leq \sqrt{\frac{D_\theta}{n\delta_n}}\!\left[\sqrt{\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|}\underbrace{\sum_{k=0}^\infty 2^{-(k+1)/2}}_{<\infty}+\sqrt{d+1}\underbrace{\sum_{k=0}^\infty 2^{-(k+1)/2}\sqrt{k+1}}_{<\infty}\right]\\
+&\lesssim \sqrt{\frac{D_\theta(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+d+1)}{n\delta_n}}.
 \end{align*}
-By neglecting these higher-order (faster-vanishing) terms, we obtain the following simplified bound:
-\begin{align*}
-    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
-    \leq &  \sqrt{\frac{ c_1\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
-\end{align*}
+Both series converge because $\sum_{k\geq 0}2^{-k/2}\sqrt{k}<\infty$. Therefore, from~\eqref{eq:chain_decomp}, with probability at least $1-C\cdot e^{-\tau}$:
+\begin{align}
+\sup_{\mu\in\mathcal{C}_\mu,p\in\mathcal{C}_p}\sup_{\theta\in B_\beta}Z(\theta;\mu,p)
+&\leq \sqrt{\frac{c_1(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|)}{n}}+\sqrt{\frac{c_2\sigma_n(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|)}{n}}\nonumber\\
+&\quad+ \frac{c_3 D_\theta}{\sqrt{n}}\bigl(\sqrt{\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|}+\sqrt{d+1}\bigr) + c_3\sqrt{\frac{D_\theta(\tau+d+1)}{n\delta_n}}.\label{eq:chaining_final}
+\end{align}
+Crucially, the $\theta$-complexity is captured by the Dudley integral $\sqrt{(d+1)/n}$: $\sigma_n$ does \emph{not} multiply $\ln|\mathcal{C}_\theta|$, and $\ln|\mathcal{C}_\theta|$ does not appear at all.
 
+\noindent\textbf{Step 3: Combining Bounds.}
+
+Combining Steps~1--2 and applying a union bound over all failure events, with probability at least $1-C\cdot e^{-\tau}$:
+\begin{align*}
+    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\beta}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq\;& \sqrt{\frac{c_2\sigma_n(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|)}{n}} + \frac{c_3 D_\theta\sqrt{(d+1)\tau}}{\sqrt{n}} + c_3\sqrt{\frac{D_\theta\tau}{n\delta_n}}\\
+    &+ 2c^{\prime-1}\!\left(\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}+2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)+2c^{\prime-2}C^{\prime}\!\left(\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}+2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)+\sqrt{\frac{8\tau c^{\prime-2}\sigma_\epsilon^2}{n}}\\
+    &+ c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta + \frac{8\tau}{3n}.
+\end{align*}
+Compared to the single-scale union bound, the term $\sqrt{\sigma_n\ln|\mathcal{C}_\theta|/n}$ is replaced by $\sqrt{(d+1)/n}$: the log-covering-number of $B_\beta$ no longer appears, and $\sigma_n$ does not multiply the $\theta$-complexity. Neglecting higher-order terms, the simplified bound is:
+\begin{align*}
+    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\beta}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq\;& \sqrt{\frac{c_1\sigma_n(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|)}{n}} + \frac{c_2\sqrt{(d+1)\tau}}{\sqrt{n}} + c_3\epsilon_\mu + c_4\epsilon_p + c_5\epsilon_\theta.
+\end{align*}
 
 \end{proof}
 
