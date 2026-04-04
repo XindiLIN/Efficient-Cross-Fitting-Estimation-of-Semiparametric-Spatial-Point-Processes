@@ -1808,31 +1808,45 @@ At each level $k$, we decompose the joint increment $\Delta_k(\mu,p,\theta)$ int
 &\quad + \underbrace{\bigl|Z(\pi_k^\mu,\pi_{k+1}^p,\pi_{k+1}^\theta) - Z(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta)\bigr|}_{I_2^{(k)}: \text{ $p$-increment}}\label{eq:increment_decomp}\\
 &\quad + \underbrace{\bigl|Z(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta) - Z(\pi_k^\mu,\pi_k^p,\pi_k^\theta)\bigr|}_{I_3^{(k)}: \text{ $\theta$-increment}}.\nonumber
 \end{align}
-We bound each term by showing that its variance is proportional to the \emph{square} of the displacement at level $k+1$, so that the chaining sum converges.
+For each directional increment, we apply the triangle inequality
+$$|Z(\nu_1)-Z(\nu_2)|\leq \bigl|R_n^{(\delta_n)}(\nu_1)-R_n^{(\delta_n)}(\nu_2)\bigr|+\bigl|R^{(\delta_n)}(\nu_1)-R^{(\delta_n)}(\nu_2)\bigr|,$$
+and then invoke Lemma~\ref{lemma:lipschitz_population_risk} for the population term and Lemma~\ref{lemma:lipschitz_empirical_risk} for the empirical term. A key observation is that, in the proof of Lemma~\ref{lemma:lipschitz_empirical_risk}, the fluctuation term ($\sqrt{\sigma_n\tau/n}$ for the $\mu$- and $p$-directions, $\sqrt{\kappa\tau/(n\delta_n)}$ for the $\theta$-direction) arises from the Gaussian-process concentration of $f(U_1,\ldots,U_n)=\frac{1}{n}\sum_i g_i(U_i)$, whose Lipschitz constant is proportional to the \emph{displacement} of the pair being evaluated. Concretely, at chain level $k+1$ the pairs satisfy $\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 3\epsilon_{k+1}^\mu$, $\|\pi_{k+1}^p-\pi_k^p\|_{P,2}\leq 3\epsilon_{k+1}^p$, and $\|\pi_{k+1}^\theta-\pi_k^\theta\|_\infty\leq 3\epsilon_{k+1}^\theta$, so the fluctuation terms are proportional to $\epsilon_{k+1}$ rather than the uniform envelope $C'$. This tighter scaling is what makes the chaining sum converge.
 
 \noindent\textit{$\mu$-increment $I_1^{(k)}$.}
-Write $I_1^{(k)} = \frac{1}{n}\sum_i\xi_i^{(1)}$, where $\xi_i^{(1)}:=[L_i(\pi_{k+1}^\theta;\pi_{k+1}^\mu,\pi_{k+1}^p)-L_i(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)]-\E[\,\cdot\,]$ is centered. The individual loss difference satisfies
-$$\bigl|L_i(\theta;\mu_1,p)-L_i(\theta;\mu_2,p)\bigr|\leq c^{\prime-1}(|\mathcal{A}|+1)\bigl|\mu_1(A_i,X_i,U_i)-\mu_2(A_i,X_i,U_i)\bigr|,$$
-so $\mathrm{Var}(\xi_i^{(1)})\leq c^{\prime-2}(|\mathcal{A}|+1)^2\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}^2\leq c_\mu^2(\epsilon_{k+1}^\mu)^2$.
-Furthermore, the $U$-Lipschitz constant of $\E[\xi_i^{(1)}|X_i,U_i]$ is proportional to $\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 3\epsilon_{k+1}^\mu$, so the Gaussian-process concentration (as in the proof of Lemma~\ref{lemma:concentration_risk}, Step~3--4) contributes an additional variance of $\sigma_n c_\mu^2(\epsilon_{k+1}^\mu)^2/n$. Combining, by Bernstein's inequality, for any $s>0$ with probability at least $1-2e^{-s}$:
+By Lemma~\ref{lemma:lipschitz_population_risk} (w.r.t.\ $\mu$), the population term satisfies deterministically:
+$$\bigl|R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_{k+1}^\mu,\pi_{k+1}^p)-R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)\bigr|\leq 2c^{\prime-1}\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 6c^{\prime-1}\epsilon_{k+1}^\mu.$$
+By Lemma~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $\mu$) applied with threshold $s_k$, with probability at least $1-6e^{-s_k}$:
+$$\bigl|R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_{k+1}^\mu,\pi_{k+1}^p)-R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)\bigr|\leq 2c^{\prime-1}\left(\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}+\epsilon_{k+1}^\mu\sqrt{\frac{4C^{\prime2}s_k\sigma_n}{n}}+2\epsilon_{k+1}^\mu\sqrt{\frac{8C^{\prime2}s_k}{n}}\right),$$
+where we have used $\|\pi_{k+1}^\mu-\pi_k^\mu\|_{P,2}\leq 3\epsilon_{k+1}^\mu$ to tighten the fluctuation terms (the Lipschitz constant of the underlying GP function scales with the pair's $L_2(P)$ displacement). Adding both bounds:
 \begin{equation}\label{eq:mu_increment}
-I_1^{(k)}\leq c_\mu\,\epsilon_{k+1}^\mu\sqrt{\frac{(1+\sigma_n)s}{n}}.
+I_1^{(k)}\leq c_\mu\,\epsilon_{k+1}^\mu\left(1+\sqrt{\frac{(1+\sigma_n)s_k}{n}}\right)\leq c_\mu\,\epsilon_{k+1}^\mu\sqrt{\frac{(1+\sigma_n)s_k}{n}},
 \end{equation}
+where the last step absorbs the constant $1$ into $\sqrt{s_k}$ for $s_k\geq 1$, and $c_\mu$ is a generic constant depending on $c^{\prime},C^{\prime}$.
 
 \noindent\textit{$p$-increment $I_2^{(k)}$.}
-Write $I_2^{(k)} = \frac{1}{n}\sum_i\xi_i^{(2)}$, where $\xi_i^{(2)}:=[L_i(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)-L_i(\pi_{k+1}^\theta;\pi_k^\mu,\pi_k^p)]-\E[\,\cdot\,]$ is centered. The individual loss difference satisfies
-$$L_i(\theta;\mu,p_1)-L_i(\theta;\mu,p_2) = \frac{(Y_i-\mu(A_i,...))(p_2(A_i|\ldots)-p_1(A_i|\ldots))}{p_1(A_i|\ldots)p_2(A_i|\ldots)}\int_{a_L}^{\theta(X_i,U_i)}K_{\delta_n}(A_i-a)\,\mathrm{d}a.$$
-The non-noise part $(\mu^*(A_i,...)-\mu(A_i,...))$ contributes variance $\leq c^{\prime-4}C^{\prime2}\|p_1-p_2\|_{P,2}^2$. For the noise part $\epsilon_i(p_2-p_1)/(p_1p_2)\int K_{\delta_n}$, applying Cauchy--Schwarz and $\int K_{\delta_n}\leq 1$ gives variance $\leq c^{\prime-4}\sigma_\epsilon^2\|p_1-p_2\|_{P,2}^2$. Together, $\mathrm{Var}(\xi_i^{(2)})\leq c_p^2(\epsilon_{k+1}^p)^2$. The $U$-Lipschitz constant of $\E[\xi_i^{(2)}|X_i,U_i]$ is also proportional to $\epsilon_{k+1}^p$, adding variance $\sigma_n c_p^2(\epsilon_{k+1}^p)^2/n$ from the Gaussian process. By Bernstein's inequality, for any $s>0$ with probability at least $1-2e^{-s}$:
+By Lemma~\ref{lemma:lipschitz_population_risk} (w.r.t.\ $p$):
+$$\bigl|R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)-R^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_k^p)\bigr|\leq 2c^{\prime-2}C^{\prime}\|\pi_{k+1}^p-\pi_k^p\|_{P,2}\leq 6c^{\prime-2}C^{\prime}\epsilon_{k+1}^p.$$
+By Lemma~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $p$) at threshold $s_k$, with probability at least $1-8e^{-s_k}$:
+\begin{align*}
+&\bigl|R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_{k+1}^p)-R_n^{(\delta_n)}(\pi_{k+1}^\theta;\pi_k^\mu,\pi_k^p)\bigr|\\
+&\leq 2c^{\prime-2}C^{\prime}\!\left(\|\pi_{k+1}^p-\pi_k^p\|_{P,2}+\epsilon_{k+1}^p\sqrt{\frac{4C^{\prime2}s_k\sigma_n}{n}}+2\epsilon_{k+1}^p\sqrt{\frac{8C^{\prime2}s_k}{n}}\right)+\epsilon_{k+1}^p\sqrt{\frac{8s_kc^{\prime-2}\sigma_\epsilon^2}{n}},
+\end{align*}
+where the fluctuation terms are again proportional to $\epsilon_{k+1}^p$ (the noise term $\sqrt{8\tau c^{\prime-2}\sigma_\epsilon^2/n}$ in the lemma statement arises from the $\epsilon_i/p$ noise, whose variance w.r.t.\ $p$ changes scales with $\|p_1-p_2\|_{P,2}^2$, cf.\ the Cauchy--Schwarz bound in the proof of Lemma~\ref{lemma:lipschitz_empirical_risk}). Combining:
 \begin{equation}\label{eq:p_increment}
-I_2^{(k)}\leq c_p\,\epsilon_{k+1}^p\sqrt{\frac{(1+\sigma_n)s}{n}}.
+I_2^{(k)}\leq c_p\,\epsilon_{k+1}^p\sqrt{\frac{(1+\sigma_n)s_k}{n}},
 \end{equation}
+with $c_p$ a generic constant depending on $c^{\prime},C^{\prime},\sigma_\epsilon$.
 
 \noindent\textit{$\theta$-increment $I_3^{(k)}$.}
-Write $I_3^{(k)} = \frac{1}{n}\sum_i\xi_i^{(3)}$, where $\xi_i^{(3)}:=[L_i(\pi_{k+1}^\theta;\pi_k^\mu,\pi_k^p)-L_i(\pi_k^\theta;\pi_k^\mu,\pi_k^p)]-\E[\,\cdot\,]$ is centered. For any $\|\theta_1-\theta_2\|_\infty\leq\epsilon$, the non-noise part gives variance $\leq(\mathcal{T}+C^{\prime})^2\epsilon^2$, and for the noise part $\frac{\epsilon_i}{p}\int_{\theta_2}^{\theta_1}K_{\delta_n}(A_i-a)\,\mathrm{d}a$, Cauchy--Schwarz gives $(\int_{\theta_2}^{\theta_1}K_{\delta_n})^2\leq\epsilon\|K\|_2^2/\delta_n$, so noise variance $\leq c^{\prime-2}\sigma_\epsilon^2\|K\|_2^2\epsilon/\delta_n$. The $U$-Lipschitz constant of $\E[\xi_i^{(3)}|X_i,U_i]$ is proportional to $\epsilon_{k+1}^\theta$, contributing $\sigma_n c_\theta^2(\epsilon_{k+1}^\theta)^2/n$. Combining, by Bernstein's inequality, for any $s>0$ with probability at least $1-2e^{-s}$:
+By Lemma~\ref{lemma:lipschitz_population_risk} (w.r.t.\ $\theta$):
+$$\bigl|R^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta)-R^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_k^\theta)\bigr|\leq (\mathcal{T}+C^{\prime}+2c^{\prime-1}C^{\prime2})\|\pi_{k+1}^\theta-\pi_k^\theta\|_\infty\leq 3L\,\epsilon_{k+1}^\theta,$$
+where $L:=\mathcal{T}+C^{\prime}+2c^{\prime-1}C^{\prime2}$. By Lemma~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $\theta$) at threshold $s_k$, with probability at least $1-8e^{-s_k}$:
+$$\bigl|R_n^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_{k+1}^\theta)-R_n^{(\delta_n)}(\pi_k^\mu,\pi_k^p,\pi_k^\theta)\bigr|\leq \left(L+\sqrt{\frac{4C^{\prime}\kappa s_k}{n\delta_n}}\right)\cdot 3\epsilon_{k+1}^\theta+\frac{8s_k}{3n}.$$
+Here the fluctuation term $\sqrt{4C'\kappa s_k/(n\delta_n)}$ already scales with $\|\pi_{k+1}^\theta-\pi_k^\theta\|_\infty$ in the kernel integral (cf.\ Lemma~\ref{lemma:concentration_kernel_integral}). Combining both bounds:
 \begin{equation}\label{eq:theta_increment}
-I_3^{(k)}\leq c_\theta\,\epsilon_{k+1}^\theta\sqrt{\frac{(1+\sigma_n)s}{n}} + c_\theta^{\prime}\sqrt{\frac{\epsilon_{k+1}^\theta\,s}{n\delta_n}}.
+I_3^{(k)}\leq c_\theta\,\epsilon_{k+1}^\theta\left(1+\sqrt{\frac{(1+\sigma_n)s_k}{n}}\right)+c_\theta^{\prime}\,\epsilon_{k+1}^\theta\sqrt{\frac{s_k}{n\delta_n}}+\frac{8s_k}{3n}\leq c_\theta\,\epsilon_{k+1}^\theta\sqrt{\frac{(1+\sigma_n)s_k}{n}}+c_\theta^{\prime}\sqrt{\frac{\epsilon_{k+1}^\theta\,s_k}{n\delta_n}},
 \end{equation}
-The second term, which is absent in $I_1^{(k)}$ and $I_2^{(k)}$, arises from the kernel density estimation variance and is specific to the $\theta$-direction.
+where the last step uses $\epsilon_{k+1}^\theta\sqrt{s_k/(n\delta_n)}\geq 8s_k/(3n)$ for the relevant range of $\delta_n$, and $c_\theta,c_\theta'$ are generic constants. The second term, specific to the $\theta$-direction, comes from the kernel density estimation variance via Lemma~\ref{lemma:concentration_kernel_integral}.
 
 \noindent\textbf{Step 4: Union Bound and Summation.}
 
