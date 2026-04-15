@@ -23,6 +23,7 @@
 \usepackage{subcaption}
 \usepackage{multirow}
 \usepackage{makecell}
+\usepackage{orcidlink}
 
 
 
@@ -89,8 +90,8 @@
 
 
 \author[1]{Xindi Lin\thanks{Xindi Lin and Chan Park contributed equally to the work.}}
-\author[2]{Chan Park$^*$}
-\author[3]{Christopher Zahasky}
+\author[2]{Chan Park\orcidlink{0000-0001-8315-1522}$^*$}
+\author[3]{Christopher Zahasky\orcidlink{0000-0001-8315-1522}}
 \author[1]{Hyunseung Kang}
 
 % \affil is the command for the affiliation
@@ -111,10 +112,10 @@
 % \textcolor{red}{A potential title: Safe, Cost-Effective Spatial Policy Learning With Applications to [Agricultural-Related Groundwater Contamination in Wisconsin]}
 \begin{abstract}
 %Mitigation of the harmful effects of contaminants in drinking water requires the implementation of policies that simultaneously satisfy regulatory limits and minimize implementation costs. For example, one of the most common groundwater contaminants is nitrate. Excessive nitrate in groundwater is commonly the result of fertilizer applications, sewage disposal, or leaky septic systems, therefore a common approach for reducing nitrate in drinking water is to construct deeper groundwater wells. A key challenge is that well construction is expensive and a safe, cost effective policy would install a well that reduces nitrate concentrations below the regulatory limit while minimizing the depth of the well.
-\CP{Current word count 211; need to cut down to 200 for JRSS:B}
-Mitigating harmful contaminants in drinking water requires policies that both satisfy regulatory standards and minimize implementation costs. One prominent example is nitrate, a common groundwater contaminant often linked to fertilizer application and sewage disposal. A common strategy for reducing nitrate exposure in drinking water is to construct deeper groundwater wells. However, because well construction is costly, an effective policy should identify the shallowest well depth that reduces nitrate concentrations below the regulatory threshold while avoiding unnecessary costs.
+\CP{Current word count 211; need to cut down to 200 for JRSS:B}\XL{I make minimum edition to make it 200}
+Mitigating harmful contaminants in drinking water requires policies that both satisfy regulatory standards and minimize implementation costs. One prominent example is nitrate, a common groundwater contaminant often linked to agricultural activities. A common strategy for reducing nitrate exposure in drinking water is to construct deeper groundwater wells. However, because well construction is costly, an effective policy should identify the shallowest well depth that reduces nitrate concentrations below the regulatory threshold while avoiding unnecessary costs.
 
-Motivated by this challenge, this paper proposes a statistical framework for learning safe and cost-effective mitigation policies for environmental contaminants. At each spatial location, the proposed policy selects the minimum intervention level required (e.g., well depth) to achieve a prespecified contaminant threshold (e.g., nitrate concentrations below 10 mg/L). A central feature of our framework is the explicit treatment of spatial confounding and spatial dependence, which is unavoidable in this setting. We estimate the policy through empirical risk minimization using a novel, nonparametric, doubly robust loss function. We then derive excess-risk bounds for the resulting estimator, formally quantifying the impact of spatial dependence and kernel smoothing. We apply our method to design a safe and cost-effective nitrate-mitigation policy for Wisconsin, with the goal of reducing nitrate concentrations in drinking water to achieve specific regulatory standards.
+Motivated by this challenge, this paper proposes a statistical framework for learning safe and cost-effective mitigation policies for environmental contaminants. At each spatial location, the proposed policy selects the minimum intervention level required (e.g., well depth) to achieve a prespecified contaminant threshold (e.g., nitrate concentrations below 5 mg/L). A central feature of our framework is the explicit treatment of spatial confounding and spatial dependence, which is unavoidable in this setting. We estimate the policy through empirical risk minimization using a novel, nonparametric, doubly robust loss function. We derive excess-risk bounds for the estimator, formally quantifying the impact of spatial dependence. We apply our method to design a safe, cost-effective nitrate-mitigation policy for Wisconsin to reduce nitrate concentrations in drinking water to achieve specific regulatory standards.
 \end{abstract}
 
 
@@ -137,27 +138,33 @@ Inspired by this nitrate mitigation challenge in drinking water, this paper prop
 \end{equation}
 \noindent The set $\Theta$ is the set of all policy functions, including a policy where intervention level is set to the highest possible value regardless of location (e.g., drill all wells to the maximum aquifer depth) or a policy where the intervention level increases as the distance to known sources of contaminants decreases (e.g. drill a well to depth $a$ where $a$ increases as $S$ gets closer to farms with manure spreading). The term $\mathcal{Y}(\theta(X,S))$ is the expected potential outcome (e.g., nitrate level) at location $S$ under intervention level specified by policy $\theta(X,S)$; note that we use potential outcomes to define intervention effects  (see Section \ref{sec:notation}). The policy $\theta^* \in \Theta$ is safe and cost-effective in that it suggests the minimum intervention level necessary to achieve the safety compliance defined by threshold $\mathcal{T}$. 
 
-A hallmark of our framework is that we allow $\theta^*$ to account for both \emph{measured} and \emph{unmeasured} spatial characteristics at location $S$ \CP{I think this sentence not precise, as $U$ is smooth wrt $S$, but $S$ itself is not considered to be smooth? $\Rightarrow$ if $S$ is ``spatially smooth'' and ``sufficient'' (see Section \ref{sec:identify_spatial_confounding}).} 
-This feature is important because in practice, we cannot measure every spatial characteristic at $S$ that affects the outcome and/or the intervention, a phenomenon broadly referred to as \emph{spatial confounding} (see Section \ref{sec:prior_works}). For example, in the nitrate mitigation example, it is impossible to characterize all hydrogeological features that govern subsurface transport of nitrate.
 
-An important statistical feature of our framework is that nonparametric (or parametric) estimation of the policy function $\theta^*$ from $n$ spatially dependent samples can be recast as a familiar problem in empirical risk minimization (ERM). For example, in the case where the investigator desires a simple, interpretable parametric policy function, the corresponding ERM would be
+
+\XL{hightlight identification: A hallmark of our framework is the causal identification $\theta^*$ that accounts for \emph{unmeasured} spatial characteristics at location $S$ so long as the unmeasured spatial characteristics are ``spatially smooth'' and ``sufficient'' with respect to $S$ (see Section \ref{sec:identify_spatial_confounding}).}
+% A hallmark of our framework is that we allow $\theta^*$ to account for both \emph{measured} and \emph{unmeasured} spatial characteristics at location $S$ so long as the unmeasured spatial characteristics are ``spatially smooth'' and ``sufficient'' with respect to $S$ (see Section \ref{sec:identify_spatial_confounding}).
+This feature is important because in practice, we cannot measure every spatial characteristic at location $S$ that affects the outcome and/or the intervention, a phenomenon broadly referred to as \emph{spatial confounding} (see Section \ref{sec:prior_works}). For example, in the nitrate mitigation example, it is impossible to characterize all hydrogeological features that govern subsurface transport of nitrate.
+
+
+\XL{An important statistical feature of our framework is that the estimation of the policy function $\theta^*$ from $n$ spatially dependent samples can be recast as a familiar problem in empirical risk minimization (ERM):}
+% An important statistical feature of our framework is that nonparametric (or parametric) estimation of the policy function $\theta^*$ from $n$ spatially dependent samples can be recast as a familiar problem in empirical risk minimization (ERM). For example, in the case where the investigator desires a simple, interpretable parametric policy (FIX TO BE GENERAL) function, the corresponding ERM would be
 \[
-\hat{\theta} = \underset{\theta  \in\Theta}{\mathrm{argmin}} \frac{1}{n} \sum_{i=1}^{n} L^{\delta_n}(\theta,O_i) + \mathcal{P}_n(\theta).
+\hat{\theta} = \underset{\theta  \in\Theta}{\mathrm{argmin}} \frac{1}{n} \sum_{i=1}^{n} L^{(\delta_n)}(\theta,O_i) + \mathcal{P}_n(\theta).
 \]
-Here, $L^{\delta_n}$ is a ``special'' loss function (see Section \ref{sec:direct_method}),  $\mathcal{P}_n$ is an $L_2$-like penalty term for the complexity of $\theta$, and $O_i$ denotes the $i$th sample. This loss function is special because we have developed it to simultaneously account for (i) model mis-specification, especially for the outcome regression function (e.g., the model for nitrate transport as a function of spatial covariates and depth) and (ii) improved rates of convergence by a $\delta_n$-``kernelized'' interpolation of the outcomes by similar intervention levels. We refer to the loss function as \emph{kernelized doubly robust loss function} and Section \ref{sec:estimator} contains more details. 
+\XL{Here, $\Theta$ is the function class of the policy that can either be parametric function for the interpretability, or a nonparametric for flexibility}, $L^{(\delta_n)}$ is a ``special'' loss function (see Section \ref{sec:direct_method}),  $\mathcal{P}_n$ is an $L_2$-like penalty term for the complexity of $\theta$, and $O_i$ denotes the $i$th sample. This loss function is special because we have developed it to simultaneously account for (i) model mis-specification, especially for the outcome regression function (e.g., the model for nitrate transport as a function of spatial covariates and depth) and (ii) improved rates of convergence by a $\delta_n$-``kernelized'' interpolation of the outcomes by similar intervention levels. We refer to the loss function as \emph{kernelized doubly robust loss function} and Section \ref{sec:estimator} contains more details. (III) IDENTIFIABIILITy, (IV) CLARIFY THE PROPERTY of $\hat{\theta}$ (V) Loss function's special property is it adapts to the spatial dependence (or lack thereof)?
 
- \CP{1. In Section 1.2, we highlighted identification and estimation of $\theta$, so we may also want to mention identification? \\
+ \CP{1. In Section 1.2, we highlighted identification and estimation of $\theta$, so we may also want to mention identification? \textcolor{blue}{from Xindi:see above}\\
  2. 
- This ERM also applies to nonparametric policy, so maybe write more generally (I think we can just mention $\Theta$ is a policy class, which can be either parametric or nonparametric\\
+ This ERM also applies to nonparametric policy, so maybe write more generally (I think we can just mention $\Theta$ is a policy class, which can be either parametric or nonparametric \textcolor{blue}{from Xindi:see above}\\
  3. Are the properties (i) and (ii) are relevant to $\hat{\theta}$? Then I think it may be better to write ``This loss function is special in that the resulting $\hat{\theta}$ has robustness and improved rate''} 
 
-Finally, despite its simplicity, a precise, theoretical analysis of ERM is challenging under spatially dependent training data. Our theoretical analysis explicitly quantifies the effect of spatial dependence on the statistical properties of $\hat{\theta}$, which is uncommon in this literature, and may be of independent interest for both causal and non-causal works on nonparametric function estimation under spatial dependence.
-\CP{It may be helpful to frame this as a generalization of ERM: as the spatial dependency approaches zero, the formulation reduces to standard ERM (i.e., adaptivity).}
+Finally, despite its simplicity, a precise, theoretical analysis of ERM is challenging under spatially dependent training data. Our theoretical analysis explicitly quantifies the effect of spatial dependence on the statistical properties of $\hat{\theta}$, which is uncommon in this literature, and may be of independent interest for both causal and non-causal works on nonparametric function estimation under spatial dependence. \XL{Notably, while our framework is designed for spatially dependent observations, our theoretical results and methodology naturally recover the standard ERM properties established under the independent and identically distributed (i.i.d.) setting as the spatial dependence approaches zero.}
+\CP{It may be helpful to frame this as a generalization of ERM: as the spatial dependency approaches zero, the formulation reduces to standard ERM (i.e., adaptivity).}\XL{see above}
 
 
 We briefly remark that while this study is motivated by nitrate mitigation policies in drinking water wells, the proposed statistical framework could be applicable to a wide array of groundwater contaminants, along with air, surface water, and ecological regulations that must achieve some optimal solution under \textit{ex ante} uncertainty. Our approach is especially relevant to non-point source groundwater contaminants such as pesticides \citep{Stackelberg2012}, PFAS \citep{park2024statistical, Guo2022, Gnesda2022}, and excessive chloride in groundwater systems \citep{Pieper2018}. Similarly, many contaminants in surface water are closely monitored, and mitigation of surface water contaminants such as nitrate and phosphorus requires the implementation of nutrient best management practices \citep{Dai2018}. Policies such as buffer strips, cover crops, grade stabilization, or detention wetlands may be implemented and optimized to attempt to meet downstream nutrient thresholds.
 %Like contaminants in water, exceedances of air quality thresholds may require siting or upgrading air pollution control equipment when local atmospheric conditions make it uncertain whether standards will be met after installation. For example, \citet{esworthy2013air} and \citet{papadogeorgou2019causal}discuss interventions to control particulate matter in the air (PM 2.5) while \citet{goin2021hyperlocalized} measures the effect of potential interventions on nitrogen dioxide, black carbon, and ultra-fine particulates.  
-Our optimal cost-effective policy approach provides one solution to design interventions that balance policy benefits and costs. Also, while the paper focuses on continuous interventions since it is the most difficult setting from a nonparametric, statistical estimation perspective (see Section \ref{sec:direct_method}), our framework can be simplified to cover non-binary, discrete interventions where larger values of the intervention correspond to increased costs (see Section \ref{sec: discussion}). \CP{Maybe include social science examples, e.g., location-based tax policies?}
+Our optimal cost-effective policy approach provides one solution to design interventions that balance policy benefits and costs. Also, while the paper focuses on continuous interventions since it is the most difficult setting from a nonparametric, statistical estimation perspective (see Section \ref{sec:direct_method}), our framework can be simplified to cover non-binary, discrete interventions where larger values of the intervention correspond to increased costs (see Section \ref{sec: discussion}). \XL{One example is the tax incentives implemented across discrete geographic tiers to spur localized economic. The goal is to identify the minimum tax incentive required to achieve a target growth threshold \citep{kennedy2021neighborhood}.}
+\CP{Maybe include social science examples, e.g., location-based tax policies?}\XL{see above}
 
 \subsection{Prior Works} \label{sec:prior_works}
 
@@ -170,7 +177,7 @@ Our paper is most closely related to existing works in causal inference on  sing
 In particular, our optimization problem in \eqref{eq:brief} is similar to those in \citet{chen2022policy}, \citet{park2023personalized}, and \citet{park2024minimum}, which studied policy learning under similar resource constraints. But, the main difference between the aforementioned works and ours is that we deal with spatial dependence due to spatial confounding (see below), which leads to dramatically different identifying assumptions, estimators, and statistical properties. 
 For clarity, we highlight specific differences between the existing works and our work throughout the manuscript.
 
-Our work broadly falls under shape-constrained,  nonparametric regression under spatial dependence, specifically dependence due to \emph{spatial confounding} \citep{paciorek2010importance,hodges2010adding,zigler2021spatial,reich2021review}. Spatial confounding is the presence of spatially correlated unmeasured confounders and differs from ``traditional'' unmeasured confounders in independent and identically distributed (i.i.d.) settings where the unmeasured confounders are independent across study units. Because of the dependence of the unmeasured confounders, the outcomes or the interventions between study units exhibit dependence. Consequently, different assumptions are necessary to  identify and estimate intervention effects under spatial confounding (e.g., \citet{thaden2018structural,papadogeorgou2019adjusting,khan2022restricted,gilbert2021causal,dupont2022spatial+,wiecha2024two,gilbert2024consistency,datta2025consistent,burman2025robust}). To the best of our knowledge, existing works on spatial confounding focus on identification and estimation of \emph{low-dimensional parameters} (e.g., average treatment effects). In contrast, our work focuses on identification and estimation of \emph{nonparametric functions} (e.g., optimal policies) under spatial confounding, especially if they are under some constraints imposed by the policymaker. %, which are essentially nonparametric functions with certain shape constraints.
+Our work broadly falls under shape-constrained,  nonparametric regression under spatial dependence, specifically dependence due to \emph{spatial confounding} \citep{paciorek2010importance,hodges2010adding,zigler2021spatial,reich2021review}. Spatial confounding is the presence of spatially correlated unmeasured confounders and differs from ``traditional'' unmeasured confounders in independent and identically distributed (i.i.d.) settings where the unmeasured confounders are independent across study units. Because of the dependence of the unmeasured confounders, the outcomes or the interventions between study units exhibit dependence. Consequently, different assumptions are necessary to  identify and estimate intervention effects under spatial confounding (e.g., \citet{thaden2018structural,papadogeorgou2019adjusting,khan2022restricted,gilbert2021causal,dupont2022spatial+,wiecha2024two,gilbert2024consistency,datta2025consistent,burman2025robust}). To the best of our knowledge, existing works on spatial confounding focus on identification and estimation of \emph{low-dimensional parameters} (e.g., average treatment effects \citet{gilbert2024consistency}). In contrast, our work focuses on identification and estimation of \emph{nonparametric functions} (e.g., optimal policies) under spatial confounding, especially if they are under some constraints imposed by the policymaker. %, which are essentially nonparametric functions with certain shape constraints.
 
 We briefly remark that there is growing work on geospatial machine learning  
 \citep{sigrist2022gaussian,saha2023random,zhan2024neural} where the goal is to estimate nonparametric prediction models that account for spatial dependence. While our work focuses on measuring causal effects of interventions rather than generating predictions, we borrow some techniques from these works to flexibly estimate nuisance parameters in the optimal policy function (see Section \ref{sec:nuisance}). %and (b) characterize the rates of convergence of under spatial dependence.
@@ -183,7 +190,7 @@ We briefly remark that there is growing work on geospatial machine learning
 
 Our work differs from an important line of work on \emph{spatial interference}, where the counterfactual outcomes of study units are affected by the interventions of their spatial neighbors \citep{verbitsky2012causal,papadogeorgou2019causal,papadogeorgou2023spatial,interfereluo2024policy,zigler2021bipartite, giffin2023generalized}. 
  %or more generally a large volume of works on interference.
- %(e.g., \citet{halloran1991study,sobel2006what, hudgens2008toward, Rosenbaum2007,tchetgen2012causal,liu2014large,aronow2017estimating, Savje2017,forastiere2021identification,li2022random,zhang2023individualized,ogburn2024causal,kandiros2024conflict, %halloran2025designs,hettinger2025doubly,lee2025efficient}) \textcolor{red}{to xindi and chan: should we add more ref here on interference to get better referee feedback? Or should we trim this list?}. 
+ %(e.g., \citet{halloran1991study,sobel2006what, hudgens2008toward, Rosenbaum2007,tchetgen2012causal,liu2020large,aronow2017estimating, Savje2017,forastiere2021identification,li2022random,zhang2023individualized,ogburn2024causal,kandiros2024conflict, %halloran2025designs,hettinger2025doubly,lee2025efficient}) \textcolor{red}{to xindi and chan: should we add more ref here on interference to get better referee feedback? Or should we trim this list?}. 
 % \CP{I think these references are overly extensive. In fact, our current setting corresponds to a special case of covariate interference (i.e. neighboring spatial structure may be associated with others' (A,Y)), but there is no treatment interference (i.e. A do not affect others’ Y). so I suggest removing the treatment interference literature; if we were to include additional references, then we may cite work on covariate interference and try to find connections, for example: \url{https://pubmed.ncbi.nlm.nih.gov/29921160/} and \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC5055852/}
 % } \XL{These two references are added. I also think the references of interference are extensive. I guess maybe we could trim the list shorter.}
 While there are interventions  that can exhibit spatial interference, this paper's focus is on identifying and estimating policies under spatial dependence due to spatial confounding. 
@@ -227,7 +234,7 @@ Also, in our leading example on  nitrate mitigation in groundwater wells, spatia
 % 2. the second and third contributions (ERM under dependence and the corresponding theoretical results) be emphasized more strongly. For example, we can state that to the best of our knowledge, excess risk bounds under (spatial) dependence are largely unavailable (even beyond OTR), whereas our results explicitly decompose the error into components attributable to spatial dependence and to the smoothness of $\theta$.
 % } \XL{Have been tried in the following paragraph}
 
-\CP{For generality, safe/cost-effective $\rightarrow$ constraint?}
+\CP{For generality, safe/cost-effective $\rightarrow$ constraint?}\XL{Yes. An example of constraint.}
 This paper presents identification and estimation of a safe and cost-effective policy function $\theta^*$ in the presence of spatial dependence due to spatial confounding. 
 % First, %in Section \ref{sec:} \textcolor{red}{fill} 
 % we propose a monotonicity assumption on top of the identification conditions under spatial confounding by \citet{gilbert2021causal}. The monotonicity assumption is inspired by \citet{pouget2019testing,aronow2021spillover,yuan2023two,park2024minimum}, who studied a version of the problem without spatial confounding and with binary treatment, and is plausible in our nitrate example. 
@@ -290,10 +297,11 @@ But, in the presence of spatial confounding where $U_i$ is unmeasured, we need m
 %Fortunately, when $U_i$ varies spatially with the observed location $S_i$, using $S_i$ as a proxy may mitigate the confounding issue, which is strategy taken by nearly all methods for spatial confounding in the literature, see \citet{gilbert2021causal,wiecha2024two, gilbert2024consistency}. To this end, 
 %Formally, we assume two additional assumption under which we can replace $U_i$ in the right-hand side of \eqref{eq:identification_1} by $S_i$, 
   \begin{enumerate}[label=(A\arabic*), start=4]
-\item \emph{Spatially smooth confounding}: $U_i = g(S_i)$ for an unknown, non-random function $g$ that is almost surely continuous. \label{condition:smooth_spatial_confounder} 
+\item \emph{Spatially smooth confounding}: $U_i = g(X_i,S_i)$ for an unknown, non-random function $g$ that is almost surely continuous. \label{condition:smooth_spatial_confounder} 
 \item \emph{Spatial ignorability}: $Y_i(a)\perp A_i\mid X_i, U_i,S_i$.\label{condition:no_confouning_spatial_confounder_weak}
+\item \XL{\emph{Spatial sufficiency}: $A_i\perp S_i\mid X_i,U_i$.} \label{condition:spatial_sufficiency}
  \end{enumerate}
-Assumption \ref{condition:smooth_spatial_confounder} requires that the unmeasured confounders are functions of the spatial location, and is almost surely continuous. We remark that existing geospatial machine learning prediction models implicitly or explicitly make this assumption, especially when these prediction models are based on nonparametric mixed effect models. Assumption \ref{condition:no_confouning_spatial_confounder_weak} builds upon Assumption \ref{condition:ignorability}. It implies that, once we have conditioned on the latent factors $U_i$, the spatial location $S_i$ does not introduce further confounding; see Figure \ref{fig:causal_DAG} for a visual illustration. 
+Assumption \ref{condition:smooth_spatial_confounder} requires that the unmeasured confounders are functions of the spatial location, and is almost surely continuous. We remark that existing geospatial machine learning prediction models implicitly or explicitly make this assumption, especially when these prediction models are based on nonparametric mixed effect models \citep{sigrist2022gaussian,saha2023random,zhan2024neural}. Assumption \ref{condition:no_confouning_spatial_confounder_weak} builds upon Assumption \ref{condition:ignorability}. It implies that, once we have conditioned on the latent factors $U_i$, the spatial location $S_i$ does not introduce further confounding. \XL{Assumption \ref{condition:spatial_sufficiency} means $S_i$ is only associated with $A_i$ through $X_i,U_i$}; see Figure \ref{fig:causal_DAG} for a visual illustration. 
 
 
  % Assumption \ref{condition:no_confouning_spatial_confounder_weak} requires that the intervention is no longer confounded after conditioning on location $S_i$, unmeasured confounders $U_i$, and measured confounders $X_i$. ; see Figure \ref{fig:causal_DAG} for a visual illustration.
@@ -302,20 +310,18 @@ Assumption \ref{condition:smooth_spatial_confounder} requires that the unmeasure
 
  \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{causal_DAG.png}
+    \includegraphics[width=0.9\linewidth]{Causal_DAG_updated.png}
     \caption{
     % \CP{Graphs; (d) and (f) are cyclic}
-    Causal directed acyclic graphs illustrating different types of spatial confounding. The measured confounder $X$ is omitted for clarity. Panels (a)–(c) show scenarios where Assumption \ref{condition:no_confouning_spatial_confounder_weak} is satisfied. Panels (d) and (f) show scenarios  where Assumption \ref{condition:no_confouning_spatial_confounder_weak} is violated. Panel (e) is compatible with Assumption \ref{condition:no_confouning_spatial_confounder_weak} but violates Assumption \ref{condition:ignorability}. \XL{remove (d) and (f) because it is not plausible, both graphically and violating acyclicity}
-    \CP{After our discussions during the meeting: (i) remove (d),(f); (ii) arrow $S \rightarrow U$ should be made thicker; (iii) I think using DAGs seem OK, i.e. SWIGs may not be (strictly) necessary?}
-    }
+    Causal directed acyclic graphs illustrating different types of spatial confounding. The measured confounder $X$ is omitted for clarity. Panels (a)–(c) show scenarios where Assumption \ref{condition:no_confouning_spatial_confounder_weak} is satisfied \XL{while Assumption \ref{condition:spatial_sufficiency} is violated in (b) and (c)}. Panel (d) is compatible with Assumption \ref{condition:no_confouning_spatial_confounder_weak} but violates Assumption \ref{condition:ignorability}.}
     % while panels (d)–(f) show scenarios where the assumptions are violated. 
     % \CP{(e) is compatible with (A5) but violates (A2), so the description is misleading}
     \label{fig:causal_DAG}
 \end{figure}
 
-In the nitrate example, Assumption \ref{condition:smooth_spatial_confounder} is plausible if the unmeasured confounders $U$ are (latent) variables related to subsurface hydrogeological characteristics, such as static water level and depth of water table. These characteristics can often be smoothly approximated by well-established models for subsurface hydrological transport based on spatially smooth partial differential equations. But, Assumption \ref{condition:smooth_spatial_confounder} may be implausible if $U$ are variables that are not determined only by spatial locations. For example, intensity of agricultural activity may depend on both spatial location $S$ and hidden factors related to economic conditions and infrastructure. 
-\CP{This discussion raises the question of whether we could allow $U = g(S,X)$. If so, we can argue that when $X$ contains rich information beyond spatial location, Assumption 4 may be more plausible. If this relaxation is not easy, we can stick to the current setup and discussion.}
-Overall, we believe that the most plausible $U$ in our dataset is unmeasured, subsurface hydrogeological characteristics due to the physical processes governing nitrate transport, which influences $Y$, and water levels, which influences $A$. But, our belief is based on discussions with subject-matter experts in hydrogeology and for other datasets, we urge careful discussion of this assumption with domain experts. Finally, even if Assumption \ref{condition:smooth_spatial_confounder} fails to hold, the estimated policy function may still be useful;  see discussion following Proposition \ref{prop:identification}.
+In the nitrate example, Assumption \ref{condition:smooth_spatial_confounder} is plausible if the unmeasured confounders $U$ are (latent) variables related to subsurface hydrogeological characteristics, such as groundwater recharge and depth of water table. These characteristics can often be smoothly approximated by well-established models for subsurface hydrological transport based on spatially smooth partial differential equations. But, Assumption \ref{condition:smooth_spatial_confounder} may be implausible if $U$ are variables that are not determined only by spatial locations. For example, intensity of agricultural activity may depend on both spatial location $S$ and hidden factors related to economic conditions and infrastructure. 
+\CP{This discussion raises the question of whether we could allow $U = g(S,X)$. If so, we can argue that when $X$ contains rich information beyond spatial location, Assumption 4 may be more plausible. If this relaxation is not easy, we can stick to the current setup and discussion.} \XL{Revised. It can be relaxed. But it turned out that Assumption \ref{condition:spatial_sufficiency} would be required for positivity conditioning on $S_i$.}
+Overall, we believe that the most plausible $U$ in our dataset is unmeasured, subsurface hydrogeological characteristics due to the physical processes governing nitrate transport, which influences $Y$, and water levels, which influences $A$. But, our belief is based on discussions with subject-matter experts in hydrogeology and for other datasets, we urge careful discussion of this assumption with domain experts. Finally, even if Assumption \ref{condition:smooth_spatial_confounder} fails to hold, the estimated policy function may still be useful;  see discussion following Proposition \ref{thm:identification}.
 
 For Assumption \ref{condition:no_confouning_spatial_confounder_weak}, we believe it is likely satisfied in the nitrate example by a hydrogeological mechanism described in Figure \ref{fig:causal_DAG}(a). That is, after conditioning on all unmeasured confounders (e.g., hydrogeological features, agricultural activity), location is unlikely to have a direct effect on well depth or nitrate concentrations. We remark that  Figure \ref{fig:causal_DAG}(a) is drawn to  illustrate the assumption $(Y_i(a), A_i) \perp S_i\mid X_i, U_i$, which implies Assumption \ref{condition:no_confouning_spatial_confounder_weak}. 
 
@@ -332,17 +338,23 @@ The following proposition shows that under Assumptions \ref{condition:consistenc
 % On the other hand, Assumption \ref{condition:smooth_spatial_confounder} can fail to satisfied in two ways. First, $U$ may not be function of space alone. For example, considering well usage as a potential confounder. Wells  at the same location might have different well usage (e.g., private potable wells versus public municipal wells), meaning $U$ is not determined solely by its spatial coordinates. Second, even if $U$ is a function of $S$, it is not necessarily a continuous function of $S$. For example considering land use as a potential unmeasured confounders. While land use is uniquely determined by the spatial coordinates, it is a categorical variable and inherently discontinuous. 
 % Therefore, to identify the causal effect of well depth, we must observe all confounders that are either not solely a function of space or are spatially discontinuous.
 %Assumption \ref{condition:no_confouning_spatial_confounder_weak} generally holds when the spatial location $S$ is a parent of the nitrate level $Y$ and well depth $A$ (as illustrated in cases (a), (b), (c), and (e) of Figure \ref{fig:causal_DAG}). Conversely, this assumption is violated if $S$ acts as a collider or a descendant of a collider (cases (d) and (f) in Figure \ref{fig:causal_DAG}). Additionally, while case (e) in Figure \ref{fig:causal_DAG} satisfies Assumption \ref{condition:no_confouning_spatial_confounder_weak}, it violates Assumption \ref{condition:ignorability}.
-\begin{proposition}[Identification of $\theta^*$]\label{prop:identification}
+\begin{theorem}[Identification of $\theta^*$]\label{thm:identification}
     % \textcolor{red}{to xindi: (a) if we plan to use $^*$ notation for true value, we should use it consistently (e.g., propensity score) (b) should we use the subscript $E[Y_i \mid A_i,...]$ to be consistent with above?} 
-    Let $\mu^*(a,x,s):=E[Y_i|A_i=a, X_i = x, S_i = s]$. Given $\mathcal{T}, x_{i}, s_{i}$ and Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak}, $\theta^*$ can be identified by
+    % Let $\mu^*(a,x,s):=E[Y_i|A_i=a, X_i = x, S_i = s]$. 
+    Given $\mathcal{T}, x_{i}, s_{i}$ and Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak}, $\theta^*$ can be identified by
         \begin{equation}\label{eq:identification}
-            \theta^*(x_i,s_i) = \arg\min_{a\in\mathcal{A}} \ a, \ \text{such that } \mu^*(a,x_i,s_i)\leq \mathcal{T}.
+            \theta^*(x_i,s_i) = \arg\min_{a\in\mathcal{A}} \ a, \ \text{such that } E[Y_i|A_i=a, X_i = x_i, S_i = s_i]\leq \mathcal{T}.
         \end{equation}
-         \CP{I think this should be moved closer to eq \eqref{eq:def_estimand}, since the discussion in Proposition 1 focuses solely on identification.}
+         % \CP{I think this should be moved closer to eq \eqref{eq:def_estimand}, since the discussion in Proposition 1 focuses solely on identification.}
 If the set in \eqref{eq:identification} is empty, we let $\theta^*(x_i,s_i)=a_L$. %to minimize the expected average outcome. 
-\end{proposition}
-\noindent If the assumptions in Proposition \ref{prop:identification} are not plausible, the optimization problem in \eqref{eq:identification} may still be useful in practice. Specifically, without Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak},  $\theta^*$ at location $S_0$ is the smallest level of intervention that is \emph{associated} to have an outcome below $\mathcal{T}$, on average. With Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak}, $\theta^*$ is the smallest level of intervention that \emph{causes} the counterfactual outcome to be below $\mathcal{T}$, on average; in other words,  \eqref{eq:identification} identifies the 
-counterfactual policy originally defined in equation \eqref{eq:def_estimand}.  We remark that the estimator of $\theta^*$ discussed below does not rely on the assumptions in Proposition \ref{prop:identification} except that $\mu^*$ is well-defined in the sense that the conditional expectation exists. 
+\end{theorem}
+
+\XL{
+\begin{proof}
+It is sufficient to prove the unconfoundedness Assumption $Y_i(a) \perp A_i \mid (X_i, S_i)$ and the overlap Assumption $p(A_i=a|X_i=x,S_i=s_i)>0$. First, we prove the unconfoundedness. Since $U_i = g(X_i, S_i)$ is a measurable function of $(X_i, S_i)$, the triplet $(X_i, S_i, U_i)$ is a measurable function of $(X_i, S_i)$ as well. Since $(X_i, S_i)$ is trivially a function of $(X_i, S_i, U_i)$, there exists a measurable one-to-one mapping between $(X_i, S_i)$ and $(X_i, S_i, U_i)$; therefore, $(X_i, S_i)$ and $(X_i, S_i, U_i)$ give rise to the same conditional distributions (formally, they generate the same $\sigma$-algebra). Consequently, if $Y_i(a) \perp A_i \mid (X_i, S_i, U_i)$, it also holds that $Y_i(a) \perp A_i \mid (X_i, S_i)$. Then, we prove the positivity. By Assumption \ref{condition:overlap} and \ref{condition:spatial_sufficiency}, $p(A_i=a|X_i=x,U_i=u,S_i=s_i)>0$. Since $(X_i, S_i)$ and $(X_i, S_i, U_i)$ is a one-to-one function of $S_i,X_i$, conditioning on $U_i,X_i,S_i$ is equivalent to conditioning on $(X_i, S_i)$. Therefore, $p(A_i=a|X_i=x,S_i=s_i)>0$. 
+\end{proof}}
+\noindent If the assumptions in Proposition \ref{thm:identification} are not plausible, the optimization problem in \eqref{eq:identification} may still be useful in practice. Specifically, without Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak},  $\theta^*$ at location $S_0$ is the smallest level of intervention that is \emph{associated} to have an outcome below $\mathcal{T}$, on average. With Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak}, $\theta^*$ is the smallest level of intervention that \emph{causes} the counterfactual outcome to be below $\mathcal{T}$, on average; in other words,  \eqref{eq:identification} identifies the 
+counterfactual policy originally defined in equation \eqref{eq:def_estimand}.  We remark that the estimator of $\theta^*$ discussed below does not rely on the assumptions in Proposition \ref{thm:identification} except that $\mu^*$ is well-defined in the sense that the conditional expectation exists. 
 
 %\textcolor{red}{to chan: check this sentence. Is it too ``controversial'' to say? $\Rightarrow$} In particular, we only need the conditional expectation $\mu^*$ to be well-defined, which does not strictly need the overlap Assumption \ref{condition:overlap} with respect to the unmeasured confounder $U$. 
 % \textcolor{blue}{In the next section, we discuss the estimation of $\theta^*$ in the optimization problem \eqref{eq:identification}}.  
@@ -374,7 +386,7 @@ counterfactual policy originally defined in equation \eqref{eq:def_estimand}.  W
 \subsection{Kernelized Doubly Robust Loss Function} 
 \label{sec:direct_method}
 
-%\textcolor{red}{to xindi and chan: current paragraph (similar to MRTP paper) $\Rightarrow$} We first present a naive estimator of $\theta^*$ based on indirectly using a geospatial machine learning model. % for the spatial outcome. Formally, let $\widehat\mu$ be an estimator of $\mu^*$ in Proposition \ref{prop:identification}, for instance from a spatial random forest estimator \citep{saha2023random} in geospatial machine learning. Then, under Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak}, an estimator of $\theta^*(S_0)$ is obtained by replacing $\mu^*$ with $\widehat\mu$ in \eqref{eq:identification} and doing a grid search over the range of the treatment:
+%\textcolor{red}{to xindi and chan: current paragraph (similar to MRTP paper) $\Rightarrow$} We first present a naive estimator of $\theta^*$ based on indirectly using a geospatial machine learning model. % for the spatial outcome. Formally, let $\widehat\mu$ be an estimator of $\mu^*$ in Proposition \ref{thm:identification}, for instance from a spatial random forest estimator \citep{saha2023random} in geospatial machine learning. Then, under Assumptions \ref{condition:consistency} - \ref{condition:no_confouning_spatial_confounder_weak}, an estimator of $\theta^*(S_0)$ is obtained by replacing $\mu^*$ with $\widehat\mu$ in \eqref{eq:identification} and doing a grid search over the range of the treatment:
 % \begin{equation} \label{eq:indirect_method}
 % \widehat{\theta}(S_0)=\inf_{a\in\mathcal{A}}\left\{a \mid \widehat\mu(a,X_{0},S_0)\leq \mathcal{T}\right\}.
 % \end{equation}
@@ -384,13 +396,14 @@ counterfactual policy originally defined in equation \eqref{eq:def_estimand}.  W
 % Similar to works from this literature, a major limitation of this indirect approach in \eqref{eq:indirect_method} is its reliance on a correctly specified and well-estimated outcome regression model. In particular, unlike the standard i.i.d. settings, it is substantially more challenging to obtain a consistent nonparametric estimator for $\mu^*$ under spatial confounding; see Section \ref{section:outcome_regression}. %Also, similar to \citet{Zhao2012} observation about the indirect approach under non-spatial i.i.d. setting, our indirect approach may have poor finite-sample properties compared to an approach that directly estimates $\theta^*$. 
 % In our simulation study in Section \textcolor{red}{xxx}, we reconfirm this observation under spatial confounding setting and, consequently, we recommend the direct approach for estimating $\theta^*$.
 
-Given the identification result in Proposition  \ref{prop:identification}, a tempting approach to estimate $\theta^*$ is a ``plug-in'' approach (also referred to as an indirect approach) where for a given location $S_0$, we would
+Let $\mu^*(a,x,s):=E[Y_i|A_i=a, X_i = x, S_i = s]$ denote the conditional mean outcome. Given the identification result in Proposition  \ref{thm:identification}, a tempting approach to estimate $\theta^*$ is a ``plug-in'' approach (also referred to as an indirect approach) where for a given location $S_0$, we would
 \begin{enumerate}
 \item[(i)] obtain predictions from $\widehat{\mu}(a,X_0, S_0)$, which denotes an estimate of $\mu^*$, for different intervention levels, and
 \item[(ii)] pick the smallest intervention level $a$ such that the constraint $\widehat{\mu}(a,X_0, S_0) \leq \mathcal{T}$ is satisfied.
 \end{enumerate}
 But, this approach requires a correct specification of the model $\mu^*$. Also, even if $\mu^*$ is correctly specified and can be consistently estimated, say by using flexible geospatial machine learning models (e.g.,  \citet{nandy2017additive,sigrist2022gaussian,saha2023random,zhan2024neural}),
-the convergence rate of the estimator $\widehat{\mu}$ to the true model $\mu^*$ is often very slow due to spatial dependence. For example, the mean squared error of spline-based estimators in nonparametric additive model converges at a rate of $O_p\left\{m_n\log(pm_n)\right\}$ in i.i.d. settings, whereas it converges at a slower rate of $O_p\left\{\sigma_nm_n^2\log(pm_n)\right\}$ under spatial dependence. Here, $p$ is the dimension of the covariates, $m_n$ is the number of spline basis, and $\sigma_n$ is the condition number of the working covariance matrix of the spatially dependent errors \citep{nandy2017additive}. \CP{I think it would we useful to mention $\sigma_n$ can grow wrt $n$ under spatial error?}
+the convergence rate of the estimator $\widehat{\mu}$ to the true model $\mu^*$ is often very slow due to spatial dependence. For example, the mean squared error of spline-based estimators in nonparametric additive model converges at a rate of $O_p\left\{m_n\log(pm_n)\right\}$ in i.i.d. settings, whereas it converges at a slower rate of $O_p\left\{\sigma_nm_n^2\log(pm_n)\right\}$ under spatial dependence. Here, $p$ is the dimension of the covariates, $m_n$ is the number of spline basis, and $\sigma_n$ is the condition number of the working covariance matrix of the spatially dependent errors \citep{nandy2017additive}. \XL{Under the infill asymptotics such that distance between neighboring observations approaches zero, $\sigma_n$ grow as function fo the sample size $n$ and can significantly influence the convergence properties of the estimator.} 
+% \CP{I think it would we useful to mention $\sigma_n$ can grow wrt $n$ under spatial error?}
 % \textcolor{blue}{Response from Xindi: the rate would be multiplied by the covariance matrix when common nonparametric method is applied to geo-referenced data.} \textcolor{red}{to xindi: write out this in a few sentences below or simply summarize rate of convergence using some version of the following sentence: ``Roughly speaking, if $\widehat{\mu} - \mu^* = r_n$ for some sequence of random variables $r_n$ in i.i.d. settings and $\widehat{\mu}$ is a parametric estimator, this same estimator will have a convergence rate of 
 % $\widehat{\mu} - \mu^* = r_n \sigma_n$(?) under spatial dependence''}
 
@@ -400,11 +413,11 @@ the convergence rate of the estimator $\widehat{\mu}$ to the true model $\mu^*$ 
 To reduce the above concern about model mis-specification and slow rates of convergence under spatial dependence, our proposed estimator directly estimates $\theta^*$ by recasting it as a solution to a risk minimization problem with a novel, spatially smooth doubly robust loss function. %By reframing the original optimizaiton problem as a risk minimization problem, we can leverage a wealth of methods in ERM to estimate $\theta^*$ under a wide variety of policy classes $\Theta$.
 Formally, %for $a\in[a_L,a_U]$, 
 let $p^*(a|X_i,S_i)$ be the generalized propensity score, i.e., the conditional density of observed treatment level $A_i$ given the measured confounders $X_i$ and spatial coordinates $S_i$. 
-Let $K_{\delta_n}(A_i-a):={\delta_n}^{-1}K((A_i-a)/{\delta_n})$ be the scaled-kernel function, where ${\delta_n}>0$ is the bandwidth and $K(\cdot)$ is a bounded differentiable kernel function satisfying $\int_\R K(a)\mathrm{d}a = 1$ and $\int_\R a K(a)\mathrm{d}a = 0$. Common choices of $K(\cdot)$ include the Epanechnikov and Gaussian kernels; in this paper, we adopt the Gaussian kernel.
-% \textcolor{red}{to xindi: (a) what is a scaled-kernel function? I would be specific about the conditions for the kernel function (it doesn't have to be Gaussian) (b) we should be consistent with subscript of ${\delta_n}$ (or super-script for loss function $L^{\delta_n}$?} \XL{Done}. 
+Let $K_{\delta_n}(A_i-a):={\delta_n}^{-1}K((A_i-a)/{\delta_n})$ be the scaled-kernel function, where ${\delta_n}>0$ is the bandwidth and $K(\cdot)$ is a bounded differentiable kernel function satisfying $\int_\R K(a)\mathrm{d}a = 1$ and $\int_\R a K(a)\mathrm{d}a = 0$. Common choices of $K(\cdot)$ include the Epanechnikov and Gaussian kernels; in this paper, we adopt the Gaussian kernel. 
+% \textcolor{red}{to xindi: (a) what is a scaled-kernel function? I would be specific about the conditions for the kernel function (it doesn't have to be Gaussian) (b) we should be consistent with subscript of ${\delta_n}$ (or super-script for loss function $L^{(\delta_n)}$?} \XL{Done}. 
 For a given observation $O_i = (Y_i, A_i, X_i, S_i)$ and intervention level $a$, we define the loss function $L^{({\delta_n})}(a,O_i)$ for the risk minimization problem as follows: 
 % \textcolor{red}{to xindi: did we define $\epsilon$ or $C_0$?} \XL{Done}
-\CP{Maybe it would be better to standardize the notation for $\delta_n$. We currently use $L^{\delta_n}$ in Section 1, $L^{(\delta_n)}$ here, and $K_{\delta_n}$ for the kernel.}
+\CP{Maybe it would be better to standardize the notation for $\delta_n$. We currently use $L^{\delta_n}$ in Section 1, $L^{(\delta_n)}$ here, and $K_{\delta_n}$ for the kernel.} \XL{Now we use $L^{(\delta_n)}$ and $K_{\delta_n}$}
 \begin{subequations}\label{eq:loss_function_complete}
     \begin{equation}
         L^{({\delta_n})}(a,O_i) = \begin{cases}\label{eq:loss_function_real_line}
@@ -448,8 +461,8 @@ We now make this robustness property precise as follows. Suppose the following a
 \end{enumerate}
 Assumption \ref{condition:monotonicity} is based on both theoretical and practical considerations. Theoretically, the monotonicity assumption leads to a unique minimum in the ERM. Without this assumption or similar assumptions (see \citet{ pouget2019testing,aronow2021spillover,yuan2023two,park2024minimum} for examples in policy learning under dependence), the optimal intervention level and the corresponding optimal policy $\theta^*$ may not be unique.  %We also remark that similar monotonicity assumptions are imposed in causal inference in dependence settings \citep{pouget2019testing,aronow2021spillover,yuan2023two,park2024minimum}. 
 %\citet{park2024minimum} make the same assumption when studying a version of the problem without spatial confounding and with binary treatment. Similar monotonicity assumption is commonly imposed in causal inference in dependence settings \citep{pouget2019testing,aronow2021spillover,yuan2023two}.
-Practically, many interventions for contaminant mitigation including our nitrate example satisfy Assumption \ref{condition:monotonicity} in that the intervention to mitigate the contaminant usually has a monotonic relationship with the level of the contaminant (i.e., the outcome). In Section \ref{sec:other_application} of the supplementary materials, we provide a detailed list of examples where the assumption is plausible. 
-\CP{It is important to note that this assumption is testable using the observed data. As a result, it does not need to be justified solely on the basis of subject-matter knowledge; instead, it can be evaluated using the estimated outcome regression. Thus, it would also be helpful to include a diagnostic, similar to the one presented on page 45 of my MRTP paper: \url{https://arxiv.org/pdf/2111.09932}}
+Practically, many interventions for contaminant mitigation including our nitrate example satisfy Assumption \ref{condition:monotonicity} in that the intervention to mitigate the contaminant usually has a monotonic relationship with the level of the contaminant (i.e., the outcome). In Section \ref{sec:other_application} of the supplementary materials, we provide a detailed list of examples where the assumption is plausible. \XL{Also, Assumption \ref{condition:monotonicity} can be assessed by computing the empirical derivative of the estimated nonparametric regression model for $\mu^*$ with respect to $a$. See Section \ref{sec:monotonic_assessment} for details and the empirical assessment of Assumption \ref{condition:monotonicity} in the nitrate dataset/}
+\CP{It is important to note that this assumption is testable using the observed data. As a result, it does not need to be justified solely on the basis of subject-matter knowledge; instead, it can be evaluated using the estimated outcome regression. Thus, it would also be helpful to include a diagnostic, similar to the one presented on page 45 of my MRTP paper: \url{https://arxiv.org/pdf/2111.09932}} \XL{Done. See Section \ref{sec:monotonic_assessment}}
 % \CP{We may also consider citing \url{https://academic.oup.com/biomet/article/106/4/929/5578431} , \url{https://arxiv.org/abs/2001.05444} , and \url{https://arxiv.org/abs/2308.09790} to note that monotonicity is a commonly imposed assumption in dependence settings}% The monotonicity assumption is inspired by \citet{pouget2019testing,aronow2021spillover,yuan2023two,park2024minimum}, who studied a version of the problem without spatial confounding and with binary treatment. It is also commonly imposed assumption in general dependence settings
 %Also, for many interventions for contaminant mitigation including our nitrate example, the monotonicity between the intervention of interest and the level of the contaminant (i.e., the outcome) is plausible; see Section \ref{sec:other_application} of the supplementary materials for details. 
 The following lemma shows that under Assumption \ref{condition:monotonicity}, the limiting risk achieves its minimum when $a$ equals $\theta^*$ in \eqref{eq:identification} if either $\mu^*$ or $p^*$ is correctly specified. 
@@ -470,12 +483,12 @@ The following lemma shows that under Assumption \ref{condition:monotonicity}, th
 \noindent 
 % \CP{We need to spell out this assumption formally somewhere} 
 
-\CP{If space is limited, we can remove this remark}
-\begin{remark}[Why Squared Error Loss is a Bad Idea]
- One common loss for continuous decision rules is the squared error loss, for instance $L^{(\delta_n)}(a,O_i) = \left\{\mathcal{T} - \psi^{({\delta_n})}(a,O_i)\right\}^2$. But, the squared error loss does not enjoy the double robustness property described in Lemma \ref{lemma:risk_db}. Heuristically, this can be seen by a simple decomposition of the risk under squared error loss:
- $$\lim_{{\delta_n}\rightarrow 0}\E\left[\{ \mathcal{T} - \psi^{({\delta_n})}(a,O_i)\}^2\right] = \E\left[\{\mathcal{T} - \mu(a,X_i,S_i)\}^2\right] + \lim_{{\delta_n}\rightarrow 0 }\E\left[\{\mu(a,X_i,S_i)-\psi^{({\delta_n})}(a,O_i)\}^2\right].$$
-The second term in the right-hand-side above does not converge to zero. We remark that a similar rationale against squared error loss under a non-spatial setting is shown in \citet{chen2016personalized}. \CP{Not sure whether this was claimed.}
-\end{remark}
+% \CP{If space is limited, we can remove this remark}
+% \begin{remark}[Why Squared Error Loss is a Bad Idea]
+%  One common loss for continuous decision rules is the squared error loss, for instance $L^{(\delta_n)}(a,O_i) = \left\{\mathcal{T} - \psi^{({\delta_n})}(a,O_i)\right\}^2$. But, the squared error loss does not enjoy the double robustness property described in Lemma \ref{lemma:risk_db}. Heuristically, this can be seen by a simple decomposition of the risk under squared error loss:
+%  $$\lim_{{\delta_n}\rightarrow 0}\E\left[\{ \mathcal{T} - \psi^{({\delta_n})}(a,O_i)\}^2\right] = \E\left[\{\mathcal{T} - \mu(a,X_i,S_i)\}^2\right] + \lim_{{\delta_n}\rightarrow 0 }\E\left[\{\mu(a,X_i,S_i)-\psi^{({\delta_n})}(a,O_i)\}^2\right].$$
+% The second term in the right-hand-side above does not converge to zero. We remark that a similar rationale against squared error loss under a non-spatial setting is shown in \citet{chen2016personalized}. \CP{Not sure whether this was claimed.}
+% \end{remark}
 
 % \CP{I think we can choose ${\delta_n}$ solely based on Theorem \ref{thm:excess_risk}. The reason is that the DR property cannot hold in an ``approximate'' sense---there is no meaningful or granular way to quantify the degree of DR-ness. Moreover, Theorem \ref{thm:excess_risk} explicitly proposes an optimal choice of ${\delta_n}$ that minimizes the excess risk bound, which accounts for the bias induced by ${\delta_n}$, the approximation bias, and the estimation error. Therefore, this choice of ${\delta_n}$ does not directly rely on the result of Lemma \ref{lemma:risk_db}, which only states that the loss function is a valid one for characterizing $\theta^*$.} \XL{I will move the discussion about bandwidth after SVM estimator and  Theorem \ref{thm:excess_risk}}.
 
@@ -484,7 +497,7 @@ The second term in the right-hand-side above does not converge to zero. We remar
 \subsection{Estimating Nuisance Functions Under Spatial Dependence} \label{sec:nuisance}
 \subsubsection{Spatial Mixed Effect Model for Conditional Mean of Outcome $\mu^*$}
 
-The loss function $L^{({\delta_n})}(a, O_i)$ depends on two unknown nuisance functions: the outcome regression model $\mu^*(a,X_i,S_i)$ and the generalized propensity score $p^*(A_i|X_i,S_i)$. In practice, we need to replace them by their estimates. In i.i.d. settings, these nuisance functions can be nonparametrically estimated using a wide variety of statistical or machine learning methods and for classical nonparametric methods (e.g., kernel regression of \citet{Nadaraya1964} and \citet{Watson1964}), their rates of convergence are well-established. However, under spatial dependence, there are far fewer methods on nonparametric estimation of these nuisance functions and even fewer works on characterizing their rates of convergence. Our paper addresses both of these issues on nuisance function estimation where this section discusses the methodological aspect of these issues and Section \ref{sec:theory} discusses the theoretical aspect. \CP{This seems fine, though Xindi’s input may be needed for a final judgment}
+The loss function $L^{({\delta_n})}(a, O_i)$ depends on two unknown nuisance functions: the outcome regression model $\mu^*(a,X_i,S_i)$ and the generalized propensity score $p^*(A_i|X_i,S_i)$. In practice, we need to replace them by their estimates. In i.i.d. settings, these nuisance functions can be nonparametrically estimated using a wide variety of statistical or machine learning methods and for classical nonparametric methods (e.g., kernel regression of \citet{Nadaraya1964} and \citet{Watson1964}), their rates of convergence are well-established. However, under spatial dependence, there are far fewer methods on nonparametric estimation of these nuisance functions and even fewer works on characterizing their rates of convergence. Our paper addresses both of these issues on nuisance function estimation where this section discusses the methodological aspect of these issues and Section \ref{sec:theory} discusses the theoretical aspect. \CP{This seems fine, though Xindi’s input may be needed for a final judgment} \XL{I think this looks OK to me.}
 
 
 %\XL{I suggest separating this subsection into two different sections. One section describes the use of}
@@ -492,7 +505,7 @@ The loss function $L^{({\delta_n})}(a, O_i)$ depends on two unknown nuisance fun
 %\textcolor{red}{to chan and xindi: I'm not sure how to integrate this section into paper? We can either (a) put this in auxiliary results (i.e., makes this section feel more novel/interesting for spatial settings) or (b) integrate it here like the MRTP paper (i.e., reads better for policy learning). It would be great if whatever organization we choose, the organization emphasizes the spatial aspect of the paper and separates itself from MRTP for review purposes.}
 %In general, nonparametric estimation of $\mu^*$ \textcolor{blue}{and $p^*$} under spatial dependence/\textcolor{blue}{confounding} must address an overfitting problem that does not exist under i.i.d. settings.
 
-We begin by first highlighting a flaw with a naive methodological solution. Suppose an investigator ignored spatial dependence and  used existing nonparametric methods designed for i.i.d. data, such as kernel regression or random forests \citep{breiman2001random} to estimate $\mu^*$. It is well-known that the estimator will overfit to the spatial coordinate $S_i$ and lead to poor out-of-sample performance in new locations. %; see \citet{park2024statistical} for one recent example to predict PFAS concentrations across the United States. 
+We begin by first highlighting a flaw with a naive methodological solution. Suppose an investigator ignored spatial dependence and  used existing nonparametric methods designed for i.i.d. data, such as kernel regression or random forests \citep{breiman2001random} to estimate $\mu^*$. It is well-known that the estimator will overfit to the spatial coordinate $S_i$ and lead to poor out-of-sample performance in new locations \citep{saha2023random,zhan2024neural}. \XL{No, they usually use basis function, previous paper states that that might suffer from curse of dimensionally and cannot account for the spatial dependence.} %; see \citet{park2024statistical} for one recent example to predict PFAS concentrations across the United States. 
 This problem persists even after applying a transformation on $S_i$ to discourage overfitting, such as transforming $S_i$ to be the distance to a universal, baseline location or representing $S_i$ as truncated radial basis functions \citep{hengl2018random,chen2020deepkriging,gray2022use}. Also, under spatial confounding, overfitting to $S_i$ may lead to a violation of Assumption \ref{condition:smooth_spatial_confounder} where the relationship between $U_i$ and $S_i$ is no longer continuous.
 
 
@@ -504,9 +517,9 @@ statistics \citep{sigrist2022gaussian,saha2023random, zhan2024neural}. Formally,
 \begin{equation}\label{eq:spatial_mixed_effect_model}
     Y_i = f^*(A_i,X_i) + U(S_i)+\epsilon_i, \qquad U(\cdot)\sim \mathrm{GP}(0,C(\cdot,\cdot|\psi^*)),\quad \epsilon_i\sim N(0,\sigma_\epsilon^{*2}).
 \end{equation}
+\XL{Yes, normality is required, it is like nugget effect in Gaussian process.}
 
-
-\CP{A potential quetion from reviewers: Can we reasonably describe our method as ``nonparametric,'' given that we employ a ``semiparametric'' model for $Y$? I wanted to check whether model (6) would typically be regarded as ``nonparametric'' within the spatial statistics community.}
+\CP{A potential quetion from reviewers: Can we reasonably describe our method as ``nonparametric,'' given that we employ a ``semiparametric'' model for $Y$? I wanted to check whether model (6) would typically be regarded as ``nonparametric'' within the spatial statistics community.} \XL{I think so. Because the fixed effect term $f^*$ is nonparametric. $U$ is a random effect. }
 
 % \marginpar{\tiny Chan: Reviewed up to this point, Apr 03, 9am}
 
@@ -590,13 +603,13 @@ that could balance the observed covariate $X_i$ and $\widehat U(S_i)$ obtained v
 % \end{remark}. 
 
 \begin{remark}[Sample Splitting Under Spatial Dependence and Donsker-Type Conditions]
-In i.i.d. settings, a common approach to integrate machine learning estimators of $\mu^*$ and $p^*$ is cross-fitting \citep{chernozhukov2018double}. This strategy uses sample splitting to estimate nuisance parameters and the target parameter. Some of the advantages of this strategy include bypassing the need for Donsker-type conditions on the nuisance functions and reducing overfitting bias. 
+In i.i.d. settings, a common approach to integrate machine learning estimators of $\mu^*$ and $p^*$ is cross-fitting \citep{chernozhukov2018double}. This strategy uses independent subsets to estimate nuisance parameters and the target parameter. Some of the advantages of this strategy include bypassing the need for Donsker-type conditions on the nuisance functions and reducing overfitting bias. 
 
 Unfortunately, in spatial settings, sample splitting is complicated by the inherent dependence between observations. In some settings where the observations are identically distributed and spatial dependence vanishes with distance, this problem
 can be addressed through neighbor-excluding cross-fitting, which utilizes subsets of the data that are sufficiently distant from each other to ensure near-independence \citep{gilbert2021causal, semenova2023inference}. In Section \ref{sec:cross-fitting}, we show how to adapt \citet{gilbert2021causal}'s version of sample splitting under spatial dependence to our setting.
 
 
-In our nitrate example, both the observed nitrate levels and the covariates exhibit spatial heterogeneity (see Figure \ref{fig:nitrate_visualization}) and we believe the assumptions in \citet{gilbert2021causal} or \citet{semenova2023inference} are likely violated. Consequently, our preference for the data analysis is to use nonparametric estimators that satisfy Donsker-type conditions, such as kernel SVM \citep{christmann2008support} or generalized additive models (GAMs) \citep{gam}, to estimate $f$ in Step \ref{step:regression}. Empirically, we observed that in the nitrate example, the root mean square error of the outcome regression \eqref{eq:or_estimation} with an estimate of $f$ from kernel SVM is comparable to that of a random forest. We hypothesize that the inclusion of $\widehat U(S_i)$ in \eqref{eq:or_estimation} effectively compensates for the lower flexibility of $\widehat f(A_i, X_i)$ based on SVM. 
+In our nitrate example, both the observed nitrate levels and the covariates \XL{violate the identical distribution assumption so neighborhood-excluding sample-splitting used in \citet{gilbert2021causal} fails to produce subsets with the same distribution} (see Figure \ref{fig:nitrate_visualization}). Consequently, our preference for the data analysis is to use nonparametric estimators that satisfy Donsker-type conditions, such as kernel SVM \citep{christmann2008support} or generalized additive models (GAMs) \citep{gam}, to estimate $f$ in Step \ref{step:regression}. Empirically, we observed that in the nitrate example, the root mean square error of the outcome regression \eqref{eq:or_estimation} with an estimate of $f$ from kernel SVM is comparable to that of a random forest. We hypothesize that the inclusion of $\widehat U(S_i)$ in \eqref{eq:or_estimation} effectively compensates for the lower flexibility of $\widehat f(A_i, X_i)$ based on SVM. 
 \end{remark}
 
 
@@ -610,10 +623,11 @@ In our nitrate example, both the observed nitrate levels and the covariates exhi
 
 \subsection{Support Vector Machines Under Spatial Dependence} \label{subsec:SVM}
 In this paper, we consider an SVM approach to solve for $\theta^*$, which was shown to be a solution to a risk minimization problem in Lemma \ref{lemma:risk_db}. Consider a Gaussian kernel  $\mathcal{K}[(x,u),(x^{'},u^{'})] = \exp\left\{(\|x-x^\prime\|_2^2 + \|u - u^\prime\|_2^2)/\gamma_n\right\}$ with bandwidth $\gamma_n$. Let $\mathcal{H}_\mathcal{K}$ denote the corresponding reproducing kernel Hilbert space (RKHS). The representer theorem \citep{KW1970,SHS2001} states that the estimated policy can be written as $\widetilde\theta(x,u) = \sum_{j=1}^n \widehat\eta_j\mathcal{K}[(x,u),(x_j,u_j)]+\widehat b$ where $\widehat\eta_j$ and $\widehat b$ are solutions to the following optimization problem:
-\begin{equation}\label{eq:objective function} 
-    \widetilde\theta = \arg\min_{\theta\in\mathcal{H}_\mathcal{K}}\left\{\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i)+\lambda_n\|\theta\|^2_{\mathcal{H}_\mathcal{K}}\right\} =\arg\min_{\eta,b}\left\{\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(k_i^\top\eta+b,O_i)+\frac{\lambda_n}{2}\eta^\top K\eta\right\}.
-\end{equation}
-Here, $\|\theta\|_{\mathcal{H}_\mathcal{K}}$ is a seminorm of $\theta$ in $\mathcal{H}_\mathcal{K}$, $\lambda_n$ is a regularization parameter, $\mathbf{\eta} = ( \eta_1,\ldots,\eta_n )^\top \in \R^{n}$, $k_i = \big[ \mathcal{K}\{(x_i,u_i),(x_1,u_1)\} , \ldots, \mathcal{K}\{(x_i,u_i),(x_n,u_n) \big]^\top \in \R^{n}$ for $i=1,\ldots,n$, and $K = \big[ k_1,\ldots,k_n \big] \in \R^{n \times n}$. An important distinction between existing works that use SVMs to estimate policy functions and our SVM in \eqref{eq:objective function} is that our SVM's predictor contains $\widehat U(S_i)$, which is obtained by residual kriging from \eqref{eq:kriging}. This effectively forces the predicting variable $(X_i,\widehat U(S_i))$ to be non-i.i.d., breaking the standard assumptions for SVM. In Section \ref{sec:theory}, we show how the dependence from $\widehat U(S_i)$ can affect the excess risk of the estimated policy, thereby providing a theoretical comparison between existing results on SVM and our result.
+\begin{align}
+    \widetilde\theta = & \arg\min_{\theta\in\mathcal{H}_\mathcal{K}}\left\{\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i)+\lambda_n\|\theta\|^2_{\mathcal{H}_\mathcal{K}}\right\} \nonumber\\
+    =& \arg\min_{\eta,b}\left\{\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(k_i^\top\eta+b,O_i)+\frac{\lambda_n}{2}\eta^\top K\eta\right\}. \label{eq:objective function} 
+\end{align}
+Here, $\|\theta\|_{\mathcal{H}_\mathcal{K}}$ is a seminorm of $\theta$ in $\mathcal{H}_\mathcal{K}$, $\lambda_n$ is a regularization parameter, $\mathbf{\eta} = ( \eta_1,\ldots,\eta_n )^\top \in \R^{n}$, $k_i = \big[ \mathcal{K}\{(x_i,u_i),(x_1,u_1)\} , \ldots, \mathcal{K}\{(x_i,u_i),(x_n,u_n) \big]^\top \in \R^{n}$ for $i=1,\ldots,n$, and $K = \big[ k_1,\ldots,k_n \big] \in \R^{n \times n}$. An important distinction between existing works that use SVMs to estimate policy functions \citep{chen2022policy,park2024minimum} and our SVM in \eqref{eq:objective function} is that our SVM's predictor contains $\widehat U(S_i)$, which is obtained by residual kriging from \eqref{eq:kriging}. This effectively forces the predicting variable $(X_i,\widehat U(S_i))$ to be non-i.i.d., breaking the standard assumptions for SVM \citep{christmann2008support}. In Section \ref{sec:theory}, we show how the dependence from $\widehat U(S_i)$ can affect the excess risk of the estimated policy, thereby providing a theoretical comparison between existing results on SVM and our result.
 
 
 The optimization problem in \eqref{eq:objective function} is nonconvex, but this particular nonconvex function can be efficiently solved; see Section \ref{sec:dc_algorithm} for details. Also, we winsorize the estimated policy $\widetilde{\theta}$ from \ref{eq:objective function} to satisfy support restriction $[a_L,a_U]$ of the policy, i.e.,
@@ -632,7 +646,7 @@ $\widehat{\theta}
  % \end{remark}
    
 \CP{Reviewed! All good}
- \begin{remark}[Choosing Tuning Parameters for SVM] There are three tuning parameters $(\gamma_n, \lambda_n, \delta_n)$ in SVM. Roughly speaking,  $\gamma$ controls the bandwidth of the SVM kernel, $\lambda$ regularizes the SVM coefficients $\eta$ in \eqref{eq:objective function}, and bandwidth ${\delta_n}$ controls the bias-variance trade-off resulting from the surrogate kernel. While there are theoretically optimal choices for these parameters based on rates  (see Theorem \ref{thm:excess_risk} below), in practice, we recommend using cross-validation to choose them. For example, %to select $\gamma_n$, $\lambda_n$, and $\delta_n$ 
+ \begin{remark}[Choosing Tuning Parameters for SVM] There are three tuning parameters $(\gamma_n, \lambda_n, \delta_n)$ in SVM. Roughly speaking,  $\gamma$ controls the bandwidth of the SVM kernel, $\lambda$ regularizes the SVM coefficients $\eta$ in \eqref{eq:objective function}, and bandwidth ${\delta_n}$ controls the bias-variance trade-off resulting from the surrogate kernel. While there are theoretically optimal choices for these parameters based on rates  (see Theorem \ref{thm:excess_risk} below), in practice, we recommend using cross-validation to choose them. \XL{I think it is hard to. Most people use similar neighbor-excluding strategy to do cross fitting. But we simply split the data. But since $g(S)$ is a fixed function. The data are actually dependent. Sometimes, they use different data generative model and data analysis model for spatial data analysis}For example, %to select $\gamma_n$, $\lambda_n$, and $\delta_n$ 
  for a grid of 
  $(\gamma,\lambda,\delta_n)$, we can find the value that maximizes the cross-validated Matthews correlation coefficient (MCC) \citep{MCC}, 
 which is a measure for evaluating the performance of estimated policies by reframing it as a binary classification task at a given threshold $\mathcal{T}$. Notably, unlike other metrics, MCC is agnostic to the shape of the loss function that generated the estimated policy function.
@@ -647,33 +661,35 @@ which is a measure for evaluating the performance of estimated policies by refra
 
 
 
-\CP{It might be useful to separate this part as a separate Section titled ``Theoretical Properties''?}
+% \CP{It migxht be useful to separate this part as a separate Section titled ``Theoretical Properties''?}
 
-\subsection{Theoretical Properties}\label{sec:theory}
+\section{Technical Results}\label{sec:theory}
 
+\subsection{Excess Risk}
 In this section, we study the performance of the estimated policy $\widehat\theta$ from the previous section. Building upon the spatial mixed effect model for outcome regression \eqref{eq:spatial_mixed_effect_model}, our theoretical analysis assumes the following generative model of $(Y_i, A_i, X_i, S_i, U_i)$:
 \begin{gather}
     Y_i = f(A_i,X_i) + U(S_i) + \epsilon_i, \label{eq:data_generative_model_1}\\
     A_i = \E[A_i|X_i,U(S_i)]+\xi_i, \label{eq:data_generative_model_2} \\
   U(\cdot)\sim \mathrm{GP}(0,C(\cdot,\cdot|\psi^*)), \  \psi^*\in \Psi_{\text{Mat\'ern}}\subset \R^3.
 \end{gather}
+\XL{Yes, mostly only used on supplement, maybe we can remove them}
 %The model assumes that the spatial coordinates $S_i$ influence the observed treatment $A_i$ and the outcome $Y_i$ through the same Gaussian process $U(S_i)$. 
-We make two remarks. First, the above model is compatible with the causal DAG in Figure \ref{fig:causal_DAG}(a). Second, the observed covariates $X_i$ are i.i.d. and the dependence between $Y_i$ and $A_i$ arises due to the Gaussian process discussed in Section \ref{sec:nuisance}. 
+We make two remarks. First, the above model is compatible with the causal DAG in Figure \ref{fig:causal_DAG}(a). Second, the observed covariates $X_i$ are i.i.d. \XL{No, we do not assume $X_i$ to be i.i.d. I think it is easy to make people confused but this data generative model is only for the theoretical analysis} and the dependence between $Y_i$ and $A_i$ arises due to the Gaussian process discussed in Section \ref{sec:nuisance}. 
 %$U(S_i)$; 
 %In particular, from Section \ref{sec:nuisance}, $U(\cdot)$ is assumed to have Mat\'ern covariance function \eqref{eq:matern} and $\mathbf{C}_n(\psi^*)$ is the covariance matrix with entries $(U(S_i), U(S_j)) = C(S_i,S_j;\psi^*)$. %We assume that the covariance parameter $\psi^*\in \Psi_{\text{Mat\'ern}}\subset \R^3$ and 
 
 We make the following assumptions about the estimated nuisance functions $\widehat\mu,\widehat p$, and the true nuisance functions $\mu^*,p^*$. 
 
  \begin{enumerate}[label=(C\arabic*)]
-     \item \label{condition:excess_risk:smooth} (Regularity Conditions on Nuisance Functions) $\widehat\mu,\mu^*,\widehat p,p^*$ are uniformly continuously differentiable with respect to the treatment level $a\in\mathcal{A}$, and the covariates $(X_i,U_i)$. Also,
+     \item \label{condition:excess_risk:smooth} (Regularity Conditions on Nuisance Functions) $\widehat\mu,\mu^*,\widehat p,p^*$ are uniformly continuously differentiable with respect to the treatment level $a\in\mathcal{A}$, and the covariates $(X_i,U_i)$\XL{density function is a smooth w.r.t. $X_i,U_i$. Yes, it might not hold for covariate balancing but I think it is necessary for doubly robust properties}. Also,
      %\item \label{condition:excess_risk:boundedness} (Boundedness) 
-     there exists a constant $C>0$ such that $\widehat\mu,\mu^*, \widehat p, p$ and their first-order derivatives are uniformly bounded by $C^\prime$. 
+     there exists a constant $C>0$ such that $\widehat\mu,\mu^*, \widehat p, p$ and their first-order derivatives \XL{with respect to $(a,x,u)$}are uniformly bounded by $C^\prime$. 
      \item \label{condition:excess_risk:overlap}(Strict Overlap) There exists a constant $c^\prime >0$ such that
      $\widehat p,p^*$ and their first order-derivative are uniformly bounded below by $c^\prime$.  
-     \item \label{condition:excess_risk:nuisance}(Consistency of Nuisance Estimation) Let $r_{p,n},r_{\mu,n}$ and $\rho_n$ be sequences of real numbers, which are $o(1)$ as $n\rightarrow\infty$. We assume $\|\widehat{p} - p^*\|_{P,2} \leq r_{p,n}$ and $\|\widehat{\mu} - \mu^*\|_{P,2} \leq r_{\mu,n}$ with probability no less than $1 - \rho_n$, where $\|\cdot\|_{P,2}$ denotes the $L_2(P)$ norm.
+     \item \label{condition:excess_risk:nuisance}(Consistency of Nuisance Estimation) Let $r_{p,n},r_{\mu,n}$ and $\rho_n$ be sequences of real numbers, which are $o(1)$ as $n\rightarrow\infty$. We assume $\|\widehat{p} - p^*\|_{P,2} \leq r_{p,n}$ \XL{integrate over $a$} and $\|\widehat{\mu} - \mu^*\|_{P,2} \leq r_{\mu,n}$ with probability no less than $1 - \rho_n$, where $\|\cdot\|_{P,2}$ denotes the $L_2(P)$ norm.
      % Then, we have $\widehat p - p^* \leq r_{p,n}$, $\widehat \mu - \mu^* \leq r_{\mu,n}$ with probability greater than $1-\rho_n$.
      % \CP{Need to specify the metric for convergence e.g. L2?}
-     \item \label{condition:excess_risk:VC-type} (VC-Type Estimators of Nuisance Functions) The nuisance estimators belong to VC-type function classes.
+     \item \label{condition:excess_risk:VC-type} (VC-Type Estimators of Nuisance Functions) The estimators of the outcome regression model and the generalized propensity score belong to VC-type function classes (see \citet{kosorok2008introduction} for details).\XL{whether a smooth function class depends on smoothness and dimension.}
  \end{enumerate}
 %Assumption \ref{condition:excess_risk:VC-type} ensures that the function class used to estimate the nuisance parameters is not overly complex, which is necessary to establish uniform convergence rates (e.g., Glivenko-Cantelli or Donsker properties, see \citet{kosorok2008introduction} for details). 
 Assumption \ref{condition:excess_risk:VC-type} can be relaxed if the data can be split to independent or weakly dependent subsets \citep{chernozhukov2018double,colangelo2025double}; see Section \ref{sec:cross-fitting} and Theorem \ref{thm:excess_risk_cross_fitting} for more details.
@@ -683,13 +699,13 @@ Assumption \ref{condition:excess_risk:VC-type} can be relaxed if the data can be
 % \textcolor{red}{Connect to the version of cross-fitting, which can relax Assumption \ref{condition:excess_risk:VC-type}}.
 % \textcolor{red}{What Assumption \ref{condition:excess_risk:VC-type} actually mean, if we list some examples and explanation. Can VC-dimension increase with the sample size?}% Assumption \ref{condition:excess_risk:VC-type}
  
-\CP{maybe $\kappa_n$?}
+\CP{maybe $\kappa_n$?}\XL{I am OK with that though I use $\sigma_{\epsilon}$ as the SD of $\epsilon$. Also $\kappa$ has been used for the upper bound for the kernel function and its derivative}
 Let $\sigma_{n} = \sup_{\psi\in \Psi_{\text{Mat\'ern}}}\|\mathbf{C}_n(\psi)\|_2$ as the supremum of the spectral norm of the covariance matrix $\mathbf{C}_n(\psi^*)$ of the Gaussian process with entries $(U(S_i), U(S_j)) = C(S_i,S_j;\psi^*)$ and $d$ be the dimension of $(X_i,U(S_i))$. Theorem \ref{thm:excess_risk} characterizes the excess risk of $\widehat\theta$, a common metric of performance in this literature (e.g. \citet{Zhao2012, Dias2018, KitagawaTetenov2018}).
 
 % \CP{How should I understand $R(\theta)$ in Lemma \ref{lemma:risk_db} when $X$ is a fixed object?} \XL{Now I change it to i.i.d.}
- 
+ \XL{will unify all to Theorem/Proposition}
  \begin{theorem}[Excess Risk Bound of SVM Estimator] \label{thm:excess_risk}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. If the surrogate kernel bandwidth $\delta_n$ decays no faster than $n^{-1}$, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. If the surrogate kernel bandwidth $\delta_n$ decays no faster than $n^{-1}$, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right)\leq &c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \nonumber\\
    & \qquad + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}\nonumber\\
@@ -698,17 +714,17 @@ Let $\sigma_{n} = \sup_{\psi\in \Psi_{\text{Mat\'ern}}}\|\mathbf{C}_n(\psi)\|_2$
 Here, $c_1,\ldots,c_8$ are constants that are independent of $n$. 
 \end{theorem}
 \CP{In the first version of the MRTP paper, we presented only the simplified version (corresponding to $O_P\left((\sigma_n^{-1}n)^{-\frac{\beta}{3\beta + 2d + 2}}\right)+O_P(r_{\mu,n}r_{p,n} )$). However, the reviewers requested to bring back \eqref{eq:excess_risk}. From my understanding, the OTR community tends to be obsessive about the explicit form...}
-
+\XL{$\tau$ can be any arbitrarily chosen positive number, and I have added for every Theorem}
 \noindent To better interpret the result, suppose the Gaussian kernel bandwidth parameter $\gamma_n$, the regularization parameter $\lambda_n$, and the surrogate kernel bandwidth $\delta_n$ are chosen with rates $\lambda_n \propto (\sigma_n^{-1}n)^{-\frac{d+\beta}{3\beta + 2d + 2}}$, $\gamma_n\propto (\sigma_n^{-1}n)^{-\frac{1}{3\beta + 2d + 2}}$, and $\delta_n\propto n^{-1}$. Under these choices, the bound in \eqref{eq:excess_risk} reduces to 
 $$R(\widehat\theta)-R\left(\theta^*\right)=O_P\left((\sigma_n^{-1}n)^{-\frac{\beta}{3\beta + 2d + 2}}\right)+O_P(r_{\mu,n}r_{p,n} )$$
 
 % \textcolor{red}{Maybe put in discussion: why we have the rate $n^{-1/3}$ because the concentration inequality of dependent random variable. But we might mention it is due to spatial correlation.}
-The first term corresponds to the convergence rate of the SVM using Gaussian kernels, which depends on the smoothness of the optimal policy $\theta^*$ (parameterized by $\beta$), the dependence of the underlying Gaussian process $U(S_i)$ (parameterized by $\sigma_n$), and the surrogate kernel bandwidth ${\delta_n}$. In the bound, $\sigma_n$ quantifies the impact of the spatial dependence in $U(S_i)$ on the convergence rate, a factor that has not appeared in prior literature. For standard GP covariance kernels defined over irregular locations in $\mathbb{R}^2$, $\sigma_n$ would be bounded under increasing domain asymptotics if all locations are separated by a minimum distance. Under this condition, our bound is, up to a scaling factor, identical to that of an SVM in i.i.d. settings. We briefly remark that recent theoretical analyses of one-layer neural networks in the context of spatially dependent data have also pointed out the non-trivial role of $\sigma_n$ in the convergence rate \citep{zhan2024neural}.
+The first term corresponds to the convergence rate of the SVM using Gaussian kernels, which depends on the smoothness of the optimal policy $\theta^*$ (parameterized by $\beta$), the dependence of the underlying Gaussian process $U(S_i)$ (parameterized by $\sigma_n$). In the bound, $\sigma_n$ quantifies the impact of the spatial dependence in $U(S_i)$ on the convergence rate, a factor that has not appeared in prior literature. For standard GP covariance kernels defined over irregular locations in $\mathbb{R}^2$, $\sigma_n$ would be bounded under increasing domain asymptotics if all locations are separated by a minimum distance. Under this condition, our bound is, up to a scaling factor, identical to that of an SVM in i.i.d. settings\XL{, i.e., $O_p(n^{-\beta/(3\beta+2d+2)})$}. We briefly remark that recent theoretical analyses of one-layer neural networks in the context of spatially dependent data have also pointed out the non-trivial role of $\sigma_n$ in the convergence rate \citep{zhan2024neural} \XL{This is correct}.
 
 If the true policy $\theta^*$ is very smooth (i.e., $\beta\rightarrow \infty$ with fixed $d$) and the locations of observations are separated by a minimum distance (i.e., $\sigma_n$ remain bounded), the first term approaches the rate $O_P(n^{-\frac{1}{3}})$. In related work employing SVM in optimal policy learning, \citet{park2024minimum} achieves a rate of $O_p(n^{-1/2})$ in the binary treatment settings, and \citet{chen2016personalized} achieves a rate of $O_p(n^{-1/4})$ in the continuous treatment setting. Our rate $O_p(n^{-1/3})$ is slower than the $O_p(n^{-1/2})$ in \citet{park2024minimum} due to a surrogate kernel, which is necessary to deal with a continuous treatment in our setting. However, our rate is faster than the $O_p(n^{-1/4})$ in \citet{chen2016personalized}, who also used a surrogate kernel to deal with a continuous treatment. The difference in rates is attributable to the fact that our loss function \eqref{eq:loss_function_complete} is defined in terms of an integral over the surrogate kernel, which effectively smooths the loss function and mitigates the variance inflation typically associated with surrogate kernels. The only requirement to achieve our faster rate is that $\delta_n$ converges to zero no faster than $n^{-1}$. 
 
 The second term $O_P( r_{p,n} r_{\mu,n})$
-represents error contribution from the estimated nuisance functions. This term captures the second-order bias characteristic of the doubly robust loss function, \CP{a phenomenon resulting from its careful design.} %Under the spatial mixed effect model \eqref{eq:spatial_mixed_effect_model}, both the nonparametric estimation error from Step \ref{step:regression}, and the kriging estimation error from Step \ref{step:kriging} contribute to the nuisance estimation error. 
+represents error contribution from the estimated nuisance functions. This term captures the second-order bias characteristic of the doubly robust loss function, a phenomenon resulting from its careful design of the loss function in \eqref{eq:loss_function_complete}. %Under the spatial mixed effect model \eqref{eq:spatial_mixed_effect_model}, both the nonparametric estimation error from Step \ref{step:regression}, and the kriging estimation error from Step \ref{step:kriging} contribute to the nuisance estimation error. 
 
 % Notably, in scenarios where a larger ${\delta_n}$ is necessary to manage the bias-variance trade-off, the factor ${\delta_n} r_{\mu,n}$ in the first term would dominate $O_P( r_{p,n} r_{\mu,n})$, and the surrogate kernel's approximation error becomes the primary component of the excess risk.
 
@@ -738,9 +754,9 @@ represents error contribution from the estimated nuisance functions. This term c
 
 % \XL{Now the rates needs to be revised. Specifically, the kernel bias can be $O({\delta_n}^2)$ rather than $O({\delta_n})$ in the current result. We will respond to the comment after I revised that.}
 
-\CP{I think it would be better to combine Sections 3.4, 4.1, and 4.2 into a “Technical Results” section, and move Section 4.3 to the supplement along with other practical or computational techniques.}
+\CP{I think it would be better to combine Sections 3.4, 4.1, and 4.2 into a “Technical Results” section, and move Section 4.3 to the supplement along with other practical or computational techniques.} \XL{Done}
 
-\section{Other Useful Results} \label{sec:other_results}
+% \section{Other Useful Results} \label{sec:other_results}
 
 \subsection{Cross-Fitting} \label{sec:cross-fitting}
 
@@ -749,22 +765,27 @@ A popular technique to avoid the complexity Assumption \ref{condition:excess_ris
 While independent data splitting may not always be feasible in spatial datasets, we nevertheless follow \citet{gilbert2021causal} and consider a setup where $(Y, A, X, S)$ is identically distributed and exhibits spatial dependence according to a locally covariance random field. Under this setup, Bernstein blocking can be employed to obtain independent subsets of a spatial dataset, which then enables cross-fitting and relaxes Assumption \ref{condition:excess_risk:VC-type} to accommodate flexible machine learning estimators. Theorem \ref{thm:excess_risk_cross_fitting} extends our theoretical analysis to this cross-fitting regime.
 
  \begin{theorem}[Excess Risk Bound of Cross-Fitting Estimator] \label{thm:excess_risk_cross_fitting}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. Suppose $\widehat\mu,\widehat p$ are independent with the empirical risk function. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. \XL{Suppose the observations are distributed identically and according to a locally covariant spatial random field, and the nuisance estimators $\widehat\mu,\widehat p$ and the target estimator $\widehat\theta$ are estimated using independent subsets obtained via Bernstein blocking (see Section 5.2 of \citet{gilbert2021causal} for details).}. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Then, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right) 
        \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_5r_{\mu,n}r_{p,n} + c_6{\delta_n}. \label{eq:excess_risk_cross_fitting}
     \end{align}       
 Here, $c_1,\ldots,c_6$ are constants that are independent of $n$. 
+\XL{Very similar to previous Theorem, a few terms gone including the $\ln(n)$ term. Because we have independent sample and do not inquire union bound over the space of nuisance function.}
 \end{theorem}
 
-The excess risk bound in \eqref{eq:excess_risk_cross_fitting} eliminates two higher-order terms present in \eqref{eq:excess_risk}. Also, if we choose tuning parameters ...
+The excess risk bound in \eqref{eq:excess_risk_cross_fitting} eliminates two higher-order terms $c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)/n+c_6n^{-1}$ present in \eqref{eq:excess_risk}. Also, if we choose tuning parameters \XL{$\lambda_n \propto (\sigma_n^{-1}n)^{-\frac{d+\beta}{3\beta + 2d + 2}}$, $\gamma_n\propto (\sigma_n^{-1}n)^{-\frac{1}{3\beta + 2d + 2}}$, and $\delta_n\propto n^{-1}$, the upper bound reduces to 
+$$R(\widehat\theta)-R\left(\theta^*\right)=O_P\left((\sigma_n^{-1}n)^{-\frac{\beta}{3\beta + 2d + 2}}\right)+O_P(r_{\mu,n}r_{p,n} )$$}
 
+\XL{The choice of the tunning parameters and the resulting bound are the same as the previous one.}
+
+\XL{The effect of dependence in all in $\sigma_n$, even if it is slightly weaker. It is reflected in $\sigma_n$. Also, in OLS, neural network, the rate are all similar to i.i.d. setting. So slightly weakening the dependence assumption does not change the risk. Everything is just we have an additionally $\sigma_n$ in the concentrational inequality because of the dependence of Gaussian process.}
 \subsection{Parametric Policy Functions}
 
 Although we recommend the SVM estimator of the policy function $\theta^*$, which lies inside a nonparametric RKHS, our framework can easily accommodate function classes other than RKHS. In particular, if a simple, interpretable policy function is desired, the investigator can replace the RKHS with a parametric function class, i.e., $\{\theta(x,u;\beta):\beta\in \R^{d}\}$, where $d$ is the dimension of $(X_i,\widehat U(S_i))$, and minimize the empirical loss with the new function space. Theorem \ref{thm:excess_risk_parametric} extends our theoretical analysis to this parametric policy class.
 
 \begin{theorem}[Excess Risk Bound of Parametric Estimator] \label{thm:excess_risk_parametric}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a parametric space $\{\beta^\top(x,u):\beta\in \R^{d+1},\|\beta\|_\infty<C_\beta\}$. Then, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a parametric space $\{\beta^\top(x,u):\beta\in \R^{d+1},\|\beta\|_\infty<C_\beta\}$. Then, for $\tau>0$,we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right)\leq &  \sqrt{\frac{c_1\sigma_n\tau}{n}} + \sqrt{\frac{ c_2\sigma_n\ln(n)}{n}}  + c_3n^{-1}+ c_4r_{\mu,n}r_{p,n} + c_5{\delta_n}\label{eq:excess_risk_parametric}
     \end{align} 
@@ -773,33 +794,23 @@ Here, $c_1,\ldots,c_5$ are constants that are independent of $n$.
 \CP{Check whether $\log{n}/n$ can be removed}
 
 
-
-\subsection{Vecchia Approximation for Fast Computation}
-
-One of the most computationally demanding steps in the estimation of $\mu^*$ is estimating the inverse of the covariance matrix in the GP, an operation that is of $O(n^3)$ in terms of computational complexity. Fortunately, several works have proposed various approximations to speed up the computation in large spatial datasets and in this section, we briefly discuss how to use the Vecchia approximation \citep{vecchia1988estimation, datta2016hierarchical, katzfuss2021general} for our setup. %Briefly, the Vecchia approximation utilizes the chain rule of the conditional probability
-%$$p(y_1, \dots, y_n) = \prod_{i=1}^n p(y_i \mid y_1, \dots, y_{i-1})$$
-
-The key idea under the Vecchia approximation is that each conditional distribution is approximated by conditioning only on a small subset of "neighboring" observations $N(i)$ from the set of preceding points $\{y_1, \dots, y_{i-1}\}$:
-$$p(y_1, \dots, y_n) \approx \prod_{i=1}^n p(y_i \mid y_{N(i)})$$
-By restricting the conditioning set to be of size $m \ll n$, the computational complexity is reduced from $O(n^3)$ to $O(n \cdot m^3)$, which is linear in the number of observations. The estimation of the GP covariance function in Step \ref{step:covariance_estimation} can be implemented with the \texttt{GpGp} package \citep{guinness2021gpgp} and the value of $m$ is typically defaulted to $30$. \textcolor{red}{How the $m$ is chosen, e.g., default to be 20/30.}
-
-\CP{We may need to move the sim to the supp}
+\XL{instead of simulation, why not putting some theory to supp}
 \section{Simulation Study}\label{sec:simulation}
-We evaluate the finite-sample performance of our method through a small simulation study. Consider a $50\times 50$ uniform grid on $[0,1]\times [0,1]$. For every location on the grid, we generate a four-dimensional covariate $X = (W_1,W_2,W_3,W_4)$ and a one-dimensional unmeasured covariate $U$ by (i) generating five independent Gaussian processes with a Mat\'ern covariance function whose variance equals 1, range equals 0.2, and smoothness parameter equals 0.5; (ii) letting three of the generated Gaussian processes be $(W_1,W_2)$ and $U$; and (iii) obtaining $W_3,W_4$ by transforming the other two Gaussian processes to be categorical variables defined by their quartiles. The target threshold $\mathcal{T}$ is set to be 40-th, 50-th, and 60-th percentiles of the observed outcomes.
+We evaluate the finite-sample performance of our method through a small simulation study. Consider a $50\times 50$ uniform grid on $[0,1]\times [0,1]$\XL{, i.e., 2500 sampling locations}. For every location on the grid, we generate a four-dimensional covariate $X = (W_1,W_2,W_3,W_4)$ and a one-dimensional unmeasured covariate $U$ by (i) generating five independent Gaussian processes with a Mat\'ern covariance function whose variance equals 0.25, range equals 0.2, and smoothness parameter equals 0.5; (ii) letting three of the generated Gaussian processes be $(W_1,W_2)$ and $U$; and (iii) obtaining $W_3,W_4$ by transforming the other two Gaussian processes to be \XL{four-level }categorical variables defined by their quartiles. \XL{The observed treatment is generated via $A = X\beta + 0.5 U + \epsilon$ where $\beta$ is a finite-dimensional parameter, $\epsilon$ are i.i.d. normally distributed random error; the observed outcome is generated via $Y = -(0.5 + 0.1X3 +0.1X4) A + f(X)+U +\xi$ where where $f(\cdot)$ is a nonlinear function of the observed covariates, $\epsilon$ are i.i.d. normally distributed random error.} The target threshold $\mathcal{T}$ is set to be 40-th, 50-th, and 60-th percentiles of the observed outcomes $Y$.
 % The simulation settings vary among the following scenarios: (i) the outcome regression model is linear or nonlinear; (ii) the target threshold is set to the 40th, 50th, and 60th percentiles of the observed outcome; and (iii) the function class of the policy is a space of linear functions or an RKHS. 
 
-After generating the data, we split the data into a training set (70\%) and a test set (30\%). We then compare the performance of the ``classic'' indirect method that ignores spatial confounding, the indirect method that estimates $\widehat\mu$ in \eqref{eq:or_estimation} , and the direct method introduced in Section \ref{sec:direct_method}, which are all evaluated on the test set. We repeat this entire process 10 times and, therefore, obtain 7500 policy predictions for each method and threshold.
+After generating the data, we split the data into a training set (70\%) and a test set (30\%). We then compare the performance of the ``classic'' indirect method that ignores spatial confounding in \citet{chakraborty2013statistical}, the indirect method that estimates $\widehat\mu$ in \eqref{eq:or_estimation} , and the direct method introduced in Section \ref{sec:direct_method}, which are all evaluated on the test set. We repeat this entire process 30 times and, therefore, obtain 75000 policy predictions for each method and threshold \XL{2500 locations corresponds to 2500 policies, 30 repetitions give us 30 x 2500  = 75000 policy predictions}.
 
 Figure \ref{fig:sim_boxplot} shows the absolute deviations between the estimated and the true policy. The direct approach shows the best performance, where its absolute deviation between the predicted and the true policies is generally the smallest across all threshold values $\mathcal{T}$.
 
 \begin{figure}
     \centering
-    \includegraphics[width=1.00\linewidth]{simulation_boxplot.png}
+    \includegraphics[width=1.00\linewidth]{simulation_boxplot_updated.png}
     \caption{
     \CP{
     From my perspective, the two indirect methods yield good results: the non-spatial indirect method performs the worst, while the spatial indirect method partially reduces the error, though it is not optimal compared to the direct method. This matches the key intuition discussed above, so the results seem OK. However, we can adjust the scale (e.g., log scale) to improve the contrast. But given Figure 3, it may be better to compare Direct v. Non-spatial Indirect only?    
-    I think implementing other direct approaches is challenging, as it requires tuning loss functions and hyperparameters, etc. This would be extremely time-consuming. Unless the reviewers specifically request it, the current approach seems good enough for the first version.}
-    Boxplots of the Absolute Deviation Between the Predicted Policies and the True Policy. The x axis shows the different thresholds $\mathcal{T}$, which are defined as 40\%, 50\%, and 60\% quantiles of the observed outcome. The y axis shows the absolute deviation between the predicted and true policy. }
+    I think implementing other direct approaches is challenging, as it requires tuning loss functions and hyperparameters, etc. This would be extremely time-consuming. Unless the reviewers specifically request it, the current approach seems good enough for the first version.}\XL{Done}
+    Boxplots of the Absolute Deviation Between the Predicted Policies and the True Policy. The x axis shows the different thresholds $\mathcal{T}$, which are defined as 40\%, 50\%, and 60\% quantiles of the observed outcome. The y axis shows the absolute deviation on the test data between the predicted and true policy. }
     \label{fig:sim_boxplot}
 \end{figure}
 
@@ -810,8 +821,8 @@ The true policy $\theta^*$ in \eqref{eq:def_estimand} performs the best across t
 
 \begin{figure}
     \centering
-    \includegraphics[width=1.05\linewidth]{simulation_metrics.png}
-    \CP{Given this, it may be better to compare Direct v. Non-spatial Indirect only?}
+    \includegraphics[width=1.05\linewidth]{simulation_metrics_updated.png}
+    \CP{Given this, it may be better to compare Direct v. Non-spatial Indirect only?} \XL{Done}
     \caption{Evaluation of Estimated Policy Under Different Metrics for Classification Performance. The x axis shows the different thresholds $\mathcal{T}$, which are defined as 40\%, 50\%, and 60\% quantiles of the observed outcome. The y-axis shows the value of the metric, which is specified at the top of each plot. A larger value in the y-axis implies better performance.}
     \label{fig:sim_metrics}
 \end{figure}
@@ -826,19 +837,19 @@ To protect against health risks imposed by nitrate contaminants, the U.S. Enviro
 Between 2020 and 2024, approximately 6\% of nitrate measurements in Wisconsin exceeded the 10 mg/L threshold, and 20\% exceeded the 5 mg/L threshold. The exceedance rates are spatially heterogeneous, with some counties showing significantly higher rates (see Figure \ref{fig:exceedance_rate}). 
 
 %To obtain a safe water supply, 
-Any public water system that has nitrate levels above 10 mg/L is in violation of  federal law and must either replace the well or install approved water treatment systems \citep{CFR2016}. For private water systems, if the nitrate level in their well exceeds 10 mg/L, well owners of nitrate-contaminated private wells can qualify for the new American Rescue Plan Act (ARPA)'s  Well Compensation and Well Abandonment Grant Program \citep{WIDNR_ARPA_2022}. The cost of well replacement is mainly determined by the depth of the wells drilled and since October 2022, more than 10 million U.S. dollars has been allocated to replace private wells, and more than 40 million U.S. dollars has been allocated to replace private wells in Wisconsin. 
-%Unfortunately, due to the large number of wells in Wisconsin, the estimated cost to replace all non-compliant wells is over 420 million dollars. 
-In this section, we use our method to design a safe, cost-effective nitrate policy given the threshold $\mathcal{T}=$ 5 mg/L in Wisconsin. The policy for $\mathcal{T}=$ 10 mg/L is in the Supplementary Material.
+Any public water system that has nitrate levels above 10 mg/L is in violation of  federal law and must either replace the well or install approved water treatment systems \citep{CFR2016}. For private wells, if their nitrate levels exceed 10 mg/L, well owners of nitrate-contaminated private wells can qualify for the new American Rescue Plan Act (ARPA)'s  Well Compensation and Well Abandonment Grant Program \citep{WIDNR_ARPA_2022}. The cost of well replacement is mainly determined by the depth of the wells drilled and since October 2022, more than 10 million U.S. dollars has been allocated to replace private wells, and more than 40 million U.S. dollars has been allocated to replace public wells in Wisconsin. 
+%Unfortunately, due to the large number of private wells in Wisconsin, the estimated cost to replace all non-compliant private wells is over 420 million dollars. 
+In this section, we use our method to design a safe, cost-effective nitrate policy given the threshold $\mathcal{T}=$ 5 mg/L in Wisconsin. The policy for $\mathcal{T}=$ 10 mg/L is in the Supplementary Material. \XL{Add Plot}
 
 \begin{figure}
     \centering
     \includegraphics[width=1.05\linewidth]{execeedance rate.png}
-    \caption{Exceedance rates of nitrate across Wisconsin counties from 2014 to 2024. Left panel shows the exceedance rate above 5 mg/L. Right panel shows the exceedance rate above 10 mg/L.}
+    \caption{Exceedance rates of nitrate across Wisconsin counties from 2020 to 2024. Left panel shows the exceedance rate above 5 mg/L. Right panel shows the exceedance rate above 10 mg/L.}
 \label{fig:exceedance_rate}
 \end{figure}
 
 \subsection{Dataset}
-
+\XL{Need adding data sources/sample size}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1.00\linewidth]{data_visualization.png}
@@ -878,7 +889,8 @@ To show the importance of accounting for spatial confounding and dependence in a
 
 We randomly partitioned our dataset into training (70\%) and test (30\%) sets, using the training data to estimate the policy. Table \ref{tab:model_performance} shows the classification performance metrics. Across all measures, our approach consistently outperforms the non-spatial indirect method. 
 
-Figure \ref{fig:indirect_inference} visually illustrates the policy estimated via the non-spatial method and its projection onto measured covariates. The left panel shows the marginal effects of various land use categories and drainage levels. While the non-spatial method correctly identifies the general increase in required well depth associated with agricultural activities, it lacks the resolution to distinguish between specific crop types. Specifically, the confidence intervals for corn and soybeans overlap and are barely separated from the confidence interval for vegetables (potatoes). On the right panel, which displays the marginal effects of soil drainage, the consistent linear trend observed in our proposed method is less apparent in the non-spatial method where the non-spatial method simply shows a sharp increase in between ``somewhat poorly drained'' and ``moderately poorly drained.'' \CP{This seems like a plausible explanation, so I agree with this discussion!} We attribute the gap between the two methods to a potential violation of the no unmeasured confounding assumption where the effects of unmeasured spatial confounders are misattributed to the observed predictors. Overall, our method, which incorporates spatial confounding, provides more scientifically consistent and granular recommendations for well depth compared to non-spatial methods.
+Figure \ref{fig:indirect_inference} visually illustrates the policy estimated via the non-spatial method and its projection onto measured covariates. The left panel shows the marginal effects of various land use categories and drainage levels. While the non-spatial method correctly identifies the general increase in required well depth associated with agricultural activities, it lacks the resolution to distinguish between specific crop types. Specifically, the confidence intervals for corn and soybeans overlap and are barely separated from the confidence interval for vegetables (potatoes). On the right panel, which displays the marginal effects of soil drainage, the consistent linear trend observed in our proposed method is less apparent in the non-spatial method where the non-spatial method simply shows a sharp increase in between ``somewhat poorly drained'' and ``moderately poorly drained.'' 
+We attribute the gap between the two methods to a potential violation of the no unmeasured confounding assumption where the effects of unmeasured spatial confounders are misattributed to the observed predictors. Overall, our method, which incorporates spatial confounding, provides more scientifically consistent and granular recommendations for well depth compared to non-spatial methods.
 %We attribute the gap between the two methods to be due to violation of the no unmeasured confounding assumption where the effects of unmeasured spatial confounders are misattributed to the observed predictors. In contrast, our method, which incorporates spatial confounding, mitigates this bias and yields more reliable estimates of the effects of geographical features.
 
 
@@ -965,6 +977,11 @@ This document contains supplementary materials for \CP{NEED TO CHECK TITLE ``Opt
 \end{itemize}
 
 
+\subsection{Empirical Assessment of the Monotonic Response Assumption }\label{sec:monotonic_assessment}
+
+Furthermore, we empirically assess the monotonicity assumption \ref{condition:monotonicity}, that the predicted nitrate levels $\widehat{\mu}(a, X, S)$ decrease as well depth $a$ increases. We find that this assumption is rarely violated in our groundwater dataset; where violations do occur, the deviation from monotonicity is negligible. Specifically, we evaluate the variations between adjacent predictions across a fine grid of treatment levels $\{a^{(1)}, \dots, a^{(K)}\}$ spanning the observed range of well depths. For each observation $i$ in the test set, we calculate the local variations:$$\widehat{V}_{i,k} = \widehat{\mu}(a^{(k+1)}, X_i) - \widehat{\mu}(a^{(k)}, X_i,S_i), \quad k = 1, \dots, K-1.$$
+To ensure the robustness of our assessment and avoid overfitting, the outcome regression model is estimated on training data (70\% of the dataset) and evaluated on the randomly held-out test data (30\% of the dataset). The validity of the decreasing monotonicity is empirically assessed by two primary metrics. First, we calculate the violation frequency by counting the number of instances where the estimated slope is positive ($\widehat{V} > 0$). Second, we measure the relative magnitude of these violations compared to the total variation of the predicted surface. Let $TV_{i,k} = |\widehat{V}_{i,k}|$ denote the absolute variation. We compute the ratio of the sum of positive (non-monotonic) slopes to the total variation (PTV):$$\text{Relative Magnitude} = \frac{\sum_{i,k} \widehat{V}_{i,k} \cdot \mathbbm{1}(\widehat{V}_{i,k} > 0)}{\sum_{i,k} TV_{i,k}}.$$Overall, our assessment shows that the decreasing monotonicity assumption is highly consistent with the observed data. Under the first assessment, we found that monotonicity is violated in 18.32\% of the tested variations. Under the second assessment, the relative magnitude of these increasing slopes is 6.48\%. In summary, these empirical validations confirm that groundwater nitrate levels generally decrease with well depth in our study area, and any observed deviations are statistically minor and likely attributable to localized estimation noise.
+
 \subsection{Details of Classification Performance Measures
 }\label{sec:binary_measure}
 
@@ -996,7 +1013,7 @@ When the land was first surveyed in Wisconsin, it was divided into a grid as sho
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{plss-example.png}
-    \caption{PLSS in Wisconsin. \CP{Need to address} \textcolor{red}{to xindi: for any figure that you did not create yourself, make sure to add citation. You also need to double-check copyright issues (unless it's owned by the state or federal government)}}
+    \caption{PLSS in Wisconsin \citep{widnr_plss_tutorial}.}
     \label{fig:plss}
 \end{figure}
 
@@ -1005,20 +1022,20 @@ When the land was first surveyed in Wisconsin, it was divided into a grid as sho
 
 \textit{Wisconsin Wells} dataset is the well inventory used by the Groundwater Retrieval Network application. Each well has a unique well ID and the locations of wells are recorded using the PLSS descriptions. The dataset has the geographical information of the wells, including the well bottom depth, the casing depth, the bedrock depth, and the static water level. 
 
-As shown in Figure \ref{fig:well}, casing depth is the depth to which the well casing extends below the ground surface, where the casing serves to stabilize the wellbore and prevent contamination from surface or subsurface sources. The static water level refers to the distance from the ground surface to the water surface in a well when the well is at rest. The well bottom depth indicates where the bottom of the well is located. The bedrock depth refers to the distance from the ground surface to the top of the bedrock layer. However, in the center part of Wisconsin where bedrock may be near or at the surface, the bedrock depth is invalid. 
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{well.png}
-    \caption{Well geography \CP{Need to address} \textcolor{red}{to xindi: make sure to add citations on where you got this figure in the caption. Also, you need to double-check copyright issues (unless it's owned by the state or federal government)}}
-    \label{fig:well}
-\end{figure}
+Casing depth is the depth to which the well casing extends below the ground surface, where the casing serves to stabilize the wellbore and prevent contamination from surface or subsurface sources. The static water level refers to the distance from the ground surface to the water surface in a well when the well is at rest. The well bottom depth indicates where the bottom of the well is located. The bedrock depth refers to the distance from the ground surface to the top of the bedrock layer. However, in the center part of Wisconsin where bedrock may be near or at the surface, the bedrock depth is invalid. 
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=1\linewidth]{well.png}
+%     \caption{Well geography \CP{Need to address} \textcolor{red}{to xindi: make sure to add citations on where you got this figure in the caption. Also, you need to double-check copyright issues (unless it's owned by the state or federal government)}}
+%     \label{fig:well}
+% \end{figure}
 The static water level and well depth are the two factors that significantly influence how contaminants interact with and affect well water. Figure \ref{fig:staticlevel} and Figure \ref{fig:welldepth} show the static water level and depth of wells in Wisconsin. The well depth is calculated by
-$$\text{Well Depth} = \text{Static Water Level} + \frac{\text{Well Bottom}-\text{Static Water Level}}{2}.$$
+$$\text{Well Depth} = \text{Casing Bottom Depth} + \frac{\text{Well Bottom Depth}-\text{Casing Bottom Depth}}{2}.$$
 
 \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth]{staticlevel.png}
-    \caption{Static water level of wells in Wisconsin}
+    \caption{Static water (Feet) level of wells in Wisconsin}
     \label{fig:staticlevel}
 \end{figure}
 
@@ -1037,7 +1054,7 @@ $$\text{Well Depth} = \text{Static Water Level} + \frac{\text{Well Bottom}-\text
 
 \subsubsection{Nitrate}
 
-The Wisconsin Department of Agriculture, Trade and Consumer Protection (DATCP) performs routine monitoring for nitrate. DATCP's Bureau of Laboratory Services (BLS) analyzes samples for nitrate using modern analytical methods. Targeted monitoring programs are conducted annually. For example, the targeted sampling program and field-edge monitoring program analyze groundwater samples from monitoring wells and private wells installed within or near agriculture fields. The random statewide survey is conducted every 5 or 10 years. Figure \ref{fig:nitrate count} shows the number of measurements (log-scale) that happen at each PLSS section from 2014 to 2024. Figure \ref{fig:nitrate-county} shows the percentage of measurements exceeding 10mg/L nitrate health standard by counties in Wisconsin. 
+The Wisconsin Department of Agriculture, Trade and Consumer Protection (DATCP) performs routine monitoring for nitrate. DATCP's Bureau of Laboratory Services (BLS) analyzes samples for nitrate using modern analytical methods. Targeted monitoring programs are conducted annually. For example, the targeted sampling program and field-edge monitoring program analyze groundwater samples from monitoring wells and private wells installed within or near agriculture fields. The random statewide survey is conducted every 5 or 10 years. Figure \ref{fig:nitrate count} shows the number of measurements (log-scale) that happen at each PLSS section from 2020 to 2024. Figure \ref{fig:nitrate-county} shows the percentage of measurements exceeding 10mg/L nitrate health standard by counties in Wisconsin. 
 \begin{figure}
     \centering
     \includegraphics[width=0.65\linewidth]{nitrate-count.png}
@@ -1052,12 +1069,12 @@ The Wisconsin Department of Agriculture, Trade and Consumer Protection (DATCP) p
     \label{fig:nitrate-county}
 \end{figure}
 
-The measurements can be retrieved from the Groundwater Retrieval Network (GRN), which gives the well information, the concentration amount, and the time of the measurement. Figure \ref{fig:nitrate-spatial} shows the nitrate concentration measurement in groundwater from 2014 to 2024. The groundwater in regions with high nitrate concentration is sampled and measured much more frequently (See Figure \ref{fig:nitrate count}).
+The measurements can be retrieved from the Groundwater Retrieval Network (GRN), which gives the well information, the concentration amount, and the time of the measurement. Figure \ref{fig:nitrate-spatial} shows the nitrate concentration measurement in groundwater from 2020 to 2024. The groundwater in regions with high nitrate concentration is sampled and measured much more frequently (See Figure \ref{fig:nitrate count}).
 
 \begin{figure}
     \centering
     \includegraphics[width=0.6\linewidth]{nitrate-spatial.png}
-    \caption{Ground water nitrate concentration in Wisconsin from 2014 to 2024}
+    \caption{Ground water nitrate concentration in Wisconsin from 2020 to 2024}
     \label{fig:nitrate-spatial}
 \end{figure}
 
@@ -1185,9 +1202,18 @@ $$\widehat{\mathbf{U}} = \widehat{\mathbf{R}} - \text{diag}(\Lambda)^{-1}(\Lambd
 
 
 
-\subsection{Vecchia Approximation}
+% \subsection{Vecchia Approximation}
 
-The computation of the precision of the Gaussian processes $\{U_i\}_{i=1}^n$ is a crucial part of our method. In Step \ref{step:covariance_estimation}, maximum likelihood estimation involves the calculation of the precision. In Step \ref{step:kriging}, the kriging also involves the  calculation of the precision matrix. However, the precision matrix $\Lambda$ arising from a Gaussian process is dense for large $n$, evaluating $\Lambda$ even once still incurs the computational cost of $O(n^3)$ and storage cost of $O(n^2)$ both of which are taxing on typical personal computing resources. Thankfully, there is a rich literature concerning the numerical approximation and fast computation of Gaussian processes. In our method, we employ the Vecchia approximation \citep{vecchia1988estimation, katzfuss2021general} which can be implemented by the R package \citep{guinness2021gpgp}.
+% The computation of the precision of the Gaussian processes $\{U_i\}_{i=1}^n$ is a crucial part of our method. In Step \ref{step:covariance_estimation}, maximum likelihood estimation involves the calculation of the precision. In Step \ref{step:kriging}, the kriging also involves the  calculation of the precision matrix. However, the precision matrix $\Lambda$ arising from a Gaussian process is dense for large $n$, evaluating $\Lambda$ even once still incurs the computational cost of $O(n^3)$ and storage cost of $O(n^2)$ both of which are taxing on typical personal computing resources. Thankfully, there is a rich literature concerning the numerical approximation and fast computation of Gaussian processes. In our method, we employ the Vecchia approximation \citep{vecchia1988estimation, katzfuss2021general} which can be implemented by the R package \citep{guinness2021gpgp}.
+\subsection{Vecchia Approximation for Fast Computation}
+
+One of the most computationally demanding steps in the estimation of $\mu^*$ is estimating the inverse of the covariance matrix in the GP, an operation that is of $O(n^3)$ in terms of computational complexity. Fortunately, several works have proposed various approximations to speed up the computation in large spatial datasets and in this section, we briefly discuss how to use the Vecchia approximation \citep{vecchia1988estimation, datta2016hierarchical, katzfuss2021general} for our setup. %Briefly, the Vecchia approximation utilizes the chain rule of the conditional probability
+%$$p(y_1, \dots, y_n) = \prod_{i=1}^n p(y_i \mid y_1, \dots, y_{i-1})$$
+
+The key idea under the Vecchia approximation is that each conditional distribution is approximated by conditioning only on a small subset of "neighboring" observations $N(i)$ from the set of preceding points $\{y_1, \dots, y_{i-1}\}$:
+$$p(y_1, \dots, y_n) \approx \prod_{i=1}^n p(y_i \mid y_{N(i)})$$
+By restricting the conditioning set to be of size $m \ll n$, the computational complexity is reduced from $O(n^3)$ to $O(n \cdot m^3)$, which is linear in the number of observations. The estimation of the GP covariance function in Step \ref{step:covariance_estimation} can be implemented with the \texttt{GpGp} package \citep{guinness2021gpgp} and the value of $m$ is typically defaulted to $30$. 
+
 
 \subsection{DC Algorithm}\label{sec:dc_algorithm}
 
