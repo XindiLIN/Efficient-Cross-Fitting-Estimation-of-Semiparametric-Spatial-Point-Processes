@@ -1415,7 +1415,7 @@ Thus, we have that the following upper bound for the excess risk with probabilit
 \end{lemma}
 
 \begin{proof}
-\noindent To bound the left-hand side of \eqref{eq:approx_error_svm}, we construct an element  $\theta_0\in\mathcal{H}_{\gamma_n}$ such that both the regularization $\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}$ and the approximation error $\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)$ are sufficiently small. Let $d$ be the dimension of $(X_i,\widehat U(S_i))$. For notational brevity, we suppress the estimated Gaussian process $\widehat{U}(S_i)$ in the subsequent analysis; for instance, we write $\theta_0(x)$ instead of $\theta_0(x, u)$. The proof mainly use Theorem 2.2 and Theorem 2.3 in \citet{SVM2013},which are provided as Lemma \ref{lemma:thm2.2_eberts} and Lemma \ref{lemma:thm2.3_eberts} in the Supplement, respectively.
+\noindent To bound the left-hand side of \eqref{eq:approx_error_svm}, we construct an element  $\theta_0\in\mathcal{H}_{\gamma_n}$ such that both the regularization $\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}$ and the approximation error $\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)$ are sufficiently small. Let $d$ be the dimension of $(X_i,\widehat U(S_i))$. For notational brevity, we suppress the estimated Gaussian process $\widehat{U}(S_i)$ in the subsequent analysis; for instance, we write $\theta_0(x)$ instead of $\theta_0(x, u)$. The proof mainly use Theorem 2.2 and Theorem 2.3 in \citet{SVM2013},which are provided as Lemma \ref{thm:thm2.2_eberts} and Lemma \ref{thm:thm2.3_eberts} in the Supplement, respectively.
 
 \noindent \textbf{Step 1: construction of $\theta_0$:}
 
@@ -1427,11 +1427,11 @@ Since $\tilde\theta \in L_2(\mathbb{R}^d) \cap L_\infty(\mathbb{R}^d)$, we defin
 \[
 \theta_0(x) = (Q_{r,\gamma} * \tilde\theta_{L,\pr})(x) := \int_{\mathbb{R}^d} Q_{r,\gamma}(x - z) \tilde\theta_{L,\pr}(z) \mathrm{d}z.
 \]
-Let $\pr_X$ be the distribution of $X$ and $g_X$ be the density function satisfying $g_X\in L_\infty(\R^d)$. Applying Lemma \ref{lemma:thm2.2_eberts} (Theorem 2.2 in \citet{SVM2013}) under the specification $p=\infty,s=1,q=1$, we have
+Let $\pr_X$ be the distribution of $X$ and $g_X$ be the density function satisfying $g_X\in L_\infty(\R^d)$. Applying Lemma \ref{thm:thm2.2_eberts} (Theorem 2.2 in \citet{SVM2013}) under the specification $p=\infty,s=1,q=1$, we have
 \begin{equation}\label{eq:approx_error_excess_risk}
     \|Q_{r,\gamma} * \tilde\theta - \tilde\theta\|_{L_1(\pr_X)} \le C_{r,1} \|g_X\|_{L_\infty(\mathbb{R}^d)} \omega_{r,L_{1}(\mathbb{R}^d)}(\tilde\theta, \gamma/2)
 \end{equation}
-Additionally, by Lemma \ref{lemma:thm2.3_eberts} (Theorem 2.3 in \citet{SVM2013}), 
+Additionally, by Lemma \ref{thm:thm2.3_eberts} (Theorem 2.3 in \citet{SVM2013}), 
 \begin{equation}\label{eq:approx_error_regularizer}
     \|\theta_0\|^2_{\mathcal{H}_{\gamma_n}} = \|Q_{r,\gamma} * \tilde\theta\|^2_{\mathcal{H}_{\gamma_n}}\leq (\gamma\sqrt{\pi})^{-\frac{d}{2}}(2^r-1)\|\tilde\theta\|_{L_2(\R^d)}.
 \end{equation}
@@ -1521,7 +1521,7 @@ Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B)
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot (\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|)} + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta\\
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot }\left(\sqrt{\tau} +\sqrt{\ln|\mathcal{C}_\theta|}+\sqrt{\ln|\mathcal{C}_p|}+\sqrt{\ln|\mathcal{C}_\mu|}\right) + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta
 \end{align*}
-According to Lemma \ref{lemma:equivalence_covering_entropy}  and Lemma \ref{lemma:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
+According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
 By Assumption \ref{condition:excess_risk:VC-type}, there exist constants $A\geq 1, V\geq 1$ such that $$\ln(|\mathcal{C}_\mu|)\leq V\ln\left(A/\epsilon_\mu\right),\ln(|\mathcal{C}_p|)\leq V\ln\left(A/\epsilon_p\right)$$
 Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}}$, $\epsilon_p \propto n^{-1}, \epsilon_\mu\propto n^{-1}$. It holds that with probability no less than $1-32e^{-\tau}$:
 \begin{align*}
@@ -1568,7 +1568,7 @@ Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B)
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|\right)} + c_4\epsilon_\theta \\
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot }\left(\sqrt{\tau} +\sqrt{\ln|\mathcal{C}_\theta|}\right) + c_4\epsilon_\theta
 \end{align*}
-According to Lemma \ref{lemma:equivalence_covering_entropy}  and Lemma \ref{lemma:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
+According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
 Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}}$. It holds that with probability no less than $1-32e^{-\tau}$:
 \begin{align*}
    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
@@ -1752,7 +1752,7 @@ Conditional on $(X_i,U_i)$, the increment $\Delta Z^{(A)}$ is a sum of independe
 \noindent\textit{Layer 3: Latent variable $U_i\mid X_i$ (Gaussian process layer).}
 After conditioning on $\{X_i\}$, the vector $(U(S_1),\ldots,U(S_n))$ is a centered Gaussian vector whose covariance satisfies $\|\Sigma\|_{\mathrm{op}}\leq\sigma_n$. The increment $\Delta Z$, viewed as a function $f(U_1,\ldots,U_n)=\frac{1}{n}\sum_i [g_i(U_i;\nu_1)-g_i(U_i;\nu_2)]$ with $g_i$ the $i$-th individual loss contribution, has Lipschitz constant
 $$\|f\|_{\mathrm{Lip}}^2 = \frac{1}{n^2}\sum_{i=1}^n\bigl\|g_i(\cdot;\nu_1)-g_i(\cdot;\nu_2)\bigr\|_{\mathrm{Lip}}^2 \lesssim \frac{C^{\prime2}\,d_0(\nu_1,\nu_2)^2}{n},$$
-where the last bound uses the pointwise Lipschitz property of $g_i$ in $U_i$ (bounded by $C'$ from Assumption~\ref{condition:excess_risk:smooth}). Applying Lemma~\ref{lemma:gaussian_concentration} to the Gaussian vector $(U(S_1),\ldots,U(S_n))$ with spectral norm $\sigma_n$,
+where the last bound uses the pointwise Lipschitz property of $g_i$ in $U_i$ (bounded by $C'$ from Assumption~\ref{condition:excess_risk:smooth}). Applying Lemma~\ref{thm:gaussian_concentration} to the Gaussian vector $(U(S_1),\ldots,U(S_n))$ with spectral norm $\sigma_n$,
 \begin{equation}\label{eq:layer3}
 \bigl\|W^{(3)}\bigr\|_{\psi_2}^2 \lesssim C^2\|f\|_{\mathrm{Lip}}^2\cdot\sigma_n \lesssim \frac{C^{\prime2}\sigma_n\,d_0(\nu_1,\nu_2)^2}{n}.
 \end{equation}
@@ -2056,7 +2056,7 @@ Then, the Lipschitz norm of $f$ satisfies
 \end{align*}
 Here, $c_1,c_2$ are generic constant that depends on $\mathcal{T},C^\prime,c^\prime$ that might change during the proof.
 
-Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{lemma:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
+Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
 \begin{align*}
 &\pr\left(\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\geq \epsilon\right)\\
     \leq & \pr\left(\left|f( U(S_1),\ldots,U(S_n))-\E[f( U(S_1),\ldots,U(S_n))]\right|\geq \epsilon\right)\\
@@ -2084,7 +2084,7 @@ The last inequality follows from Assumption \ref{condition:excess_risk:smooth} a
 \end{align*}
 Here, $c_1$ is a generic constant that depends on $\mathcal{T},C^\prime,c^\prime$ that might change during the proof.
 
-Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{lemma:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
+Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
 \begin{align*}
 &\pr\left(\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\geq \epsilon\right)\\
     \leq & \pr\left(\left|f( U(S_1),\ldots,U(S_n))-\E[f( U(S_1),\ldots,U(S_n))]\right|\geq \epsilon\right)\\
@@ -2156,7 +2156,7 @@ By Assumption \ref{condition:excess_risk:smooth}, the Lipschitz norm of $f$ sati
 \end{align*}
 where $\nabla f$ denotes the sub-gradient of $f$ with respect to $u\in\R^d$, $\nabla_{u_i}|\mu^\prime-\mu|$ denotes the sub-gradient of $\mu-\mu^\prime$ with respect to $u_i\in\R$. The last inequality is from Assumption \ref{condition:excess_risk:smooth}.
 
-Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{lemma:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
+Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
 \begin{align*}
 &\pr\left(\left|\frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right] - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right]\right|\geq \epsilon\right)\\
     \leq & \pr\left(\left|f( U(S_1),\ldots,U(S_n))-\E[f( U(S_1),\ldots,U(S_n))]\right|\geq \epsilon\right)\\
@@ -2397,40 +2397,40 @@ $$\|\nabla_x f(x)\| \leq  \sqrt{d}\|f\|_{\mathcal{H}}/\gamma.$$
 
 \subsection{Theorem in Textbooks}
 
-\begin{lemma}[Bernstein's Inequality]\label{lemma:bernstein}
+\begin{theorem}[Bernstein's Inequality]\label{thm:bernstein}
 Let $X_1,\ldots,X_n$ be i.i.d. random variables, and $
 |X_i - \E[X_i]|\leq R$. Let $\sigma^2 = \text{Var}(X_i)$. Then, $\forall  \epsilon>0$:
 $$\pr\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \E[X_i]\right|\geq \epsilon\right)\leq 2\exp\left(-\frac{n\epsilon^2}{2\sigma^2 + \frac{2}{3}R\epsilon}\right)$$
-    
-\end{lemma}
-\begin{lemma}[Gaussian concentration, Theorem 5.2.3 in \cite{vershynin2018high}]\label{lemma:gaussian_concentration} Consider a random vector $X\sim N(0,I_n)$ and Lipschitz function $f:\R^n\rightarrow \R$ (with respect to the Euclidean metric). Let $\|\cdot\|_{\psi_2}$ be the subgaussian norm. Let $\|\cdot\|_{\mathrm{Lip}}$ be the Lipschitz norm. Then, there exists a constant $C>0$ such that
+
+\end{theorem}
+\begin{theorem}[Gaussian concentration, Theorem 5.2.3 in \cite{vershynin2018high}]\label{thm:gaussian_concentration} Consider a random vector $X\sim N(0,I_n)$ and Lipschitz function $f:\R^n\rightarrow \R$ (with respect to the Euclidean metric). Let $\|\cdot\|_{\psi_2}$ be the subgaussian norm. Let $\|\cdot\|_{\mathrm{Lip}}$ be the Lipschitz norm. Then, there exists a constant $C>0$ such that
 $$\|f(X)-\E[f(X)]\|_{\psi_2}\leq C\|f\|_{\mathrm{Lip}}.$$
 By the definition of subgaussian, the above result can be written as 
 $$\pr\left(\left|f(X)-\E[f(X)]\right|\geq t\right)\leq 2\exp\left(-\frac{ct^2}{\|f\|^2_{\mathrm{Lip}}}\right).$$
-    
-\end{lemma}
 
-\begin{lemma}[Theorem 5.2.11 in \citet{vershynin2018high}]\label{lemma:exponential_density_concentration}
+\end{theorem}
+
+\begin{theorem}[Theorem 5.2.11 in \citet{vershynin2018high}]\label{thm:exponential_density_concentration}
     Consider a random vector $X$ in $\mathbb{R}^n$ whose density has the form $f(x) = e^{-U(x)}$ for some function $U : \mathbb{R}^n \to \mathbb{R}$. Assume there exists $\kappa > 0$ such that $\text{Hess } U(x) \succeq \kappa I_n$ for all $x \in \mathbb{R}^n$. Then any Lipschitz function $f : \mathbb{R}^n \to \mathbb{R}$ satisfies
 \[
 \|f(X) - \mathbb{E} f(X)\|_{\psi_2} \leq \frac{C\|f\|_{Lip}}{\sqrt{\kappa}}.
 \]
 By the definition of subgaussian, the above result can be written as 
 $$\pr\left(\left|f(X)-\E[f(X)]\right|\geq t\right)\leq 2\exp\left(-\frac{c\kappa t^2}{\|f\|^2_{\mathrm{Lip}}}\right).$$
-    
-\end{lemma}
 
- \begin{lemma}[Theorem 2.2 in \cite{eberts2013optimal}]\label{lemma:thm2.2_eberts} 
+\end{theorem}
+
+ \begin{theorem}[Theorem 2.2 in \cite{eberts2013optimal}]\label{thm:thm2.2_eberts} 
 Let us fix some $q \in [1, \infty]$. Furthermore, assume that $P_X$ is a distribution on $\mathbb{R}^d$ that has a Lebesgue density $g \in L_p(\mathbb{R}^d)$ for some $p \in [1, \infty]$. Let $f : \mathbb{R}^d \to \mathbb{R}$ be such that $f \in L_q(\mathbb{R}^d) \cap L_\infty(\mathbb{R}^d)$. Then, for $r \in \mathbb{N}$, $\gamma > 0$, and $s \ge 1$ with $1 = \frac{1}{s} + \frac{1}{p}$, we have
 \[
 \|Q_{r,\gamma} * f - f\|_{L_q(P_X)}^q \le C_{r,q} \|g\|_{L_p(\mathbb{R}^d)} \omega_{r,L_{qs}(\mathbb{R}^d)}^q(f, \gamma/2) \, ,
 \]
 where $C_{r,q}$ is a constant only depending on $r$ and $q$.
      
- \end{lemma}
+ \end{theorem}
 
 
-  \begin{lemma}[Theorem 2.3 in \cite{eberts2013optimal}]\label{lemma:thm2.3_eberts}
+  \begin{theorem}[Theorem 2.3 in \cite{eberts2013optimal}]\label{thm:thm2.3_eberts}
      Let $f \in L_2(\mathbb{R}^d)$, $H_{\gamma}$ be the RKHS of the Gaussian RBF kernel $k_{\gamma}$ over $X \subset \mathbb{R}^d$ with $\gamma > 0$ and $Q_{r,\gamma} : \mathbb{R}^d \to \mathbb{R}$ be defined by \eqref{eq:eberts_Q_r} for a fixed $r \in \mathbb{N}$. Then we have $Q_{r,\gamma} * f \in H_{\gamma}$ with
 \[
 \|Q_{r,\gamma} * f\|_{H_{\gamma}} \le (\gamma\sqrt{\pi})^{\frac{d}{2}}(2^r - 1)\|f\|_{L_2(\mathbb{R}^d)} \, .
@@ -2439,9 +2439,9 @@ Moreover, if $f \in L_\infty(\mathbb{R}^d)$, we have
 \[
 |Q_{r,\gamma} * f(x)| \le (2^r - 1)\|f\|_{L_\infty(\mathbb{R}^d)} \, , \quad x \in X \, .
 \]
- \end{lemma}
+ \end{theorem}
 
-\begin{lemma}[Equivalence of covering and entropy numbers. Lemma 6.21 in \cite{christmann2008support}]\label{lemma:equivalence_covering_entropy} Let $(T,d)$ be a metric space and $a > 0$ and $q > 0$ be constants such that
+\begin{theorem}[Equivalence of covering and entropy numbers. Lemma 6.21 in \cite{christmann2008support}]\label{thm:equivalence_covering_entropy} Let $(T,d)$ be a metric space and $a > 0$ and $q > 0$ be constants such that
 \[
 e_n(\mathcal{F}) \leq an^{-1/q}, \quad n \geq 1.
 \]
@@ -2450,13 +2450,13 @@ Then, for all $\varepsilon > 0$, we have
 \ln \mathcal{N}(\mathcal{F},\|\cdot\|,\varepsilon) \leq \ln(4) \cdot \left(\frac{a}{\varepsilon}\right)^q.
 \]
 
-\end{lemma}
+\end{theorem}
 
-\begin{lemma}[Entropy numbers for Gaussian kernels, Theorem 6.27 in \cite{christmann2008support}]\label{lemma:entropy_gaussian} Let $X \subset \mathbb{R}^d$ be a closed Euclidean ball and $m \ge 1$ be an integer. Then there exists a constant $c_{m,d}(X)>0$ such that, for all $0 < \gamma \le r$ and all $i \ge 1$, we have
+\begin{theorem}[Entropy numbers for Gaussian kernels, Theorem 6.27 in \cite{christmann2008support}]\label{thm:entropy_gaussian} Let $X \subset \mathbb{R}^d$ be a closed Euclidean ball and $m \ge 1$ be an integer. Then there exists a constant $c_{m,d}(X)>0$ such that, for all $0 < \gamma \le r$ and all $i \ge 1$, we have
 \[
 e_i(\textnormal{id} : H_{\gamma}(rX) \to \ell_{\infty}(rX)) \le c_{m,d}(X)r^m \gamma^{-m} i^{-m/d}.
 \]
-    
-\end{lemma}
+
+\end{theorem}
     
 \end{document}
