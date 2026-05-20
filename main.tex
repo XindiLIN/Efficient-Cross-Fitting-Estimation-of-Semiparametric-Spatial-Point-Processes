@@ -112,72 +112,81 @@
 % \textcolor{red}{A potential title: Safe, Cost-Effective Spatial Policy Learning With Applications to [Agricultural-Related Groundwater Contamination in Wisconsin]}
 \begin{abstract}
 %Mitigation of the harmful effects of contaminants in drinking water requires the implementation of policies that simultaneously satisfy regulatory limits and minimize implementation costs. For example, one of the most common groundwater contaminants is nitrate. Excessive nitrate in groundwater is commonly the result of fertilizer applications, sewage disposal, or leaky septic systems, therefore a common approach for reducing nitrate in drinking water is to construct deeper groundwater wells. A key challenge is that well construction is expensive and a safe, cost effective policy would install a well that reduces nitrate concentrations below the regulatory limit while minimizing the depth of the well.
-\CP{Current word count 211; need to cut down to 200 for JRSS:B}\XL{I make minimum edition to make it 200}
-Mitigating harmful contaminants in drinking water requires policies that both satisfy regulatory standards and minimize implementation costs. One prominent example is nitrate, a common groundwater contaminant often linked to agricultural activities. A common strategy for reducing nitrate exposure in drinking water is to construct deeper groundwater wells. However, because well construction is costly, an effective policy should identify the shallowest well depth that reduces nitrate concentrations below the regulatory threshold while avoiding unnecessary costs.
-
-Motivated by this challenge, this paper proposes a statistical framework for learning safe and cost-effective mitigation policies for environmental contaminants. At each spatial location, the proposed policy selects the minimum intervention level required (e.g., well depth) to achieve a prespecified contaminant threshold (e.g., nitrate concentrations below 5 mg/L). A central feature of our framework is the explicit treatment of spatial confounding and spatial dependence, which is unavoidable in this setting. We estimate the policy through empirical risk minimization using a novel, nonparametric, doubly robust loss function. We derive excess-risk bounds for the estimator, formally quantifying the impact of spatial dependence. We apply our method to design a safe, cost-effective nitrate-mitigation policy for Wisconsin to reduce nitrate concentrations in drinking water to achieve specific regulatory standards.
+A pragmatic policy to mitigate harmful contaminants in drinking water requires policies that not only satisfy regulatory standards, but also minimize implementation costs. One prominent example is nitrate, a common groundwater contaminant often linked to agricultural activities. A common strategy for reducing nitrate exposure in drinking water is to construct deeper groundwater wells. However, because well construction is costly, a safe, cost-effective policy should identify the shallowest well depth that reduces nitrate concentrations below the regulatory threshold. Motivated by this challenge, this paper proposes a statistical framework for learning safe and cost-effective mitigation policies for environmental contaminants. At each spatial location, the proposed policy selects the minimum intervention level (e.g., well depth) to achieve a prespecified contaminant threshold (e.g., nitrate concentrations below regulatory standard). Two central features of our framework are (1) the explicit treatment of spatial confounding and spatial dependence, which is unavoidable in this setting, and (2) empirical risk minimization estimation using a novel, nonparametric, doubly robust loss function. We derive excess-risk bounds for the proposed estimator and formally quantify the impact of spatial dependence. We conclude by applying our method to design a safe, cost-effective nitrate-mitigation policy for Wisconsin.
 \end{abstract}
 
 
 \section{Introduction}
 
 
-\subsection{Motivation: Safe, Cost-Efficient Nitrate Mitigation in Drinking Water}
+\subsection{Motivation: Nitrate Mitigation in Drinking Water}
 
-For more than two decades, nitrate $(\mathrm{NO_3^{-}})$ has been among the three most common contaminants in drinking-water supplies \citep{Pennino2017}. Excessive nitrate in groundwater is caused by human activities such as fertilizer applications, manure spreading, or leaky shallow septic systems. Elevated nitrate levels have been linked to certain cancers and adverse fetal outcomes during pregnancy \citep{Ward2005}. As a result, the United States Environmental Protection Agency (EPA) has set a maximum contaminant level (MCL) of 10 mg/L that is enforceable in all public water systems \citep{USEPA1995a}.
+For more than two decades, nitrate $(\mathrm{NO_3^{-}})$ has been among the three most common contaminants in drinking water supplies \citep{Pennino2017}. Excessive nitrate in groundwater is primarily caused by human activities such as fertilizer applications, manure spreading, or leaky shallow septic systems. Elevated nitrate levels have been linked to certain cancers and adverse fetal outcomes during pregnancy \citep{Ward2005}. As a result, the United States Environmental Protection Agency (EPA) has set a maximum contaminant level (MCL) of 10 mg/L that is enforceable in all public water systems \citep{USEPA1995a}.
 
 % Excess nitrate in drinking water typically occur in areas with intense agricultural activities \citep{Sobota2013, Sabo2018}, well-drained soils, and shallow water supply wells \citep{Glenn2010,Enwright2009}.
 % Formed when nitrogen from fertilizers or other sources oxidizes, nitrate is highly water-soluble and does not adsorb well to soil particles. Consequently, it is easily transported into groundwater by precipitation and melting snow percolating through soil and bedrock.
 
- A common and effective intervention for reducing nitrate exposure in drinking water sourced from groundwater aquifers is to increase the depth of the wells so that the wells draw water from deeper within the aquifer system (e.g., \citet{Spalding1993, nitrate2025}).
-However, installing deep wells is expensive, especially for private well owners who are not connected to public water systems \citep{nitrate2025}. Instead, the most cost-effective approach is a location-specific solution where drillers are advised to install wells to a minimum depth necessary to remain below the 10 mg/L standard for nitrate.
+ A common and effective intervention for reducing nitrate exposure in drinking water sourced from groundwater aquifers is to increase the depth of the wells so that the wells draw water deeper within the aquifer system (e.g., \citet{Spalding1993, nitrate2025}).
+However, installing deep wells is expensive, especially for private well owners who are not connected to public water systems \citep{nitrate2025}. Instead, a cost-effective approach is a ``personalized,'' location-specific solution where drillers are advised to install wells to a minimum depth necessary to remain below the MCL.
 
-Inspired by this nitrate mitigation challenge in drinking water, this paper proposes a spatial policy learning framework to learn safe, cost-effective interventions for contaminant mitigation in the environment. Specifically, among all policy functions $\theta$, which maps the observed characteristics $X$ at spatial location $S$ (e.g., fertilizer applications, land use at location $S$) to an intervention level $a$ (e.g., well depth), we want to find the policy function $\theta^*$ that minimizes the intensity of the intervention while ensuring the outcome remains below a safety threshold $\mathcal{T}$ (e.g., nitrate concentration is below 10mg/L). This can be loosely stated as the following constrained, optimization problem
+More broadly, the paper is motivated by a wide array of policies in groundwater contaminants, along with air, surface water, and ecological regulations that must achieve some optimal solution under \textit{ex ante} uncertainty. 
+The paper is especially relevant to non-point source groundwater contaminants such as pesticides \citep{Stackelberg2012}, per- and polyfluoroalkyl substances (PFAS) \citep{park2024statistical, Guo2022, Gnesda2022}, and excessive chloride in groundwater systems \citep{Pieper2018}. Similarly, many contaminants in surface water are closely monitored, and mitigation of surface water contaminants such as nitrate and phosphorus requires the implementation of nutrient best management practices \citep{Dai2018}. Policies such as buffer strips, cover crops, grade stabilization, or detention wetlands may be implemented and optimized to meet downstream nutrient thresholds 
+%Like contaminants in water, exceedances of air quality thresholds may require siting or upgrading air pollution control equipment when local atmospheric conditions make it uncertain whether standards will be met after installation. For example, \citet{esworthy2013air} and \citet{papadogeorgou2019causal}discuss interventions to control particulate matter in the air (PM 2.5) while \citet{goin2021hyperlocalized} measures the effect of potential interventions on nitrogen dioxide, black carbon, and ultra-fine particulates.  
+and the paper's cost-effective policy provides one solution to design interventions that balance policy benefits and costs.
+
+
+% We briefly remark that while this study is motivated by nitrate mitigation policies in drinking water wells, the proposed statistical framework could be applicable to a wide array of groundwater contaminants, along with air, surface water, and ecological regulations that must achieve some optimal solution under \textit{ex ante} uncertainty. Our approach is especially relevant to non-point source groundwater contaminants such as pesticides \citep{Stackelberg2012}, per- and polyfluoroalkyl substances (PFAS) \citep{park2024statistical, Guo2022, Gnesda2022}, and excessive chloride in groundwater systems \citep{Pieper2018}. Similarly, many contaminants in surface water are closely monitored, and mitigation of surface water contaminants such as nitrate and phosphorus requires the implementation of nutrient best management practices \citep{Dai2018}. Policies such as buffer strips, cover crops, grade stabilization, or detention wetlands may be implemented and optimized to meet downstream nutrient thresholds 
+%Like contaminants in water, exceedances of air quality thresholds may require siting or upgrading air pollution control equipment when local atmospheric conditions make it uncertain whether standards will be met after installation. For example, \citet{esworthy2013air} and \citet{papadogeorgou2019causal}discuss interventions to control particulate matter in the air (PM 2.5) while \citet{goin2021hyperlocalized} measures the effect of potential interventions on nitrogen dioxide, black carbon, and ultra-fine particulates.  
+% and our optimal cost-effective policy approach provides one solution to design interventions that balance policy benefits and costs. %Outside of environmental sciences, our policy learning framework may be useful to set tax policy 
+%\XL{One example is the tax incentives implemented across discrete geographic tiers to spur localized economic. The goal is to identify the minimum tax incentive required to achieve a target growth threshold \citep{kennedy2021neighborhood}.}
+
+\subsection{Our Contributions}
+
+%Inspired by the nitrate mitigation challenge in drinking water,
+This paper proposes a spatial policy learning framework to learn safe, cost-effective interventions for contaminant mitigation in the environment. Specifically, among all policy functions $\theta$, which maps the observed characteristics $X$ at spatial location $S$ (e.g., fertilizer applications, land use at location $S$) to an intervention level $a$ (e.g., well depth), we want to find the policy function $\theta^*$ that minimizes the intensity of the intervention while ensuring the outcome remains below a safety threshold $\mathcal{T}$ (e.g., nitrate concentration is below 10mg/L). This can be loosely stated as the following constrained, optimization problem
 \begin{equation}\label{eq:brief}
     \theta^*(X,S)=\arg \min_{\theta\in\Theta} \theta(X,S) \quad\text{such that}\quad \mathcal{Y}(\theta(X,S))\leq \mathcal{T}. %\quad\text{for all}\quad i = 1,\ldots,n,
 \end{equation}
-\noindent The set $\Theta$ is the set of all policy functions, including a policy where intervention level is set to the highest possible value regardless of location (e.g., drill all wells to the maximum aquifer depth) or a policy where the intervention level increases as the distance to known sources of contaminants decreases (e.g. drill a well to depth $a$ where $a$ increases as $S$ gets closer to farms with manure spreading). The term $\mathcal{Y}(\theta(X,S))$ is the expected potential outcome (e.g., nitrate level) at location $S$ under intervention level specified by policy $\theta(X,S)$; note that we use potential outcomes to define intervention effects  (see Section \ref{sec:notation}). The policy $\theta^* \in \Theta$ is safe and cost-effective in that it suggests the minimum intervention level necessary to achieve the safety compliance defined by threshold $\mathcal{T}$. 
+\noindent The set $\Theta$ is the set of all policy functions, including a policy where intervention level is set to the highest possible value regardless of location (e.g., drill all wells to the maximum aquifer depth) or a policy where the intervention level increases as the distance to known sources of contaminants decreases (e.g. drill a well to depth $a$ where $a$ increases as $S$ gets closer to farms with manure spreading). The term $\mathcal{Y}(\theta(X,S))$ is the expected potential outcome (e.g., nitrate level) at location $S$ under intervention level specified by policy $\theta(X,S)$; see Section \ref{sec:notation} for definition of potential outcomes. We refer to $\theta^* \in \Theta$ as an optimal policy in that it suggests the minimum intervention level necessary to achieve the safety compliance defined by threshold $\mathcal{T}$; in short, $\theta^*$ is safe and cost-effective.
 
 
 
-\XL{hightlight identification: A hallmark of our framework is the causal identification $\theta^*$ that accounts for \emph{unmeasured} spatial characteristics at location $S$ so long as the unmeasured spatial characteristics are ``spatially smooth'' and ``sufficient'' with respect to $S$ (see Section \ref{sec:identify_spatial_confounding}).}
+A hallmark of our framework is the causal identification of $\theta^*$ accounts for \emph{unmeasured} spatial characteristics at location $S$ as long as the unmeasured spatial characteristics are ``spatially smooth'' and ``sufficient'' with respect to $S$ (see Section \ref{sec:identify_spatial_confounding}).
 % A hallmark of our framework is that we allow $\theta^*$ to account for both \emph{measured} and \emph{unmeasured} spatial characteristics at location $S$ so long as the unmeasured spatial characteristics are ``spatially smooth'' and ``sufficient'' with respect to $S$ (see Section \ref{sec:identify_spatial_confounding}).
-This feature is important because in practice, we cannot measure every spatial characteristic at location $S$ that affects the outcome and/or the intervention, a phenomenon broadly referred to as \emph{spatial confounding} (see Section \ref{sec:prior_works}). For example, in the nitrate mitigation example, it is impossible to characterize all hydrogeological features that govern subsurface transport of nitrate.
+This feature is important because in practice, we cannot measure every characteristic at location $S$ that affects the outcome and/or the intervention, a phenomenon broadly referred to as \emph{spatial confounding} (see Section \ref{sec:prior_works}). For example, in the nitrate mitigation example, it is impossible to characterize all hydrogeological features that govern subsurface transport of nitrate.
 
 
-\XL{An important statistical feature of our framework is that the estimation of the policy function $\theta^*$ from $n$ spatially dependent samples can be recast as a familiar problem in empirical risk minimization (ERM):}
+Also, a remarkable statistical feature of our framework is that the estimation of the policy function $\theta^*$ from $n$ spatially dependent samples can be re-casted as a familiar problem in empirical risk minimization (ERM):
 % An important statistical feature of our framework is that nonparametric (or parametric) estimation of the policy function $\theta^*$ from $n$ spatially dependent samples can be recast as a familiar problem in empirical risk minimization (ERM). For example, in the case where the investigator desires a simple, interpretable parametric policy (FIX TO BE GENERAL) function, the corresponding ERM would be
 \[
 \hat{\theta} = \underset{\theta  \in\Theta}{\mathrm{argmin}} \frac{1}{n} \sum_{i=1}^{n} L^{(\delta_n)}(\theta,O_i) + \mathcal{P}_n(\theta).
 \]
-\XL{Here, $\Theta$ is the function class of the policy that can either be parametric function for the interpretability, or a nonparametric for flexibility}, $L^{(\delta_n)}$ is a ``special'' loss function (see Section \ref{sec:direct_method}),  $\mathcal{P}_n$ is an $L_2$-like penalty term for the complexity of $\theta$, and $O_i$ denotes the $i$th sample. This loss function is special because we have developed it to simultaneously account for (i) model mis-specification, especially for the outcome regression function (e.g., the model for nitrate transport as a function of spatial covariates and depth) and (ii) improved rates of convergence by a $\delta_n$-``kernelized'' interpolation of the outcomes by similar intervention levels. We refer to the loss function as \emph{kernelized doubly robust loss function} and Section \ref{sec:estimator} contains more details. (III) IDENTIFIABIILITy, (IV) CLARIFY THE PROPERTY of $\hat{\theta}$ (V) Loss function's special property is it adapts to the spatial dependence (or lack thereof)?
+Here, $\Theta$ can either be a parametric function class for interpretability, or a nonparametric function class for flexibility. The loss function $L^{(\delta_n)}$ is new in that the resulting $\hat{\theta}$ has (i) double robustness to model mis-specification, (ii) improve rates of convergence by kernelized interpolation, and (iii) adaptivity to underlying spatial dependence (see next paragraph). We refer to the loss function as \emph{kernelized doubly robust loss function} and Section \ref{sec:estimator} contains more details. Finally, $\mathcal{P}_n$ is an $L_2$-like penalty term for the complexity of $\theta$.
 
- \CP{1. In Section 1.2, we highlighted identification and estimation of $\theta$, so we may also want to mention identification? \textcolor{blue}{from Xindi:see above}\\
- 2. 
- This ERM also applies to nonparametric policy, so maybe write more generally (I think we can just mention $\Theta$ is a policy class, which can be either parametric or nonparametric \textcolor{blue}{from Xindi:see above}\\
- 3. Are the properties (i) and (ii) are relevant to $\hat{\theta}$? Then I think it may be better to write ``This loss function is special in that the resulting $\hat{\theta}$ has robustness and improved rate''} 
-
-Finally, despite its simplicity, a precise, theoretical analysis of ERM is challenging under spatially dependent training data. Our theoretical analysis explicitly quantifies the effect of spatial dependence on the statistical properties of $\hat{\theta}$, which is uncommon in this literature, and may be of independent interest for both causal and non-causal works on nonparametric function estimation under spatial dependence. \XL{Notably, while our framework is designed for spatially dependent observations, our theoretical results and methodology naturally recover the standard ERM properties established under the independent and identically distributed (i.i.d.) setting as the spatial dependence approaches zero.}
-\CP{It may be helpful to frame this as a generalization of ERM: as the spatial dependency approaches zero, the formulation reduces to standard ERM (i.e., adaptivity).}\XL{see above}
+%we have developed it to simultaneously account for (i) model mis-specification, especially for the outcome regression function (e.g., the model for nitrate transport as a function of spatial covariates and depth), (ii) improved rates of convergence by a $\delta_n$-``kernelized'' interpolation of the outcomes by similar intervention levels, and (iii) adaptivity to spatial dependence. We refer to the loss function as \emph{kernelized doubly robust loss function} and Section \ref{sec:estimator} contains more details.  Finally, $\mathcal{P}_n$ is an $L_2$-like penalty term for the complexity of $\theta$.
 
 
-We briefly remark that while this study is motivated by nitrate mitigation policies in drinking water wells, the proposed statistical framework could be applicable to a wide array of groundwater contaminants, along with air, surface water, and ecological regulations that must achieve some optimal solution under \textit{ex ante} uncertainty. Our approach is especially relevant to non-point source groundwater contaminants such as pesticides \citep{Stackelberg2012}, PFAS \citep{park2024statistical, Guo2022, Gnesda2022}, and excessive chloride in groundwater systems \citep{Pieper2018}. Similarly, many contaminants in surface water are closely monitored, and mitigation of surface water contaminants such as nitrate and phosphorus requires the implementation of nutrient best management practices \citep{Dai2018}. Policies such as buffer strips, cover crops, grade stabilization, or detention wetlands may be implemented and optimized to attempt to meet downstream nutrient thresholds.
-%Like contaminants in water, exceedances of air quality thresholds may require siting or upgrading air pollution control equipment when local atmospheric conditions make it uncertain whether standards will be met after installation. For example, \citet{esworthy2013air} and \citet{papadogeorgou2019causal}discuss interventions to control particulate matter in the air (PM 2.5) while \citet{goin2021hyperlocalized} measures the effect of potential interventions on nitrogen dioxide, black carbon, and ultra-fine particulates.  
-Our optimal cost-effective policy approach provides one solution to design interventions that balance policy benefits and costs. Also, while the paper focuses on continuous interventions since it is the most difficult setting from a nonparametric, statistical estimation perspective (see Section \ref{sec:direct_method}), our framework can be simplified to cover non-binary, discrete interventions where larger values of the intervention correspond to increased costs (see Section \ref{sec: discussion}). \XL{One example is the tax incentives implemented across discrete geographic tiers to spur localized economic. The goal is to identify the minimum tax incentive required to achieve a target growth threshold \citep{kennedy2021neighborhood}.}
-\CP{Maybe include social science examples, e.g., location-based tax policies?}\XL{see above}
+% \CP{1. In Section 1.2, we highlighted identification and estimation of $\theta$, so we may also want to mention identification? \textcolor{blue}{from Xindi:see above}\\ 2. 
+ %This ERM also applies to nonparametric policy, so maybe write more generally (I think we can just mention $\Theta$ is a policy class, which can be either parametric or nonparametric \textcolor{blue}{from Xindi:see above}\\
+ %3. Are the properties (i) and (ii) are relevant to $\hat{\theta}$? Then I think it may be better to write ``This loss function is special in that the resulting $\hat{\theta}$ has robustness and improved rate''} 
+
+Theoretically, %Despite its simplicity, a precise, theoretical analysis of ERM is challenging under spatially dependent training data. Our theoretical analysis 
+we explicitly quantify the effect of spatial dependence on the statistical properties of $\hat{\theta}$ from ERM; to the best of our knowledge, this type of theoretical analysis is uncommon in ERMs and may be of independent interest for both causal and non-causal works on nonparametric function estimation under spatial dependence. Notably, while our ERM is designed for spatially dependent observations via the new loss function $L^{(\delta_n)}$, our theoretical results and methodology naturally recover the ``standard'' ERM properties established under independent and identically distributed (i.i.d.) setting if the spatial dependence approaches zero. In other words, the loss function can automatically adjust for presence (or absence) of spatial dependence and we refer to this property as adaptivity to spatial dependence.
+%\CP{It may be helpful to frame this as a generalization of ERM: as the spatial dependency approaches zero, the formulation reduces to standard ERM (i.e., adaptivity).}\XL{see above}
+
+We briefly remark that while the paper focuses on continuous interventions since it is the most difficult setting from a nonparametric, statistical estimation perspective (see Section \ref{sec:direct_method}), our framework can be simplified to cover non-binary, discrete interventions where larger values of the intervention correspond to increased costs (see Section \ref{sec: discussion}). 
+%\CP{Maybe include social science examples, e.g., location-based tax policies?}\XL{see above}
 
 \subsection{Prior Works} \label{sec:prior_works}
 
 % \textcolor{red}{to chan: double-check whether we missed any important stat references that you know}
 
 Our paper is most closely related to existing works in causal inference on  single-time, dynamic policies under constraints 
-% \textcolor{red}{to xindi: you need to seperate these works based on what type of constraints they are. For example, I don't think Athey/Wager or Kitagawa/Tetenov dealt with constraints? For policy constraints class, it mainly enforce interpretability of the policy, or the resources constraints. We can separate the references by the types of the constraints.} \XL{Done} 
-\citep{Laber2018, Ren2022,jia2025bayesian,gu2025safe, wu2021offline,qiu2022individualized,viviano2020experimental, ma2021causal,sun2024empirical}. Distinct from these, \citet{KitagawaTetenov2018, athey2021policy,Kitagawa2021} enforced interpretability and resource constraints by restricting the class of feasible policies. 
+\citep{Laber2018, Ren2022,jia2025bayesian,gu2025safe, wu2021offline,qiu2022individualized,viviano2020experimental, ma2021causal,sun2024empirical}. Distinct from these works , \citet{KitagawaTetenov2018, athey2021policy,Kitagawa2021} enforced interpretability and resource constraints by restricting the class of feasible policies. 
 % \CP{Need to add \url{https://dviviano.github.io/projects/experimental_design_2020.pdf}, \url{https://proceedings.mlr.press/v130/ma21c/ma21c.pdf}, \url{https://lsun20.github.io/EWM_constraints.pdf} and references therein} \XL{Done}
-In particular, our optimization problem in \eqref{eq:brief} is similar to those in \citet{chen2022policy}, \citet{park2023personalized}, and \citet{park2024minimum}, which studied policy learning under similar resource constraints. But, the main difference between the aforementioned works and ours is that we deal with spatial dependence due to spatial confounding (see below), which leads to dramatically different identifying assumptions, estimators, and statistical properties. 
-For clarity, we highlight specific differences between the existing works and our work throughout the manuscript.
+Also, our optimization problem in \eqref{eq:brief} is similar to those in \citet{chen2022policy}, \citet{park2023personalized}, and \citet{park2024minimum}, which studied policy learning under similar resource constraints. But, the main difference between the aforementioned works and ours is that we deal with spatial dependence due to spatial confounding (see below), which leads to dramatically different identifying assumptions, estimators, and statistical properties. \textcolor{red}{to CP and XL: check? For instance, one major difference is the loss functions where the loss function in this paper leads to rate-improving interpolation and spatial adaptivity.} For clarity, we highlight specific differences between the existing works and our work throughout the manuscript.
 
-Our work broadly falls under shape-constrained,  nonparametric regression under spatial dependence, specifically dependence due to \emph{spatial confounding} \citep{paciorek2010importance,hodges2010adding,zigler2021spatial,reich2021review}. Spatial confounding is the presence of spatially correlated unmeasured confounders and differs from ``traditional'' unmeasured confounders in independent and identically distributed (i.i.d.) settings where the unmeasured confounders are independent across study units. Because of the dependence of the unmeasured confounders, the outcomes or the interventions between study units exhibit dependence. Consequently, different assumptions are necessary to  identify and estimate intervention effects under spatial confounding (e.g., \citet{thaden2018structural,papadogeorgou2019adjusting,khan2022restricted,gilbert2021causal,dupont2022spatial+,wiecha2024two,gilbert2024consistency,datta2025consistent,burman2025robust}). To the best of our knowledge, existing works on spatial confounding focus on identification and estimation of \emph{low-dimensional parameters} (e.g., average treatment effects \citet{gilbert2024consistency}). In contrast, our work focuses on identification and estimation of \emph{nonparametric functions} (e.g., optimal policies) under spatial confounding, especially if they are under some constraints imposed by the policymaker. %, which are essentially nonparametric functions with certain shape constraints.
+Our work broadly falls under shape-constrained,  nonparametric regression under spatial dependence, specifically dependence due to \emph{spatial confounding} \citep{paciorek2010importance,hodges2010adding,zigler2021spatial,reich2021review}. Spatial confounding is the presence of spatially correlated unmeasured confounders across study units and differs from ``traditional'' unmeasured confounders where the unmeasured confounders are independent and identically distributed (i.i.d.) across units. Because of the dependence in the unmeasured confounders, the outcomes or the interventions between study units exhibit dependence. Consequently, different assumptions are necessary to  identify and estimate intervention effects under spatial confounding (e.g., \citet{thaden2018structural,papadogeorgou2019adjusting,khan2022restricted,gilbert2021causal,dupont2022spatial+,wiecha2024two,gilbert2024consistency,datta2025consistent,burman2025robust}). To the best of our knowledge, existing works on spatial confounding focus on identification and estimation of \emph{low-dimensional parameters} (e.g., average treatment effects in \citet{gilbert2024consistency}). In contrast, our work focuses on identification and estimation of \emph{nonparametric functions} (e.g., optimal policies) under spatial confounding, especially if they are under some constraints imposed by the policymaker. %, which are essentially nonparametric functions with certain shape constraints.
 
 We briefly remark that there is growing work on geospatial machine learning  
 \citep{sigrist2022gaussian,saha2023random,zhan2024neural} where the goal is to estimate nonparametric prediction models that account for spatial dependence. While our work focuses on measuring causal effects of interventions rather than generating predictions, we borrow some techniques from these works to flexibly estimate nuisance parameters in the optimal policy function (see Section \ref{sec:nuisance}). %and (b) characterize the rates of convergence of under spatial dependence.
@@ -223,23 +232,12 @@ Also, in our leading example on  nitrate mitigation in groundwater wells, spatia
 
 
 
-\subsection{Our Contributions}
+% \subsection{Our Contributions}
 
-% \textcolor{red}{to everyone: not sure if the contribution section is repetitive or not as strong as it should be}
-
-% \CP{I suggest that
-
-% 1. the monotonicity component be moved to the assumptions in Section 2.1 and omitted from the list of contributions;
-% \XL{I am not sure. But I tried to formally state the monotonicity assumption in the ERM section.}
-% 2. the second and third contributions (ERM under dependence and the corresponding theoretical results) be emphasized more strongly. For example, we can state that to the best of our knowledge, excess risk bounds under (spatial) dependence are largely unavailable (even beyond OTR), whereas our results explicitly decompose the error into components attributable to spatial dependence and to the smoothness of $\theta$.
-% } \XL{Have been tried in the following paragraph}
-
-\CP{For generality, safe/cost-effective $\rightarrow$ constraint?}\XL{Yes. An example of constraint.}
-This paper presents identification and estimation of a safe and cost-effective policy function $\theta^*$ in the presence of spatial dependence due to spatial confounding. 
-% First, %in Section \ref{sec:} \textcolor{red}{fill} 
-% we propose a monotonicity assumption on top of the identification conditions under spatial confounding by \citet{gilbert2021causal}. The monotonicity assumption is inspired by \citet{pouget2019testing,aronow2021spillover,yuan2023two,park2024minimum}, who studied a version of the problem without spatial confounding and with binary treatment, and is plausible in our nitrate example. 
-% \CP{We may also consider citing \url{https://academic.oup.com/biomet/article/106/4/929/5578431} , \url{https://arxiv.org/abs/2001.05444} , and \url{https://arxiv.org/abs/2308.09790} to note that monotonicity is a commonly imposed assumption in dependence settings}
-First, we propose a set of sufficient conditions that identify $\theta^*$ (see Section \ref{sec:setup}). Second, we propose an estimator of $\theta^*$ under spatial confounding using ERM with a novel, doubly robust loss function. The proposed estimator does not make parametric assumptions about the data generating process and incorporates spatially adjusted kernels to deal with a challenging statistical problem associated with estimating the effect of a continuous intervention under spatial dependence (see Section \ref{sec:estimator}). The estimator can also be computed efficiently using existing numerical techniques from kernel regression and Gaussian processes. Third, we present a new theoretical analysis that explicitly quantifies the impact of spatial dependence on  estimating the policy function $\theta^*$. To the best of our knowledge, excess risk bounds under spatial dependence are largely unavailable, whereas our results explicitly decompose the error into components attributable to spatial dependence and to the smoothness of the class of policy functions.
+% %\CP{For generality, safe/cost-effective $\rightarrow$ constraint?}\XL{Yes. An example of constraint.}
+% This paper presents identification and estimation of a policy function $\theta^*$ under constraints in the presence of spatial dependence due to spatial confounding. 
+% First, we propose a set of sufficient conditions that identify $\theta^*$ (see Section \ref{sec:setup}). Second, we propose an estimator of $\theta^*$ under spatial confounding using ERM with a novel kernelized doubly robust loss function $L^{(\delta_n)}$. %The proposed estimator does not make parametric assumptions about the data generating process and incorporates spatially adjusted kernels to deal with a challenging statistical problem associated with estimating the effect of a continuous intervention under spatial dependence (see Section \ref{sec:estimator}). 
+% The estimator can also be computed efficiently using existing numerical techniques from kernel regression and Gaussian processes. Third, we present a new theoretical analysis that explicitly quantifies the impact of spatial dependence on  estimating the policy function $\theta^*$. To the best of our knowledge, excess risk bounds under spatial dependence are largely unavailable, whereas our results explicitly decompose the error into components attributable to spatial dependence and to the smoothness of the class of policy functions.
 
 %we depart from both \citet{gilbert2021causal} and \citet{park2024minimum} 
 %based on geospatial machine learning (Section \ref{section:outcome_regression}) 
@@ -255,7 +253,7 @@ risk minimization with a doubly robust loss function and characterizes the exces
  %To measure effects of interventions under spatial confounding, we adopt the potential outcomes framework. 
  Let $\mathcal{S} = \{S_1,S_2,\ldots,S_n\}$ represent the set of $n$ distinct spatial locations within a spatial domain $\mathcal{D} \subset \mathbb{R}^2$. For each location $S_i\in\mathcal{S}$, let $Y_i\in\mathbb{R}$ 
  % \CP{range of $Y$?} \XL{The literature of SVM usually assumes $Y$ be bounded, or could be clipped. However, we consider GP-distributed random effect so the outcome $Y$ is unbounded. In the proof, we overcome it by the concentration inequality of Gaussian distributed random variable}
- be the observed outcome, $A_i\in \mathcal{A}=[a_L,a_U]\subset\R$ be the observed intervention/treatment level within the range $a_L$ and $a_U$,  $X_i\in\mathcal{X}\subset\R^d$ be the observed measured confounders,  
+ be the observed outcome, $A_i\in \mathcal{A}=[a_L,a_U]\subset\R$ be the observed intervention/treatment level within the range $a_L$ and $a_U$,  $X_i\in\mathcal{X}\subset\R^{d+1}$ be the observed measured confounders,  
  % \textcolor{red}{to xindi: check assumption on $X_i$ to match that of spatial random forest paper} \XL{Similar to the SVM literature, we assume the covariate $X$ to be bounded.}
 and $U_i\in\R$ be the unmeasured,  spatially-varying confounders. Let $Y_i(a)\in\mathbb{R}$ 
  % \CP{range of $Y(a)$?}  
@@ -313,14 +311,14 @@ Assumption \ref{condition:smooth_spatial_confounder} requires that the unmeasure
     \includegraphics[width=0.9\linewidth]{Causal_DAG_updated.png}
     \caption{
     % \CP{Graphs; (d) and (f) are cyclic}
-    Causal directed acyclic graphs illustrating different types of spatial confounding. The measured confounder $X$ is omitted for clarity. Panels (a)–(c) show scenarios where Assumption \ref{condition:no_confouning_spatial_confounder_weak} is satisfied \XL{while Assumption \ref{condition:spatial_sufficiency} is violated in (b) and (c)}. Panel (d) is compatible with Assumption \ref{condition:no_confouning_spatial_confounder_weak} but violates Assumption \ref{condition:ignorability}.}
+    Causal directed acyclic graphs illustrating different types of spatial confounding. The measured confounder $X$ is omitted for clarity. Panels (a)–(c) show scenarios where Assumption \ref{condition:no_confouning_spatial_confounder_weak} is satisfied \XL{while Assumption \ref{condition:spatial_sufficiency} is violated in (b)}. Panel (d) is compatible with Assumption \ref{condition:no_confouning_spatial_confounder_weak} but violates Assumption \ref{condition:ignorability}.}
     % while panels (d)–(f) show scenarios where the assumptions are violated. 
     % \CP{(e) is compatible with (A5) but violates (A2), so the description is misleading}
     \label{fig:causal_DAG}
 \end{figure}
 
 In the nitrate example, Assumption \ref{condition:smooth_spatial_confounder} is plausible if the unmeasured confounders $U$ are (latent) variables related to subsurface hydrogeological characteristics, such as groundwater recharge and depth of water table. These characteristics can often be smoothly approximated by well-established models for subsurface hydrological transport based on spatially smooth partial differential equations. But, Assumption \ref{condition:smooth_spatial_confounder} may be implausible if $U$ are variables that are not determined only by spatial locations. For example, intensity of agricultural activity may depend on both spatial location $S$ and hidden factors related to economic conditions and infrastructure. 
-\CP{This discussion raises the question of whether we could allow $U = g(S,X)$. If so, we can argue that when $X$ contains rich information beyond spatial location, Assumption 4 may be more plausible. If this relaxation is not easy, we can stick to the current setup and discussion.} \XL{Revised. It can be relaxed. But it turned out that Assumption \ref{condition:spatial_sufficiency} would be required for positivity conditioning on $S_i$.}
+\CP{This discussion raises the question of whether we could allow $U = g(S,X)$. If so, we can argue that when $X$ contains rich information beyond spatial location, Assumption 4 may be more plausible. If this relaxation is not easy, we can stick to the current setup and discussion.} \XL{Revised. It can be relaxed. But it turned out that Assumption \ref{condition:spatial_sufficiency} would be required for positivity conditioning on $S_i$.} \textcolor{red}{to myself: add paragraph about (A6)'s plausibility and get it checked with Chris.}
 Overall, we believe that the most plausible $U$ in our dataset is unmeasured, subsurface hydrogeological characteristics due to the physical processes governing nitrate transport, which influences $Y$, and water levels, which influences $A$. But, our belief is based on discussions with subject-matter experts in hydrogeology and for other datasets, we urge careful discussion of this assumption with domain experts. Finally, even if Assumption \ref{condition:smooth_spatial_confounder} fails to hold, the estimated policy function may still be useful;  see discussion following Proposition \ref{thm:identification}.
 
 For Assumption \ref{condition:no_confouning_spatial_confounder_weak}, we believe it is likely satisfied in the nitrate example by a hydrogeological mechanism described in Figure \ref{fig:causal_DAG}(a). That is, after conditioning on all unmeasured confounders (e.g., hydrogeological features, agricultural activity), location is unlikely to have a direct effect on well depth or nitrate concentrations. We remark that  Figure \ref{fig:causal_DAG}(a) is drawn to  illustrate the assumption $(Y_i(a), A_i) \perp S_i\mid X_i, U_i$, which implies Assumption \ref{condition:no_confouning_spatial_confounder_weak}. 
@@ -402,7 +400,7 @@ Let $\mu^*(a,x,s):=E[Y_i|A_i=a, X_i = x, S_i = s]$ denote the conditional mean o
 \item[(ii)] pick the smallest intervention level $a$ such that the constraint $\widehat{\mu}(a,X_0, S_0) \leq \mathcal{T}$ is satisfied.
 \end{enumerate}
 But, this approach requires a correct specification of the model $\mu^*$. Also, even if $\mu^*$ is correctly specified and can be consistently estimated, say by using flexible geospatial machine learning models (e.g.,  \citet{nandy2017additive,sigrist2022gaussian,saha2023random,zhan2024neural}),
-the convergence rate of the estimator $\widehat{\mu}$ to the true model $\mu^*$ is often very slow due to spatial dependence. For example, the mean squared error of spline-based estimators in nonparametric additive model converges at a rate of $O_p\left\{m_n\log(pm_n)\right\}$ in i.i.d. settings, whereas it converges at a slower rate of $O_p\left\{\sigma_nm_n^2\log(pm_n)\right\}$ under spatial dependence. Here, $p$ is the dimension of the covariates, $m_n$ is the number of spline basis, and $\sigma_n$ is the condition number of the working covariance matrix of the spatially dependent errors \citep{nandy2017additive}. \XL{Under the infill asymptotics such that distance between neighboring observations approaches zero, $\sigma_n$ grow as function fo the sample size $n$ and can significantly influence the convergence properties of the estimator.} 
+the convergence rate of the estimator $\widehat{\mu}$ to the true model $\mu^*$ is often very slow due to spatial dependence. For example, the mean squared error of spline-based estimators in nonparametric additive model converges at a rate of $O_p\left\{m_n\log(pm_n)\right\}$ in i.i.d. settings, whereas it converges at a slower rate of $O_p\left\{\sigma_nm_n^2\log(pm_n)\right\}$ under spatial dependence. Here, $p$ is the dimension of the covariates, $m_n$ is the number of spline basis, and $\sigma_n$ is the condition number of the working covariance matrix of the spatially dependent errors \citep{nandy2017additive}. \textcolor{red}{to XL and CP: check?: If the distance between neighboring observations approaches zero, $\sigma_n$ with respect to $n$ and can significantly influence the convergence properties of the estimator.}
 % \CP{I think it would we useful to mention $\sigma_n$ can grow wrt $n$ under spatial error?}
 % \textcolor{blue}{Response from Xindi: the rate would be multiplied by the covariance matrix when common nonparametric method is applied to geo-referenced data.} \textcolor{red}{to xindi: write out this in a few sentences below or simply summarize rate of convergence using some version of the following sentence: ``Roughly speaking, if $\widehat{\mu} - \mu^* = r_n$ for some sequence of random variables $r_n$ in i.i.d. settings and $\widehat{\mu}$ is a parametric estimator, this same estimator will have a convergence rate of 
 % $\widehat{\mu} - \mu^* = r_n \sigma_n$(?) under spatial dependence''}
@@ -410,14 +408,14 @@ the convergence rate of the estimator $\widehat{\mu}$ to the true model $\mu^*$ 
 
 %\subsection{Outcome Regression Modeling With Nonparametric Spatial Mixed Effect Model}\label{section:outcome_regression}
 
-To reduce the above concern about model mis-specification and slow rates of convergence under spatial dependence, our proposed estimator directly estimates $\theta^*$ by recasting it as a solution to a risk minimization problem with a novel, spatially smooth doubly robust loss function. %By reframing the original optimizaiton problem as a risk minimization problem, we can leverage a wealth of methods in ERM to estimate $\theta^*$ under a wide variety of policy classes $\Theta$.
+To reduce the above concern about model mis-specification and slow rates of convergence under spatial dependence, our proposed estimator directly estimates $\theta^*$ by recasting it as a solution to ERM with a novel, spatially smooth doubly robust loss function. %By reframing the original optimizaiton problem as a risk minimization problem, we can leverage a wealth of methods in ERM to estimate $\theta^*$ under a wide variety of policy classes $\Theta$.
 Formally, %for $a\in[a_L,a_U]$, 
 let $p^*(a|X_i,S_i)$ be the generalized propensity score, i.e., the conditional density of observed treatment level $A_i$ given the measured confounders $X_i$ and spatial coordinates $S_i$. 
 Let $K_{\delta_n}(A_i-a):={\delta_n}^{-1}K((A_i-a)/{\delta_n})$ be the scaled-kernel function, where ${\delta_n}>0$ is the bandwidth and $K(\cdot)$ is a bounded differentiable kernel function satisfying $\int_\R K(a)\mathrm{d}a = 1$ and $\int_\R a K(a)\mathrm{d}a = 0$. Common choices of $K(\cdot)$ include the Epanechnikov and Gaussian kernels; in this paper, we adopt the Gaussian kernel. 
 % \textcolor{red}{to xindi: (a) what is a scaled-kernel function? I would be specific about the conditions for the kernel function (it doesn't have to be Gaussian) (b) we should be consistent with subscript of ${\delta_n}$ (or super-script for loss function $L^{(\delta_n)}$?} \XL{Done}. 
 For a given observation $O_i = (Y_i, A_i, X_i, S_i)$ and intervention level $a$, we define the loss function $L^{({\delta_n})}(a,O_i)$ for the risk minimization problem as follows: 
 % \textcolor{red}{to xindi: did we define $\epsilon$ or $C_0$?} \XL{Done}
-\CP{Maybe it would be better to standardize the notation for $\delta_n$. We currently use $L^{\delta_n}$ in Section 1, $L^{(\delta_n)}$ here, and $K_{\delta_n}$ for the kernel.} \XL{Now we use $L^{(\delta_n)}$ and $K_{\delta_n}$}
+\CP{Maybe it would be better to standardize the notation for $\delta_n$. We currently use $L^{\delta_n}$ in Section 1, $L^{(\delta_n)}$ here, and $K_{\delta_n}$ for the kernel.} \XL{Now we use $L^{(\delta_n)}$ and $K_{\delta_n}$} \textcolor{red}{to CP and XL: should we unify and only use sub-script (or super-script) for $\delta_n$?}
 \begin{subequations}\label{eq:loss_function_complete}
     \begin{equation}
         L^{({\delta_n})}(a,O_i) = \begin{cases}\label{eq:loss_function_real_line}
@@ -645,7 +643,7 @@ $\widehat{\theta}
  %     The difference of convex functions (DC) algorithm \citep{DCalgorithm} can be used to efficiently solve \eqref{eq:objective function} and the computational details are in Section \ref{sec:dc_algorithm} in the Supplemental Materials.
  % \end{remark}
    
-\CP{Reviewed! All good}
+% \CP{Reviewed! All good}
  \begin{remark}[Choosing Tuning Parameters for SVM] There are three tuning parameters $(\gamma_n, \lambda_n, \delta_n)$ in SVM. Roughly speaking,  $\gamma$ controls the bandwidth of the SVM kernel, $\lambda$ regularizes the SVM coefficients $\eta$ in \eqref{eq:objective function}, and bandwidth ${\delta_n}$ controls the bias-variance trade-off resulting from the surrogate kernel. While there are theoretically optimal choices for these parameters based on rates  (see Theorem \ref{thm:excess_risk} below), in practice, we recommend using cross-validation to choose them. \XL{I think it is hard to. Most people use similar neighbor-excluding strategy to do cross fitting. But we simply split the data. But since $g(S)$ is a fixed function. The data are actually dependent. Sometimes, they use different data generative model and data analysis model for spatial data analysis}For example, %to select $\gamma_n$, $\lambda_n$, and $\delta_n$ 
  for a grid of 
  $(\gamma,\lambda,\delta_n)$, we can find the value that maximizes the cross-validated Matthews correlation coefficient (MCC) \citep{MCC}, 
@@ -705,7 +703,7 @@ Let $\sigma_{n} = \sup_{\psi\in \Psi_{\text{Mat\'ern}}}\|\mathbf{C}_n(\psi)\|_2$
 % \CP{How should I understand $R(\theta)$ in Lemma \ref{lemma:risk_db} when $X$ is a fixed object?} \XL{Now I change it to i.i.d.}
  \XL{will unify all to Theorem/Proposition}
  \begin{theorem}[Excess Risk Bound of SVM Estimator] \label{thm:excess_risk}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. If the surrogate kernel bandwidth $\delta_n$ decays no faster than $n^{-1}$, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. If the surrogate kernel bandwidth $\delta_n$ decays no faster than $n^{-1}$, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right)\leq &c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \nonumber\\
    & \qquad + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}\nonumber\\
@@ -765,7 +763,7 @@ A popular technique to avoid the complexity Assumption \ref{condition:excess_ris
 While independent data splitting may not always be feasible in spatial datasets, we nevertheless follow \citet{gilbert2021causal} and consider a setup where $(Y, A, X, S)$ is identically distributed and exhibits spatial dependence according to a locally covariance random field. Under this setup, Bernstein blocking can be employed to obtain independent subsets of a spatial dataset, which then enables cross-fitting and relaxes Assumption \ref{condition:excess_risk:VC-type} to accommodate flexible machine learning estimators. Theorem \ref{thm:excess_risk_cross_fitting} extends our theoretical analysis to this cross-fitting regime.
 
  \begin{theorem}[Excess Risk Bound of Cross-Fitting Estimator] \label{thm:excess_risk_cross_fitting}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. \XL{Suppose the observations are distributed identically and according to a locally covariant spatial random field, and the nuisance estimators $\widehat\mu,\widehat p$ and the target estimator $\widehat\theta$ are estimated using independent subsets obtained via Bernstein blocking (see Section 5.2 of \citet{gilbert2021causal} for details).}. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Then, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. \XL{Suppose the observations are distributed identically and according to a locally covariant spatial random field, and the nuisance estimators $\widehat\mu,\widehat p$ and the target estimator $\widehat\theta$ are estimated using independent subsets obtained via Bernstein blocking (see Section 5.2 of \citet{gilbert2021causal} for details).}. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Then, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right) 
        \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_5r_{\mu,n}r_{p,n} + c_6{\delta_n}. \label{eq:excess_risk_cross_fitting}
@@ -1046,6 +1044,9 @@ $$\text{Well Depth} = \text{Casing Bottom Depth} + \frac{\text{Well Bottom Depth
     \label{fig:welldepth}
 \end{figure}
 
+\subsubsection{Static Water Level}
+
+Static water level is recorded at each nitrate measurement and it is one of the covariates (confounders) in the loss function. However, to estimate the location-specific policy, i.e., the map of the minimum well depth required to meet the threshold, the value of static water level are needed at every PLSS grid cell. We use kriging with a Matern covariance function to interpolate the static water levels. In our dataset, there are multiple wells within single PLSS grid cell and some wells receive multiple measurements. The measurement of static water level can be different from time to time and well to well. Thus, we have multiple different measurements of static water level at each PLSS grid. Kriging effectively reconciles these multiple observations by computing a weighted average that incorporates both local measurements and neighboring data, informed by the estimated spatial dependence structure.
 
 % The dataset also records the usage information of wells. For example, private potable well is used for drinking and household use owned by individuals. Private non-potable well is used for non-drinking purposes like lawn irrigation or livestock use. Municipal community wells serve as drinking water for communities. Different types of wells are designed with distinct standards, features, and regulatory requirements, depending on their purpose, usage, and the populations they serve.
 
@@ -1196,7 +1197,7 @@ Here, $\Lambda_{i,i}$ is the scalar $i$-th diagonal entry of $\Lambda$, and $\La
 Then, we have
 $$\widehat U_i = -\Lambda_{i,i}^{-1}\Lambda_{i,-i} \widehat{\textbf{R}}_{-i}.$$
 The above equation implies that we only need to compute the precision matrix $\Lambda$ once to find the terms for all $n$ conditional expectations, rather than performing $n$ matrix inversions. Then, the expression $\widehat U_i = -\Lambda_{i,i}^{-1}\Lambda_{i,-i} \widehat{\textbf{R}}_{-i}$ can be rewritten by adding and subtracting $i$-th term:
-$$\widehat U_i = R_i -\Lambda_{i,i}^{-1}(\Lambda \widehat{\textbf{R}})_i$$
+$$\widehat U_i = \widehat R_i -\Lambda_{i,i}^{-1}(\Lambda \widehat{\textbf{R}})_i$$
 where $(\Lambda \widehat{\textbf{R}})_{i}$ is the $i$-th element of the vector resulting from the product of the precision matrix and the observed residuals. Then, we can get the vector $\widehat{\mathbf{U}} = (\widehat U_1,\ldots,\widehat U_n)$ by 
 $$\widehat{\mathbf{U}} = \widehat{\mathbf{R}} - \text{diag}(\Lambda)^{-1}(\Lambda \widehat{\textbf{R}})$$
 
@@ -1205,7 +1206,7 @@ $$\widehat{\mathbf{U}} = \widehat{\mathbf{R}} - \text{diag}(\Lambda)^{-1}(\Lambd
 % \subsection{Vecchia Approximation}
 
 % The computation of the precision of the Gaussian processes $\{U_i\}_{i=1}^n$ is a crucial part of our method. In Step \ref{step:covariance_estimation}, maximum likelihood estimation involves the calculation of the precision. In Step \ref{step:kriging}, the kriging also involves the  calculation of the precision matrix. However, the precision matrix $\Lambda$ arising from a Gaussian process is dense for large $n$, evaluating $\Lambda$ even once still incurs the computational cost of $O(n^3)$ and storage cost of $O(n^2)$ both of which are taxing on typical personal computing resources. Thankfully, there is a rich literature concerning the numerical approximation and fast computation of Gaussian processes. In our method, we employ the Vecchia approximation \citep{vecchia1988estimation, katzfuss2021general} which can be implemented by the R package \citep{guinness2021gpgp}.
-\subsection{Vecchia Approximation for Fast Computation}
+\subsection{Vecchia Approximation for Fast Computation}\label{sec:vecchia}
 
 One of the most computationally demanding steps in the estimation of $\mu^*$ is estimating the inverse of the covariance matrix in the GP, an operation that is of $O(n^3)$ in terms of computational complexity. Fortunately, several works have proposed various approximations to speed up the computation in large spatial datasets and in this section, we briefly discuss how to use the Vecchia approximation \citep{vecchia1988estimation, datta2016hierarchical, katzfuss2021general} for our setup. %Briefly, the Vecchia approximation utilizes the chain rule of the conditional probability
 %$$p(y_1, \dots, y_n) = \prod_{i=1}^n p(y_i \mid y_1, \dots, y_{i-1})$$
@@ -1334,51 +1335,33 @@ As a result, $\theta^*$ in \eqref{eq:identification} minimizes $\E[\nu(\theta(X_
 
 
 
-\subsection{Proof of Theorem \ref{thm:excess_risk}}
-We start the proof with the definition of some new notation. First, similar to \eqref{eq:loss_function_complete}, we define the estimated loss function $\widehat L^{({\delta_n})}(a,O_i)$ where the nuisance parameters are substituted by their estimations:
-\begin{subequations}
-    \begin{equation*}
-        \widehat L^{({\delta_n})}(a,O_i) = \begin{cases}
-    \widehat\nu^{({\delta_n})}(a_L, O_i)+\epsilon -\epsilon \left\{\log( e + a_L- a)\right\}^{-1}& \text{if } -\infty<a<a_L\\
-    \widehat\nu^{({\delta_n})}(a, O_i)&\text{if }  a_L\leq a\leq a_U\\
-    \widehat\nu^{({\delta_n})}(a_U, O_i)+\epsilon -\epsilon \left\{\log( e + a- a_U)\right\}^{-1}&\text{if }  a_U<a< \infty
-\end{cases}
-    \end{equation*}
-    \begin{equation*}
-        \widehat\nu^{({\delta_n})}(a, O_i) = \int_{\mathcal{A}} (\mathcal{T} - \widehat\psi^{({\delta_n})}(a^\prime,O_i))1(a^\prime\leq a)\mathrm{d}a^\prime + C_0.
-    \end{equation*}
-\begin{equation*}
-    \widehat\psi^{({\delta_n})}(a,O_i) := \widehat\mu(a,X_i,S_i)+ \frac{(Y_i - \widehat\mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{\widehat p(A_{i}|X_{i},S_{i})}.
-\end{equation*}
-\end{subequations}
-Here, $\widehat\mu$ is the estimation of outcome regression model, $\widehat p$ is the estimation of the generalized propensity score. Additionally, we define the true loss function $L(a,O_i)$ where the pseudo outcome $\psi^{({\delta_n})}(a,O_i)$ is substituted by the true outcome regression $\mu^*(a,X_i,S_i)$:
+\subsection{Notations}\label{sec:supp_notations}
+Let $\widehat\mu$, $\widehat p$, and $\widehat\psi$ be the estimation of the nuisance parameters, i.e., outcome regression model, the generalized propensity score, covariance function of Gaussian process, respectively. Particularly, $\widehat\mu (A_i,X_i,S_i) = \widehat f(A_i,X_i) +\widehat U(S_i)$ (see Section \ref{sec:nuisance} for details) where $\widehat U(\cdot)$ is the leave-one-out kriging estimation defined in \eqref{eq:kriging} depending on both $\widehat\psi$ and $\widehat f$. Let $\mathcal{H}_\gamma$ be the RKHS space on $\R^{d+1}$ that maps $(X_i,\widehat U(S_i))$ to a policy. Let $\widetilde\Theta$ be the class of all functions that map $(X_i,\widehat U(S_i))$ to a policy. Let $\Theta$ be the class of functions that map $(X_i,S_i)$ to a policy. $\widetilde\Theta\subset \Theta$ because it maps $S$ to $\widehat U(S_i)$ first and only consider functions of $\widehat U(S_i)$. 
 
-\begin{subequations}
-    \begin{equation*}
-         L(a,O_i) = \begin{cases}
-    \nu(a_L, O_i)+\epsilon -\epsilon \left\{\log( e + a_L- a)\right\}^{-1}& \text{if } -\infty<a<a_L\\
-    \nu(a, O_i)&\text{if }  a_L\leq a\leq a_U\\
-    \nu(a_U, O_i)+\epsilon -\epsilon \left\{\log( e + a- a_U)\right\}^{-1}&\text{if }  a_U<a< \infty
-\end{cases}
-    \end{equation*}
-    \begin{equation*}
-        \nu(a, O_i) = \int_{\mathcal{A}} (\mathcal{T} - \mu^*(a^\prime,O_i))1(a^\prime\leq a)\mathrm{d}a^\prime + C_0.
-    \end{equation*}
-\end{subequations}
-We define the intermediate risk functions used to decompose the excess risk:
+
+Let $\widehat L^{({\delta_n})}(a,O_i)$ be the loss function plugging-in estimated nuisance parameters. For any function $\theta\in \widetilde\Theta$, we define:
 \begin{gather}
-   \widehat R_n^{({\delta_n})}(\theta) = \sum_{i=1}^n\widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i),\quad
-   \widehat R^{({\delta_n})}(\theta) = \E[\widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i)], \label{eq:plug_in_risk}\\
-   R^{({\delta_n})}(\theta) = \E[ L^{({\delta_n})}(\theta(X_i,U(S_i)),O_i)],\quad
-   R(\theta) = \lim_{{\delta_n}\rightarrow 0}\E[L^{({\delta_n})}(\theta(X_i,U(S_i)),O_i)],\label{eq:non_plug_in_risk}
+   \widehat R_n^{({\delta_n})}(\theta) = \sum_{i=1}^n\widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i),\nonumber\\
+   \widehat R^{({\delta_n})}(\theta) = \E[\widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i)], \nonumber\\
+   R(\theta) = \lim_{\delta\rightarrow 0}\E\left[L^{(\delta_n)}(\theta(X_i,S_i),O_i)\right]
+   \nonumber\label{eq:plug_in_risk}
+   % \\
+   % R^{({\delta_n})}(\theta) = \E[ L^{({\delta_n})}(\theta(X_i,U(S_i)),O_i)],\quad
+   % R(\theta) = \lim_{{\delta_n}\rightarrow 0}\E[L^{({\delta_n})}(\theta(X_i,U(S_i)),O_i)],\label{eq:non_plug_in_risk}
 \end{gather}
- Here, $\widehat R_n^{({\delta_n})}(\theta)$ is the empirical risk using estimated loss function; $\widehat R^{({\delta_n})}(\theta)$ is the population risk using estimated loss function; $R^{({\delta_n})}(\theta)$ is the population risk using the loss function constructed with pseudo-outcome; $R(\theta)$ is the population risk. 
- 
-We define $\Theta$ as the collection of functions from the support of $(X,U(S)), X\in \mathcal{X}, S\in \mathcal{D}$ to the treatment range $a\in \mathcal{A}$, define $\widehat \Theta$ as the collection of functions from the support of $(X,\widehat U(S)), X\in \mathcal{X}, S\in \mathcal{D}$ to the treatment range $\mathcal{A}$, define $\mathcal{H}_{\gamma_n}$ as the RKHS space on $(X,\widehat U(S)),X\in \mathcal{X}, S\in \mathcal{D}$. The RKHS space $\mathcal{H}_{\gamma_n}$ is a subset of $\widehat \Theta$. We distinguish between these spaces because the optimal policy $\theta^*$, defined in \eqref{eq:identification_1}, is a function of the true process $(X, U(S))$, whereas the estimated policy $\widehat{\theta}$ is a function of the estimated process $(X, \widehat{U}(S))$. In these definitions, $U(\cdot)$ and $\widehat{U}(\cdot)$ are Gaussian processes (GPs) mapping the spatial domain $\mathcal{D}$ to $\mathbb{R}$. Both processes utilize a Matérn covariance function, though with differing parameters. Consequently, the covariance matrices of the finite-dimensional realizations $(U(S_1), \dots, U(S_n))$ and $(\widehat{U}(S_1), \dots, \widehat{U}(S_n))$ differ. Then, we define the following intermediate policies:
-\begin{equation}
-    \widehat\theta = \arg\min_{\theta\in\mathcal{H}_{\gamma_n}} \widehat R_n^{({\delta_n})}(\theta),\quad \tilde\theta = \arg\min_{\theta\in\widehat\Theta} \widehat R^{({\delta_n})}(\theta), \quad
-   \theta^* = \arg\min_{\theta\in\Theta}  R(\theta)\label{eq:different_thetas}
+Whereas for $\theta\in\Theta$, we define:
+\begin{gather*}
+ \widehat R_n^{({\delta_n})}(\theta) = \sum_{i=1}^n\widehat L^{({\delta_n})}(\theta(X_i,S_i),O_i),\nonumber\\
+   \widehat R^{({\delta_n})}(\theta) = \E[\widehat L^{({\delta_n})}(\theta(X_i,S_i),O_i)], \nonumber\\
+    R(\theta) = \lim_{\delta\rightarrow 0}\E\left[L^{(\delta_n)}(\theta(X_i,S_i),O_i)\right]\nonumber
+\end{gather*}
+Then, we define an intermediate policy in $\widetilde\Theta$:
+\begin{equation}\label{eq:different_thetas}
+    \tilde \theta = \arg\min_{\theta\in \widetilde\Theta} \widehat R^{({\delta_n})}(\theta)
 \end{equation}
+
+
+\subsection{Proof of Theorem \ref{thm:excess_risk}}
 Given the above definitions, we decompose the excess risk that we aim to bound as follows:
 \begin{equation}\label{eq:excess_risk_decomposition}
    |R(\widehat\theta)-R\left(\theta^*\right)|\leq \underbrace{|R(\widehat\theta)-\widehat R^{({\delta_n})}(\widehat\theta)|}_{\text{Term (A)}} + \underbrace{|\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)|}_{\text{Term (B)}} + \underbrace{|\widehat R^{({\delta_n})}(\tilde\theta) - R(\theta^*)|}_{\text{Term (C)}} 
@@ -1390,6 +1373,7 @@ Since $\tilde\theta\in \widehat \Theta$ is the minimizer of $\widehat R^{({\delt
     |\widehat R^{({\delta_n})}(\tilde\theta) - R(\theta^*)|\leq &\max\left\{|\widehat R^{({\delta_n})}(\theta^*) - R(\theta^*)|,|\widehat R^{({\delta_n})}(\tilde\theta) - R(\tilde\theta)|\right\} \\
     \leq &2C^{\prime2}c^{\prime-2}|\mathcal{A}|\delta_n +2C^{\prime2}c^{\prime-1}|\mathcal{A}|\delta_n + c^{\prime-2}r_{\mu,n}r_{p,n}
 \end{align*}
+\textcolor{red}{Bound of Term (B) is incorrect: }
 By Lemma \ref{lemma:svm_estimation_error}, term (B) has the following bound with probability $1-32e^{-\tau}$,
 \begin{align*}
    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
@@ -1433,7 +1417,7 @@ Thus, we have that the following upper bound for the excess risk with probabilit
 \subsection{Proof of Useful Lemmas}
 
 \begin{lemma}[SVM Approximation Error]\label{lemma:svm_approximation_error} 
-    Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat U(S_i))$. Let $\widehat R^{({\delta_n})}$ and $\tilde \theta$ be the intermediate risk function and policy defined in \eqref{eq:plug_in_risk} and \eqref{eq:different_thetas}, respectively. Let $\pr_X$ be the distribution of $X$ and  $g_X$ be the density function and suppose $g_X\in L_\infty(\R^d)$. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Then, for any  hyper-parameter $\lambda_n, \gamma_n,\delta_n>0$, there exist an element $\theta_0\in \mathcal{H}_{\gamma_n}$ and positive constant $c_1,c_2$ such that  
+    Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat U(S_i))$. Let $\widehat R^{({\delta_n})}$ and $\tilde \theta$ be the intermediate risk function and policy defined in \eqref{eq:plug_in_risk} and \eqref{eq:different_thetas}, respectively. Let $\pr_X$ be the distribution of $X$ and  $g_X$ be the density function and suppose $g_X\in L_\infty(\R^{d+1})$. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Then, for any  hyper-parameter $\lambda_n, \gamma_n,\delta_n>0$, there exist an element $\theta_0\in \mathcal{H}_{\gamma_n}$ and positive constant $c_1,c_2$ such that  
 \begin{equation}\label{eq:approx_error_svm}
 \lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta) \leq c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}
     \end{equation}
@@ -1453,13 +1437,13 @@ Since $\tilde\theta \in L_2(\mathbb{R}^d) \cap L_\infty(\mathbb{R}^d)$, we defin
 \[
 \theta_0(x) = (Q_{r,\gamma} * \tilde\theta_{L,\pr})(x) := \int_{\mathbb{R}^d} Q_{r,\gamma}(x - z) \tilde\theta_{L,\pr}(z) \mathrm{d}z.
 \]
-Let $\pr_X$ be the distribution of $X$ and $g_X$ be the density function satisfying $g_X\in L_\infty(\R^d)$. Applying Lemma \ref{thm:thm2.2_eberts} (Theorem 2.2 in \citet{SVM2013}) under the specification $p=\infty,s=1,q=1$, we have
+Let $\pr_X$ be the distribution of $X$ and $g_X$ be the density function satisfying $g_X\in L_\infty(\R^{d+1})$. Applying Lemma \ref{thm:thm2.2_eberts} (Theorem 2.2 in \citet{SVM2013}) under the specification $p=\infty,s=1,q=1$, we have
 \begin{equation}\label{eq:approx_error_excess_risk}
     \|Q_{r,\gamma} * \tilde\theta - \tilde\theta\|_{L_1(\pr_X)} \le C_{r,1} \|g_X\|_{L_\infty(\mathbb{R}^d)} \omega_{r,L_{1}(\mathbb{R}^d)}(\tilde\theta, \gamma/2)
 \end{equation}
 Additionally, by Lemma \ref{thm:thm2.3_eberts} (Theorem 2.3 in \citet{SVM2013}), 
 \begin{equation}\label{eq:approx_error_regularizer}
-    \|\theta_0\|^2_{\mathcal{H}_{\gamma_n}} = \|Q_{r,\gamma} * \tilde\theta\|^2_{\mathcal{H}_{\gamma_n}}\leq (\gamma\sqrt{\pi})^{-\frac{d}{2}}(2^r-1)\|\tilde\theta\|_{L_2(\R^d)}.
+    \|\theta_0\|^2_{\mathcal{H}_{\gamma_n}} = \|Q_{r,\gamma} * \tilde\theta\|^2_{\mathcal{H}_{\gamma_n}}\leq (\gamma\sqrt{\pi})^{-\frac{d}{2}}(2^r-1)\|\tilde\theta\|_{L_2(\R^{d+1})}.
 \end{equation}
 \noindent \textbf{Step 2: Lipschitz Property of Risk}
 
@@ -1516,12 +1500,12 @@ The first equality follows from the construction of $\theta_0$, obtained by appl
 \end{proof}
 
 \begin{lemma}[SVM Estimation Error]\label{lemma:svm_estimation_error}
-    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
    \begin{align*}
    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
    & + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}
 \end{align*}
-Here, $\tilde\theta$ is defined in \eqref{eq:different_thetas}; $\gamma_n$ is the bandwidth of the Gaussian kernel in kernel SVM; $\lambda_n$ is the regularization penalty in \eqref{eq:objective function}; $c_1,\ldots,c_6$ are constants that are independent of $n$.    
+Here, $\tilde\theta$ is defined in Section \ref{sec:supp_notations}; $\gamma_n$ is the bandwidth of the Gaussian kernel in kernel SVM; $\lambda_n$ is the regularization penalty in \eqref{eq:objective function}; $c_1,\ldots,c_6$ are constants that are independent of $n$.    
 \end{lemma}
 
 \begin{proof}
@@ -1541,7 +1525,7 @@ Let $\theta_0$ be any fixed element in RKHS $\mathcal{H}_{\gamma_n}$. We decompo
 In the last inequality above, term (A) is the approximation error term. Term (B) is the deviation error since $\theta_0$ is fixed while $\widehat \mu$ and $\widehat p$ are stochastic. Term (C) is the deviation error term where  $\widehat\theta$, $\widehat \mu$ and $\widehat p$ are all stochastic. The rate of term (C) is slower than term (B).
 
 
-Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B), (C) are upper bounded by Lemma \ref{lemma:empirical_loss_deviation}. Then, it holds that for any $\tau>0$ with probability no less than $1-32e^{-\tau}$,
+Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B), (C) are upper bounded by Lemma \ref{lemma:empirical_loss_deviation}. (\textcolor{red}{Incorrect Lemma})  Then, it holds that for any $\tau>0$ with probability no less than $1-32e^{-\tau}$,
 \begin{align*}
    &\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot (\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|)} + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta\\
@@ -1564,7 +1548,7 @@ Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sig
 \end{proof}
 
 \begin{lemma}[SVM Estimation Error with Cross-Fitting]\label{lemma:svm_estimation_error_cross_fitting}
-    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. Suppose the nuisance estimation $\widehat\mu, \widehat p$ are estimated with independent dataset. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^d$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^d) = \{f\in L_\infty(\R^d)|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^d)}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. Suppose the nuisance estimation $\widehat\mu, \widehat p$ are estimated with independent dataset. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
    \begin{align*}
   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
 \end{align*}
@@ -1642,24 +1626,250 @@ Let $\epsilon_\theta \propto n^{-1}$, $\epsilon_p \propto n^{-1}, \epsilon_\mu\p
 \end{proof}
 
 
+\subsection{Sub-Gaussianity}
 
+In this section, we derive the sub-Gaussianity of $R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$ w.r.t. $\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}, p\in\mathcal{F}_p, \psi\in\Psi$. The main challenge is that the empirical risk $R_n^{(\delta_n)}(\theta;f,p,\psi)$ is defined as a function of random variable $(X_i,\widehat U(S_i), A_i, Y_i)$ while the underlying data generative process \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} are defined via random variables $X_i,U(S_i), \xi_i,\epsilon_i$. In the next section, we show that $\widehat U(S_i)$ is a linear combination of random variables at nearby locations.
+
+\subsubsection{Theory of Vecchia Approximation}
+Denote $\Lambda_n(\psi)$ as the inverse of the covariance matrix $\Sigma_n(\psi)$ where $\psi$ is the parameter of the covariance function of the Gaussian process. Then, $\widehat U(S_i)$, i.e, the estimation of the latent unobserved process $U(S_i)$, is a linear combination of the neighbored observations as follows:
+\begin{gather*}
+\widehat{R}_{j} = U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i),\\
+    \alpha_{ij} = -\Lambda_{i,i}(\psi)^{-1}\Lambda_{i,j}(\psi),\\
+    \widehat U(S_i) =  \sum_{j\neq i}\alpha_{ij}\widehat{R}_{j}
+\end{gather*}
+Theorem 2.1 in \cite{schafer2021compression} shows that for any $\epsilon>0$, there exists a sparse Cholesky factor $L$ with  at most $O(\log(n/\epsilon)$ nonzero entries each column such tha
+$$\|\Lambda - LL^\top\|_{\text{Fro}}\leq \epsilon.$$
+Here, $\|\cdot\|_{\text{Fro}}$ is the Frobenious norm of the matrix. In practice, we use such sparse approximation pattern, i.e, Vecchia approximation (see Section \ref{sec:vecchia}), to accelerate the calculation regarding the the precision matrix $\Lambda_n$. Though the sparsity structure is affected by the nugget effect of the Gaussian process, i.e., $\epsilon_i$ in \eqref{eq:data_generative_model_1}, detailed characterization of the approximation error from Vecchia approximation is out the scope of this work. In this paper,  we simply our problem by assuming that for every $i$, the number of nonzero $\alpha_{i,j}$ is of rate $\log(n)$, i.e.,
+\begin{equation}\label{eq:vecchina_approximation_nonzero}
+    \sup_{i\in[n]}|\{j:\alpha_{i,j}\neq 0\}| = \mathcal{O}(\log(n)).
+\end{equation}
+
+\subsubsection{Proof Skeleton}
+ 
+In our proof, we derive the $\psi_2$-norm with respect to each parameter by using the conditional expectation to sequentially decouple the four layers of randomness in the latent random variables,i.e.,
+ \begin{align}
+     &\|R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]\|_{\psi_2}\label{ref:randomness_decomposition}\\
+     \leq & \|R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)|\xi,U,X]\|_{\psi_2}\nonumber\\
+     &+\|\E[R_n^{(\delta_n)}(\theta;f,p,\psi)|\xi,U,X]-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)|U,X]\|_{\psi_2}\nonumber\\
+     &+ \|\E[R_n^{(\delta_n)}(\theta;f,p,\psi)|U,X]-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)|X]\|_{\psi_2}\nonumber\\
+      &+ \|\E[R_n^{(\delta_n)}(\theta;f,p,\psi)|X]-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]\|_{\psi_2}\nonumber
+ \end{align}
+To bound each $\psi_2$-norm in the right-hand-side of the above inequality, we view the empirical risk $R_n^{(\delta_n)}(\theta;f,p,\psi)$ as a decomposition of two mappings: (i) the mapping from the latent variables $(X_i,U(S_i),\xi_i,\epsilon_i)$ to the observed variable $(X_i,\widehat U(S_i),A_i,Y_i)$, (ii) the subsequent mapping from the observed variable $(X_i,\widehat U(S_i),A_i,Y_i)$ to $R_n^{(\delta_n)}(\theta;f,p,\psi)$. After characterizing the effects of the latent variables on the empirical risk, we use concentration inequalities to derive bounds on their $\psi_2$-norms.
+
+\subsubsection{Effect of Latent Variable to Empirical Risk}\label{sec:formula_derivatives_latent}
+
+As we mentioned in the previous section, we need to characterize the effect of the latent variables $(X_i,U(S_i),\xi_i,\epsilon_i)$ on the empirical risk. In this section, we first (i) write out the formulas, and (ii) calculate the derivatives. Furthermore, because the loss function outside the policy domain $\mathcal{A}=[a_L,a_U]$ is defined simply as the sum of its boundary values and a monotonic function, our analysis focuses exclusively on the empirical risk restricted within $\mathcal{A}$. To minimize notation, we use $U_i$ to denote $U(S_i)$, and $U$ to denote vector of $(U(S_1),\ldots,U(S_n))$.
+
+\noindent \textbf{Formula: Mapping from latent variable to observations}
+\begin{gather*}
+    X_i = X_i,\\
+    \widehat U(S_i) = \sum_{j\neq i}\alpha_{ij}\{U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i)\},\\
+    A_i = g(X_i,U(S_i)) +\xi_i,\\
+    Y_i = f(A_i,U(S_i))+\epsilon_i,
+\end{gather*}
+\noindent \textbf{Formula: Mapping from observations to empirical risk}
+\begin{align*}
+    R_n^{(\delta_n)} = &\frac{1}{n}\sum_{i=1}^n\int_{a_L}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} - f(a,X_i)-\widehat U(S_i))\mathrm{d}a\\
+    & + \frac{1}{n}\sum_{i=1}^n\frac{(Y_i -  f(A_i,X_i)-\widehat U(S_i))}{p(A_{i}|X_{i},\widehat U(S_{i}))}  \int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a
+\end{align*}
+\noindent \textbf{Derivatives: Mapping from latent variable to observations}
+
+\noindent Table \ref{tab:filled_jacobian} summarizes the results of the derivatives. Detailed calculations of the derivatives the follows.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Jacobian Matrix of Derivatives from Latent to Observed Variables ($i=j$ and $i \neq j$ Cases)}
+    \label{tab:filled_jacobian}
+    \small
+    \renewcommand{\arraystretch}{2.2} % Gives ample vertical space for fractions and conditions
+    \begin{tabular}{l@{\hspace{2em}}cccc}
+        \toprule
+        & \multicolumn{4}{c}{\textbf{Latent Variables (Input Index $j$)}} \\
+        \cmidrule(lr){2-5}
+        \textbf{Observed ($i$)} & $X_j$ & $U(S_j)$ & $\xi_j$ & $\epsilon_j$ \\
+        \midrule
+        
+        % Row 1: X_i
+        $X_i$ & 
+        $\mathbb{I}(i=j)$ & 
+        $0$ & 
+        $0$ & 
+        $0$ \\
+        
+        % Row 2: \hat{U}(S_i)
+        $\widehat U(S_i)$ & 
+        $\dfrac{\partial (f^* - f)(A_i,x)}{\partial x}\bigg|_{x = X_j} \mathbb{I}(i\neq j)$ & 
+        $\alpha_{i,j} \mathbb{I}(i\neq j)$ & 
+        $0$ & 
+        $\alpha_{i,j} \mathbb{I}(i\neq j)$ \\
+        
+        % Row 3: A_i
+        $A_i$ & 
+        $\dfrac{\partial g(x,U(S_i))}{\partial x}\bigg|_{x = X_i} \mathbb{I}(i=j)$ & 
+        $\dfrac{\partial g(X_i,u)}{\partial u}\bigg|_{u = U(S_i)} \mathbb{I}(i=j)$ & 
+        $\mathbb{I}(i=j)$ & 
+        $0$ \\
+        
+        % Row 4: Y_i
+        $Y_i$ & 
+        $\dfrac{\partial f^*(A_i,x)}{\partial x}\bigg|_{x = X_i} \mathbb{I}(i=j)$ & 
+        $\mathbb{I}(i=j)$ & 
+        $0$ & 
+        $\mathbb{I}(i=j)$ \\
+        
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\noindent\textit{Derivative: from $\{X_i,U(S_i),\xi_i,\epsilon_i\}_{i=1}^n$ to $Y_i$}
+
+\begin{gather*}
+    \frac{\partial Y_i}{\partial \epsilon_j} =\frac{\partial (f^*(A_i,X_i)+U(S_i)+\epsilon_i)}{\partial \epsilon_j}= 1(i=j), \\
+    \frac{\partial Y_i}{\partial \xi_j} =\frac{\partial (f^*(A_i,X_i)+U(S_i)+\epsilon_i)}{\partial \xi_j}= 0,\\
+     \frac{\partial Y_i}{\partial U(S_j)} =\frac{\partial (f^*(A_i,X_i)+U(S_i)+\epsilon_i)}{\partial U(S_j)}= 1(i=j),\\
+     \frac{\partial Y_i}{\partial X_j} =\frac{\partial (f^*(A_i,X_i)+U(S_i)+\epsilon_i)}{\partial X_j}= \frac{\partial f^*(A_i,x)}{\partial x}\bigg|_{x = X_i}\cdot 1(i=j)
+\end{gather*}
+
+\noindent\textit{Derivative: from $\{X_i,U(S_i),\xi_i,\epsilon_i\}_{i=1}^n$ to $\widehat U(S_i)$}
+
+\begin{gather*}
+    \frac{\partial \widehat U(S_i)}{\partial \epsilon_j} =\frac{\partial \left\{\sum_{j\neq i}\alpha_{i,j}(U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i))\right\}}{\partial \epsilon_j}= 1(i\neq j)\alpha_{i,j}, \\
+    \frac{ \partial \widehat U(S_i)}{\partial \xi_j} =\frac{\partial \left\{\sum_{j\neq i}\alpha_{i,j}(U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i))\right\}}{\partial \xi_j}= 0,\\
+     \frac{\partial \widehat U(S_i)}{\partial U(S_j)} =\frac{\partial \left\{\sum_{j\neq i}\alpha_{i,j}(U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i))\right\}}{\partial U(S_j)}= 1(i\neq j)\alpha_{i,j},\\
+     \frac{\partial \widehat U(S_i)}{\partial X_j} =\frac{\partial \left\{\sum_{j\neq i}\alpha_{i,j}(U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i))\right\}}{\partial X_j}= \frac{\partial (f^* - f)(A_i,x)}{\partial x}\bigg|_{x = X_j}\cdot 1(i\neq j)
+\end{gather*}
+
+\noindent\textit{Derivative: from $\{X_i,U(S_i),\xi_i,\epsilon_i\}_{i=1}^n$ to $A_i$}
+
+\begin{gather*}
+    \frac{\partial A_i}{\partial \epsilon_j} =\frac{\partial \left\{g(X_i,U(S_i))+\xi_i\right\}}{\partial \epsilon_j}= 0, \\
+    \frac{ \partial A_i}{\partial \xi_j} =\frac{\partial \left\{g(X_i,U(S_i))+\xi_i\right\}}{\partial \xi_j}= 1(i=j),\\
+     \frac{\partial A_i}{\partial U(S_j)} =\frac{\partial \left\{g(X_i,U(S_i))+\xi_i\right\}}{\partial U(S_j)}= 1(i= j)\cdot \frac{\partial g(X_i,u)}{\partial u}\bigg|_{u = U(S_i)},\\
+     \frac{\partial A_i}{\partial X_j} =\frac{\partial \left\{g(X_i,U(S_i))+\xi_i\right\}}{\partial X_j}= 1(i= j)\cdot \frac{\partial g(x,U(S_i))}{\partial x}\bigg|_{x = X_i},
+\end{gather*}
+
+\noindent\textit{Derivative: from $\{X_i,U(S_i),\xi_i,\epsilon_i\}_{i=1}^n$ to $X_i$} 
+\begin{gather*}
+    \frac{\partial X_i}{\partial \epsilon_j} = 0, \quad
+    \frac{ \partial X_i}{\partial \xi_j} =0,\quad
+     \frac{\partial X_i}{\partial U(S_j)} = 0,\quad
+     \frac{\partial X_i}{\partial X_j} =1(i=j),
+\end{gather*}
+
+\noindent \textbf{Derivatives: Mapping from observations to empirical risk}
+
+\noindent \textit{Derivative: from $Y_i$ to $R_n$}
+\begin{align*}
+    &\partial_{Y_i}R_n^{(\delta)}(h;\psi,f,p)\\
+    =& -\frac{1}{n}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)da
+\end{align*}
+
+\noindent \textit{Derivative: from $\widehat U(S_i)$ to $R_n$}
+\begin{align*}
+&\partial_{\widehat U(S_i)}R_n^{(\delta)}(h;\psi,f,p)\\
+    = & n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} -n^{-1}(h(X_i,\widehat U(S_i)) - a_L)\\
+    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \\
+    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \\
+    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a 
+\end{align*}
+
+\noindent \textit{Derivative: from $A_i$ to $R_n$}
+\begin{align*}
+&\partial_{A_i}R_n^{(\delta)}(h;\psi,f,p)\\
+= & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(a|X_i,\widehat U(S_i))}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \\
+& - n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(a,X_i)}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \\
+    & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} \partial a^\prime K_{\delta_n}(a^\prime-a)|_{a^\prime=A_i}\mathrm{d}a
+\end{align*}
+
+\noindent \textit{Derivative: from $X_i$ to $R_n$}
+\begin{align*}
+&\partial_{X_i}R_n^{(\delta)}(h;\psi,f,p)\\
+= & -n^{-1}\int_{a_L}^{h(X_i,\widehat U(S_i))}\frac{\partial f(a,x)}{\partial x}\bigg|_{x=X_i}\mathrm{d}a \\
+    & + n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = \widehat X_i}\\
+    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \\
+    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \cdot \frac{\partial p(A_i|X_i,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \\
+    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(A_i,x)}{\partial x}\bigg|_{x = X_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a 
+\end{align*}
+
+\subsubsection{Sub-Gaussianity over $\theta$}
+In this section, for any $\theta,\theta^\prime\in\mathcal{H}_{\mathcal{K}}$, we provide the upper bound for
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)\right]\right\|_{\psi_2}.$$
+We denote 
+\begin{align*}
+    &R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\\
+    := & \frac{1}{n}\sum_{i=1}^n \left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L_i(\theta^\prime;\psi,f,p)\right)
+    \\
+    = & \frac{1}{n}\sum_{i=1}^n\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} - f(a,X_i)-\widehat U(S_i))\mathrm{d}a\\
+    & + \frac{1}{n}\sum_{i=1}^n\frac{(Y_i -  f(A_i,X_i)-\widehat U(S_i))}{p(A_{i}|X_{i},\widehat U(S_{i}))}  \int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a
+\end{align*}
+Then, for every $i$, 
+$$L^{(\delta_n)}_i(\theta;\psi,f,p) - L_i(\theta^\prime;\psi,f,p)\leq C\delta_n^{-1}\|\theta-\theta^\prime\|_\infty.$$
+We use the conditional expectation to decompose the $\psi_2$-norm above into four terms, i.e., the randomness from $X_i,u(S_i),\xi_i$ and $\epsilon_i$ as in \eqref{ref:randomness_decomposition} and provide the upper bound of each term. 
+
+\noindent\textbf{First Layer Randomness: $\epsilon$}
+
+\noindent We first provide the upper bound of 
+$$\left\|R_n^{(\delta_n)}(h;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}.$$
+
+
+Conditioning on $(X,U,\xi):=\mathcal{D}_0 = \{X_i, U(S_i), \xi_i\}_{i=1}^n$, the empirical risk as a function of $(\epsilon_1,\ldots,\epsilon_n)$. we treat the empirical risk as a function of the outcome error vector $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$. Consider two realizations that differ only in the first coordinate, $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$ and $(\epsilon_1, \ldots,\epsilon_i^\prime,\ldots, \epsilon_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\epsilon_i$ to $\epsilon_i^\prime$ only affects the observed outcome $Y_i$ and the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.  Specifically, the direct impact of $\epsilon_i$ on $R_n$ through $Y_i$ yields the difference:
+\begin{align*}
+n^{-1}\left|\frac{\epsilon_i-\epsilon_i^\prime}{p(A_i|X_i,\widehat U(S_i))}\int_{h^\prime(X_i,\widehat U(S_i))}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \right|\leq n^{-1}\delta_n^{-1}C\|h-h^\prime\|_\infty
+\end{align*}
+Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining  observations $Y_j$ (for $j\neq 1$ where $\alpha_{j,1}\neq 0$), and this cross-influence difference is similarly bounded by 
+\begin{align*}
+    2\left(L^{(\delta_n)}_j(\theta;\psi,f,p) - L_j(\theta^\prime;\psi,f,p)\right)\leq n^{-1}\delta_n^{-1}C\|h-h^\prime\|_\infty
+\end{align*}
+The number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(h;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
+    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|h - h^\prime\|_{\infty}.
+\end{align*}
+
+\noindent\textbf{Second Layer of Randomness: $\xi_i$}
+
+\noindent We provide the upper bound of 
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.$$
+we treat the empirical risk as a function of the outcome error vector $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$. Consider two realizations that differ only in the first coordinate, $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$ and $(\xi_1, \ldots,\xi_i^\prime,\ldots, \xi_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\xi_i$ to $\xi_i^\prime$ only affects the observed treatment $A_i$. The difference in the empirical risk due to the direct impact of $\xi_i$ on $R_n$ through $A_i$ is bounded by
+\begin{align*}
+2\left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L_i(\theta^\prime;\psi,f,p)\right)\leq n^{-1}\delta_n^{-1}C\|h-h^\prime\|_\infty.
+\end{align*}
+Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.\\
+    \leq & C n^{-1/2}\delta_n^{-1}\|h - h^\prime\|_{\infty}.
+\end{align*}
+
+\noindent\textbf{Third Layer of Randomness: $U(S_i)$}
+
+\noindent We provide the upper bound of 
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|U\right]\right\|_{\psi_2}.$$
+The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. We let $\widetilde U=\Sigma^{-1/2} U$ where $\widetilde U$ is a vector of standard normal distribution. We then view the empirical risk as a function of $\widetilde U$ whose derivative can be calculated as follows:
+\begin{align*}
+    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(h;\psi,f,p)| U,X\right]\\
+    = & \frac{\partial U}{ \partial \widetilde  U}\cdot  \E\left[\partial_{ U }R_n^{(\delta)}(h;\psi,f,p)| U,X\right]\\
+    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}R_n^{(\delta)}(h;\psi,f,p),\ldots,\partial_{U(S_n)}R_n^{(\delta)}(h;\psi,f,p)| U,X\right]
+\end{align*}
+Furthermore, for every $i$, 
+\begin{align*}
+    &\E\left[\partial_{U(S_i)}\{R_n^{(\delta_n)}(h;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)\}| U,X\right]\\
+    = & \sum_{j\neq i}^n  \alpha_{i,j}\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(h^\prime;\psi,f,p)\right\}| U,X\right]\\
+    &+ \E\left[\partial_{Y_i}R_n^{(\delta)}(h;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(h^\prime;\psi,f,p)| U,X\right]
+\end{align*}
 
 \subsection{Auxiliary Lemmas}
 
 \subsubsection{Empirical Process Bound}
 % \textcolor{red}{There is a problem that the RKHS function space is stochasic since $\widehat{U}(S_i)$ is stochastic. But we treat the RKHS space as fixed here. However, RKHS space might change when the nuisance estimation changes.}
 \begin{lemma}[Empirical Process Bound]\label{lemma:empirical_loss_deviation} Let
-$R_n^{({\delta_n})}(\theta;\mu,p)$ and $R^{({\delta_n})}(\theta;\mu,p)$
-denote the empirical risk and its population counterpart, respectively, where the outcome regression $\mu$ and generalized propensity score $p$ are used as plug-in nuisance parameters. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$.  Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat{U}(S_i))$ with Gaussian kernel. Let $B_{\mathcal{H}_{\gamma_n}}$ be a unit ball in $\mathcal{H}_{\gamma_n}$ with radius $\lambda_n^{-1/2}$. Let $\mathcal{C}_\mu$ and $\mathcal{C}_p$ denote minimal $\epsilon_\mu$- and $\epsilon_p$-nets of the function classes $\mathcal{F}_\mu$ and $\mathcal{F}_p$ under the $L_2(P)$ norm, respectively. Let $\mathcal{C}_\theta$ be a minimal $\epsilon_\theta$-net of the function class $B_{\mathcal{H}_{\gamma_n}}$ with respect to the $L_\infty$ norm. Then, the following bound holds with probability no less than $1 - 32e^{-\tau}$:
+$R_n^{({\delta_n})}(\theta;f,p,\psi)$ and $R^{({\delta_n})}(\theta;f,p,\psi)$
+denote the empirical risk and its expectation plugging-in nuisance parameters $f,p,\psi$, respectively. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat{U}(S_i))$ with Gaussian kernel. Let $B_{\mathcal{H}_{\gamma_n}}$ be a unit ball in $\mathcal{H}_{\gamma_n}$ with radius $\lambda_n^{-1/2}$. Let $\mathcal{C}_\theta$ be a minimal $\epsilon_\theta$-net of the function class $B_{\mathcal{H}_{\gamma_n}}$ with respect to the $L_\infty$ norm. Then, the following bound holds with probability no less than $1 - 32e^{-\tau}$:
+
 \begin{align*}
-&\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
-    \leq &\sqrt{\frac{ c_1\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
+&\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}},\psi\in\Psi,f\in\mathcal{F}_f,p\in\mathcal{F}_p}|R_n^{({\delta_n})}(h;\psi,f,p)-R^{({\delta_n})}(h;\psi,f,p)|\\
+\leq & 
 \end{align*}
-Similarly, for fixed $(\mu, p)$, the concentration across the parameter space $B_{\mathcal{H}_{\gamma_n}}$ satisfies the following bound with probability no less than $1 - 32e^{-\tau}$:
-\begin{align*}
-&\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|
-    \leq \sqrt{\frac{ c_1\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|\right)} + c_2\epsilon_\theta   
-\end{align*}
+
 \end{lemma}
 
 \begin{proof}
@@ -1749,10 +1959,26 @@ We prove the result by verifying a sub-Gaussian process structure for the deviat
 
 Let $\nu = (\mu,p,\theta)$ denote a joint parameter and define the centered deviation process
 $$Z(\nu) := R_n^{(\delta_n)}(\theta;\mu,p) - R^{(\delta_n)}(\theta;\mu,p) = \frac{1}{n}\sum_{i=1}^n \bigl[\ell^{(\delta_n)}(O_i;\nu) - \mathbb{E}\ell^{(\delta_n)}(O_i;\nu)\bigr].$$
-Define the reference pseudo-metric on $\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta$:
+Define the reference pseudo-metric on $\mathcal{F}:=\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta$:
 \begin{equation}\label{eq:d0_metric}
 d_0(\nu_1,\nu_2)^2 := \|\mu_1-\mu_2\|_{P,2}^2 + \|p_1-p_2\|_{P,2}^2 + \|\theta_1-\theta_2\|_\infty^2.
 \end{equation}
+We will apply Dudley’s entropy integral bound \ref{thm:dudley} to give the upper bound of the  expectation of the supremum $$\E[\sup_{\nu\in\mathcal{F}}Z(\nu)]$$
+Then, we will use and the McDiarmid inequality \ref{thm:mcdiarmid} and Borell-TIS \ref{thm:borell}inequality to give the highy probability bound of the concentration
+$$\sup_{\nu\in\mathcal{F}}Z(\nu) - \E[\sup_{\nu\in\mathcal{F}}Z(\nu)]$$.
+
+To apply Dudley’s entropy integral bound, we first show that the joint function class $\mathcal{F}$ has finite diameter as follows:
+
+\begin{align}
+\sup_{\nu_1,\nu_2\in\mathcal{F}}d_0(\nu_1,\nu_2)&= \sup_{\mu_1,\mu_2\in\mathcal{F}_\mu}\|\mu_1-\mu_2\|_{P,2}^2 + \sup_{p_1,p_2\in\mathcal{F}_p}\|p_1-p_2\|_{P,2}^2 + \sup_{\theta_1,\theta_2\in B_\beta}\|\theta_1-\theta_2\|_\infty^2\nonumber\\
+&\leq 4C^\prime + 2C_\beta
+\end{align}
+The inequality follows from the upper bound of the parametric function class and Assumption \ref{condition:excess_risk:smooth}.
+
+Then, we show that $\{Z(\nu)\}_{\nu\mathcal{F}}$ is sub-Gaussian process in the sense that
+$$\|Z(\nu_1)-Z(\nu_2)\|_{\psi_2}\leq C d_0(\nu_1,\nu_2),\forall \nu_1,\nu_2\in\mathcal{F}.$$
+Here, $c$ is a positive constant independent of the choice of $\nu_1,\nu_2$.
+
 
 \noindent\textbf{Step 2: Sub-Gaussian Verification via 4-Layer Decomposition.}
 
@@ -2076,8 +2302,8 @@ By the chain rule of derivative:
 The last inequality follows from Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, and $\E[K_{\delta_n}(A_i - \theta(X_i,U_i))|X_i,U_i]$ be bounded, combined with the fact that $|\nabla_{U_i}\theta(X_i,U_i)|\leq 1/(\gamma_n\sqrt{\lambda_n})$ by Lemma \ref{lemma:bound_svm} and Lemma \ref{lemma:derivative_svm}.
 Then, the Lipschitz norm of $f$ satisfies 
 \begin{align*}
-    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^d}\|\nabla f\|\\
-    \leq& \sup_{u\in\R^d}\left\{\sum_{i=1}^n \nabla_{u_i}\left(\frac{1}{n}\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\right)^2\right\}^{1/2}\\
+    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^{d+1}}\|\nabla f\|\\
+    \leq& \sup_{u\in\R^{d+1}}\left\{\sum_{i=1}^n \nabla_{u_i}\left(\frac{1}{n}\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\right)^2\right\}^{1/2}\\
     \leq & (c_1 + c_2/(\gamma_n\sqrt{\lambda_n}))n^{-1/2}
 \end{align*}
 Here, $c_1,c_2$ are generic constant that depends on $\mathcal{T},C^\prime,c^\prime$ that might change during the proof.
@@ -2104,8 +2330,8 @@ $$\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U
 \end{align*}
 The last inequality follows from Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, and $\E[K_{\delta_n}(A_i - \theta(X_i,U_i))|X_i,U_i]$ be bounded. Then, the Lipschitz norm of $f$ satisfies
 \begin{align*}
-    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^d}\|\nabla f\|\\
-    \leq& \sup_{u\in\R^d}\left\{\sum_{i=1}^n \nabla_{u_i}\left(\frac{1}{n}\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\right)^2\right\}^{1/2}\\
+    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^{d+1}}\|\nabla f\|\\
+    \leq& \sup_{u\in\R^{d+1}}\left\{\sum_{i=1}^n \nabla_{u_i}\left(\frac{1}{n}\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\right)^2\right\}^{1/2}\\
     \leq & c_1 n^{-1/2}
 \end{align*}
 Here, $c_1$ is a generic constant that depends on $\mathcal{T},C^\prime,c^\prime$ that might change during the proof.
@@ -2176,11 +2402,11 @@ $$\left|\frac{1}{n}\sum_{i=1}^n(\mu - \mu^\prime)(A_i,X_i,U_i) - \frac{1}{n}\sum
 $$\frac{1}{n}\sum_{i=1}^n |\E[(\mu^\prime -\mu)(A_i,X_i, U_i)\mid X_i,U_i = u_i]|.$$
 By Assumption \ref{condition:excess_risk:smooth}, the Lipschitz norm of $f$ satisfies 
 \begin{align*}
-    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^d}\sup_{g\in\nabla f}\|g\|\\
-    \leq& \sup_{u\in\R^d}\left\{\sum_{i=1}^n \sup_{\nabla_{u_i}|\mu^\prime-\mu|}\left(\frac{1}{n}\nabla_{u_i} |\mu^\prime(A_i,X_i, u_i) - \mu(A_i,X_i, u_i)|\right)^2\right\}^{1/2}\\ 
+    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^{d+1}}\sup_{g\in\nabla f}\|g\|\\
+    \leq& \sup_{u\in\R^{d+1}}\left\{\sum_{i=1}^n \sup_{\nabla_{u_i}|\mu^\prime-\mu|}\left(\frac{1}{n}\nabla_{u_i} |\mu^\prime(A_i,X_i, u_i) - \mu(A_i,X_i, u_i)|\right)^2\right\}^{1/2}\\ 
     \leq & \left\{\sum_{i=1}^n \left(\frac{2C^\prime}{n}\right)^2\right\}^{1/2}=2C^{\prime}n^{-1/2}
 \end{align*}
-where $\nabla f$ denotes the sub-gradient of $f$ with respect to $u\in\R^d$, $\nabla_{u_i}|\mu^\prime-\mu|$ denotes the sub-gradient of $\mu-\mu^\prime$ with respect to $u_i\in\R$. The last inequality is from Assumption \ref{condition:excess_risk:smooth}.
+where $\nabla f$ denotes the sub-gradient of $f$ with respect to $u\in\R^{d+1}$, $\nabla_{u_i}|\mu^\prime-\mu|$ denotes the sub-gradient of $\mu-\mu^\prime$ with respect to $u_i\in\R$. The last inequality is from Assumption \ref{condition:excess_risk:smooth}.
 
 Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
 \begin{align*}
@@ -2384,7 +2610,7 @@ By Assumption \ref{condition:excess_risk:smooth} and \ref{condition:overlap}, an
 \end{proof}
 
 \begin{lemma}[Derivative of SVM]\label{lemma:derivative_svm}
-Let $\mathcal{H}$ be the RKHS over $\R^d$ using Gaussian kernel with bandwidth $\gamma_n$, i.e., $K(x,y) = \exp(-\|x-y\|_2^2/\gamma_n)$. Then,
+Let $\mathcal{H}$ be the RKHS over $\R^{d+1}$ using Gaussian kernel with bandwidth $\gamma_n$, i.e., $K(x,y) = \exp(-\|x-y\|_2^2/\gamma_n)$. Then,
 $$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}}/\gamma$$
 $$\|\nabla_x f(x)\| \leq  \sqrt{d}\|f\|_{\mathcal{H}}/\gamma.$$
     

@@ -1,0 +1,1200 @@
+% I am updating my proof. I put a lof of efforts in the previous proof so I keep them here.
+
+\section{Proof of Lemmas and Theorems}\label{sec:proof}
+
+\subsection{Proof of Lemma \ref{lemma:risk_db}}
+
+
+
+From the definition of the loss function $L^{({\delta_n})}(a,O_i)$, we find $L^{({\delta_n})}(a_L,O_i)< L^{({\delta_n})}(a,O_i)$ for any $a< a_L$ and $L^{({\delta_n})}(a_U,O_i)< L^{({\delta_n})}(a,O_i)$ for any $a> a_U$. This implies that the minimizer of the risk $R(\theta)$ must be a function ranging over $[a_L,a_U]$. Thus, it suffices to show that $\theta^*$ defined in \eqref{eq:identification} minimizes $\lim_{{\delta_n}}\E[\nu^{(\delta_n)}(\theta(X_i,S_i),O_i)]$ where $\nu^{(\delta_n)}(\theta(X_i,S_i),O_i)$ is defined in \eqref{eq:loss_function_bounded}. 
+
+The proof then proceeds in two steps. First, we show that the expectation of the loss constrained in $[a_L,a_U]$ converges to the expectation of the limit function$$\lim_{{\delta_n\rightarrow 0}}\E[\nu^{(\delta_n)}(\theta(X_i,S_i),O_i)] = \E[\nu(\theta(X_i,S_i),O_i)]$$
+where $\nu(a,O_i)$ is defined by:
+$$\nu(a,O_i):= \int_{\mathcal{A}} \left( \mathcal{T} - \mu^*(a^\prime, X_i, S_i) \right) 1(a^\prime \leq a) \mathrm{d}a^\prime.$$
+Then, we show that $\theta^*$ in \eqref{eq:identification} is the minimizer of the limit objective $\E[\nu(\theta(X_i,S_i),O_i)]$.
+
+\noindent \textbf{Step 1: Limit of Risk}
+
+\noindent Let $c_K = \int |a|K(a)\mathrm{d}a$. Suppose that either the outcome regression is correctly specified ($\mu^* = \mu$) or the propensity score is correctly specified ($p = p^*$). We evaluate the conditional expectation of the augmentation term in \eqref{eq:loss_function_bounded} as follows:
+\begin{align*}    &\E\left[\frac{(\mu^*(A_i,X_i,S_i) - \mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{p(A_{i}|X_{i},S_{i})}\bigg| X_i,S_i\right]\\
+    = & \int_{\mathcal{A}}\frac{(\mu^*(a^\prime,X_i,S_i) - \mu(a^\prime,X_i,S_i))p^*(a^\prime|X_{i},S_{i})}{p(a^\prime|X_{i},S_{i})}K_{\delta_n}(a^\prime-a)\mathrm{d}a^\prime\\
+    = & \frac{(\mu^*(a,X_i,S_i) - \mu(a,X_i,S_i))p^*(a|X_{i},S_{i})}{p(a|X_{i},S_{i})} + 2c_K c^{\prime-2}C^{\prime 3}\delta_n\\
+    =& 2c_K c^{\prime-2}C^{\prime 3}\delta_n
+\end{align*}
+The first equality follows directly from the definition of conditional expectation by integrating over the density of $A_i$ (which is $p^*$). The second equality applies Lemma \ref{lemma:bias_rate_of_kernel_convolution} to the product term:$$\phi(a) = (\mu^*(a, X_i, S_i) - \mu(a, X_i, S_i)) \frac{p^*(a | X_i, S_i)}{p(a | X_i, S_i)}$$By Assumption \ref{condition:excess_risk:smooth}, the first-order derivative of $\phi(a)$ is bounded by $2c'^{-2}C'^{3}$. Thus, the convolution introduces a bias term of order $2c_K c'^{-2}C'^{3} \delta_n$. The final equality holds because the leading term vanishes if either $\mu^* = \mu$ (making the difference zero) or $p = p^*$. Consequently, the following result holds  if either the outcome regression model or generalized propensity is correctly specified:
+\begin{align*}
+   &\E[\nu^{(\delta_n)}(\theta(X_i,S_i),O_i)] - C_0 \\
+   = &\E\left[ \int_{\mathcal{A}} \E\left(\mathcal{T} - \mu^*(a,X_i,S_i)+ \frac{(Y_i - \mu^*(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{p^*(A_{i}|X_{i},S_{i})}\bigg| X_i,S_i\right)1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+   = & \E\left[\int_{\mathcal{A}}\left(\mathcal{T} - \mu^*(a,X_i,S_i)\right)1(a\leq \theta(X_i,S_i))\mathrm{d}a\right] + O(\delta_n)\\
+   = & \E\left[\nu(\theta(X_i,S_i),O_i)\right] + O(\delta_n)
+\end{align*}
+As a result, we have $$\lim_{{\delta_n\rightarrow 0}}\E[\nu^{(\delta_n)}(\theta(X_i,S_i),O_i)] = \E[\nu(\theta(X_i,S_i),O_i)].$$
+
+\noindent \textbf{Step 2: Minimizer of the Risk}
+
+\noindent According to the definition of $\theta^*$ in \eqref{eq:identification} and the monotonicity Assumption \ref{condition:monotonicity},
+\begin{align*}
+    \mathcal{T} - \mu^*(a^\prime, x, s) \geq 0 &\text{ if } a\geq \theta^*(X_i,S_i)\\
+    \mathcal{T} - \mu^*(a^\prime, x, s) \leq 0 &\text{ if } a< \theta^*(X_i,S_i)
+\end{align*}
+Thus, for any observation $O_i$, and any $a\in \mathcal{A}$,
+\begin{align*}
+   \nu(a,O_i)& = \nu(\theta^*(X_i,S_i),O_i) +
+   \int_{\theta^*(X_i,S_i)}^{a} \left( \mathcal{T} - \mu^*(a^\prime, X_i, S_i) \right)  \mathrm{d}a^\prime\\
+   &\geq \nu(\theta^*(X_i,S_i),O_i)
+\end{align*}
+As a result, $\theta^*$ in \eqref{eq:identification} minimizes $\E[\nu(\theta(X_i,S_i),O_i)]$ for every $O_i$ and thus minimizes the risk $R(\theta)$.
+
+
+
+
+\subsection{Notations}\label{sec:supp_notations}
+Let $\widehat\mu$, $\widehat p$, and $\widehat\psi$ be the estimation of the nuisance parameters, i.e., outcome regression model, the generalized propensity score, covariance function of Gaussian process, respectively. Particularly, $\widehat\mu (A_i,X_i,S_i) = \widehat f(A_i,X_i) +\widehat U(S_i)$ (see Section \ref{sec:nuisance} for details) where $\widehat U(\cdot)$ is the leave-one-out kriging estimation defined in \eqref{eq:kriging} depending on both $\widehat\psi$ and $\widehat f$. Let $\mathcal{H}_\gamma$ be the RKHS space on $\R^{d+1}$ that maps $(X_i,\widehat U(S_i))$ to a policy. Let $\widetilde\Theta$ be the class of all functions that map $(X_i,\widehat U(S_i))$ to a policy. Let $\Theta$ be the class of functions that map $(X_i,S_i)$ to a policy. $\widetilde\Theta\subset \Theta$ because it maps $S$ to $\widehat U(S_i)$ first and only consider functions of $\widehat U(S_i)$. 
+
+
+Let $\widehat L^{({\delta_n})}(a,O_i)$ be the loss function plugging-in estimated nuisance parameters. For any function $\theta\in \widetilde\Theta$, we define:
+\begin{gather}
+   \widehat R_n^{({\delta_n})}(\theta) = \sum_{i=1}^n\widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i),\nonumber\\
+   \widehat R^{({\delta_n})}(\theta) = \E[\widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i)], \nonumber\\
+   R(\theta) = \lim_{\delta\rightarrow 0}\E\left[L^{(\delta_n)}(\theta(X_i,S_i),O_i)\right]
+   \nonumber\label{eq:plug_in_risk}
+   % \\
+   % R^{({\delta_n})}(\theta) = \E[ L^{({\delta_n})}(\theta(X_i,U(S_i)),O_i)],\quad
+   % R(\theta) = \lim_{{\delta_n}\rightarrow 0}\E[L^{({\delta_n})}(\theta(X_i,U(S_i)),O_i)],\label{eq:non_plug_in_risk}
+\end{gather}
+Whereas for $\theta\in\Theta$, we define:
+\begin{gather*}
+ \widehat R_n^{({\delta_n})}(\theta) = \sum_{i=1}^n\widehat L^{({\delta_n})}(\theta(X_i,S_i),O_i),\nonumber\\
+   \widehat R^{({\delta_n})}(\theta) = \E[\widehat L^{({\delta_n})}(\theta(X_i,S_i),O_i)], \nonumber\\
+    R(\theta) = \lim_{\delta\rightarrow 0}\E\left[L^{(\delta_n)}(\theta(X_i,S_i),O_i)\right]\nonumber
+\end{gather*}
+Then, we define an intermediate policy in $\widetilde\Theta$:
+\begin{equation}\label{eq:different_thetas}
+    \tilde \theta = \arg\min_{\theta\in \widetilde\Theta} \widehat R^{({\delta_n})}(\theta)
+\end{equation}
+
+
+\subsection{Proof of Theorem \ref{thm:excess_risk}}
+Given the above definitions, we decompose the excess risk that we aim to bound as follows:
+\begin{equation}\label{eq:excess_risk_decomposition}
+   |R(\widehat\theta)-R\left(\theta^*\right)|\leq \underbrace{|R(\widehat\theta)-\widehat R^{({\delta_n})}(\widehat\theta)|}_{\text{Term (A)}} + \underbrace{|\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)|}_{\text{Term (B)}} + \underbrace{|\widehat R^{({\delta_n})}(\tilde\theta) - R(\theta^*)|}_{\text{Term (C)}} 
+\end{equation}
+By Lemma \ref{lemma:risk_function_plug_in_error}, term (A) has the following upper bound with probability $1-\rho_n$:
+$$|R(\widehat\theta)-\widehat R^{({\delta_n})}(\widehat\theta)|\leq 2C^{\prime2}c^{\prime-2}|\mathcal{A}|\delta_n +2C^{\prime2}c^{\prime-1}|\mathcal{A}|\delta_n + c^{\prime-2}r_{\mu,n}r_{p,n}. $$
+Since $\tilde\theta\in \widehat \Theta$ is the minimizer of $\widehat R^{({\delta_n})}(\theta)$ and $\theta^*\in \Theta$ is the minimizer of $R(\theta)$, term (C) has the following upper bound with probability $1-\rho_n$:
+\begin{align*}
+    |\widehat R^{({\delta_n})}(\tilde\theta) - R(\theta^*)|\leq &\max\left\{|\widehat R^{({\delta_n})}(\theta^*) - R(\theta^*)|,|\widehat R^{({\delta_n})}(\tilde\theta) - R(\tilde\theta)|\right\} \\
+    \leq &2C^{\prime2}c^{\prime-2}|\mathcal{A}|\delta_n +2C^{\prime2}c^{\prime-1}|\mathcal{A}|\delta_n + c^{\prime-2}r_{\mu,n}r_{p,n}
+\end{align*}
+\textcolor{red}{Bound of Term (B) is incorrect: }
+By Lemma \ref{lemma:svm_estimation_error}, term (B) has the following bound with probability $1-32e^{-\tau}$,
+\begin{align*}
+   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
+   & + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}
+\end{align*}
+Combining the results above, we have the following upper bound for the excess risk with probability $1-32e^{-\tau} - \rho_n$,
+\begin{align*}
+       R(\widehat\theta)-R\left(\theta^*\right)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
+   & \qquad + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}\\
+       & \qquad\qquad + c_7r_{\mu,n}r_{p,n} + c_8{\delta_n}
+    \end{align*}
+Here, $c_1,\ldots,c_8$ are constants independent of the sample size $n$.
+
+\subsection{Proof of Theorem \ref{thm:excess_risk_cross_fitting}}
+
+Similar to the proof of Theorem \ref{thm:excess_risk}, the proof of Theorem \ref{thm:excess_risk_cross_fitting} follows from the excess risk decomposition \eqref{eq:excess_risk_decomposition}:
+$$ |R(\widehat\theta)-R\left(\theta^*\right)|\leq \underbrace{|R(\widehat\theta)-\widehat R^{({\delta_n})}(\widehat\theta)|}_{\text{Term (A)}} + \underbrace{|\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)|}_{\text{Term (B)}} + \underbrace{|\widehat R^{({\delta_n})}(\tilde\theta) - R(\theta^*)|}_{\text{Term (C)}} $$
+Term(A) and term (C) have the same upper bound as in the proof of Theorem \ref{thm:excess_risk}. According to Lemma \ref{lemma:svm_estimation_error_cross_fitting}, when $\hat\mu,\hat p$ are estimated using independent dataset, term (B) has the following upper bound with probability $1-32e^{-\tau}$:
+\begin{align*}
+  \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
+\end{align*}
+Thus, we have the following upper bound for the excess risk with probability $1-32e^{-\tau} - \rho_n$,
+\begin{align*}
+       R(\widehat\theta)-R\left(\theta^*\right)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}}   \\
+   & \qquad + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_5r_{\mu,n}r_{p,n}  + c_6{\delta_n}
+    \end{align*}
+
+\subsection{Proof of Theorem \ref{thm:excess_risk_parametric}}
+
+Similar to the proof of Theorem \ref{thm:excess_risk}, the proof of Theorem \ref{thm:excess_risk_parametric} follows from the excess risk decomposition \eqref{eq:excess_risk_decomposition}:
+$$ |R(\widehat\theta)-R\left(\theta^*\right)|\leq \underbrace{|R(\widehat\theta)-\widehat R^{({\delta_n})}(\widehat\theta)|}_{\text{Term (A)}} + \underbrace{|\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)|}_{\text{Term (B)}} + \underbrace{|\widehat R^{({\delta_n})}(\tilde\theta) - R(\theta^*)|}_{\text{Term (C)}} $$
+Term(A) and term (C) have the same upper bound as in the proof of Theorem \ref{thm:excess_risk}. According to Lemma \ref{lemma:parametric_estimation_error}, when the function class is parametric, term (B) has the following bound with probability $1-32e^{-\tau}$:
+\begin{align*}
+    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & \sqrt{\frac{c_1\sigma_n\tau}{n}} + \sqrt{\frac{ c_2\sigma_n\ln(n)}{n}}  + c_3n^{-1}
+\end{align*}
+Thus, we have that the following upper bound for the excess risk with probability $1-32e^{-\tau} - \rho_n$,
+\begin{align*}
+       R(\widehat\theta)-R\left(\theta^*\right)\leq &  \sqrt{\frac{c_1\sigma_n\tau}{n}} + \sqrt{\frac{ c_2\sigma_n\ln(n)}{n}}  + c_3n^{-1}+ c_4r_{\mu,n}r_{p,n} + c_5{\delta_n}
+    \end{align*}
+
+\subsection{Proof of Useful Lemmas}
+
+\begin{lemma}[SVM Approximation Error]\label{lemma:svm_approximation_error} 
+    Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat U(S_i))$. Let $\widehat R^{({\delta_n})}$ and $\tilde \theta$ be the intermediate risk function and policy defined in \eqref{eq:plug_in_risk} and \eqref{eq:different_thetas}, respectively. Let $\pr_X$ be the distribution of $X$ and  $g_X$ be the density function and suppose $g_X\in L_\infty(\R^{d+1})$. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Then, for any  hyper-parameter $\lambda_n, \gamma_n,\delta_n>0$, there exist an element $\theta_0\in \mathcal{H}_{\gamma_n}$ and positive constant $c_1,c_2$ such that  
+\begin{equation}\label{eq:approx_error_svm}
+\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta) \leq c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}
+    \end{equation}
+
+\end{lemma}
+
+\begin{proof}
+\noindent To bound the left-hand side of \eqref{eq:approx_error_svm}, we construct an element  $\theta_0\in\mathcal{H}_{\gamma_n}$ such that both the regularization $\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}$ and the approximation error $\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)$ are sufficiently small. Let $d$ be the dimension of $(X_i,\widehat U(S_i))$. For notational brevity, we suppress the estimated Gaussian process $\widehat{U}(S_i)$ in the subsequent analysis; for instance, we write $\theta_0(x)$ instead of $\theta_0(x, u)$. The proof mainly use Theorem 2.2 and Theorem 2.3 in \citet{SVM2013},which are provided as Lemma \ref{thm:thm2.2_eberts} and Lemma \ref{thm:thm2.3_eberts} in the Supplement, respectively.
+
+\noindent \textbf{Step 1: construction of $\theta_0$:}
+
+\noindent For $r\in\{1,2,\ldots\}$ and $\gamma>0$, we define function $Q_{r,\gamma}: \mathbb{R}^d \to \mathbb{R}$ as
+\begin{equation} \label{eq:eberts_Q_r}
+Q_{r,\gamma}(x) = \sum_{j=1}^r \binom{r}{j}(-1)^{j-1} \frac{1}{j^d} \left(\frac{2}{\gamma^2}\right)^{\frac{d}{2}} \mathcal{K}_{j\gamma/\sqrt{2}}(z), \quad \mathcal{K}_{\gamma}(x) = \exp\{-\gamma^{-2} \|x\|_2^2\}
+\end{equation}
+Since $\tilde\theta \in L_2(\mathbb{R}^d) \cap L_\infty(\mathbb{R}^d)$, we define $\theta_0$ by convolving $Q_{r,\gamma}$ with $\tilde\theta$, that is
+\[
+\theta_0(x) = (Q_{r,\gamma} * \tilde\theta_{L,\pr})(x) := \int_{\mathbb{R}^d} Q_{r,\gamma}(x - z) \tilde\theta_{L,\pr}(z) \mathrm{d}z.
+\]
+Let $\pr_X$ be the distribution of $X$ and $g_X$ be the density function satisfying $g_X\in L_\infty(\R^{d+1})$. Applying Lemma \ref{thm:thm2.2_eberts} (Theorem 2.2 in \citet{SVM2013}) under the specification $p=\infty,s=1,q=1$, we have
+\begin{equation}\label{eq:approx_error_excess_risk}
+    \|Q_{r,\gamma} * \tilde\theta - \tilde\theta\|_{L_1(\pr_X)} \le C_{r,1} \|g_X\|_{L_\infty(\mathbb{R}^d)} \omega_{r,L_{1}(\mathbb{R}^d)}(\tilde\theta, \gamma/2)
+\end{equation}
+Additionally, by Lemma \ref{thm:thm2.3_eberts} (Theorem 2.3 in \citet{SVM2013}), 
+\begin{equation}\label{eq:approx_error_regularizer}
+    \|\theta_0\|^2_{\mathcal{H}_{\gamma_n}} = \|Q_{r,\gamma} * \tilde\theta\|^2_{\mathcal{H}_{\gamma_n}}\leq (\gamma\sqrt{\pi})^{-\frac{d}{2}}(2^r-1)\|\tilde\theta\|_{L_2(\R^{d+1})}.
+\end{equation}
+\noindent \textbf{Step 2: Lipschitz Property of Risk}
+
+\noindent We derive the Lipschitz properties of $\widehat R^{({\delta_n})}(\theta)$ with respective to $\theta$ be taking the derivative of $\E\left[\widehat L^{({\delta_n})}(a,O_i)\right]$ with respect to $a$:
+    \begin{equation*}
+        \nabla_a\E\left[\widehat L^{({\delta_n})}(a,O_i)\right] = \begin{cases}
+     -\epsilon \frac{\partial}{\partial a}\left\{\log( e + a_L- a)\right\}^{-1}& \text{if } -\infty<a<a_L\\
+    \mathcal{T} - \E\left[\widehat\mu(a,X_i,S_i)+ \frac{(Y_i - \widehat\mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{\widehat p(A_{i}|X_{i},S_{i})}\right]&\text{if }  a_L\leq a\leq a_U\\
+     -\epsilon \frac{\partial}{\partial a}\left\{\log( e + a- a_U)\right\}^{-1}&\text{if }  a_U<a< \infty
+\end{cases}
+    \end{equation*}
+For $a_U<a< \infty$ and $-\infty<a<a_L$, by direct calculation, the above derivative is bounded by $e^{-1}$ and converges to zero as $a\rightarrow \infty$ or $a\rightarrow -\infty$. 
+
+For $a_L\leq a\leq a_U$, we first bound the expectation of the scaled kernel function
+by Assumption \ref{condition:excess_risk:smooth} and applying the change of the variable as follows:
+\begin{align}
+    \E\left[K_{\delta_n}(A_i-a)\right] = & \int \frac{1}{\delta_n} K\left(\frac{a^\prime -a}{\delta_n}\right) p^*(a^\prime)\mathrm{d}a^\prime\nonumber\\
+    = & \int K\left(t\right) p^*(a+\delta_n t)\mathrm{d}t\nonumber\\
+    \leq & C^\prime\int K\left(t\right)\mathrm{d}t = C^\prime\label{eq:integral_kernel_bound}
+\end{align}    
+Then, By Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
+\begin{align*}
+\left|\nabla_a\E\left[\widehat L^{({\delta_n})}(a,O_i)\right]\right|\leq &\mathcal{T}+\E\left[\left|\widehat\mu(a,X_i,S_i)+ \frac{(Y_i - \widehat\mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{\widehat p(A_{i}|X_{i},S_{i})}\right|\right]\\
+\leq &\mathcal{T}+\E\left[\left|\widehat\mu(a,X_i,S_i)\right|\right]+\left[\left|\frac{(\mu^*(A_i,X_i,S_i) - \widehat\mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{\widehat p(A_{i}|X_{i},S_{i})}\right|\right]\\
+    \leq & \mathcal{T}+C^\prime + 2C^\prime c^{\prime-1}\E\left[K_{\delta_n}(A_i-a)\right]\\
+    \leq & \mathcal{T}+C^\prime + 2C^{\prime2}c^{\prime-1}
+\end{align*}
+The first inequality is obtained by taking the absolute value of each component of the loss function. The second inequality is obtained by taking the conditional expectation of $Y_i$ given $A_i,X_i,S_i$. The third inequality follows from Assumption \ref{condition:excess_risk:smooth} and Assumption \ref{condition:excess_risk:overlap}. The last inequality follows from the above upper bound of the expectation of the scaled kernel function \eqref{eq:integral_kernel_bound}. 
+
+Combining the result above, we have the Lipschitz property of $R^{({\delta_n})}(\theta)$ such that
+\begin{equation}\label{eq:approx_error_derivative_bound}
+    \left|\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)\right|\leq \max(e^{-1},\mathcal{T}+C^\prime + 2C^{\prime2}c^{\prime-1})\|\theta_0 -\tilde\theta \|_{L_1(P_X)}
+\end{equation}
+For notational brevity, we denote $B^\prime:=\max(e^{-1},\mathcal{T}+C^\prime + 2C^{\prime2}c^{\prime-1})$.
+
+\noindent \textbf{Step 3: Deriving Bound}
+
+\noindent Combining \eqref{eq:approx_error_excess_risk}, \eqref{eq:approx_error_regularizer}, and \eqref{eq:approx_error_derivative_bound}, we obtain the result in \eqref{eq:approx_error_svm}:
+ 
+
+
+\begin{align}
+&\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)\nonumber\\
+    =& \lambda_n \|Q_{r,\gamma} * \tilde\theta\|^2_{\mathcal{H}_{\gamma_n}} + \widehat R^{({\delta_n})}(Q_{r,\gamma} * \tilde\theta) -\widehat R^{({\delta_n})}(\tilde\theta)\nonumber\\
+    \le{}& \lambda_n (\gamma_n\sqrt{\pi})^{-d}(2^r - 1)^2 \|\tilde\theta\|_{L_2(\mathbb{R}^d)}^2 +  B^\prime\|Q_{r,\gamma_n} * \tilde\theta - \tilde\theta\|_{L_1(P_X)}^2 \nonumber\\
+    \le{}& \lambda_n (\gamma_n\sqrt{\pi})^{-d}(2^r - 1)^2 \|\tilde\theta\|_{L_2(\mathbb{R}^d)}^2 +  C_{r,1} B^\prime\|g_X\|_{L_\infty(\mathbb{R}^d)} \omega_{r,L_{1}(\mathbb{R}^d)}(\tilde\theta, \gamma_n/2)\nonumber\\
+    \le{} & \lambda_n (\gamma_n\sqrt{\pi})^{-d}(2^r - 1)^2 \|\tilde\theta\|_{L_2(\mathbb{R}^d)}^2 +  C_{r,1} B^\prime\|g_X\|_{L_\infty(\mathbb{R}^d)} \gamma_n^\beta\nonumber\\
+    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}
+\end{align} 
+The first equality follows from the construction of $\theta_0$, obtained by applying the Lipschitz property \eqref{eq:approx_error_derivative_bound} and the norm bound in \eqref{eq:approx_error_regularizer}. The third inequality follows from \eqref{eq:approx_error_excess_risk}, while the final equality results from defining the constants $c_1 := \sqrt{\pi}^{-d}(2^r - 1)^2 \|\tilde\theta\|_{L_2(\mathbb{R}^d)}$ and $c_2 := C_{r,1} B^\prime$.
+
+
+
+\end{proof}
+
+\begin{lemma}[SVM Estimation Error]\label{lemma:svm_estimation_error}
+    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+   \begin{align*}
+   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
+   & + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}
+\end{align*}
+Here, $\tilde\theta$ is defined in Section \ref{sec:supp_notations}; $\gamma_n$ is the bandwidth of the Gaussian kernel in kernel SVM; $\lambda_n$ is the regularization penalty in \eqref{eq:objective function}; $c_1,\ldots,c_6$ are constants that are independent of $n$.    
+\end{lemma}
+
+\begin{proof}
+
+Let $\theta_0$ be any fixed element in RKHS $\mathcal{H}_{\gamma_n}$. We decompose the excess risk as follows:
+    \begin{align*}
+   &\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \lambda_n\|\widehat\theta\|^2_{\mathcal{H}_{\gamma_n}}+ \widehat R_n^{({\delta_n})}(\widehat\theta)+\widehat R^{({\delta_n})}(\widehat\theta)  - \widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}  + \widehat R_n^{({\delta_n})}(\theta_0)+ \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta) + \widehat R_n^{({\delta_n})}(\theta_0) - \widehat R^{({\delta_n})}(\theta_0) +
+   \widehat R^{({\delta_n})}(\widehat\theta)
+     -\widehat R_n^{({\delta_n})}(\widehat\theta) \\
+   \leq & \underbrace{\left|\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)\right|}_{\text{Term (A)}} + \underbrace{\left|\widehat R_n^{({\delta_n})}(\theta_0) - \widehat R^{({\delta_n})}(\theta_0)\right|}_{\text{Term (B)}} + \underbrace{
+   \left|\widehat R^{({\delta_n})}(\widehat\theta)
+     -\widehat R_n^{({\delta_n})}(\widehat\theta)\right|}_{\text{Term  (C)}}
+\end{align*}
+In the last inequality above, term (A) is the approximation error term. Term (B) is the deviation error since $\theta_0$ is fixed while $\widehat \mu$ and $\widehat p$ are stochastic. Term (C) is the deviation error term where  $\widehat\theta$, $\widehat \mu$ and $\widehat p$ are all stochastic. The rate of term (C) is slower than term (B).
+
+
+Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B), (C) are upper bounded by Lemma \ref{lemma:empirical_loss_deviation}. (\textcolor{red}{Incorrect Lemma})  Then, it holds that for any $\tau>0$ with probability no less than $1-32e^{-\tau}$,
+\begin{align*}
+   &\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot (\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|)} + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta\\
+   \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot }\left(\sqrt{\tau} +\sqrt{\ln|\mathcal{C}_\theta|}+\sqrt{\ln|\mathcal{C}_p|}+\sqrt{\ln|\mathcal{C}_\mu|}\right) + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta
+\end{align*}
+According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
+By Assumption \ref{condition:excess_risk:VC-type}, there exist constants $A\geq 1, V\geq 1$ such that $$\ln(|\mathcal{C}_\mu|)\leq V\ln\left(A/\epsilon_\mu\right),\ln(|\mathcal{C}_p|)\leq V\ln\left(A/\epsilon_p\right)$$
+Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}}$, $\epsilon_p \propto n^{-1}, \epsilon_\mu\propto n^{-1}$. It holds that with probability no less than $1-32e^{-\tau}$:
+\begin{align*}
+   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
+   & + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}
+\end{align*}
+% The bound would be 
+% $$c_1 \lambda_n\gamma_n^{-d} + c_2{\delta_n}^{-1}\gamma_n^{\beta}+ c_3{\delta_n}^{-1}\left(\gamma_n^{-d}\lambda_n^{-p}n^{-1}{\delta_n}^{-2}\sigma_n\right)^{\frac{1}{2+2p}} + c_3{\delta_n}^{-1}n^{-1} + c_4\ln(n)\sigma_n^{\frac{1}{2}}{\delta_n}^{-2}n^{-\frac{1}{2}} + c_5(\tau \sigma_n)^{\frac{1}{2}} n^{-\frac{1}{2}}{\delta_n}^{-2}.$$
+
+% If we further let $\lambda_n \propto (\sigma_n^{-1}n{\delta_n}^{2})^{-\frac{d+\beta}{2\beta + d}}{\delta_n}^{-1}$ and $\gamma_n\propto (\sigma_n_n^{-1}n{\delta_n}^{2})^{-\frac{1}{2\beta + d}}$. The rates will be further simplified to 
+% $$ c_2{\delta_n}^{-1}(\sigma_n_n^{-1}n{\delta_n}^{2})^{-\frac{\beta}{2\beta + d}} + c_3{\delta_n}^{-1}n^{-1} + c_4\ln(n)\sigma_n^{\frac{1}{2}}{\delta_n}^{-2}n^{-\frac{1}{2}} + c_5(\tau \sigma_n)^{\frac{1}{2}} n^{-\frac{1}{2}}{\delta_n}^{-2}.$$
+
+
+\end{proof}
+
+\begin{lemma}[SVM Estimation Error with Cross-Fitting]\label{lemma:svm_estimation_error_cross_fitting}
+    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. Suppose the nuisance estimation $\widehat\mu, \widehat p$ are estimated with independent dataset. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+   \begin{align*}
+  \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
+\end{align*}
+Here, $\tilde\theta$ is defined in \eqref{eq:different_thetas}; $\gamma_n$ is the bandwidth of the Gaussian kernel in kernel SVM; $\lambda_n$ is the regularization penalty in \eqref{eq:objective function}; $\sigma_n$ is the supremum of the spectral norm of the covariance matrix of the GP; $c_1,\ldots,c_4$ are constants that are independent of $n$.    
+\end{lemma}
+
+\begin{proof}
+
+Let $\theta_0$ be any fixed element in RKHS $\mathcal{H}_{\gamma_n}$. We decompose the excess risk as follows:
+    \begin{align*}
+   &\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \lambda_n\|\widehat\theta\|^2_{\mathcal{H}_{\gamma_n}}+ \widehat R_n^{({\delta_n})}(\widehat\theta)+\widehat R^{({\delta_n})}(\widehat\theta)  - \widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}  + \widehat R_n^{({\delta_n})}(\theta_0)+ \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta) + \widehat R_n^{({\delta_n})}(\theta_0) - \widehat R^{({\delta_n})}(\theta_0) +
+   \widehat R^{({\delta_n})}(\widehat\theta)
+     -\widehat R_n^{({\delta_n})}(\widehat\theta) \\
+   \leq & \underbrace{\left|\lambda_n\|\theta_0\|^2_{\mathcal{H}_{\gamma_n}}+\widehat R^{({\delta_n})}(\theta_0) -\widehat R^{({\delta_n})}(\tilde\theta)\right|}_{\text{Term (A)}} + \underbrace{\left|\widehat R_n^{({\delta_n})}(\theta_0) - \widehat R^{({\delta_n})}(\theta_0)\right|}_{\text{Term (B)}} + \underbrace{
+   \left|\widehat R^{({\delta_n})}(\widehat\theta)
+     -\widehat R_n^{({\delta_n})}(\widehat\theta)\right|}_{\text{Term  (C)}}
+\end{align*}
+In the last inequality above, term (A) is the approximation error term. Term (B) is the deviation error where $\theta_0$, $\widehat \mu$ and $\widehat p$ are fixed. Term (C) is the deviation error term where $\widehat \mu$ and $\widehat p$ are fixed but $\widehat\theta$ is stochastic. The rate of term (C) is slower than term (B).
+
+
+Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B), (C) are upper bounded by Lemma \ref{lemma:empirical_loss_deviation}. Then, it holds that for any $\tau>0$ with probability no less than $1-32e^{-\tau}$,
+\begin{align*}
+   &\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|\right)} + c_4\epsilon_\theta \\
+   \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot }\left(\sqrt{\tau} +\sqrt{\ln|\mathcal{C}_\theta|}\right) + c_4\epsilon_\theta
+\end{align*}
+According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
+Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}}$. It holds that with probability no less than $1-32e^{-\tau}$:
+\begin{align*}
+   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
+\end{align*}
+\end{proof}
+
+
+
+\begin{lemma}[Parametric Estimation Error]\label{lemma:parametric_estimation_error}
+Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a parametric space $\{\beta^\top(x,u):\beta\in \R^{d+1},\|\beta\|_{\infty}<C_\beta\}$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+   \begin{align*}
+    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & \sqrt{\frac{c_1\sigma_n\tau}{n}} + \sqrt{\frac{ c_2\sigma_n\ln(n)}{n}}  + c_3n^{-1}
+\end{align*}
+Here, $\tilde\theta$ is defined in \eqref{eq:different_thetas}; $c_1,\ldots,c_3$ are constants that are independent of $n$.    
+\end{lemma}
+
+\begin{proof}
+ We decompose the excess risk as follows:
+    \begin{align*}
+   &\widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \widehat R_n^{({\delta_n})}(\widehat\theta)+\widehat R^{({\delta_n})}(\widehat\theta)  - \widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \widehat R_n^{({\delta_n})}(\tilde\theta)+\widehat R^{({\delta_n})}(\widehat\theta)  - \widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\\
+   \leq & \underbrace{\left|\widehat R_n^{({\delta_n})}(\tilde\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\right|}_{\text{Term (A)}} + \underbrace{
+   \left|\widehat R^{({\delta_n})}(\widehat\theta)
+     -\widehat R_n^{({\delta_n})}(\widehat\theta)\right|}_{\text{Term  (B)}}
+\end{align*}
+In the last inequality above, term (A) is the deviation error where $\tilde\theta$ is fixed while $\widehat \mu$ and $\widehat p$ are stochastic. Term (B) is the deviation error term where  $\widehat\theta$, $\widehat \mu$ and $\widehat p$ are all stochastic. The rate of term (A) is slower than term (B). Term (A), (B) are upper bounded by Lemma \ref{lemma:empirical_loss_deviation_parametric}. Then, it holds that for any $\tau>0$ with probability no less than $1-32e^{-\tau}$,
+\begin{align*}
+   &\widehat R_n^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\widehat\theta)\\
+   \leq &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\beta}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq &\sqrt{\frac{ c_1\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
+\end{align*}
+By Assumption \ref{condition:excess_risk:VC-type} and the fact that $\mathcal{C}_\theta$ is the $\epsilon$-net of parametric space $B_\beta$, there exist constants $A\geq 1, V\geq 1$ such that $$\ln(|\mathcal{C}_\mu|)\leq V\ln\left(A/\epsilon_\mu\right),\ln(|\mathcal{C}_p|)\leq V\ln\left(A/\epsilon_p\right),\ln(|\mathcal{C}_\theta|)\leq V\ln\left(A/\epsilon_\theta\right)$$
+Let $\epsilon_\theta \propto n^{-1}$, $\epsilon_p \propto n^{-1}, \epsilon_\mu\propto n^{-1}$. It holds that with probability no less than $1-32e^{-\tau}$:
+\begin{align*}
+   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & \sqrt{\frac{c_1\sigma_n\tau}{n}} + \sqrt{\frac{ c_2\sigma_n\ln(n)}{n}}  + c_3n^{-1}
+\end{align*}
+% The bound would be 
+% $$c_1 \lambda_n\gamma_n^{-d} + c_2{\delta_n}^{-1}\gamma_n^{\beta}+ c_3{\delta_n}^{-1}\left(\gamma_n^{-d}\lambda_n^{-p}n^{-1}{\delta_n}^{-2}\sigma_n\right)^{\frac{1}{2+2p}} + c_3{\delta_n}^{-1}n^{-1} + c_4\ln(n)\sigma_n^{\frac{1}{2}}{\delta_n}^{-2}n^{-\frac{1}{2}} + c_5(\tau \sigma_n)^{\frac{1}{2}} n^{-\frac{1}{2}}{\delta_n}^{-2}.$$
+
+% If we further let $\lambda_n \propto (\sigma_n^{-1}n{\delta_n}^{2})^{-\frac{d+\beta}{2\beta + d}}{\delta_n}^{-1}$ and $\gamma_n\propto (\sigma_n_n^{-1}n{\delta_n}^{2})^{-\frac{1}{2\beta + d}}$. The rates will be further simplified to 
+% $$ c_2{\delta_n}^{-1}(\sigma_n_n^{-1}n{\delta_n}^{2})^{-\frac{\beta}{2\beta + d}} + c_3{\delta_n}^{-1}n^{-1} + c_4\ln(n)\sigma_n^{\frac{1}{2}}{\delta_n}^{-2}n^{-\frac{1}{2}} + c_5(\tau \sigma_n)^{\frac{1}{2}} n^{-\frac{1}{2}}{\delta_n}^{-2}.$$
+
+
+\end{proof}
+
+
+
+
+\subsection{Auxiliary Lemmas}
+
+\subsubsection{Empirical Process Bound}
+% \textcolor{red}{There is a problem that the RKHS function space is stochasic since $\widehat{U}(S_i)$ is stochastic. But we treat the RKHS space as fixed here. However, RKHS space might change when the nuisance estimation changes.}
+\begin{lemma}[Empirical Process Bound]\label{lemma:empirical_loss_deviation} Let
+$R_n^{({\delta_n})}(\theta;\mu,p,\psi)$ and $R^{({\delta_n})}(\theta;\mu,p,\psi)$
+denote the empirical risk and its expectation plugging-in nuisance parameters $\mu,p,\psi$, respectively. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat{U}(S_i))$ with Gaussian kernel. Let $B_{\mathcal{H}_{\gamma_n}}$ be a unit ball in $\mathcal{H}_{\gamma_n}$ with radius $\lambda_n^{-1/2}$. Let $\mathcal{C}_\theta$ be a minimal $\epsilon_\theta$-net of the function class $B_{\mathcal{H}_{\gamma_n}}$ with respect to the $L_\infty$ norm. Then, the following bound holds with probability no less than $1 - 32e^{-\tau}$:
+\begin{align*}
+&\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq &\sqrt{\frac{ c_1\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
+\end{align*}
+Similarly, for fixed $(\mu, p)$, the concentration across the parameter space $B_{\mathcal{H}_{\gamma_n}}$ satisfies the following bound with probability no less than $1 - 32e^{-\tau}$:
+\begin{align*}
+&\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|
+    \leq \sqrt{\frac{ c_1\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|\right)} + c_2\epsilon_\theta   
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+We only prove the result for stochastic $\mu,p,\theta$. The result for fixed $\mu,p$ follows similarly. Let $\pi(\mu) \in \mathcal{C}_\mu$, $\pi(p) \in \mathcal{C}_p$, and $\pi(\theta) \in \mathcal{C}_\theta$ be the closest elements in the respective $\epsilon$-nets to $\mu, p,$ and $\theta$. Then, the supremum of the uniform deviation can be decomposed as follows:
+$$\begin{aligned}
+\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\theta; \mu, p) - R^{(\delta_n)}(\theta; \mu, p) \right| \leq & \underbrace{\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\theta; \mu, p) - R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) \right|}_{\text{Empirical Lipschitz Error}} \\
+& + \underbrace{\max_{\pi(\mu), \pi(p), \pi(\theta)} \left| R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) \right|}_{\text{Stochastic Error over Finite Net}} \\
+& + \underbrace{\sup_{\mu, p, \theta} \left| R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\theta; \mu, p) \right|}_{\text{Population Lipschitz Error}}
+\end{aligned}$$
+
+\noindent \textbf{Step 1: Lipschitz Error}
+
+\noindent According to Lemma \ref{lemma:lipschitz_population_risk}, the risk function $\widehat R^{(\delta_n)}(\theta; \mu, p)$ is Lipschitz continuous with respect to $(\mu, p)$ in the $L_2(P)$ norm and  $\theta$ in the $L_\infty$ norm. Thus, it holds that
+\begin{align*}
+    &\sup_{\mu, p, \theta} \left| R^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R^{(\delta_n)}(\theta; \mu, p) \right|\\
+    \leq &2c^{\prime-1}\epsilon_\mu + 2c^{\prime-2}C^{\prime}\epsilon_p+ \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}\right)\epsilon_\theta
+\end{align*}
+
+\noindent 
+% By the Lipschitz continuity of the empirical risk $\widehat R_n^{(\delta_n)}(\theta; \mu, p)$ with respect to $(\mu, p)$ under the $L_2(P)$ norm and with respect to $\theta$ under the $L_\infty$ norm with high probability in Lemma \ref{lemma:lipschitz_empirical_risk}, we have that for any $\tau>0$, with probability no less than $1-24e^{-\tau}$, we have
+According to Lemma \ref{lemma:lipschitz_empirical_risk}, $\widehat R_n^{(\delta_n)}(\theta; \mu, p)$ is Lipschitz continuous with respect to $(\mu, p)$ in the $L_2(P)$ norm and $\theta$ in the $L_\infty$ norm with high probability. Thus, for any $\tau > 0$, it holds with probability at least $1-24e^{-\tau}$ that
+\begin{align*}
+    &\sup_{\mu, p, \theta} \left| R_n^{(\delta_n)}(\pi(\theta); \pi(\mu), \pi(p)) - R_n^{(\delta_n)}(\theta; \mu, p) \right|\\
+    \leq & 2c^{\prime-1}\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}\right)  + 2c^{\prime-2}C^{\prime}\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
+& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}
+\end{align*}
+
+\noindent\textbf{Step 2: Union Bound on $\epsilon$-Net}
+
+
+\noindent To minimize the notation, we define
+$$A_n = \sqrt{\frac{c_1\tau}{n}}+
+    \sqrt{\frac{ c_2\gamma_n^{-2}\lambda_n^{-1}\tau\sigma_n}{n}} .$$
+According to Lemma \ref{lemma:concentration_risk}, for any fixed $(\mu,p,\theta)$, we have the concentration inequality of the empirical risk as follows:
+$$\pr\left(\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau}\right)\leq 8e^{-\tau}.$$
+We set a new $\tau^\prime =  \tau + \ln|\mathcal{C}_\theta| + \ln|\mathcal{C}_p| + \ln|\mathcal{C}_\mu|$. Then, the supremum of the empirical deviation has the following concentration bound:
+\begin{align*}
+&\pr\left(\sup_{\mu\in\mathcal{C}_\mu, p\in \mathcal{C}_p,\theta\in \mathcal{C}_\theta}\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau^\prime}\right)\\
+    \leq &|\mathcal{C}_\mu||\mathcal{C}_p||\mathcal{C}_\theta| \pr\left(\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\geq A_n\sqrt{\tau^\prime}\right)\\
+    \leq & |\mathcal{C}_\mu||\mathcal{C}_p||\mathcal{C}_\theta| 8 e^{-\tau^\prime}\\
+    \leq & 8 e^{-\tau}
+\end{align*}
+The first inequality is obtained by applying the union bound over the $\epsilon$-net of the parameter space.
+
+\noindent\textbf{Step 3: Combining Bounds}
+
+
+\noindent Combining the result in Step 1-2, we have that with probability no less than $1-32e^{-\tau}$
+\begin{align*}
+    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq &  \left(\sqrt{\frac{c_1\tau}{n}}+
+    \sqrt{\frac{ c_2\gamma_n^{-2}\lambda_n^{-1}\tau\sigma_n}{n}} \right)\sqrt{\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|} \\
+&  + 2c^{\prime-1}\left(\epsilon_\mu + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}\right) + 2c^{\prime-2}C^{\prime}\left(\epsilon_p+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\\
+& + \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\epsilon_\theta + \frac{8\tau}{3n}
+\end{align*}
+Since the regularization parameters $\lambda_n$ and the kernel bandwidth $\gamma_n$ vanish as $n \to \infty$, the right-hand side is dominated by the slowest-decaying terms. Additionally, we assume the surrogate kernel bandwidth $\gamma_n$ decays at a rate slower than $n^{-1}$. By neglecting these higher-order (faster-vanishing) terms, we obtain the following simplified bound:
+\begin{align*}
+    &\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq &  \sqrt{\frac{ c_1\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
+\end{align*}
+
+
+\end{proof}
+
+
+\XL{I will re-write this Lemma based on chaining, which gives a tighter bound $\sqrt{1/n}$}
+
+
+\begin{lemma}[Empirical Process Bound Parametric]\label{lemma:empirical_loss_deviation_parametric} Let
+$R_n^{({\delta_n})}(\theta;\mu,p)$ and $R^{({\delta_n})}(\theta;\mu,p)$
+denote the empirical risk and its population counterpart, respectively, where the outcome regression $\mu$ and generalized propensity score $p$ are used as plug-in nuisance parameters. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Let $B_\beta = \{\beta^\top (x,u):\beta\in\R^{d+1},\|\beta\|_\infty<C_\beta\}$. Let $\mathcal{C}_\mu$ and $\mathcal{C}_p$ denote minimal $\epsilon_\mu$- and $\epsilon_p$-nets of the function classes $\mathcal{F}_\mu$ and $\mathcal{F}_p$ under the $L_2(P)$ norm, respectively. Similarly, let $\mathcal{C}_\theta$ be a minimal $\epsilon_\theta$-net of the function class $B_{\beta}$ with respect to the $L_\infty$ norm. Then, the following bound holds with probability no less than $1 - 32e^{-\tau}$: 
+\begin{align*}
+&\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_{\beta}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|\\
+    \leq &\sqrt{\frac{ c_1\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|\right)} + c_2\epsilon_\mu + c_3\epsilon_p + c_4\epsilon_\theta
+\end{align*}
+Similarly, for fixed $(\mu, p)$, the concentration across the parameter space $B_\beta$ satisfies the following bound with probability no less than $1 - 32e^{-\tau}$:
+\begin{align*}
+\sup_{\theta\in B_{\beta}}\left| R_n^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta;\mu,p)\right|
+    \leq \sqrt{\frac{ c_1\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|\right)} + c_2\epsilon_\theta    
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+We prove the result by verifying a sub-Gaussian process structure for the deviation process and then applying Dudley's entropy integral theorem. The case of fixed $(\mu,p)$ follows by the same argument restricted to the $B_\beta$ direction.
+
+\noindent\textbf{Step 1: Deviation Process and Reference Metric.}
+
+Let $\nu = (\mu,p,\theta)$ denote a joint parameter and define the centered deviation process
+$$Z(\nu) := R_n^{(\delta_n)}(\theta;\mu,p) - R^{(\delta_n)}(\theta;\mu,p) = \frac{1}{n}\sum_{i=1}^n \bigl[\ell^{(\delta_n)}(O_i;\nu) - \mathbb{E}\ell^{(\delta_n)}(O_i;\nu)\bigr].$$
+Define the reference pseudo-metric on $\mathcal{F}:=\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta$:
+\begin{equation}\label{eq:d0_metric}
+d_0(\nu_1,\nu_2)^2 := \|\mu_1-\mu_2\|_{P,2}^2 + \|p_1-p_2\|_{P,2}^2 + \|\theta_1-\theta_2\|_\infty^2.
+\end{equation}
+We will apply Dudley’s entropy integral bound \ref{thm:dudley} to give the upper bound of the  expectation of the supremum $$\E[\sup_{\nu\in\mathcal{F}}Z(\nu)]$$
+Then, we will use and the McDiarmid inequality \ref{thm:mcdiarmid} and Borell-TIS \ref{thm:borell}inequality to give the highy probability bound of the concentration
+$$\sup_{\nu\in\mathcal{F}}Z(\nu) - \E[\sup_{\nu\in\mathcal{F}}Z(\nu)]$$.
+
+To apply Dudley’s entropy integral bound, we first show that the joint function class $\mathcal{F}$ has finite diameter as follows:
+
+\begin{align}
+\sup_{\nu_1,\nu_2\in\mathcal{F}}d_0(\nu_1,\nu_2)&= \sup_{\mu_1,\mu_2\in\mathcal{F}_\mu}\|\mu_1-\mu_2\|_{P,2}^2 + \sup_{p_1,p_2\in\mathcal{F}_p}\|p_1-p_2\|_{P,2}^2 + \sup_{\theta_1,\theta_2\in B_\beta}\|\theta_1-\theta_2\|_\infty^2\nonumber\\
+&\leq 4C^\prime + 2C_\beta
+\end{align}
+The inequality follows from the upper bound of the parametric function class and Assumption \ref{condition:excess_risk:smooth}.
+
+Then, we show that $\{Z(\nu)\}_{\nu\mathcal{F}}$ is sub-Gaussian process in the sense that
+$$\|Z(\nu_1)-Z(\nu_2)\|_{\psi_2}\leq C d_0(\nu_1,\nu_2),\forall \nu_1,\nu_2\in\mathcal{F}.$$
+Here, $c$ is a positive constant independent of the choice of $\nu_1,\nu_2$.
+
+
+\noindent\textbf{Step 2: Sub-Gaussian Verification via 4-Layer Decomposition.}
+
+For any pair $\nu_1=(\mu_1,p_1,\theta_1)$ and $\nu_2=(\mu_2,p_2,\theta_2)$, we bound the $\psi_2$ (sub-Gaussian) Orlicz norm of $\Delta Z := Z(\nu_1) - Z(\nu_2)$ by decomposing the randomness in $\{O_i\}$ into four independent layers, following the same structure as in Lemma~\ref{lemma:concentration_risk}.
+
+\noindent\textit{Layer 1: Outcome noise $\epsilon_i = Y_i - \mu^*(A_i,X_i,S_i)$.}
+The noise-driven part of $\Delta Z$ arises from the $\epsilon_i/p$ term in the doubly robust loss. For the $\mu$-direction this contribution vanishes (the noise term does not depend on $\mu$). For the $p$-direction, the increment is proportional to $(p_1^{-1}-p_2^{-1})\epsilon_i K_{\delta_n}(A_i-a)$; by Lemma~\ref{lemma:noise_concentration} applied with weight $\|p_1^{-1}-p_2^{-1}\|\lesssim c^{\prime-2}\|p_1-p_2\|_{P,2}$,
+\begin{equation}\label{eq:layer1_p}
+\bigl\|W^{(1)}_p\bigr\|_{\psi_2}^2 \lesssim \frac{\sigma_\epsilon^2}{c^{\prime4}}\cdot\frac{\|p_1-p_2\|_{P,2}^2}{n}.
+\end{equation}
+For the $\theta$-direction, the kernel difference $|K_{\delta_n}(A_i-\theta_1(S_i))-K_{\delta_n}(A_i-\theta_2(S_i))|\leq \kappa\|\theta_1-\theta_2\|_\infty/\delta_n$ yields a per-observation variance proxy linear in $\|\theta_1-\theta_2\|_\infty$; therefore the $\theta$-noise term is \emph{sub-exponential} ($\psi_1$) rather than sub-Gaussian ($\psi_2$):
+\begin{equation}\label{eq:layer1_theta}
+\bigl\|W^{(1)}_\theta\bigr\|_{\psi_1} \lesssim \sqrt{\frac{\sigma_\epsilon^2\kappa\,\|\theta_1-\theta_2\|_\infty}{c^{\prime2}n\delta_n}}.
+\end{equation}
+This sub-exponential piece is handled separately via Bernstein's inequality in Step~5.
+
+\noindent\textit{Layer 2: Treatment $A_i\mid X_i,U_i$.}
+Conditional on $(X_i,U_i)$, the increment $\Delta Z^{(A)}$ is a sum of independent bounded centered variables, each with absolute value at most $c^{\prime-1}C^{\prime}\|\nu_1-\nu_2\|/n$ in the appropriate norm. By Hoeffding's inequality for bounded random variables,
+\begin{equation}\label{eq:layer2}
+\bigl\|W^{(2)}\bigr\|_{\psi_2}^2 \lesssim \frac{C^{\prime2}}{c^{\prime2}}\cdot\frac{d_0(\nu_1,\nu_2)^2}{n}.
+\end{equation}
+
+\noindent\textit{Layer 3: Latent variable $U_i\mid X_i$ (Gaussian process layer).}
+After conditioning on $\{X_i\}$, the vector $(U(S_1),\ldots,U(S_n))$ is a centered Gaussian vector whose covariance satisfies $\|\Sigma\|_{\mathrm{op}}\leq\sigma_n$. The increment $\Delta Z$, viewed as a function $f(U_1,\ldots,U_n)=\frac{1}{n}\sum_i [g_i(U_i;\nu_1)-g_i(U_i;\nu_2)]$ with $g_i$ the $i$-th individual loss contribution, has Lipschitz constant
+$$\|f\|_{\mathrm{Lip}}^2 = \frac{1}{n^2}\sum_{i=1}^n\bigl\|g_i(\cdot;\nu_1)-g_i(\cdot;\nu_2)\bigr\|_{\mathrm{Lip}}^2 \lesssim \frac{C^{\prime2}\,d_0(\nu_1,\nu_2)^2}{n},$$
+where the last bound uses the pointwise Lipschitz property of $g_i$ in $U_i$ (bounded by $C'$ from Assumption~\ref{condition:excess_risk:smooth}). Applying Lemma~\ref{thm:gaussian_concentration} to the Gaussian vector $(U(S_1),\ldots,U(S_n))$ with spectral norm $\sigma_n$,
+\begin{equation}\label{eq:layer3}
+\bigl\|W^{(3)}\bigr\|_{\psi_2}^2 \lesssim C^2\|f\|_{\mathrm{Lip}}^2\cdot\sigma_n \lesssim \frac{C^{\prime2}\sigma_n\,d_0(\nu_1,\nu_2)^2}{n}.
+\end{equation}
+
+\noindent\textit{Layer 4: Covariates $X_i$.}
+The covariates $X_i$ enter the loss through bounded functions of the nuisance parameters. By Hoeffding's inequality,
+\begin{equation}\label{eq:layer4}
+\bigl\|W^{(4)}\bigr\|_{\psi_2}^2 \lesssim \frac{C^{\prime2}\,d_0(\nu_1,\nu_2)^2}{n}.
+\end{equation}
+
+\noindent\textit{Combining the layers.}
+Since $W^{(1)}_p, W^{(2)}, W^{(3)}, W^{(4)}$ are centered and (conditionally) independent, the $\psi_2$ triangle inequality $\|A+B\|_{\psi_2}\leq\|A\|_{\psi_2}+\|B\|_{\psi_2}$ and equations~\eqref{eq:layer1_p}--\eqref{eq:layer4} give the joint increment bound:
+\begin{equation}\label{eq:sg_increment}
+\bigl\|\Delta Z(\nu_1,\nu_2)\bigr\|_{\psi_2}^2 \lesssim \frac{(1+\sigma_n)\,d_0(\nu_1,\nu_2)^2}{n} + \underbrace{\frac{\sigma_\epsilon^2\kappa\,\|\theta_1-\theta_2\|_\infty}{n\delta_n}}_{\text{sub-exponential }\theta\text{-correction}}.
+\end{equation}
+Ignoring the sub-exponential correction, $Z$ is a sub-Gaussian process with respect to the \emph{intrinsic metric}
+\begin{equation}\label{eq:intrinsic_metric}
+d_{\mathrm{sg}}(\nu_1,\nu_2) := \sqrt{\frac{1+\sigma_n}{n}}\,d_0(\nu_1,\nu_2),\qquad \|Z(\nu_1)-Z(\nu_2)\|_{\psi_2}\leq d_{\mathrm{sg}}(\nu_1,\nu_2).
+\end{equation}
+
+\noindent\textbf{Step 3: Dudley Entropy Integral.}
+
+Since $Z$ is a sub-Gaussian process with intrinsic metric $d_{\mathrm{sg}}$ satisfying~\eqref{eq:intrinsic_metric}, Dudley's entropy integral theorem gives
+\begin{equation}\label{eq:dudley}
+\mathbb{E}\!\sup_{\nu\in\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta} Z(\nu) \lesssim \int_0^{D_{\mathrm{sg}}} \sqrt{\log\mathcal{N}\!\left(\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta,\,d_{\mathrm{sg}},\,u\right)}\,du,
+\end{equation}
+where $D_{\mathrm{sg}}:=\sqrt{(1+\sigma_n)/n}\cdot D_0$ is the $d_{\mathrm{sg}}$-diameter of the joint parameter space. Changing variables $u=\sqrt{(1+\sigma_n)/n}\cdot v$ and using $\mathcal{N}(\mathcal{F},d_{\mathrm{sg}},u)=\mathcal{N}(\mathcal{F},d_0,v)$, the right-hand side of~\eqref{eq:dudley} becomes
+\begin{equation}\label{eq:dudley_reparameterized}
+\sqrt{\frac{1+\sigma_n}{n}}\int_0^{D_0}\sqrt{\log\mathcal{N}(\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta,\,d_0,\,v)}\,dv =: \sqrt{\frac{1+\sigma_n}{n}}\,\mathcal{J},
+\end{equation}
+where $\mathcal{J}$ is the Dudley integral of the joint parameter space under the reference metric $d_0$.
+
+\noindent\textbf{Step 4: Computing the Dudley Integral $\mathcal{J}$.}
+
+The product-space metric entropy factors as $\log\mathcal{N}(\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta,d_0,v)\leq\mathcal{H}_\mu(v)+\mathcal{H}_p(v)+\mathcal{H}_\theta(v)$. For the parametric class $B_\beta=\{\beta^\top(x,u):\|\beta\|_\infty\leq C_\beta\}$ under $\|\cdot\|_\infty$, a standard volumetric argument gives
+$$\mathcal{H}_\theta(v) = \log\mathcal{N}(B_\beta,\|\cdot\|_\infty,v) \leq (d+1)\log\!\left(\frac{3C_\beta}{v}\right).$$
+Integrating against $\sqrt{\mathcal{H}_\theta(v)}$ via the substitution $v=D_\theta e^{-t}$:
+\begin{equation}\label{eq:dudley_theta}
+\int_0^{D_\theta}\sqrt{\mathcal{H}_\theta(v)}\,dv = \sqrt{d+1}\int_0^{D_\theta}\sqrt{\log(D_\theta/v)}\,dv = D_\theta\sqrt{d+1}\cdot\frac{\sqrt{\pi}}{2} = O\!\left(\sqrt{d+1}\right),
+\end{equation}
+where the last equality follows from the standard identity $\int_0^\infty\sqrt{t}\,e^{-t}dt=\Gamma(3/2)=\frac{\sqrt{\pi}}{2}$. For the nonparametric classes $\mathcal{F}_\mu$ and $\mathcal{F}_p$, the integrals $\int_0^{D_\mu}\sqrt{\mathcal{H}_\mu(v)}\,dv$ and $\int_0^{D_p}\sqrt{\mathcal{H}_p(v)}\,dv$ are finite under standard metric entropy conditions on the function classes. Thus $\mathcal{J}<\infty$.
+
+\noindent\textbf{Step 5: High-Probability Bound and Sub-Exponential Correction.}
+
+\noindent\textit{High-probability concentration.}
+The bound~\eqref{eq:dudley_reparameterized} is an expectation bound. Applying Talagrand's concentration inequality for suprema of sub-Gaussian empirical processes, for $t\geq 0$:
+$$\Pr\!\left(\sup_\nu Z(\nu) \geq \mathbb{E}\!\sup_\nu Z(\nu) + t\right) \leq \exp\!\left(-\frac{cnt^2}{1+\sigma_n}\right).$$
+Setting $t=\sqrt{(1+\sigma_n)\tau/n}$ and combining with~\eqref{eq:dudley_reparameterized} yields, with probability at least $1-e^{-\tau}$:
+\begin{equation}\label{eq:hp_main}
+\sup_\nu Z(\nu) \leq \frac{c_1\sqrt{(1+\sigma_n)}}{\sqrt{n}}\bigl(\mathcal{J}+\sqrt{\tau}\bigr).
+\end{equation}
+
+\noindent\textit{Sub-exponential $\theta$-correction.}
+The sub-exponential piece $W^{(1)}_\theta$ identified in~\eqref{eq:layer1_theta} is controlled via Bernstein's inequality. Applying Lemma~\ref{lemma:concentration_kernel_integral} to the kernel-integral deviation and summing over the chaining levels, the contribution of this term to the supremum is bounded, with probability at least $1-e^{-\tau}$, by
+\begin{equation}\label{eq:bernstein_correction}
+c_2\sqrt{\frac{\tau}{n\delta_n}}.
+\end{equation}
+
+\noindent\textbf{Step 6: Net Approximation and Final Assembly.}
+
+The empirical process supremum is over the continuous spaces $\mathcal{F}_\mu\times\mathcal{F}_p\times B_\beta$. To account for the error introduced by approximating each $\nu$ by its nearest net point, we apply Lemmas~\ref{lemma:lipschitz_population_risk} and~\ref{lemma:lipschitz_empirical_risk}. For any $\mu$ with $\|\mu-\bar\mu\|_{P,2}\leq\epsilon_\mu$ ($\bar\mu\in\mathcal{C}_\mu$),
+$$|Z(\mu,p,\theta)-Z(\bar\mu,p,\theta)| \leq \bigl|R_n^{(\delta_n)}(\cdot;\mu,p)-R_n^{(\delta_n)}(\cdot;\bar\mu,p)\bigr|+\bigl|R^{(\delta_n)}(\cdot;\mu,p)-R^{(\delta_n)}(\cdot;\bar\mu,p)\bigr| \leq c_3\epsilon_\mu,$$
+where the last inequality uses the Lipschitz constants from Lemmas~\ref{lemma:lipschitz_population_risk} and~\ref{lemma:lipschitz_empirical_risk} (w.r.t.\ $\mu$). By the same lemmas applied to the $p$- and $\theta$-directions, with probability at least $1-14e^{-\tau}$,
+$$\sup_{\nu}|Z(\nu)| \leq \sup_{\bar\nu\in\mathcal{C}_\mu\times\mathcal{C}_p\times\mathcal{C}_\theta}|Z(\bar\nu)| + c_3\epsilon_\mu + c_4\epsilon_p + c_5\epsilon_\theta.$$
+Applying Lemma~\ref{lemma:concentration_risk} (fixed $\nu$) with a union bound over the $|\mathcal{C}_\mu|\cdot|\mathcal{C}_p|\cdot|\mathcal{C}_\theta|$ net points at level $\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|$ gives, with probability at least $1-8e^{-\tau}$,
+$$\sup_{\bar\nu\in\mathcal{C}_\mu\times\mathcal{C}_p\times\mathcal{C}_\theta}|Z(\bar\nu)|\leq\sqrt{\frac{c_1\sigma_n(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|)}{n}}.$$
+
+Collecting all failure probabilities and combining~\eqref{eq:hp_main},~\eqref{eq:bernstein_correction}, and the net approximation, we obtain the stated bound with probability at least $1-32e^{-\tau}$:
+\begin{align*}
+&\sup_{\mu\in\mathcal{F}_\mu}\sup_{p\in\mathcal{F}_p}\sup_{\theta\in B_\beta}\bigl|R_n^{(\delta_n)}(\theta;\mu,p)-R^{(\delta_n)}(\theta;\mu,p)\bigr|\\
+&\leq \sqrt{\frac{c_1\sigma_n}{n}\bigl(\tau+\ln|\mathcal{C}_\mu|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\theta|\bigr)} + c_2\sqrt{\frac{\tau}{n\delta_n}} + c_3\epsilon_\mu + c_4\epsilon_p + c_5\epsilon_\theta.
+\end{align*}
+The tighter Dudley-based bound~\eqref{eq:hp_main} shows that the dominant term scales as $\sqrt{(1+\sigma_n)/n}\cdot\mathcal{J}$ with $\mathcal{J}=O(\sqrt{d+1})$ for the parametric class, improving over the single-scale union bound in which $\sigma_n$ multiplies the full log-covering-numbers.
+\end{proof}
+
+
+\subsubsection{Doubly Robust Plug-in Error}
+
+\begin{lemma}[Doubly Robust Plug-in Error]\label{lemma:risk_function_plug_in_error}
+    Let $\widehat R^{({\delta_n})}(\theta) = \E[\widehat L^{({\delta_n})}(\theta(S_i),O_i)]$ be the estimated risk function. Under Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance}, for any $\theta$ that maps $(X_i,S_i)\in\mathcal{X}\times \mathcal{D}$ to $\theta(X_i,S_i)\in\R$, with probability greater than $1-\rho_n$,
+    we have 
+    % $$|\widehat R^{({\delta_n})}(\theta) - R(\theta)|\leq |\mathcal{A}|\left(\frac{2C^{\prime2}}{c^{\prime2}}{\delta_n} + \frac{1}{c^\prime}r_{\mu,n}r_{p,n} + C^\prime r_{\mu,n}{\delta_n}\right) .$$
+    $$|\widehat R^{({\delta_n})}(\theta) - R(\theta)|\leq 4C^{\prime2}c^{\prime-2}|\mathcal{A}|\delta_n + c^{\prime-2}r_{\mu,n}r_{p,n}$$
+\end{lemma}
+
+\begin{proof} 
+Let $\mathcal{W}(\theta)$ be the winsorized function of $\theta$ over the treatment range $[a_L,a_U]$, i.e., 
+$$\mathcal{W}(\theta)(X_i,S_i) = a_L \cdot 1\{\theta(X_i,S_i)< a_L\} + \theta(X_i,S_i)\cdot 1\{a_L\leq \theta(X_i,S_i)\leq a_U\} + a_U \cdot 1\{\theta(X_i,S_i)> a_U\}.$$
+By the definition of the loss function \eqref{eq:loss_function_complete}, 
+$$\widehat R^{({\delta_n})}(\theta) - R(\theta) = \widehat R^{({\delta_n})}(\mathcal{W}(\theta)) - R(\mathcal{W}(\theta)).$$
+Thus, we only need to consider the functions ranging over $[a_L,a_U]$. To minimize notation, we define
+$$\epsilon(a,X_i,S_i) := \frac{\left\{\widehat\mu(a,X_i,S_i) - \mu^*(a,X_i,S_i)\right\} }{\widehat{p}(a|X_i,S_i)}$$
+Then, for a function $\theta$ that map $(X_i,S_i)\in\mathcal{X}\times \mathcal{D}$ to $\theta(X_i,S_i)\in[a_L,a_U]$, 
+\begin{align*}
+    &\left| \widehat R^{({\delta_n})}(\theta) - R(\theta) \right|\nonumber\\
+    = & \E\left[\int_{\mathcal{A}} \left\{\widehat{\psi}^{({\delta_n})}(a, O_i)- \mu^*(a, X_i,S_i)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\nonumber\\
+    = &  \underbrace{\E\left[\int_{\mathcal{A}} \left\{\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i) - \epsilon(a,X_i,S_i) K_{\delta_n}(A_i-a)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]}_{\text{Term (A)}}
+    % \label{eq:exp_error_pseudo_outcome_db}
+    \\ 
+     & + \underbrace{\E\left[\int_{\mathcal{A}} \left\{(\epsilon(a,X_i,S_i) - \epsilon(A_i,O_i)) K_{\delta_n}(A_i-a)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]}_{\text{Term (B)}}
+     % \label{eq:exp_error_pseudo_outcome_surrogate}
+\end{align*}
+% \textbf{Bounding Term \eqref{eq:exp_error_pseudo_outcome_surrogate}:}
+\noindent \textbf{Step 1: Bounding Term (A):}
+\noindent
+\begin{align*}
+\text{Term (A)} = &\E\left[\int_{\mathcal{A}} \left\{\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i) - \epsilon(a,X_i,S_i) K_{\delta_n}(A_i-a)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+=& \underbrace{\E\left[\int_{\mathcal{A}} \left\{\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i) - \epsilon(a,X_i,S_i)p^*(a|X_i,S_i)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]}_{\text{Term (A.1)}}\\
+&+\underbrace{\E\left[\int_{\mathcal{A}} \left\{ \epsilon(a,X_i,S_i)(p^*(a|X_i,S_i) - K_{\delta_n}(A_i-a))\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]}_{\text{Term (A.2)}}
+\end{align*}
+
+\noindent We first decompose term (A) into two terms and provide their upper bounds separately.
+\noindent \textbf{Step 1.1 Bounding Term (A.1)}
+
+\noindent 
+
+\begin{align*}
+    \text{Term (A.1)} =& \E\left[\int_{\mathcal{A}} \left\{\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i) - \epsilon(a,X_i,S_i)p^*(a|X_i,S_i)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+    = & \E\left[\int_{\mathcal{A}} \frac{\{\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i)\}\{\widehat{p}(a,X_i,S_i) - p^*(a,X_i,S_i)\}}{\widehat{p}(a,X_i,S_i)}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+    \leq & \E\left[\int_{\mathcal{A}} \frac{|\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i)|\cdot|\widehat{p}(a,X_i,S_i) - p^*(a,X_i,S_i)|}{\widehat{p}(a,X_i,S_i)}\mathrm{d}a\right]\\
+    \leq &\E\left[\int_{\mathcal{A}} \frac{|\widehat{\mu}(a,X_i,S_i) - \mu^*(a,X_i,S_i)|\cdot|\widehat{p}(a,X_i,S_i) - p^*(a,X_i,S_i)|}{\widehat{p}(a,X_i,S_i)p^*(a,X_i,S_i)}p^*(a,X_i,S_i)\mathrm{d}a\right]\\
+    \leq & c^{\prime-2}\E\left[|\widehat{\mu}(A_i,X_i,S_i) - \mu^*(A_i,X_i,S_i)|\cdot|\widehat{p}(A_i,X_i,S_i) - p^*(A_i,X_i,S_i)|\right]
+    \\  
+    \leq & c^{\prime-2}\|\widehat{\mu} - \mu^*\|_{P,2} \|\widehat{p} - p^*\|_{P,2}
+\end{align*}
+The last second inequality follows from Assumption \ref{condition:excess_risk:smooth}. Then, by Assumption \ref{condition:excess_risk:nuisance}, term (A.1) is bounded by $c^{\prime-2}r_{\mu,n}r_{p,n}$ with probability no less than $1-\rho_n$.
+
+
+\noindent \textbf{Step 1.2 Bounding Term (A.2)}
+
+\noindent Under Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:overlap}, for any value of $a,X_i,S_i,a^\prime$, we have 
+$$\left|\frac{\partial}{\partial a^\prime}\epsilon(a,X_i,S_i)p^*(a^\prime|X_i,S_i)\right|\leq2C^{\prime2}c^{\prime-1}$$
+By applying Lemma \ref{lemma:bias_rate_of_kernel_convolution} to the above function, we have 
+\begin{align*}
+    &\E\left\{ \epsilon(a,X_i,S_i)(p^*(a|X_i,S_i) - K_{\delta_n}(A_i-a))|X_i,S_i\right\}\\
+    = & \epsilon(a,X_i,S_i)p^*(a|X_i,S_i) - \int_\mathcal{A}\epsilon(a,X_i,S_i)p^*(a^\prime|X_i,S_i)K_{\delta_n}(a^\prime - a)\mathrm{d}a\\
+    \leq &2C^{\prime2}c^{\prime-1}\delta_n&
+\end{align*}
+Thus, we have the following bound for term (A.2)
+\begin{align*}
+    \text{Term (A.2)} = & \E\left[\int_{\mathcal{A}} \left\{ \epsilon(a,X_i,S_i)(p^*(a|X_i,S_i) - K_{\delta_n}(A_i-a))\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+    = & \E\left[\int_{\mathcal{A}} \E\left\{ \epsilon(a,X_i,S_i)(p^*(a|X_i,S_i) - K_{\delta_n}(A_i-a))|X_i,S_i\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+    \leq & 2C^{\prime2}c^{\prime-1}\delta_n|\mathcal{A}|
+\end{align*}
+Combining the upper bound of term (A.1) and term (A.2), we have the following bound for term A with probability no less than $1-\rho_n$
+$$\text{Term A}\leq 2C^{\prime2}c^{\prime-1}\delta_n|\mathcal{A}| + c^{\prime-2}r_{\mu,n}r_{p,n}.$$
+
+
+\noindent\textbf{Step 2: Bounding Term (B):}
+
+\noindent Under Assumption \ref{condition:excess_risk:smooth}-\ref{condition:excess_risk:overlap} and the rules of derivative, for any value of $a,X_i,S_i$ in their support, we have 
+$$ \left|\frac{\partial}{\partial a}\epsilon(a,X_i,S_i)\right|= \left|\frac{\partial}{\partial a}\left\{\frac{\widehat\mu(a,X_i,S_i) - \mu^*(a,X_i,S_i)}{\widehat p(a|X_i,S_i)}\right\}\right|\leq \frac{2C^{\prime2}}{c^{\prime2}}.$$
+Then, applying Lemma \ref{lemma:bias_rate_of_kernel_convolution} to the above function, we have
+$$\left|\E\left[ (\epsilon(a,X_i,S_i) - \epsilon(A_i,O_i)) K_{\delta_n}(A_i-a) \bigg| X_i,S_i\right] \right|\leq \frac{2C^{\prime2}}{c^{\prime2}}{\delta_n}$$
+Thus, we can bound the absolute value of the term (B) as follows
+\begin{align*}
+    \text{Term (B)} =&\E\left[\int_{\mathcal{A}} \left\{(\epsilon(a,X_i,S_i) - \epsilon(A_i,O_i)) K_{\delta_n}(A_i-a)\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+    = & \E\left[\int_{\mathcal{A}} \E\left\{(\epsilon(a,X_i,S_i) - \epsilon(A_i,O_i)) K_{\delta_n}(A_i-a)|X_i,S_i\right\}1(a\leq \theta(X_i,S_i))\mathrm{d}a\right]\\
+    \leq & \frac{2C^{\prime2}}{c^{\prime2}}|\mathcal{A}|{\delta_n}
+\end{align*}
+\noindent \textbf{Step 3: Combine Bounds:}
+
+\noindent
+For any $\theta$, combine the bounds for term (A) and term (B) and we have the following bound with probability greater than $1-\rho_n$,
+% \CP{Term (A) is bounded by $c'$ not $c'^{-2}$ so the upper bound needs to be corrected?} \XL{Since $c^{\prime}$ is lower bound in the positivity Assumption \ref{condition:excess_risk:overlap}, I think it might be smaller than one. Thus, I replace the first term in Term (A) with the potentially smaller bound of Term (B).}
+\begin{align*}
+    \left| \widehat R^{({\delta_n})}(\theta) - R(\theta) \right|&\leq 2C^{\prime2}c^{\prime-2}|\mathcal{A}|\delta_n +2C^{\prime2}c^{\prime-1}|\mathcal{A}|\delta_n + c^{\prime-2}r_{\mu,n}r_{p,n}.
+\end{align*}
+
+\end{proof}
+
+\subsubsection{Properties of Scaled Kernel Function}
+
+\begin{lemma}[Convergence Rate of Scaled Kernel Convolution]\label{lemma:bias_rate_of_kernel_convolution} Let $K_{\delta_n}(x)$ be a scaled kernel function, i.e.
+$$K_{\delta_n}(x) = \frac{1}{{\delta_n}}K\left(\frac{x}{{\delta_n}}\right),\quad .$$
+where $K(\cdot)$ is a $s$-th order kernel such that
+\begin{gather*}
+    \int_{\R}K(x)\mathrm{d}x = 1,\\
+    \int_{\R}x^iK(x)\mathrm{d}x = 0,\quad i=1,\ldots,s-1,\\
+    \int_{\R}x^sK(x)\mathrm{d}x \neq 0
+\end{gather*}
+Let $f(x)$ be a $s$-order continuously differentiable function of $x\in\R$. For any $x^*\in\R$, define
+$$I({\delta_n}) := \int_{\R}f(x)K_{\delta_n}(x-x^*)\mathrm{d}x$$
+Let the $s$-order derivative of $f(x)$, $f^{(s)}(x)$ be bounded by a constant $M$. Let $c_K = \int_\R |u^sK(u)|\mathrm{d}u$. Then, $I({\delta_n})$ satisfies 
+$$|I({\delta_n}) - f(x^*)|\leq c_K M{\delta_n}^s$$ 
+\end{lemma}
+
+\begin{proof}
+We perform a change of variables:
+\[
+u = \frac{x - x^*}{{\delta_n}} \quad \Rightarrow \quad x = x^* + {\delta_n} u, \quad dx = {\delta_n}\, du.
+\]
+Then:
+\[
+I({\delta_n}) = \int_{\mathbb{R}} f(x) K_{\delta_n}(x - x^*)\, dx = \int_{\mathbb{R}} f(x^* + {\delta_n} u) K(u)\, du.
+\]
+Now expand $f(x^* + {\delta_n} u)$ in a Taylor series around $x^*$:
+\[
+f(x^* + {\delta_n} u) = f(x^*) + {\delta_n} u f'(x^*) + \cdots + \frac{({\delta_n} u)^{s-1}}{(s-1)!} f^{(s-1)}(x^*) + \frac{({\delta_n} u)^s}{s!} f^{(s)}(x^* + \theta {\delta_n} u)
+\]
+for some $\theta \in (0,1)$ (by Taylor's remainder theorem).
+
+Multiply by $K(u)$ and integrate:
+\[
+I({\delta_n}) = \int_{\mathbb{R}} \left[ f(x^*) + {\delta_n} u f'(x^*) + \cdots + \frac{({\delta_n} u)^{s-1}}{(s-1)!} f^{(s-1)}(x^*) \right] K(u)\, du + \int_{\mathbb{R}} \frac{({\delta_n} u)^s}{s!} f^{(s)}(x^* + \theta {\delta_n} u) K(u)\, du.
+\]
+By the kernel moment conditions:
+\[
+\int_{\mathbb{R}} K(u)\, du = 1,\quad \int_{\mathbb{R}} u^i K(u)\, du = 0 \text{ for } i = 1,\dots,s-1.
+\]
+The first integral reduces to just $f(x^*)$.
+
+The second integral gives the bias term:
+\[
+I({\delta_n}) - f(x^*) = \frac{{\delta_n}^s}{s!} \int_{\mathbb{R}} u^s f^{(s)}(x^* + \theta {\delta_n} u) K(u)\, du.
+\]
+
+Now, since $f^{(s)}$ is continuous and hence bounded in a neighborhood of $x^*$, say $|f^{(s)}(x)| \leq M$ for all $x$ near $x^*$, we get:
+\[
+\left| I({\delta_n}) - f(x^*) \right| \leq \frac{{\delta_n}^s M}{s!} \int_{\mathbb{R}} |u^s K(u)|\, du \leq c_K M{\delta_n}^s.
+\]
+
+\end{proof}
+
+\subsubsection{Concentration Inequalities}
+
+\begin{lemma}[Concentration Inequality for Empirical Risk.]\label{lemma:concentration_risk} Let $R^{({\delta_n})}(\theta;\mu,p)$ and $R_n^{({\delta_n})}(\theta;\mu,p)$
+denote the population risk and the empirical risk where the outcome regression $\mu$ and generalized propensity score $p$ are used as plug-in nuisance parameters. Suppose data generative model \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} hold. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Suppose $\theta$ belongs to the RKHS space $\mathcal{H}_{\gamma_n}$ with hyper-parameters $\gamma_n$ and $\lambda_n$. Then, for any $\tau>0$, with probability no less than $1-8e^{-\tau}$:
+\begin{align*}
+    &\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\leq \sqrt{\frac{c_1\tau}{n}}+
+    \sqrt{\frac{ c_2\gamma_n^{-2}\lambda_n^{-1}\tau\sigma_n}{n}} 
+\end{align*}
+Here, $c_1,c_2$ are generic constant that depends on $\sigma_\epsilon,C^\prime,c^\prime,\mathcal{T},|\mathcal{A}|$.
+
+Alternatively, suppose $\theta$ belongs to a parametric space $\{\beta^\top(x,u):\beta\in\R^{d+1},\|\beta\|_\infty<C_\beta\}$. Then, for any $\tau>0$, with probability no less than $1-8e^{-\tau}$:
+\begin{align*}
+    &\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\leq \sqrt{\frac{c_1\tau}{n}}+
+    \sqrt{\frac{ c_2\tau\sigma_n}{n}} 
+\end{align*}
+Here, $c_1,c_2$ are generic constant that depends on $\sigma_\epsilon,C^\prime,c^\prime,\mathcal{T},|\mathcal{A}|,C_\beta$.
+    
+\end{lemma}
+\begin{proof}
+Let $\E_n$ be the empirical mean. Let $U_i =U(S_i)$. Let $O_i=\{Y_i,A_i,U_i,X_i\}$. Denote $$L^{({\delta_n})}(O_i;\theta,\mu, p):=\int_{a_L}^{\theta(X_i,U_i)}(\mathcal{T}-\mu(a,X_i,U_i))\mathrm{d}a + \frac{(Y_i - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})} \int_{a_L}^{\theta(X_i,U_i)}K_{\delta_n}(A_i-a)\mathrm{d}a.$$
+
+% \textcolor{red}{If we let $\delta$ goes to zero. The loss function would be $$L^{({\delta_n})}(O_i;\theta,\mu, p):=\int_{a_L}^{\theta(X_i,U_i)}(\mathcal{T}-\mu(a,X_i,U_i))\mathrm{d}a + \frac{(Y_i - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})}1[\theta(X_i,U_i)> A_i]$$It seems that the integral takes the }
+
+
+Similar to the proof of Lemma \ref{lemma:concentration_mean_diff}, we decompose the difference between empirical mean and population into distinct sources of variation: the randomness of $Y_i$ given $A_i,X_i,U_i$, the randomness of $A_i$ given $X_i,U_i$, the randomness of $U_i$ given $X_i$, and the marginal randomness of $X_i$:
+\begin{align*}
+    &\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\\
+    \leq & \left|\frac{1}{n}\sum_{i=1}^n L^{({\delta_n})}(O_i;\theta,\mu, p)-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|A_i,X_i,U_i\right]\right|\\
+    & + \left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|A_i,X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]\right|\\
+    & + \left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\\
+    & + \left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]-\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)\right]\right|
+\end{align*}
+
+\noindent \textbf{Step 1: Concentration Inequality of $Y_i$ given $A_i,X_i,U_i$}
+
+\noindent Under data generative model \eqref{eq:data_generative_model_1},  for any $\tau > 0$, with probability at least $1 - 2e^{-\tau}$, we have 
+\begin{align*}
+    &\left|\frac{1}{n}\sum_{i=1}^n L^{({\delta_n})}(O_i;\theta,\mu, p)-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|A_i,X_i,U_i\right]\right|\\
+    = & \left|\frac{1}{n}\sum_{i=1}^n \frac{\epsilon_i}{ p(A_{i}|X_{i},U_{i})} \int_{a_L}^{\theta(X_i,U_i)}K_{\delta_n}(A_i-a)\mathrm{d}a\right|\\
+    \leq & \sqrt{\frac{2\tau c^{\prime-2} \sigma_\epsilon^2}{n}}
+\end{align*}
+The final inequality follows by applying Lemma \ref{lemma:noise_concentration} and Assumption \ref{condition:excess_risk:smooth}, combined with the fact that the integral of the scaled kernel function is bounded by one.
+
+\noindent \textbf{Step 2: Concentration Inequality of $A_i$ given $X_i,U_i$}
+
+\noindent For the notational brevity, we define a temporary
+$$f(A_i,X_i,U_i) = \frac{(\mu^*(A_i,X_i,U_i) - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})} \int_{a_L}^{\theta(X_i,U_i)}K_{\delta_n}(A_i-a)\mathrm{d}a.$$
+Then, we have 
+\begin{align*}
+    &\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|A_i,X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]\right|\\
+    = &\left|\frac{1}{n}\sum_{i=1}^n f(A_i,X_i,U_i) - \frac{1}{n}\sum_{i=1}^n\E\left[f(A_i,X_i,U_i)\big| X_i,U_i\right]\right|
+\end{align*}
+Under data generative model \ref{eq:data_generative_model_2}, $A_i$ are independent given $X_i,U_i$. By Assumption \ref{condition:excess_risk:smooth}, \ref{condition:overlap} and the fact that the integral of the scaled kernel function is bounded by one, $|f(A_i,X_i,U_i)|$ is bounded by $2C^\prime c^{\prime-1}$. Then, by Hoeffding's inequality, it follows that with probability no less than $1-2e^{-\tau}$,
+$$\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|A_i,X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]\right|\leq \sqrt{\frac{8C^{\prime-2}c^{\prime-2}\tau}{n}}$$
+
+
+
+\noindent \textbf{Step 3: Concentration Inequality of $ U_i$ given $X_i$, RKHS space}
+
+\noindent Conditioned on $X_1,\ldots, X_n$, define a temporary function $f: \mathbb{R}^n \to \mathbb{R}$ that maps $(u_1, \dots, u_n)$ to:
+$$\frac{1}{n}\sum_{i=1}^n \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right].$$
+By the chain rule of derivative:
+\begin{align*}
+    &\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\\
+    = & \int_{a_L}^{\theta(X_i,u_i)}(-\nabla_{u_i}\mu(a,X_i,u_i))\mathrm{d}a + (\mathcal{T}-\mu(\theta(X_i,u_i),X_i,u_i))\nabla_{u_i}\theta(X_i,u_i)+\\
+    & +
+ \E\left[\nabla_{U_i}\left\{\frac{(\mu^*(A_i,X_i,U_i) - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})}\right\} \int_{a_L}^{\theta(X_i,U_i)}K_{\delta_n}(A_i-a)\mathrm{d}a\bigg|X_i,U_i = u_i\right]\\
+    & + \E\left[\frac{(\mu^*(A_i,X_i,U_i) - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})}K_{\delta_n}(A_i-\theta(X_i,U_i))\nabla_{U_i}\theta(X_i,U_i)\bigg|X_i,U_i = u_i\right]\\
+    \leq & C^\prime|\mathcal{A}| + (\mathcal{T}+C^\prime)/(\gamma_n\sqrt{\lambda_n}) + 2C^{\prime2} c^{\prime-2} + 2C^\prime c^{\prime-1}/(\gamma_n\sqrt{\lambda_n})
+\end{align*}
+The last inequality follows from Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, and $\E[K_{\delta_n}(A_i - \theta(X_i,U_i))|X_i,U_i]$ be bounded, combined with the fact that $|\nabla_{U_i}\theta(X_i,U_i)|\leq 1/(\gamma_n\sqrt{\lambda_n})$ by Lemma \ref{lemma:bound_svm} and Lemma \ref{lemma:derivative_svm}.
+Then, the Lipschitz norm of $f$ satisfies 
+\begin{align*}
+    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^{d+1}}\|\nabla f\|\\
+    \leq& \sup_{u\in\R^{d+1}}\left\{\sum_{i=1}^n \nabla_{u_i}\left(\frac{1}{n}\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\right)^2\right\}^{1/2}\\
+    \leq & (c_1 + c_2/(\gamma_n\sqrt{\lambda_n}))n^{-1/2}
+\end{align*}
+Here, $c_1,c_2$ are generic constant that depends on $\mathcal{T},C^\prime,c^\prime$ that might change during the proof.
+
+Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
+\begin{align*}
+&\pr\left(\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\geq \epsilon\right)\\
+    \leq & \pr\left(\left|f( U(S_1),\ldots,U(S_n))-\E[f( U(S_1),\ldots,U(S_n))]\right|\geq \epsilon\right)\\
+    \leq & 2 \exp\left(-\frac{n\epsilon^2}{(c_1 + c_2\gamma_n^{-2}\lambda_n^{-1})\sigma_n}\right).
+\end{align*}
+By setting the last inequality to $2e^{-\tau}$, it follows that with probability no less than $1-2e^{-\tau}$:
+$$\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\leq \sqrt{\frac{(c_1 + c_2\gamma_n^{-2}\lambda_n^{-1})\tau\sigma_n}{n}}.$$
+
+\noindent \textbf{Step 4: Concentration Inequality of $ U_i$ given $X_i$, Parametric space}
+
+\noindent When $\theta$ belongs to a parametric space, the concentration inequality can be derived using similar techniques. The major difference is from the derivative of the loss function. Specifically, if $\theta(x,u) = \beta^\top(x,u)$ for some $\beta\in \R^{d+1}$ satisfying $\|\beta\|_\infty< C_\beta$
+\begin{align*}
+    &\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\\
+    = & \int_{a_L}^{\beta^\top(X_i,u_i)}(-\nabla_{u_i}\mu(a,X_i,u_i))\mathrm{d}a + (\mathcal{T}-\mu(\theta(X_i,u_i),X_i,u_i))\nabla_{u_i}\beta^\top(X_i,u_i)+\\
+    & +
+ \E\left[\nabla_{U_i}\left\{\frac{(\mu^*(A_i,X_i,U_i) - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})}\right\} \int_{a_L}^{\beta^\top(X_i,u_i)}K_{\delta_n}(A_i-a)\mathrm{d}a\bigg|X_i,U_i = u_i\right]\\
+    & + \E\left[\frac{(\mu^*(A_i,X_i,U_i) - \mu(A_i,X_i,U_i))}{ p(A_{i}|X_{i},U_{i})}K_{\delta_n}(A_i-\theta(X_i,U_i))\nabla_{U_i}\beta^\top(X_i,u_i)\bigg|X_i,U_i = u_i\right]\\
+    \leq & C^\prime|\mathcal{A}| + C_\beta(\mathcal{T}+C^\prime) + 2C^{\prime2} c^{\prime-2} + 2C^\prime c^{\prime-1}C_\beta
+\end{align*}
+The last inequality follows from Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, and $\E[K_{\delta_n}(A_i - \theta(X_i,U_i))|X_i,U_i]$ be bounded. Then, the Lipschitz norm of $f$ satisfies
+\begin{align*}
+    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^{d+1}}\|\nabla f\|\\
+    \leq& \sup_{u\in\R^{d+1}}\left\{\sum_{i=1}^n \nabla_{u_i}\left(\frac{1}{n}\nabla_{u_i} \E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i = u_i\right]\right)^2\right\}^{1/2}\\
+    \leq & c_1 n^{-1/2}
+\end{align*}
+Here, $c_1$ is a generic constant that depends on $\mathcal{T},C^\prime,c^\prime$ that might change during the proof.
+
+Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
+\begin{align*}
+&\pr\left(\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\geq \epsilon\right)\\
+    \leq & \pr\left(\left|f( U(S_1),\ldots,U(S_n))-\E[f( U(S_1),\ldots,U(S_n))]\right|\geq \epsilon\right)\\
+    \leq & 2 \exp\left(-\frac{n\epsilon^2}{c_1\sigma_n}\right).
+\end{align*}
+By setting the last inequality to $2e^{-\tau}$, it follows that with probability no less than $1-2e^{-\tau}$:
+$$\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i,U_i\right]-\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]\right|\leq \sqrt{\frac{c_1\tau\sigma_n}{n}}.$$
+
+\noindent \textbf{Step 5: Concentration Inequality of $ X_i$}
+
+% \noindent The proof is similar to Step 3, the main differentce is that $X_i$ is assumed to be i.i.d., and $X$ is $d$-dimensional, which makes $|\nabla_{X_i}\theta(X_i,U_i)|\leq \sqrt{d}/(\gamma_n\sqrt{\lambda_n})$ by Lemma \ref{lemma:bound_svm} and Lemma \ref{lemma:derivative_svm}. With probability no less than $1-2e^{-\tau}$:
+% $$\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]-\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)\right]\right|\leq \sqrt{\frac{(c_1 + c_2d\gamma_n^{-2}\lambda_n^{-1})\tau}{n}}.$$
+
+\noindent Similar to Step 2, we apply Hoeffding inequality. By Assumption \ref{condition:excess_risk:smooth} and Assumption \ref{condition:excess_risk:overlap}, and the fact that the integral of the scaled kernel function is bounded by one. $\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]$ is bounded by $|\mathcal{A}|(\mathcal{T}+C^\prime) + 2C^\prime c^{\prime-1}$. Then, by Hoeffding's inequality, it follows that with probability no less than $1-2e^{-\tau}$:
+$$\left|\frac{1}{n}\sum_{i=1}^n\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)|X_i\right]-\E\left[L^{({\delta_n})}(O_i;\theta,\mu, p)\right]\right|\leq \sqrt{\frac{2(|\mathcal{A}|(\mathcal{T}+C^\prime) + 2C^\prime c^{\prime-1})^2\tau}{n}}.$$
+
+\noindent \textbf{Step 6: Deriving Bound}
+
+\noindent Combining the result in Step 1-4, when $\theta$ belongs to an RKHS space, for some generic constant $c_1,c_2$ that depends on $\sigma_\epsilon,C^\prime,c^\prime,\mathcal{T},|\mathcal{A}|$, we have that with probability no less than $1-8e^{-\tau}$:
+\begin{align*}
+    &\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\leq \sqrt{\frac{c_1\tau}{n}} + 
+    \sqrt{\frac{ c_2\gamma_n^{-2}\lambda_n^{-1}\tau\sigma_n}{n}}.
+\end{align*}
+Alternatively, when $\theta$ belongs to a parametric case, for some generic constant $c_1,c_2$ that depends on $\sigma_\epsilon,C^\prime,c^\prime,\mathcal{T},|\mathcal{A}|,C_\beta$, we have that with probability no less than $1-8e^{-\tau}$:
+\begin{align*}
+    &\left|R_n^{({\delta_n})}(\theta;\mu, p)-R^{({\delta_n})}(\theta;\mu, p)\right|\leq \sqrt{\frac{c_1\tau}{n}}+\sqrt{\frac{c_2\sigma_n\tau}{n}}.
+\end{align*}
+
+
+\end{proof}
+
+
+\begin{lemma}[Concentration Inequality of Nuisance Functions]\label{lemma:concentration_mean_diff}
+    Suppose the data generative models \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} hold, and Assumption \ref{condition:excess_risk:smooth} is satisfied. Let $\E_n$ denote the empirical mean. Then, there exists a constant $c > 0$ such that for any outcome regression models $\mu, \mu' \in \mathcal{F}_\mu$, any propensity models $p, p' \in \mathcal{F}_p$, and any $\tau > 0$, the following inequalities hold with probability at least $1 - 2e^{-\tau}$:
+    \begin{align*}
+      \left|\E_n[|\mu-\mu^\prime|]-\E[|\mu-\mu^\prime|]\right|\leq \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}\\ 
+      \left|\E_n[|p-p^\prime|]-\E[|p-p^\prime|]\right|\leq \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}
+    \end{align*}
+    
+\end{lemma}
+
+\begin{proof}
+We show the result for the empirical mean $\mathbb{E}_n[|\mu - \mu'|]$; the proof for $\mathbb{E}_n[|p - p'|]$ follows similarly. Following the data generative model \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}, we let $(\mu - \mu^\prime)(A_i,X_i,U_i)$ denote $\mu(A_i,X_i,U_i)-\mu^\prime(A_i,X_i,U_i)$ where $U_i =U(S_i)$ is the Gaussian process. Then, we decompose the difference between empirical mean and population mean into three distinct sources of variation: the randomness of $A_i$ given $X_i,U_i$, the randomness of $U_i$ given $X_i$, and the marginal randomness of $X_i$, and apply concentration inequality to bound them separately, 
+\begin{align*}
+    &\left|\E_n[|\mu-\mu^\prime|]-\E[|\mu-\mu^\prime|]\right|\\
+    = & \left|\frac{1}{n}\sum_{i=1}^n(\mu - \mu^\prime)(A_i,X_i,U_i) - \E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\right]\right|\\
+    \leq & \left|\frac{1}{n}\sum_{i=1}^n(\mu - \mu^\prime)(A_i,X_i,U_i) - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right]\right|\\
+    & + \left|\frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right] - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right]\right|\\
+    & + \left|\frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right] - \E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\right]\right|
+\end{align*}
+
+\noindent\textbf{Step 1: Concentration Inequality of $A_i$ given $X_i,U_i$}
+
+\noindent Following generative model \eqref{eq:data_generative_model_2}, 
+$(\mu - \mu^\prime)(A_i,X_i,U_i)$ are independent conditioned on $(X_i,S_i)$. Also, by Assumption \ref{condition:excess_risk:smooth}, $|(\mu - \mu^\prime)(A_i,X_i,U_i)|$ is upper bounded by $2C^\prime$. Then, by Hoeffding's inequality, for any $\epsilon>0$, we have 
+$$\pr\left(\left|\frac{1}{n}\sum_{i=1}^n(\mu - \mu^\prime)(A_i,X_i,U_i) - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right]\right|\geq \epsilon\right)\leq 2\exp\left(-\frac{\epsilon^2}{8nC^{\prime2}}\right).$$
+By setting the right-hand side the inequality to $2e^{-\tau}$, it follows that with probability no less than $1-2e^{-\tau}$,
+$$\left|\frac{1}{n}\sum_{i=1}^n(\mu - \mu^\prime)(A_i,X_i,U_i) - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right]\right|\leq \sqrt{\frac{8C^{\prime2}\tau}{n}} $$
+
+\noindent \textbf{Step 2: Concentration Inequality of $ U_i$ given $X_i$}
+
+\noindent Conditioned on $X_1,\ldots, X_n$, define a function $f: \mathbb{R}^n \to \mathbb{R}$ that maps $(u_1, \dots, u_n)$ to:
+$$\frac{1}{n}\sum_{i=1}^n |\E[(\mu^\prime -\mu)(A_i,X_i, U_i)\mid X_i,U_i = u_i]|.$$
+By Assumption \ref{condition:excess_risk:smooth}, the Lipschitz norm of $f$ satisfies 
+\begin{align*}
+    \|f\|_{\text{Lip}}\leq & \sup_{u\in\R^{d+1}}\sup_{g\in\nabla f}\|g\|\\
+    \leq& \sup_{u\in\R^{d+1}}\left\{\sum_{i=1}^n \sup_{\nabla_{u_i}|\mu^\prime-\mu|}\left(\frac{1}{n}\nabla_{u_i} |\mu^\prime(A_i,X_i, u_i) - \mu(A_i,X_i, u_i)|\right)^2\right\}^{1/2}\\ 
+    \leq & \left\{\sum_{i=1}^n \left(\frac{2C^\prime}{n}\right)^2\right\}^{1/2}=2C^{\prime}n^{-1/2}
+\end{align*}
+where $\nabla f$ denotes the sub-gradient of $f$ with respect to $u\in\R^{d+1}$, $\nabla_{u_i}|\mu^\prime-\mu|$ denotes the sub-gradient of $\mu-\mu^\prime$ with respect to $u_i\in\R$. The last inequality is from Assumption \ref{condition:excess_risk:smooth}.
+
+Conditioned on $(X_1,X_2,\ldots,X_n)$, the sequence $( U(S_1),\ldots, U(S_n))$ is a Gaussian processes, and $\sigma_n$ is the supremum of the spectral norm of its covariance matrix. Applying Lemma \ref{thm:exponential_density_concentration} to the function $f$ and the Gaussian process $( U(S_1),\ldots, U(S_n))$ yields that, there exists a constant $c>0$ such that for any $\epsilon>0$,
+\begin{align*}
+&\pr\left(\left|\frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right] - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right]\right|\geq \epsilon\right)\\
+    \leq & \pr\left(\left|f( U(S_1),\ldots,U(S_n))-\E[f( U(S_1),\ldots,U(S_n))]\right|\geq \epsilon\right)\\
+    \leq & 2 \exp\left(-\frac{cn\epsilon^2}{4C^{\prime2}\sigma_n}\right).
+\end{align*}
+By setting the last inequality to $2e^{-\tau}$, it follows that with probability no less than $1-2e^{-\tau}$:
+$$\left|\frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i,U_i\right] - \frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right]\right|\leq \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}}.$$
+\noindent \textbf{Step 3: Concentration Inequality of  $X_i$ }
+
+\noindent Following generative models \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}, $X_i$ are independent distributed. Also, by Assumption \ref{condition:excess_risk:smooth}, $E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right]$ is upper bounded by $2C^{\prime}$. Then, similar to Step 1, by Hoeffding's inequality, it follows that with probability no less than $1-2e^{-\tau}$,  
+$$\left|\frac{1}{n}\sum_{i=1}^n\E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\mid X_i\right] - \E\left[(\mu - \mu^\prime)(A_i,X_i,U_i)\right]\right|\leq \sqrt{\frac{8C^{\prime2}\tau}{n}} $$
+ Thus, with probability at least $1 - 6e^{-\tau}$, we have:
+$$\left|\E_n[|\mu-\mu^\prime|]-\E[|\mu-\mu^\prime|]\right|\leq \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}.$$ \XL{Revised}
+
+\end{proof}
+
+\begin{lemma}[Concentration Inequality for Random Noise]\label{lemma:noise_concentration}
+
+In the generative model \eqref{eq:data_generative_model_1}, the random error $\epsilon_i \overset{i.i.d.}{\sim} N(0, \sigma_\epsilon^2)$ and is independent of $\{A_i, S_i, X_i\}$. For any measurable function $f(A, X, S)$ such that $|f(A, X, S)| \leq C$ almost surely. Then, for any $\tau > 0$, the following holds with probability at least $1 - 2e^{-\tau}$:
+
+$$\left| \mathbb{E}_n[\epsilon_i f(A_i, X_i, S_i)] \right| \leq \sqrt{\frac{2\tau C^2 \sigma_\epsilon^2}{n}}.$$
+    
+\end{lemma}
+
+\begin{proof}
+
+Conditioned on $\{A_i, X_i, S_i\}_{i=1}^n$, the empirical mean $\mathbb{E}_n[\epsilon_i f(A_i, X_i, S_i)]$ is a linear combination of independent Gaussian random variables. It follows that the empirical mean is normally distributed with mean zero and conditional variance:
+$$\text{Var}\left( \mathbb{E}_n[\epsilon_i f(A_i, X_i, S_i)] \mid \{A_i, X_i, S_i\}_{i=1}^n \right) = \frac{\sigma_\epsilon^2}{n^2} \sum_{i=1}^n f(A_i, X_i, S_i)^2 \leq \frac{C^2 \sigma_\epsilon^2}{n}.$$
+By the Chernoff bound (specifically, the Gaussian tail bound), we have:
+\begin{align*} \mathbb{P}\left(\left|\mathbb{E}_n\left[\epsilon_i f(A_i,X_i,S_i)\right]\right|\geq t\right) \leq 2 \exp\left( -\frac{nt^2}{2C^2\sigma_\epsilon^2} \right) \end{align*}
+By setting the right-hand side to $2e^{-\tau}$, it follows that with probability at least $1 - 2e^{-\tau}$:
+$$\left|\mathbb{E}_n\left[\epsilon_i f(A_i,X_i,S_i)\right]\right|\leq \sqrt{\frac{2\tau C^2\sigma_\epsilon^2}{n}}.$$
+Since this bound is uniform over the covariates $X_i$, it holds marginally, completing the proof.
+\end{proof}
+
+\begin{lemma}[Concentration Inequalities for Kernel Integral]\label{lemma:concentration_kernel_integral} Suppose the data generation model \eqref{eq:data_generative_model_2} holds. Let $\E_n$ denote the empirical mean. Suppose Assumption \ref{condition:excess_risk:smooth} hold. Define the integral term:
+$$Z_i:=\int_{\theta^\prime(X_i,U(S_i))}^{\theta(X_i, U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a.$$
+Then, $|Z_i|$ is uniformly bounded. Additionally, for any $\tau>0$,  with probability no less than $1-2e^{-\tau}$, 
+$$\left|\E_n[Z_i] - \E[Z_i]\right|\leq \sqrt{\frac{4C^\prime \kappa \left\|\theta^\prime - \theta\right\|^2_\infty  \tau}{n\delta_n}} + \frac{8\tau}{3n}.$$
+\end{lemma}
+\begin{proof}
+For any $(X_i,U(S_i),A_i)$,
+\begin{align*}
+    |Z_i| \leq & \int_{-\infty}^{\infty} K_{\delta_n}(A_i-a)\mathrm{d}a = \int_{-\infty}^{\infty} K_{\delta_n}(a)\mathrm{d}a = 1
+\end{align*}
+Thus, $|Z_i|$ is uniformly bounded. Since $A_i|X_i,U(S_i)$ is i.i.d. normal distributed, we aim to derive a concentration inequality for the empirical mean $\E_n[Z_i]$ around its conditional expectation $\mathbb{E}[Z_i | X_i, U(S_i)]$ using Bernstein's inequality. Since the kernel function is continuous, by the Mean Value Theorem, there exists an $a_i^*$ between $\theta^\prime(X_i, U(S_i))$ and $\theta(X_i,U(S_i))$ such that
+$$Z_i = \left\{\theta(X_i, U(S_i)) - \theta^\prime(X_i, U(S_i))\right\}K_{\delta_n}(A_i-a_i^*)$$
+Then, conditioning on $X_i, S_i$, the variance of $Z_i$ satisfies
+\begin{align*}
+    \text{Var}(Z_i|X_i,S_i)
+    \leq & \E\left[Z_i^2|X_i,S_i\right]\\
+     = & \E\left[\left|\theta^\prime(X_i, U(S_i)) - \theta(X_i,U(S_i))\right|^2K^2_{\delta_n}(A_i-a^*_i)\right]\\
+     \leq & \left\|\theta^\prime - \theta\right\|^2_\infty \E\left[K^2_{\delta_n}(A_i-a^*_i)\right]\\
+     \leq &  C^\prime \kappa \delta_n^{-1}\left\|\theta^\prime - \theta\right\|^2_\infty  
+\end{align*}
+Here, $\kappa$ is the upper bound of the kernel function $K(\cdot)$. Since terms $Z_i$ are independent given $\{X_i,S_i\}_{i=1}^n$, the conditional variance of the empirical mean satisfies:
+\begin{align*}
+\text{Var}(\mathbb{E}_n[Z_i] \mid \{X_i, S_i\}_{i=1}^n) & \leq n^{-1}\delta_n^{-1} C^\prime \kappa \left\|\theta^\prime - \theta\right\|^2_\infty  
+\end{align*}
+ Since $Z_i\leq 1$ for every $i$, we have $\E_n[Z_i] - \E[\E_n[Z_i]]\leq 2$. Then, by Bernstein inequality, 
+$$\pr\left(\left|\E_n[Z_i] - \E[\E_n[Z_i]]\right|\geq \epsilon\right)\leq 2\exp\left(-\frac{n\epsilon^2}{2C^\prime \kappa \left\|\theta^\prime - \theta\right\|^2_\infty  \delta_n^{-1} + 4\epsilon/3}\right).$$
+Then, for any $\tau>0$, with probability no less than $1-2e^{-\tau}$, 
+$$\left|\E_n[Z_i] - \E[Z_i]\right|\leq \sqrt{\frac{4C^\prime \kappa \left\|\theta^\prime - \theta\right\|^2_\infty  \tau}{n\delta_n}} + \frac{8\tau}{3n}$$
+
+\end{proof}
+
+
+\subsubsection{Lipschitz Properties of Population Risk and Empirical Risk}
+
+\begin{lemma}[Lipschitz Properties of Population Risk]\label{lemma:lipschitz_population_risk}
+Let $R^{({\delta_n})}(\theta;\mu,p)$
+denote the population risk where the outcome regression $\mu$ and generalized propensity score $p$ are used as plug-in nuisance parameters. Suppose data generative model \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} hold. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Then, $R^{({\delta_n})}(\theta;\mu,p)$ is locally Lipschitz continuous with respect to $\theta$ under $L_\infty$ norm, and locally Lipschitz continuous with respect to $\mu,p$ under $L_2(P)$ norm such that for any $\mu,p,\theta$ and $\mu^\prime,p^\prime,\theta^\prime$,
+\begin{gather*}
+    R^{({\delta_n})}(\theta;\mu, p) - R^{({\delta_n})}(\theta;\mu^\prime, p)\leq 2c^{\prime-1}\|\mu-\mu^\prime\|_{P,2}\\
+    R^{({\delta_n})}(\theta;\mu, p) - R^{({\delta_n})}(\theta;\mu, p^\prime)\leq 2c^{\prime-2}C^{\prime}\|p^\prime - p\|_{P,2} \\
+         R^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta^\prime;\mu,p)\leq (\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2})\|\theta-\theta^\prime\|_{\infty}
+\end{gather*}
+\end{lemma}
+\begin{proof}
+\noindent We establish the Lipschitz properties for each component sequentially.
+
+\noindent\textbf{Part 1: Lipschitz properties w.r.t $\mu$}
+
+\noindent For any $\mu,\mu^\prime\in \mathcal{F}_{\mu}$, by Assumption \ref{condition:excess_risk:overlap}. 
+\begin{align}
+    &R^{({\delta_n})}(\theta;\mu, p) - R^{({\delta_n})}(\theta;\mu^\prime, p)\nonumber\\
+     =  & \E\left\{\int_{a_L}^{\theta_0(X_i,\widehat U(S_i)}\mu(a,X_i,S_i) - \mu^\prime(a,X_i,S_i) + \frac{(\mu(A_i,X_i,S_i)- \mu^\prime(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{ p(A_{i}|X_{i},S_{i})}\mathrm{d}a\right\}\nonumber\\
+     \leq  & \E\left\{\int_{a_L}^{a_U}\left|\mu(a,X_i,S_i) - \mu^\prime(a,X_i,S_i)\right| + \frac{\left|\mu(A_i,X_i,S_i)- \mu^\prime(A_i,X_i,S_i)\right|K_{\delta_n}(A_i-a)}{ p(A_{i}|X_{i},S_{i})}\mathrm{d}a\right\}\nonumber\\
+     = & \E\left[\int_{a_L}^{a_U}\left|\mu(a,X_i,S_i) - \mu^\prime(a,X_i,S_i)\right|p^*(a,X_i,S_i)p^{*-1}(a,X_i,S_i)\mathrm{d}a\right]\nonumber\\
+     & + \E\left\{\frac{\left|\mu(A_i,X_i,S_i)- \mu^\prime(A_i,X_i,S_i)\right|}{ p(A_{i}|X_{i},S_{i})}\int_{a_L}^{a_U}K_{\delta_n}(A_i-a)\mathrm{d}a\right\}\nonumber\\
+     \leq &c^{\prime-1}\E\left[|\mu(A_i,X_i,S_i)-\mu^\prime(A_i,X_i,S_i)|\right] + c^{\prime-1}\E\left[|\mu(A_i,X_i,S_i)-\mu^\prime(A_i,X_i,S_i)|\right]\nonumber\\
+     = & 2c^{\prime-1}\|\mu-\mu^\prime\|_{P,2}\label{eq:lipschitz_to_mu_E}
+\end{align}
+The first equality follows from the definition of $R^{({\delta_n})}(\theta;\mu, p)$. The first inequality is obtained by taking the absolute value of the outcome regression's prediction error. The second inequality utilizes Assumption \ref{condition:excess_risk:overlap} in conjunction with the property of the scaled kernel function, i.e, the integral of the scaled kernel function is one.
+
+
+\noindent \textbf{Part 2: Lipschitz properties w.r.t $p$}
+
+\noindent For any $p,p^\prime\in \mathcal{F}_p$, we have 
+\begin{align}
+    &R^{({\delta_n})}(\theta;\mu, p) - R^{({\delta_n})}(\theta;\mu, p^\prime)\nonumber\\
+    = &\E\left\{\int_{a_L}^{\theta_0(X_i,\widehat U(S_i))}  \frac{(Y_i -  \mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{ p(A_{i}|X_{i},S_{i})p^\prime(A_{i}|X_{i},S_{i})}\left(p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right)\mathrm{d}a\right\}\nonumber\\
+    = &\E\left\{ \frac{\left(\epsilon_i +\mu^*(A_i,X_i,S_i) -  \mu(A_i,X_i,S_i)\right)}{ p(A_{i}|X_{i},S_{i})p^\prime(A_{i}|X_{i},S_{i})}\left(p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right)\int_{a_L}^{a_U}K_{\delta_n}(A_i-a)\mathrm{d}a\right\}\nonumber\\
+    = &\E\left\{ \frac{\left(\mu^*(A_i,X_i,S_i) -  \mu(A_i,X_i,S_i)\right)}{ p(A_{i}|X_{i},S_{i})p^\prime(A_{i}|X_{i},S_{i})}\left(p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right)\int_{a_L}^{a_U}K_{\delta_n}(A_i-a)\mathrm{d}a\right\}\nonumber\\
+    \leq &2c^{\prime-2}C^{\prime}\E\left[\left|p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right|\right]\nonumber\\
+    \leq & 2c^{\prime-2}C^{\prime}\|p^\prime - p\|_{P,2}    \label{eq:lipschitz_to_p_E}
+\end{align}
+The first equality follows from the definition of risk function. The first inequality is obtained by taking the absolute value of the residual of the outcome regression and the prediction error of propensity. The second inequality is obtained by Assumption \ref{condition:overlap}, and the property of the scaled kernel function. The third inequality follows from the Cauchy-Schwarz inequality. The last inequality follows from Assumption \ref{condition:excess_risk:smooth}.
+
+\noindent \textbf{Part 3: Lipschitz properties w.r.t $\theta$}
+
+\noindent For any $\theta,\theta' \in\mathcal{H}_{\gamma_n}$, we have
+
+\begin{align}
+    & R^{({\delta_n})}(\theta;\mu,p) - R^{({\delta_n})}(\theta^\prime;\mu,p)\nonumber\\
+    = & \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}\left\{\mathcal{T} -  \mu(a,X_i,S_i)- \frac{(Y_i - \mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{p(A_{i}|X_{i},S_{i})}\right\}\mathrm{d}a\right]\nonumber\\
+    = & \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} -  \mu(a,X_i,S_i))\mathrm{d}a\right]+ \E\left[\frac{(Y_i - \mu(A_i,X_i,S_i))}{p(A_{i}|X_{i},S_{i})}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\right]\nonumber\\
+    \leq & (\mathcal{T}+C^\prime)\|\theta-\theta^\prime\|_{\infty} + 2c^{\prime-1}C^{\prime} \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\right]\nonumber\\
+    \leq & (\mathcal{T}+C^\prime)\|\theta-\theta^\prime\|_{\infty} + 2c^{\prime-1}C^{\prime} \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}\E\left[K_{\delta_n}(A_i-a)\mid X_i,S_i\right]\mathrm{d}a\right]\nonumber\\
+    \leq & (\mathcal{T}+C^\prime)\|\theta-\theta^\prime\|_{\infty} + 2c^{\prime-1}C^{\prime2} \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}\mathrm{d}a\right]\nonumber\\
+    \leq & (\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2})\|\theta-\theta^\prime\|_{\infty}\label{eq:lipschitz_to_theta_E}
+\end{align}
+
+\end{proof}
+
+
+\begin{lemma}[Lipschitz Properties of Empirical Risk]\label{lemma:lipschitz_empirical_risk}
+Let $R_n^{({\delta_n})}(\theta;\mu,p)$
+denote the empirical risk where the outcome regression $\mu$ and generalized propensity score $p$ are used as plug-in nuisance parameters. Suppose data generative model \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} hold. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Then, $R_n^{({\delta_n})}(\theta;\mu,p)$ is locally Lipschitz continuous with respect to $\theta$ under $L_\infty$ norm, and locally Lipschitz continuous with respect to $\mu,p$ under $L_2(P)$ norm with high probability. Let $\mathbb{E}_n$ denote the empirical expectation.  For any $\mu,\mu^\prime\in \mathcal{F}_{\mu}$ and $\tau>0$, with probability no less than $1-6e^{-\tau}$, 
+$$R_n^{({\delta_n})}(\theta;\mu, p) - R_n^{({\delta_n})}(\theta;\mu^\prime, p)\leq 2c^{\prime-1}\left(\|\mu-\mu^\prime\|_{P,2} + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right).$$
+For any $p,p^\prime\in\mathcal{F}_p$ and $\tau>0$, with probability no less than $1-8e^{-\tau}$, 
+$$R_n^{({\delta_n})}(\theta;\mu, p) - R_n^{({\delta_n})}(\theta;\mu, p^\prime)\leq 2c^{\prime-2}C^{\prime}\left(\left\|p^\prime -p\right\|_{P,2}+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}.$$
+For any $\theta,\theta^\prime\in \mathcal{H}_{\gamma_n}$ and $\tau>0$, with probability no less than $1-8e^{-\tau}$, 
+$$R_n^{({\delta_n})}(\theta;\mu,p) - R_n^{({\delta_n})}(\theta^\prime;\mu,p)\leq \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\|\theta-\theta^\prime\|_{\infty} + \frac{8\tau}{3n}.$$
+\end{lemma}
+\begin{proof}
+    We establish the Lipschitz properties for each component sequentially.
+    
+    \noindent \textbf{Part 1: Lipschitz properties of empirical risk w.r.t $\mu$}
+    
+    \noindent \noindent For any $\mu,\mu^\prime\in \mathcal{F}_{\mu}$, we can have derivations of the Lipschitz property of the empirical risk similar to that of the population risk in \eqref{eq:lipschitz_to_mu_E} by replacing $\E$ with $\E_n$ and use the concentration inequalities in Lemma \ref{lemma:concentration_mean_diff}. There exists a constant $c>0$ such that for any $\tau>0$, with  probability no less than $1-6e^{-\tau}$, we have
+\begin{align}
+    &R_n^{({\delta_n})}(\theta;\mu, p) - R_n^{({\delta_n})}(\theta;\mu^\prime, p)\nonumber\\
+     =  & \E_n\left\{\int_{a_L}^{\theta_0(X_i,\widehat U(S_i)}\mu(a,X_i,S_i) - \mu^\prime(a,X_i,S_i) + \frac{(\mu(A_i,X_i,S_i)- \mu^\prime(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{ p(A_{i}|X_{i},S_{i})}\mathrm{d}a\right\}\nonumber\\
+     \leq  & \E_n\left\{\int_{a_L}^{a_U}\left|\mu(a,X_i,S_i) - \mu^\prime(a,X_i,S_i)\right| + \frac{\left|\mu(A_i,X_i,S_i)- \mu^\prime(A_i,X_i,S_i)\right|K_{\delta_n}(A_i-a)}{ p(A_{i}|X_{i},S_{i})}\mathrm{d}a\right\}\nonumber\\
+     = & \E_n\left[\int_{a_L}^{a_U}\left|\mu(a,X_i,S_i) - \mu^\prime(a,X_i,S_i)\right|p^*(a,X_i,S_i)p^{*-1}(a,X_i,S_i)\mathrm{d}a\right]\nonumber\\
+     & + \E_n\left\{\frac{\left|\mu(A_i,X_i,S_i)- \mu^\prime(A_i,X_i,S_i)\right|}{ p(A_{i}|X_{i},S_{i})}\int_{a_L}^{a_U}K_{\delta_n}(A_i-a)\mathrm{d}a\right\}\nonumber\\
+     \leq &c^{\prime-1}\E_n\left[\E\left(|\mu(A_i,X_i,S_i)-\mu^\prime(A_i,X_i,S_i)|\mid X_i,S_i\right)\right] + c^{\prime-1}\E_n\left[|\mu(A_i,X_i,S_i)-\mu^\prime(A_i,X_i,S_i)|\right]\nonumber\\
+     \leq &2c^{\prime-1}\left(\E\left[|\mu(A_i,X_i,S_i)-\mu^\prime(A_i,X_i,S_i)|\right] +  \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)\nonumber\\
+     \leq & 2c^{\prime-1}\left(\|\mu-\mu^\prime\|_{P,2} + \sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)
+\label{eq:lipschitz_to_mu_En}
+\end{align}
+The last inequality follows from the concentration inequality in Lemma \ref{lemma:concentration_mean_diff}.
+
+\noindent \textbf{Part 2: Lipschitz properties of empirical risk w.r.t $p$}
+
+\noindent For any $p,p^\prime\in \mathcal{F}_p$, we can have derivations of the Lipschitz property of the empirical risk similar to that of the population risk in \eqref{eq:lipschitz_to_p_E} by replacing $\E$ with $\E_n$ and use the concentration inequalities in Lemma \ref{lemma:concentration_mean_diff} and Lemma \ref{lemma:noise_concentration}. With probability no less than $1-4e^{-\tau}$
+\begin{align}
+    &R_n^{({\delta_n})}(\theta;\mu, p) - R_n^{({\delta_n})}(\theta;\mu, p^\prime)\nonumber\\
+    = &\E_n\left\{ \frac{\left(\epsilon_i +\mu^*(A_i,X_i,S_i) -  \mu(A_i,X_i,S_i)\right)}{ p(A_{i}|X_{i},S_{i})p^\prime(A_{i}|X_{i},S_{i})}\left(p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right)\int_{a_L}^{a_U}K_{\delta_n}(A_i-a)\mathrm{d}a\right\}\nonumber\\
+    \leq &\E_n\left\{ \frac{\left(\mu^*(A_i,X_i,S_i) -  \mu(A_i,X_i,S_i)\right)}{ p(A_{i}|X_{i},S_{i})p^\prime(A_{i}|X_{i},S_{i})}\left(p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right)\int_{a_L}^{a_U}K_{\delta_n}(A_i-a)\mathrm{d}a\right\} + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\nonumber\\
+    \leq &2c^{\prime-2}C^{\prime}\E_n\left[\left|p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right|\right] +  \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\nonumber\\
+    \leq & 2c^{\prime-2}C^{\prime}\left(\E\left[\left|p^\prime(A_{i}|X_{i},S_{i}) -p(A_{i}|X_{i},S_{i})\right|\right]+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right) + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\nonumber\\
+    \leq & 2c^{\prime-2}C^{\prime}\left(\left\|p^\prime -p\right\|_{P,2}+\sqrt{\frac{4C^{\prime2}\tau\sigma_n}{n}} + 2\sqrt{\frac{8C^{\prime2}\tau}{n}}\right)  + \sqrt{\frac{8\tau c^{\prime-2} \sigma_\epsilon^2}{n}}\label{eq:lipschitz_to_p_En}
+\end{align}
+The first equality follows from the definition of risk function. The first inequality holds with probability no less than $1-2e^{-\tau}$ which follows from Lemma \ref{lemma:noise_concentration} under Assumption \ref{condition:excess_risk:smooth}. The second inequality is obtained by Assumption \ref{condition:overlap}, and the property of the scaled kernel function. 
+The third inequality holds with probability at least $1-2e^{-\tau}$, as established by Lemma \ref{lemma:concentration_mean_diff}.
+
+\noindent \textbf{Part 3: Lipschitz properties of empirical risk w.r.t $\theta$}
+
+\noindent Unlike the Lipschitz properties with respect to $\mu$ and $p$—where the empirical and population risks share the same Lipschitz constant—the derivation for the empirical risk with respect to $\theta$ follows a different logic. This discrepancy arises primarily because the population mean of the scaled kernel function is bounded, whereas its empirical counterpart scales at a rate of $O((n\delta_n)^{-1/2})$. More familiarly, this reflects the fact that the variance of the kernel density estimator is $O((n\delta_n)^{-1})$.
+
+Formally, for any $\theta,\theta^\prime\in\mathcal{H}_{\gamma_n}$ and $\tau>0$, with probability no less than $1-2e^{-\tau}$, we have
+
+\begin{align}
+    & R_n^{({\delta_n})}(\theta;\mu,p) - R_n^{({\delta_n})}(\theta^\prime;\mu,p)\nonumber\\
+    = & \E_n\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}\left\{\mathcal{T} -  \mu(a,X_i,S_i)- \frac{(Y_i - \mu(A_i,X_i,S_i))K_{\delta_n}(A_i-a)}{p(A_{i}|X_{i},S_{i})}\right\}\mathrm{d}a\right]\nonumber\\
+    = & \E_n\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} -  \mu(a,X_i,S_i))\mathrm{d}a\right]+\E_n\left[\frac{\epsilon_i}{p(A_{i}|X_{i},S_{i})}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\right]\nonumber\\
+    & + \E_n\left[\frac{(\mu^*(A_i,X_i,S_i) - \mu(A_i,X_i,S_i))}{p(A_{i}|X_{i},S_{i})}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\right] \nonumber\\
+    \leq & (\mathcal{T}+C^\prime)\|\theta-\theta^\prime\|_{\infty} +\sqrt{\frac{2\tau c^{\prime-1} \sigma_\epsilon^2}{n}}+ 2c^{\prime-1}C^{\prime} \E_n\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\right]\nonumber\\
+    \leq & (\mathcal{T}+C^\prime)\|\theta-\theta^\prime\|_{\infty} + 2c^{\prime-1}C^{\prime} \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\right] + \sqrt{\frac{4C^\prime \kappa \left\|\theta^\prime - \theta\right\|^2_\infty  \delta_n^{-1}\tau}{n}} + \frac{8\tau}{3n}\nonumber\\
+    \leq & (\mathcal{T}+C^\prime)\|\theta-\theta^\prime\|_{\infty} + 2c^{\prime-1}C^{\prime2} \E\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}\mathrm{d}a\right]+\sqrt{\frac{4C^\prime \kappa \left\|\theta^\prime - \theta\right\|^2_\infty \tau}{n\delta_n}} + \frac{8\tau}{3n}\nonumber\\
+    \leq & \left(\mathcal{T}+C^\prime+2c^{\prime-1}C^{\prime2}+\sqrt{\frac{4C^\prime \kappa \tau}{n\delta_n}}\right)\|\theta-\theta^\prime\|_{\infty} + \frac{8\tau}{3n}\label{eq:lipschitz_to_theta_E}
+\end{align}
+The first inequality follows from Assumption \ref{condition:excess_risk:smooth}. The second inequality follows from Lemma \ref{lemma:concentration_kernel_integral}.
+\end{proof}
+
+\subsubsection{Bound Kernel SVM}
+
+
+\begin{lemma}[Upper Bound of SVM]\label{lemma:bound_svm} Let $\tilde\theta$ be the minimizer of \eqref{eq:objective function}. Then, 
+$$\|\tilde\theta\|_{\mathcal{H}}=O(\sqrt{1/\lambda_n}) $$
+\end{lemma}
+
+\begin{proof}
+The objective value of $\tilde\theta$ must be less than or equal to the objective value of the zero function $\theta = 0$:
+$$\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(\tilde\theta(X_i,\widehat U(S_i)),O_i)+\lambda_n\|\tilde\theta\|^2_{\mathcal{H}_\mathcal{K}}\leq \frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(0,O_i)+\lambda_n\|0\|^2_{\mathcal{H}_\mathcal{K}}$$
+By Assumption \ref{condition:excess_risk:smooth} and \ref{condition:overlap}, and the fact that the integral of scaled kernel function is bounded. The loss function defined as \eqref{eq:loss_function_complete} is positive and upper bounded. Thus, $\|\tilde\theta\|_{\mathcal{H}_\mathcal{K}}= O(\sqrt{1/\lambda_n})$.
+\end{proof}
+
+\begin{lemma}[Derivative of SVM]\label{lemma:derivative_svm}
+Let $\mathcal{H}$ be the RKHS over $\R^{d+1}$ using Gaussian kernel with bandwidth $\gamma_n$, i.e., $K(x,y) = \exp(-\|x-y\|_2^2/\gamma_n)$. Then,
+$$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}}/\gamma$$
+$$\|\nabla_x f(x)\| \leq  \sqrt{d}\|f\|_{\mathcal{H}}/\gamma.$$
+    
+\end{lemma}
+
+\begin{proof}
+    In an RKHS, the function value any $f(\cdot)\in \mathcal{H}$ at any point $x$ is given by the inner product:$$f(x) = \langle f, K(x, \cdot) \rangle_{\mathcal{H}}.$$ 
+    Since the kernel $K$ is continuously differentiable, the differentiation operator is a bounded linear functional. Therefore, the partial derivative with respect to the $j$-th component of $x$ (denoted $x_j$) can be written as:$$\frac{\partial}{\partial x_j} f(x) = \frac{\partial}{\partial x_j} \langle f, K(x, \cdot) \rangle_{\mathcal{H}} = \langle f, \frac{\partial}{\partial x_j} K(x, \cdot) \rangle_{\mathcal{H}}.$$
+    Applying the Cauchy-Schwarz inequality to this inner product:$$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}} \cdot \left\| \frac{\partial}{\partial x_j} K(x, \cdot) \right\|_{\mathcal{H}}$$
+    Using the property that $\langle \frac{\partial}{\partial x_j} K(x, \cdot), \frac{\partial}{\partial y_j} K(y, \cdot) \rangle_{\mathcal{H}} = \frac{\partial^2}{\partial x_j \partial y_j} K(x, y)$, we find:$$\left\| \frac{\partial}{\partial x_j} K(x, \cdot) \right\|_{\mathcal{H}}^2 = \left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}.$$ 
+    For a Gaussian kernel $K(x,y) = \exp(-\|x-y\|_2^2/\gamma_n)$,
+    $$\left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}  = \left.\left[ \frac{2}{\gamma^2} - \frac{4(x_j - y_j)^2}{\gamma^2} \right] K(x, y) \right|_{y=x} =  2/\gamma^2.$$
+    Thus, the partial derivative of $f$ satisfies
+    $$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}} \cdot \sqrt{\left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}} = \sqrt{2}\|f\|_{\mathcal{H}}/\gamma$$
+    Summing over all dimensions $j=1, \dots, d$ to get the Euclidean norm of the gradient $\nabla_x f(x)$:$$\|\nabla_x f(x)\| \leq \|f\|_{\mathcal{H}} \cdot \sqrt{\sum_{j=1}^d \left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}} = \sqrt{2d}\|f\|_{\mathcal{H}}/\gamma.$$
+    
+    
+    
+    % If we set $f(\cdot) = \frac{\partial}, {\partial y_j} K(y, \cdot)$, we can get$$\frac{\partial}{\partial x_j} \left[ \frac{\partial}{\partial y_j} K(y, x) \right] = \left\langle \frac{\partial}{\partial y_j} K(y, \cdot), \frac{\partial}{\partial x_j} K(x, \cdot) \right\rangle_{\mathcal{H}}$$
+    
+\end{proof}
+
+% \begin{proof}
+%     To derive the Lipschitz norm, we need to bound the derivative $\nabla_u\theta(x,u)$. In the RKHS $\mathcal{H}_{\gamma_n}$, the value of $\theta(x,u)$ is given by the inner product
+% $$\theta(x,u) = \langle \theta, K[(x,u), \cdot] \rangle_{\mathcal{H}_{\gamma_n}}$$
+% Applying the Cauchy-Schwarz inequality to this inner product:
+% \begin{align*}
+%     \nabla_{u}\theta(x,u)\leq & \|f\|^2_{\mathcal{H}_{\gamma_n}}\cdot\|\nabla_u K[(x,u), \cdot]\|^2_{\mathcal{H}_{\gamma_n}}\\
+%     \leq & \|f\|^2_{\mathcal{H}_{\gamma_n}}\cdot \sqrt{\frac{\partial^2}{\partial u^2}K[(x,u), (x,u)]}\\
+%     \leq & \frac{1}{ \sqrt{\lambda_n}}\cdot\frac{1}{\gamma_n}
+% \end{align*}
+
+
+% Similarly, $\nabla_{x}\theta(x,u)\leq \frac{\sqrt{d}}{ \gamma_n\sqrt{\lambda_n}}$
+% \end{proof}
+
+\subsection{Theorem in Textbooks}
+
+\begin{theorem}[Bernstein's Inequality]\label{thm:bernstein}
+Let $X_1,\ldots,X_n$ be i.i.d. random variables, and $
+|X_i - \E[X_i]|\leq R$. Let $\sigma^2 = \text{Var}(X_i)$. Then, $\forall  \epsilon>0$:
+$$\pr\left(\left|\frac{1}{n}\sum_{i=1}^n X_i - \E[X_i]\right|\geq \epsilon\right)\leq 2\exp\left(-\frac{n\epsilon^2}{2\sigma^2 + \frac{2}{3}R\epsilon}\right)$$
+
+\end{theorem}
+\begin{theorem}[Gaussian concentration, Theorem 5.2.3 in \cite{vershynin2018high}]\label{thm:gaussian_concentration} Consider a random vector $X\sim N(0,I_n)$ and Lipschitz function $f:\R^n\rightarrow \R$ (with respect to the Euclidean metric). Let $\|\cdot\|_{\psi_2}$ be the subgaussian norm. Let $\|\cdot\|_{\mathrm{Lip}}$ be the Lipschitz norm. Then, there exists a constant $C>0$ such that
+$$\|f(X)-\E[f(X)]\|_{\psi_2}\leq C\|f\|_{\mathrm{Lip}}.$$
+By the definition of subgaussian, the above result can be written as 
+$$\pr\left(\left|f(X)-\E[f(X)]\right|\geq t\right)\leq 2\exp\left(-\frac{ct^2}{\|f\|^2_{\mathrm{Lip}}}\right).$$
+
+\end{theorem}
+
+\begin{theorem}[Theorem 5.2.11 in \citet{vershynin2018high}]\label{thm:exponential_density_concentration}
+    Consider a random vector $X$ in $\mathbb{R}^n$ whose density has the form $f(x) = e^{-U(x)}$ for some function $U : \mathbb{R}^n \to \mathbb{R}$. Assume there exists $\kappa > 0$ such that $\text{Hess } U(x) \succeq \kappa I_n$ for all $x \in \mathbb{R}^n$. Then any Lipschitz function $f : \mathbb{R}^n \to \mathbb{R}$ satisfies
+\[
+\|f(X) - \mathbb{E} f(X)\|_{\psi_2} \leq \frac{C\|f\|_{Lip}}{\sqrt{\kappa}}.
+\]
+By the definition of subgaussian, the above result can be written as 
+$$\pr\left(\left|f(X)-\E[f(X)]\right|\geq t\right)\leq 2\exp\left(-\frac{c\kappa t^2}{\|f\|^2_{\mathrm{Lip}}}\right).$$
+
+\end{theorem}
+
+ \begin{theorem}[Theorem 2.2 in \cite{eberts2013optimal}]\label{thm:thm2.2_eberts} 
+Let us fix some $q \in [1, \infty]$. Furthermore, assume that $P_X$ is a distribution on $\mathbb{R}^d$ that has a Lebesgue density $g \in L_p(\mathbb{R}^d)$ for some $p \in [1, \infty]$. Let $f : \mathbb{R}^d \to \mathbb{R}$ be such that $f \in L_q(\mathbb{R}^d) \cap L_\infty(\mathbb{R}^d)$. Then, for $r \in \mathbb{N}$, $\gamma > 0$, and $s \ge 1$ with $1 = \frac{1}{s} + \frac{1}{p}$, we have
+\[
+\|Q_{r,\gamma} * f - f\|_{L_q(P_X)}^q \le C_{r,q} \|g\|_{L_p(\mathbb{R}^d)} \omega_{r,L_{qs}(\mathbb{R}^d)}^q(f, \gamma/2) \, ,
+\]
+where $C_{r,q}$ is a constant only depending on $r$ and $q$.
+     
+ \end{theorem}
+
+
+  \begin{theorem}[Theorem 2.3 in \cite{eberts2013optimal}]\label{thm:thm2.3_eberts}
+     Let $f \in L_2(\mathbb{R}^d)$, $H_{\gamma}$ be the RKHS of the Gaussian RBF kernel $k_{\gamma}$ over $X \subset \mathbb{R}^d$ with $\gamma > 0$ and $Q_{r,\gamma} : \mathbb{R}^d \to \mathbb{R}$ be defined by \eqref{eq:eberts_Q_r} for a fixed $r \in \mathbb{N}$. Then we have $Q_{r,\gamma} * f \in H_{\gamma}$ with
+\[
+\|Q_{r,\gamma} * f\|_{H_{\gamma}} \le (\gamma\sqrt{\pi})^{\frac{d}{2}}(2^r - 1)\|f\|_{L_2(\mathbb{R}^d)} \, .
+\]
+Moreover, if $f \in L_\infty(\mathbb{R}^d)$, we have
+\[
+|Q_{r,\gamma} * f(x)| \le (2^r - 1)\|f\|_{L_\infty(\mathbb{R}^d)} \, , \quad x \in X \, .
+\]
+ \end{theorem}
+
+\begin{theorem}[Equivalence of covering and entropy numbers. Lemma 6.21 in \cite{christmann2008support}]\label{thm:equivalence_covering_entropy} Let $(T,d)$ be a metric space and $a > 0$ and $q > 0$ be constants such that
+\[
+e_n(\mathcal{F}) \leq an^{-1/q}, \quad n \geq 1.
+\]
+Then, for all $\varepsilon > 0$, we have
+\[
+\ln \mathcal{N}(\mathcal{F},\|\cdot\|,\varepsilon) \leq \ln(4) \cdot \left(\frac{a}{\varepsilon}\right)^q.
+\]
+
+\end{theorem}
+
+\begin{theorem}[Entropy numbers for Gaussian kernels, Theorem 6.27 in \cite{christmann2008support}]\label{thm:entropy_gaussian} Let $X \subset \mathbb{R}^d$ be a closed Euclidean ball and $m \ge 1$ be an integer. Then there exists a constant $c_{m,d}(X)>0$ such that, for all $0 < \gamma \le r$ and all $i \ge 1$, we have
+\[
+e_i(\textnormal{id} : H_{\gamma}(rX) \to \ell_{\infty}(rX)) \le c_{m,d}(X)r^m \gamma^{-m} i^{-m/d}.
+\]
+
+\end{theorem}
+    
