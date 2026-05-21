@@ -1991,7 +1991,7 @@ Taking the supremum over $(Y_i,A_i,\widehat U(S_i),X_i)$ and setting $C:=C^\prim
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, the difference of the loss function have the following bounds:
           \begin{align*}
         &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i)} \E\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)|U,X\right]\right|\\
-        & \leq C\|\theta-\theta^\prime\|
+        & \leq C\,\gamma_n^{-1/2}\lambda_n^{-1/4}\|\theta-\theta^\prime\|_\infty^{1/2}
     \end{align*}
 \end{lemma}
 \begin{proof}
@@ -2007,27 +2007,40 @@ Let $u = \widehat{U}(S_i)$ for brevity. From the definition \eqref{eq:loss_funct
 \noindent\textbf{Conditional expectation and independence.}
 Given $(U,X)$, the integration limits $\theta(X_i,\widehat{U}(S_i))$ and $\theta'(X_i,\widehat{U}(S_i))$ are stochastic through $\widehat{U}(S_i)$, which depends on $\{\varepsilon_j\}_{j\neq i}$ via \eqref{eq:widehat_U_i}. The treatment $A_i$ depends on $\xi_i$, and $\xi_i \perp \{\varepsilon_j\}_{j\neq i}$ conditionally on $(U,X)$. Hence $A_i$ is conditionally independent of the integration limits given $(U,X)$, and we may factor the conditional expectation.
 
+\noindent\textbf{Bounding $\|\partial_u(\theta-\theta')\|_\infty$ via Landau–Kolmogorov.}
+We cannot directly apply Lemma~\ref{lemma:derivative_svm} to $\theta-\theta'$ and call the result proportional to $\|\theta-\theta'\|_\infty$, since the RKHS norm of the difference is not in general controlled by the $L^\infty$ norm.  Instead, we use the Landau–Kolmogorov interpolation inequality:
+$$\|\partial_u(\theta-\theta')\|_\infty \leq \sqrt{2\,\|\partial^2_u(\theta-\theta')\|_\infty\cdot\|\theta-\theta'\|_\infty}.$$
+For the second derivative, applying Lemma~\ref{lemma:derivative_svm} to $\partial_u(\theta-\theta') \in \mathcal{H}_\mathcal{K}$ gives $\|\partial^2_u(\theta-\theta')\|_\infty \leq c\,\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}/\gamma_n$.  By Lemma~\ref{lemma:bound_svm}, $\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}} \leq \|\theta\|_{\mathcal{H}_\mathcal{K}}+\|\theta'\|_{\mathcal{H}_\mathcal{K}} = O(1/\sqrt{\lambda_n})$, so
+$$\|\partial^2_u(\theta-\theta')\|_\infty \leq \frac{c}{\gamma_n\sqrt{\lambda_n}}.$$
+Substituting back,
+\begin{equation}\label{eq:LK_derivative}
+\|\partial_u(\theta-\theta')\|_\infty \leq c\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.
+\end{equation}
+
 \noindent\textbf{Bounding Term (I).}
 Adding and subtracting $(\mathcal{T}-f(\theta'(X_i,u),X_i)-u)\partial_u\theta(X_i,u)$, Term (I) decomposes into
 \begin{align*}
-|\mathrm{Term\ (I)}| \leq\;& \left|\mathcal{T}-f(\theta(X_i,u),X_i)-u\right|\cdot\left|\partial_u\theta(X_i,u) - \partial_u\theta'(X_i,u)\right|\\
-&+ \left|f(\theta(X_i,u),X_i) - f(\theta'(X_i,u),X_i)\right|\cdot\left|\partial_u\theta'(X_i,u)\right|.
+|\mathrm{Term\ (I)}| \leq\;& \underbrace{\left|\mathcal{T}-f(\theta(X_i,u),X_i)-u\right|}_{\leq\,C'}\cdot\left|\partial_u\theta(X_i,u) - \partial_u\theta'(X_i,u)\right|\\
+&+ \underbrace{\left|f(\theta(X_i,u),X_i) - f(\theta'(X_i,u),X_i)\right|}_{\leq\,C'\|\theta-\theta'\|_\infty}\cdot\underbrace{\left|\partial_u\theta'(X_i,u)\right|}_{\leq\,C/(\gamma_n\sqrt{\lambda_n})}.
 \end{align*}
-By Assumption~\ref{condition:excess_risk:smooth}, $|\mathcal{T}-f(\cdot,\cdot)-u|\leq C'$.  By Lemma~\ref{lemma:derivative_svm}, $|\partial_u\theta(X_i,u)|\leq \|\theta\|_{\mathcal{H}_\mathcal{K}}/\gamma_n$ and $|\partial_u\theta(X_i,u)-\partial_u\theta'(X_i,u)|\leq \|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}/\gamma_n$.  Since $f$ is Lipschitz in its first argument with constant $C'$ (Assumption~\ref{condition:excess_risk:smooth}), $|f(\theta(X_i,u),X_i)-f(\theta'(X_i,u),X_i)|\leq C'|\theta(X_i,u)-\theta'(X_i,u)|\leq C'\|\theta-\theta'\|_\infty$.  By Lemma~\ref{lemma:bound_svm}, $\|\theta\|_{\mathcal{H}_\mathcal{K}}=O(1/\sqrt{\lambda_n})$, so $|\partial_u\theta'(X_i,u)|\leq C/(\gamma_n\sqrt{\lambda_n})$.  Thus
-$$|\mathrm{Term\ (I)}| \leq \frac{C'}{\gamma_n}\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}} + \frac{C'^2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|_\infty \leq \frac{C_1}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|.$$
+The first factor of the second sub-term uses Lipschitzness of $f$ (Assumption~\ref{condition:excess_risk:smooth}); the second factor uses Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}.  Applying \eqref{eq:LK_derivative} to the first sub-term,
+$$|\mathrm{Term\ (I)}| \leq C'\cdot c\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \frac{C'^2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|_\infty \leq C_1\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty},$$
+where the last step holds because $\|\theta-\theta'\|_\infty\leq 1$ (on a bounded RKHS ball) so the linear term is dominated by the square-root term up to constants.
 
 \noindent\textbf{Bounding Terms (II)--(IV) after taking conditional expectation.}
-For Term (II), by conditional independence $\E[K_{\delta_n}(A_i-\theta(X_i,u))|U,X]\leq \kappa/\delta_n \cdot \delta_n = C'$ (since $\int K_{\delta_n}\,\mathrm{d}t=1$ and the density of $A_i$ is bounded).  An identical bound applies to the $\theta'$-term. Using $|(Y_i-f(A_i,X_i)-u)|\leq C'$ and $p\geq c'$,
-$$\left|\E[\mathrm{Term\ (II)}|U,X]\right| \leq \frac{C'}{c'}\left(\frac{\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}}{\gamma_n} + \frac{\|\theta-\theta'\|_\infty}{\gamma_n\sqrt{\lambda_n}}\right) \leq \frac{C_2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|.$$
-For Terms (III) and (IV), $\int_{a_L}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta'}K_{\delta_n}(A_i-a)\,\mathrm{d}a = \int_{\theta'}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a$.  Taking conditional expectation and using Fubini together with the conditional independence of $A_i$ and the limits,
-$$\E\!\left[\int_{\theta'(X_i,u)}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C'\,\E[|\theta(X_i,u)-\theta'(X_i,u)|\,|\,U,X] \leq C'\|\theta-\theta'\|_\infty.$$
-For Term (IV) we additionally use $|\partial_u p|\leq C'$ (Assumption~\ref{condition:excess_risk:smooth}) and $p\geq c'$.  Combining,
-$$\left|\E[\mathrm{Term\ (III)}+\mathrm{Term\ (IV)}|U,X]\right| \leq C_3\|\theta-\theta'\|.$$
+For Term (II), decompose the kernel-boundary contribution as
+$$K_{\delta_n}(A_i-\theta)\partial_u\theta - K_{\delta_n}(A_i-\theta')\partial_u\theta' = K_{\delta_n}(A_i-\theta)\underbrace{(\partial_u\theta-\partial_u\theta')}_{\text{use \eqref{eq:LK_derivative}}} + \underbrace{(K_{\delta_n}(A_i-\theta)-K_{\delta_n}(A_i-\theta'))}_{\leq\,L_K\|\theta-\theta'\|_\infty/\delta_n^2}\partial_u\theta'.$$
+After taking $\E[\,\cdot\,|U,X]$, the first part gives $\E[K_{\delta_n}(A_i-\theta)|U,X]\cdot\|\partial_u(\theta-\theta')\|_\infty \leq C'\cdot c\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}$ (using $\E[K_{\delta_n}(A_i-\theta)|U,X]\leq C'$ since $\int K_{\delta_n}\,\mathrm{d}t=1$ and the density of $A_i$ is bounded).  The second part gives $(L_K\|\theta-\theta'\|_\infty/\delta_n^2)\cdot C/(\gamma_n\sqrt{\lambda_n})$, which is lower order.  Hence
+$$\left|\E[\mathrm{Term\ (II)}|U,X]\right| \leq C_2\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.$$
+For Terms (III) and (IV), $\int_{a_L}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta'}K_{\delta_n}(A_i-a)\,\mathrm{d}a = \int_{\theta'}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a$.  By conditional independence and Fubini,
+$$\E\!\left[\int_{\theta'(X_i,u)}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C'\|\theta-\theta'\|_\infty.$$
+Using $|\partial_u p|\leq C'$ and $p\geq c'$ (Assumption~\ref{condition:excess_risk:smooth}), the linear factor $\|\theta-\theta'\|_\infty \leq \|\theta-\theta'\|_\infty^{1/2}$ (on the bounded ball), so
+$$\left|\E[\mathrm{Term\ (III)}+\mathrm{Term\ (IV)}|U,X]\right| \leq C_3\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.$$
 
 \noindent\textbf{Final assembly.}
-Collecting all terms and using $\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}\leq \|\theta-\theta'\|$ together with $(\gamma_n\sqrt{\lambda_n})^{-1} = O(1)$ under the assumed rate conditions,
-$$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta)-L^{(\delta_n)}_i(\theta')\,\big|\,U,X\right]\right| \leq C\|\theta-\theta'\|,$$
-where $C = C_1+C_2+C_3$ and the RKHS norm bounds follow from Lemma~\ref{lemma:bound_svm} and Lemma~\ref{lemma:derivative_svm}. Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
+Collecting all terms, the RKHS derivative bounds follow from Lemma~\ref{lemma:bound_svm} and Lemma~\ref{lemma:derivative_svm}, and the Landau–Kolmogorov inequality \eqref{eq:LK_derivative} controls the derivative of the difference.  Thus
+$$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta)-L^{(\delta_n)}_i(\theta')\,\big|\,U,X\right]\right| \leq C\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty},$$
+where $C = C_1+C_2+C_3$.  Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
     
 
