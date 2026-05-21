@@ -1991,39 +1991,43 @@ Taking the supremum over $(Y_i,A_i,\widehat U(S_i),X_i)$ and setting $C:=C^\prim
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, the difference of the loss function have the following bounds:
           \begin{align*}
         &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i)} \E\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)|U,X\right]\right|\\
-        & \leq 
+        & \leq C\|\theta-\theta^\prime\|
     \end{align*}
 \end{lemma}
 \begin{proof}
-
-From the definition \eqref{eq:loss_function_i},
-    \begin{align*}
-    & \partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f^\prime,p)\\
-    = & n^{-1}(f^\prime\{h(X_i,\widehat U(S_i)),X_i\}-f\{h(X_i,\widehat U(S_i)),X_i\})\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)}\\
-    & + n^{-1}\cdot\frac{ f(A_i,X_i)-f^\prime(A_i,X_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)}\\
-    & + n^{-1}\cdot\frac{f^\prime(A_i,X_i) - f(A_i,X_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a\\
-\end{align*}
-Then, we have
+Let $u = \widehat{U}(S_i)$ for brevity. From the definition \eqref{eq:loss_function_i}, applying the Leibniz rule to differentiate $L^{(\delta_n)}_i(\theta) - L^{(\delta_n)}_i(\theta')$ with respect to $u$, we obtain two terms:
 \begin{align*}
-    &\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f^\prime,p)\right\}| U,X\right]\\
-    \leq & n^{-1}\|f-f^\prime\|_\infty \sup_u\left|\frac{\partial h(X_i,u)}{\partial u}\right|\\
-    & + n^{-1}c^{\prime-1}\|f-f^\prime\|_\infty\E\left[K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}|U,X\right]\sup_u\left|\frac{\partial h(X_i,u)}{\partial u}\right|\\
-    & + n^{-1}c^{\prime-2}\|f-f^\prime\|_\infty\E\left[\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a\bigg|U,X\right]\sup_u\left|\frac{\partial p(A_i|X_i,u)}{\partial u}\right|\\
-    \leq & n^{-1}\frac{c}{\gamma_n\sqrt{\gamma_n}}\|f-f^\prime\|_\infty
+&\partial_u\!\left[L^{(\delta_n)}_i(\theta) - L^{(\delta_n)}_i(\theta')\right]\\
+=\;&\underbrace{\left[(\mathcal{T}-f(\theta(X_i,u),X_i)-u)\,\partial_u\theta(X_i,u) - (\mathcal{T}-f(\theta'(X_i,u),X_i)-u)\,\partial_u\theta'(X_i,u)\right]}_{\mathrm{Term\ (I)}}\\
+&+\underbrace{\frac{Y_i - f(A_i,X_i)-u}{p(A_i|X_i,u)}\left[K_{\delta_n}(A_i-\theta(X_i,u))\,\partial_u\theta(X_i,u) - K_{\delta_n}(A_i-\theta'(X_i,u))\,\partial_u\theta'(X_i,u)\right]}_{\mathrm{Term\ (II)}}\\
+&-\underbrace{\frac{Y_i - f(A_i,X_i)-u}{p(A_i|X_i,u)}\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a + \frac{Y_i-f(A_i,X_i)-u}{p(A_i|X_i,u)}\int_{a_L}^{\theta'(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (III)}}\\
+&-\underbrace{\frac{(Y_i-f(A_i,X_i)-u)\,\partial_u p(A_i|X_i,u)}{p^2(A_i|X_i,u)}\left[\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta'(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\right]}_{\mathrm{Term\ (IV)}}.
 \end{align*}
-The bound of the kernel svm and its derivatives are from
 
-\noindent\textbf{Upper Bound of kernel SVM Derivative}\label{bound_svm_derivative}
+\noindent\textbf{Conditional expectation and independence.}
+Given $(U,X)$, the integration limits $\theta(X_i,\widehat{U}(S_i))$ and $\theta'(X_i,\widehat{U}(S_i))$ are stochastic through $\widehat{U}(S_i)$, which depends on $\{\varepsilon_j\}_{j\neq i}$ via \eqref{eq:widehat_U_i}. The treatment $A_i$ depends on $\xi_i$, and $\xi_i \perp \{\varepsilon_j\}$ conditionally on $(U,X)$. Hence $A_i$ is conditionally independent of the integration limits given $(U,X)$, and we may factor the conditional expectation.
 
-\noindent We aim to bound $\partial_{\widehat U(S_i)}(h_i-h_i^\prime)$. By Landau-Kolmogorov Bound, 
-$$\|\partial_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\leq \sqrt{2\|\partial^2_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\|h_i-h_i^\prime)\|_\infty}$$
-When $h$ belongs to a RKHS using Gaussian kernel with bandwidth $\gamma_n$ and the penalty hyper-parameter $\lambda_n$, we have
-$$\|\partial^2_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\leq \frac{c}{\gamma_n}\|h_i-h_i^\prime\|_{\mathcal{H}_{\mathcal{K}}}\leq \frac{c}{\gamma_n\sqrt{\lambda_n}}.$$
-Then, we have
-$$\|\partial_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\leq c \gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|h_i-h_i^\prime\|_\infty}.$$
-We also have
-$$\sup\|\partial_{\widehat U(S_i)}h\|_\infty\leq \frac{c}{\gamma_n\sqrt{\gamma_n}}.$$
+\noindent\textbf{Bounding Term (I).}
+Adding and subtracting $(\mathcal{T}-f(\theta'(X_i,u),X_i)-u)\partial_u\theta(X_i,u)$, Term (I) decomposes into
+\begin{align*}
+|\mathrm{Term\ (I)}| \leq\;& \left|\mathcal{T}-f(\theta(X_i,u),X_i)-u\right|\cdot\left|\partial_u\theta(X_i,u) - \partial_u\theta'(X_i,u)\right|\\
+&+ \left|f(\theta(X_i,u),X_i) - f(\theta'(X_i,u),X_i)\right|\cdot\left|\partial_u\theta'(X_i,u)\right|.
+\end{align*}
+By Assumption~\ref{condition:excess_risk:smooth}, $|\mathcal{T}-f(\cdot,\cdot)-u|\leq C'$.  By Lemma~\ref{lemma:derivative_svm}, $|\partial_u\theta(X_i,u)|\leq \|\theta\|_{\mathcal{H}_\mathcal{K}}/\gamma_n$ and $|\partial_u\theta(X_i,u)-\partial_u\theta'(X_i,u)|\leq \|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}/\gamma_n$.  Since $f$ is Lipschitz in its first argument with constant $C'$ (Assumption~\ref{condition:excess_risk:smooth}), $|f(\theta(X_i,u),X_i)-f(\theta'(X_i,u),X_i)|\leq C'|\theta(X_i,u)-\theta'(X_i,u)|\leq C'\|\theta-\theta'\|_\infty$.  By Lemma~\ref{lemma:bound_svm}, $\|\theta\|_{\mathcal{H}_\mathcal{K}}=O(1/\sqrt{\lambda_n})$, so $|\partial_u\theta'(X_i,u)|\leq C/(\gamma_n\sqrt{\lambda_n})$.  Thus
+$$|\mathrm{Term\ (I)}| \leq \frac{C'}{\gamma_n}\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}} + \frac{C'^2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|_\infty \leq \frac{C_1}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|.$$
 
+\noindent\textbf{Bounding Terms (II)--(IV) after taking conditional expectation.}
+For Term (II), by conditional independence $\E[K_{\delta_n}(A_i-\theta(X_i,u))|U,X]\leq \kappa/\delta_n \cdot \delta_n = C'$ (since $\int K_{\delta_n}\,\mathrm{d}t=1$ and the density of $A_i$ is bounded).  An identical bound applies to the $\theta'$-term. Using $|(Y_i-f(A_i,X_i)-u)|\leq C'$ and $p\geq c'$,
+$$\left|\E[\mathrm{Term\ (II)}|U,X]\right| \leq \frac{C'}{c'}\left(\frac{\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}}{\gamma_n} + \frac{\|\theta-\theta'\|_\infty}{\gamma_n\sqrt{\lambda_n}}\right) \leq \frac{C_2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|.$$
+For Terms (III) and (IV), $\int_{a_L}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta'}K_{\delta_n}(A_i-a)\,\mathrm{d}a = \int_{\theta'}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a$.  Taking conditional expectation and using Fubini together with the conditional independence of $A_i$ and the limits,
+$$\E\!\left[\int_{\theta'(X_i,u)}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C'\,\E[|\theta(X_i,u)-\theta'(X_i,u)|\,|\,U,X] \leq C'\|\theta-\theta'\|_\infty.$$
+For Term (IV) we additionally use $|\partial_u p|\leq C'$ (Assumption~\ref{condition:excess_risk:smooth}) and $p\geq c'$.  Combining,
+$$\left|\E[\mathrm{Term\ (III)}+\mathrm{Term\ (IV)}|U,X]\right| \leq C_3\|\theta-\theta'\|.$$
+
+\noindent\textbf{Final assembly.}
+Collecting all terms and using $\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}\leq \|\theta-\theta'\|$ together with $(\gamma_n\sqrt{\lambda_n})^{-1} = O(1)$ under the assumed rate conditions,
+$$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta)-L^{(\delta_n)}_i(\theta')\,\big|\,U,X\right]\right| \leq C\|\theta-\theta'\|,$$
+where $C = C_1+C_2+C_3$ and the RKHS norm bounds follow from Lemma~\ref{lemma:bound_svm} and Lemma~\ref{lemma:derivative_svm}. Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
     
 
