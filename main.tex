@@ -1933,22 +1933,45 @@ where $C:=C^\prime(1+\kappa/c^\prime)$ is a generic constant, and the last inequ
 \end{lemma}
 
 \begin{proof}
-    \begin{align*}
-    &\E\left[\partial_{Y_i}R_n^{(\delta)}(h;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(h^\prime;\psi,f,p)| U,X\right]\\
-    =&\E\left[n^{-1}\cdot\frac{1}{p_i}\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] \\
-    \leq & n^{-1}c^{\prime-1}\E\left[\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] =n^{-1}\|h-h^\prime\|_{\infty}
-\end{align*}
+\noindent\textit{Step 1: Compute $\partial_{Y_i}$ of the loss difference.}
 
-$h_i,h^\prime_i$ and $A_i$ are conditionally independent given $U,X$ because the randomness of $h_i,h^\prime_i$ are from $\epsilon_i$ while the randomness of $A_i$ is from $\xi_i$. Thus we have
+From the definition \eqref{eq:loss_function_i}, $Y_i$ appears only in the IPW term linearly through the numerator $(Y_i - f(A_i,X_i) - \widehat U(S_i))$. The first integral does not involve $Y_i$. Hence,
 \begin{align*}
-&\E\left[\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] \\
-= & \int_{\R}\E\left[K_{\delta_n}(A_i-a) 1(h_i\leq a\leq h_i^\prime)| U,X\right]\mathrm{d}a\\
-= &\E\left[\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] \\
-= & \int_{\R}\E\left[K_{\delta_n}(A_i-a)| U,X\right]\cdot \E\left[1(h_i\leq a\leq h_i^\prime)| U,X\right]\mathrm{d}a\\
-\leq & \|h - h^\prime\|_\infty \sup_{u,x} \E\left[K_{\delta_n}(A_i-a)| U = u,X=x\right]\\
-\leq & c\|h - h^\prime\|_\infty
+    &\partial_{Y_i}\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)\right]\\
+    =\;&\frac{1}{p(A_i|X_i,\widehat U(S_i))}\left[\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta^\prime(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\right]\\
+    =\;&\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+\end{align*}
+Since this expression does not depend on $Y_i$, the derivative commutes with the conditional expectation:
+\begin{align*}
+    &\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}(\ldots;\theta,\psi,f,p) - L^{(\delta_n)}(\ldots;\theta^\prime,\psi,f,p)\,\Big|\,U,X\right]\\
+    =\;&\E\!\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right].
 \end{align*}
 
+\noindent\textit{Step 2: Take the conditional expectation over $A_i$.}
+
+Given $(U,X)$, the integration limits $\theta(X_i,\widehat U(S_i))$ and $\theta^\prime(X_i,\widehat U(S_i))$ are deterministic. By Assumption~\ref{condition:excess_risk:overlap}, $p(A_i|X_i,\widehat U(S_i))\geq c^\prime>0$. Applying the overlap lower bound and Fubini's theorem to swap the integral over $a$ with the expectation over $A_i$:
+\begin{align*}
+    &\left|\E\!\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]\right|\\
+    \leq\;&\frac{1}{c^\prime}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}\underbrace{\E\!\left[K_{\delta_n}(A_i-a)\,\big|\,U,X\right]}_{=:\,\rho(a,X_i,\widehat U(S_i))}\,\mathrm{d}a.
+\end{align*}
+
+\noindent\textit{Step 3: Bound the conditional kernel expectation $\rho$.}
+
+By Assumption~\ref{condition:excess_risk:smooth}, the conditional density $p^*(A_i|X_i,\widehat U(S_i))$ is bounded above by $C^\prime$. Since $K_{\delta_n}$ integrates to one ($\int K_{\delta_n}(t)\,\mathrm{d}t=1$):
+\begin{align*}
+    \rho(a,X_i,\widehat U(S_i)) = \int K_{\delta_n}(t-a)\,p^*(t|X_i,\widehat U(S_i))\,\mathrm{d}t \leq C^\prime\int K_{\delta_n}(t-a)\,\mathrm{d}t = C^\prime.
+\end{align*}
+Crucially, the $\delta_n^{-1}$ factor in $K_{\delta_n}$ is absorbed by the integral over its support, leaving a bound that is $O(1)$ in $\delta_n$.
+
+\noindent\textit{Step 4: Combine and take the supremum.}
+
+Substituting back:
+\begin{align*}
+    &\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}(\ldots;\theta) - L^{(\delta_n)}(\ldots;\theta^\prime)\,\big|\,U,X\right]\right|\\
+    \leq\;&\frac{C^\prime}{c^\prime}\left|\theta(X_i,\widehat U(S_i))-\theta^\prime(X_i,\widehat U(S_i))\right|
+    \leq \frac{C^\prime}{c^\prime}\|\theta-\theta^\prime\|_\infty.
+\end{align*}
+Taking the supremum over $(Y_i,A_i,\widehat U(S_i),X_i)$ and setting $C:=C^\prime/c^\prime$ yields the stated bound $C\|\theta-\theta^\prime\|$.
 \end{proof}
 
 \begin{lemma}\label{L_i_derivative_U_diff}
