@@ -1994,7 +1994,37 @@ Taking the supremum over $(Y_i,A_i,\widehat U(S_i),X_i)$ and setting $C:=C^\prim
         & \leq  C\|\theta-\theta^\prime\| 
     \end{align*}
 \end{lemma}
+\begin{proof}
 
+From the definition \eqref{eq:loss_function_i},
+    \begin{align*}
+    & \partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f^\prime,p)\\
+    = & n^{-1}(f^\prime\{h(X_i,\widehat U(S_i)),X_i\}-f\{h(X_i,\widehat U(S_i)),X_i\})\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)}\\
+    & + n^{-1}\cdot\frac{ f(A_i,X_i)-f^\prime(A_i,X_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)}\\
+    & + n^{-1}\cdot\frac{f^\prime(A_i,X_i) - f(A_i,X_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a\\
+\end{align*}
+Then, we have
+\begin{align*}
+    &\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f^\prime,p)\right\}| U,X\right]\\
+    \leq & n^{-1}\|f-f^\prime\|_\infty \sup_u\left|\frac{\partial h(X_i,u)}{\partial u}\right|\\
+    & + n^{-1}c^{\prime-1}\|f-f^\prime\|_\infty\E\left[K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}|U,X\right]\sup_u\left|\frac{\partial h(X_i,u)}{\partial u}\right|\\
+    & + n^{-1}c^{\prime-2}\|f-f^\prime\|_\infty\E\left[\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a\bigg|U,X\right]\sup_u\left|\frac{\partial p(A_i|X_i,u)}{\partial u}\right|\\
+    \leq & n^{-1}\frac{c}{\gamma_n\sqrt{\gamma_n}}\|f-f^\prime\|_\infty
+\end{align*}
+The bound of the kernel svm and its derivatives are from
+
+\noindent\textbf{Upper Bound of kernel SVM Derivative}\label{bound_svm_derivative}
+
+\noindent We aim to bound $\partial_{\widehat U(S_i)}(h_i-h_i^\prime)$. By Landau-Kolmogorov Bound, 
+$$\|\partial_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\leq \sqrt{2\|\partial^2_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\|h_i-h_i^\prime)\|_\infty}$$
+When $h$ belongs to a RKHS using Gaussian kernel with bandwidth $\gamma_n$ and the penalty hyper-parameter $\lambda_n$, we have
+$$\|\partial^2_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\leq \frac{c}{\gamma_n}\|h_i-h_i^\prime\|_{\mathcal{H}_{\mathcal{K}}}\leq \frac{c}{\gamma_n\sqrt{\lambda_n}}.$$
+Then, we have
+$$\|\partial_{\widehat U(S_i)}(h_i-h_i^\prime)\|_\infty\leq c \gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|h_i-h_i^\prime\|_\infty}.$$
+We also have
+$$\sup\|\partial_{\widehat U(S_i)}h\|_\infty\leq \frac{c}{\gamma_n\sqrt{\gamma_n}}.$$
+
+\end{proof}
     
 
 
