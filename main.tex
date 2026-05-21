@@ -1932,6 +1932,25 @@ where $C:=C^\prime(1+\kappa/c^\prime)$ is a generic constant, and the last inequ
     \end{align*}
 \end{lemma}
 
+\begin{proof}
+    \begin{align*}
+    &\E\left[\partial_{Y_i}R_n^{(\delta)}(h;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(h^\prime;\psi,f,p)| U,X\right]\\
+    =&\E\left[n^{-1}\cdot\frac{1}{p_i}\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] \\
+    \leq & n^{-1}c^{\prime-1}\E\left[\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] =n^{-1}\|h-h^\prime\|_{\infty}
+\end{align*}
+
+$h_i,h^\prime_i$ and $A_i$ are conditionally independent given $U,X$ because the randomness of $h_i,h^\prime_i$ are from $\epsilon_i$ while the randomness of $A_i$ is from $\xi_i$. Thus we have
+\begin{align*}
+&\E\left[\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] \\
+= & \int_{\R}\E\left[K_{\delta_n}(A_i-a) 1(h_i\leq a\leq h_i^\prime)| U,X\right]\mathrm{d}a\\
+= &\E\left[\int_{h_i}^{h^\prime_i}K_{\delta_n}(A_i-a)\mathrm{d}a| U,X\right] \\
+= & \int_{\R}\E\left[K_{\delta_n}(A_i-a)| U,X\right]\cdot \E\left[1(h_i\leq a\leq h_i^\prime)| U,X\right]\mathrm{d}a\\
+\leq & \|h - h^\prime\|_\infty \sup_{u,x} \E\left[K_{\delta_n}(A_i-a)| U = u,X=x\right]\\
+\leq & c\|h - h^\prime\|_\infty
+\end{align*}
+
+\end{proof}
+
 \begin{lemma}\label{L_i_derivative_U_diff}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, the difference of the loss function have the following bounds:
           \begin{align*}
