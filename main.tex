@@ -1896,7 +1896,7 @@ Substituting the formula in \eqref{eq:loss_function_i} into the difference of th
     + \underbrace{\frac{(y - f(a,x)-u)}{p(a|x,u)}\int_{\theta^\prime(x,u)}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(II)}}.
 \end{align*}
 
-\noindent\textit{Bound on Term (I).}
+\noindent\textit{Bound on Term (I).} \textcolor{red}{we need to be more careful about the comment of the boundedness, and it needs to be revised later.} 
 By Assumption~\ref{condition:excess_risk:smooth}, $|\mathcal{T} - f(a^\prime,x) - u|\leq C^\prime$ uniformly over $(a^\prime,x,u)$. Therefore,
 \begin{align*}
     |\mathrm{Term\;(I)}| \leq \sup_{a^\prime,x,u}|\mathcal{T}-f(a^\prime,x)-u|\cdot|\theta(x,u)-\theta^\prime(x,u)| \leq C^\prime\|\theta-\theta^\prime\|_\infty.
@@ -1947,17 +1947,14 @@ Since this expression does not depend on $Y_i$, the derivative commutes with the
     =\;&\E\!\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right].
 \end{align*}
 
-<<<<<<< HEAD
 \noindent\textit{Step 2: Take the conditional expectation over $A_i$ using conditional independence.}
 
 By Assumption~\ref{condition:excess_risk:overlap}, $p(A_i|X_i,\widehat U(S_i))\geq c^\prime>0$. It remains to bound
 $$\E\!\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right].$$
-Note that the integration limits $\theta(X_i,\widehat U(S_i))$ and $\theta^\prime(X_i,\widehat U(S_i))$ are stochastic: from \eqref{eq:widehat_U_i}, $\widehat U(S_i)$ depends on the outcome noise $\{\epsilon_j\}_{j\neq i}$, while $A_i = g(X_i,U(S_i))+\xi_i$ depends on the treatment noise $\xi_i$. Since $\xi_i\perp\{\epsilon_j\}$ conditional on $(U,X)$, the integration limits and $A_i$ are \emph{conditionally independent} given $(U,X)$. Writing the integral as an indicator and applying Fubini:
-=======
-\noindent\textit{Step 2: Take the conditional expectation over $A_i$.}
-\ref{eq:widehat_U_i}
-Given $(U,X)$, the integration limits $\theta(X_i,\widehat U(S_i))$ and $\theta^\prime(X_i,\widehat U(S_i))$ are deterministic. By Assumption~\ref{condition:excess_risk:overlap}, $p(A_i|X_i,\widehat U(S_i))\geq c^\prime>0$. Applying the overlap lower bound and Fubini's theorem to swap the integral over $a$ with the expectation over $A_i$:
->>>>>>> 7c79a64ab5a1a6f79f5029a990629e4a2d3e004e
+Note that the integration limits $\theta(X_i,\widehat U(S_i))$ and $\theta^\prime(X_i,\widehat U(S_i))$ are stochastic: from \eqref{eq:widehat_U_i}, $\widehat U(S_i)$ depends on the outcome noise $\{\epsilon_j\}_{j\neq i}$, while $A_i = g(X_i,U(S_i))+\xi_i$ depends on the treatment noise $\xi_i$. Since $\xi_i\perp\{\epsilon_j\}_{j\neq i}$ conditional on $(U,X)$, the integration limits and $A_i$ are \emph{conditionally independent} given $(U,X)$. Writing the integral as an indicator and applying Fubini's theorem to swap the integral over $a$ with the expectation over $A_i$:
+
+
+
 \begin{align*}
     &\E\!\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]\\
     =\;&\int_{\R}\E\!\left[K_{\delta_n}(A_i-a)\cdot\mathbf{1}\!\left(\theta^\prime(X_i,\widehat U(S_i))\leq a\leq\theta(X_i,\widehat U(S_i))\right)\Big|\,U,X\right]\mathrm{d}a\\
@@ -1973,16 +1970,16 @@ For the kernel factor, by Assumption~\ref{condition:excess_risk:smooth} the cond
     = \sup_{a,u,x}\int K_{\delta_n}(t-a)\,p^*(t|x,u)\,\mathrm{d}t
     \leq C^\prime\int K_{\delta_n}(t)\,\mathrm{d}t = C^\prime.
 \end{align*}
-Crucially, the $\delta_n^{-1}$ factor inside $K_{\delta_n}$ is absorbed by the width-$\delta_n$ support of the kernel, leaving an $O(1)$ bound. For the indicator factor, by Fubini:
+Crucially, the $\delta_n^{-1}$ factor inside $K_{\delta_n}$ is absorbed by the width-$\delta_n$ support of the kernel, leaving an $O(1)$ bound. For the indicator factor,:
 \begin{align*}
-    \int_{\R}\E\!\left[\mathbf{1}\!\left(\theta^\prime(X_i,\widehat U(S_i))\leq a\leq\theta(X_i,\widehat U(S_i))\right)\Big|\,U,X\right]\mathrm{d}a
-    = \E\!\left[|\theta(X_i,\widehat U(S_i))-\theta^\prime(X_i,\widehat U(S_i))|\,\big|\,U,X\right]
+    &\int_{\R}\E\!\left[\mathbf{1}\!\left(\theta^\prime(X_i,\widehat U(S_i))\leq a\leq\theta(X_i,\widehat U(S_i))\right)\Big|\,U,X\right]\mathrm{d}a\\
+    = &\E\!\left[|\theta(X_i,\widehat U(S_i))-\theta^\prime(X_i,\widehat U(S_i))|\,\big|\,U,X\right]
     \leq \|\theta-\theta^\prime\|_\infty.
 \end{align*}
 
 \noindent\textit{Step 4: Combine and take the supremum.}
 
-Putting Steps 2 and 3 together, and applying the overlap lower bound $p\geq c^\prime$:
+Putting Steps 2 and 3 together, and applying the overlap lower bound $p\geq c^\prime$ by Assumption~\ref{condition:excess_risk:overlap}:
 \begin{align*}
     &\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}(\ldots;\theta) - L^{(\delta_n)}(\ldots;\theta^\prime)\,\big|\,U,X\right]\right|\\
     \leq\;&\frac{1}{c^\prime}\cdot C^\prime\cdot\|\theta-\theta^\prime\|_\infty = \frac{C^\prime}{c^\prime}\|\theta-\theta^\prime\|_\infty.
