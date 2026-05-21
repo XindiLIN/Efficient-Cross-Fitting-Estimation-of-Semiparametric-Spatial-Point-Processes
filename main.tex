@@ -1948,7 +1948,7 @@ Since this expression does not depend on $Y_i$, the derivative commutes with the
 \end{align*}
 
 \noindent\textit{Step 2: Take the conditional expectation over $A_i$.}
-
+\ref{eq:widehat_U_i}
 Given $(U,X)$, the integration limits $\theta(X_i,\widehat U(S_i))$ and $\theta^\prime(X_i,\widehat U(S_i))$ are deterministic. By Assumption~\ref{condition:excess_risk:overlap}, $p(A_i|X_i,\widehat U(S_i))\geq c^\prime>0$. Applying the overlap lower bound and Fubini's theorem to swap the integral over $a$ with the expectation over $A_i$:
 \begin{align*}
     &\left|\E\!\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]\right|\\
