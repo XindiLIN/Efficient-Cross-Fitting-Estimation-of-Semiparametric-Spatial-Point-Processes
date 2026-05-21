@@ -1889,13 +1889,39 @@ Furthermore, for every $i$, the derivative of the empirical risk with respect to
 \end{lemma}
 
 \begin{proof}
-Substituting the formula in \eqref{eq:loss_function_i} into the difference of the loss function that we aim to bound, we have 
+Substituting the formula in \eqref{eq:loss_function_i} into the difference of the loss function, and using the fact that the integration limits differ only in the upper bound, we telescope:
 \begin{align*}
     &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\\
-    = & \int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} - f(a,X_i)-\widehat U(S_i))\mathrm{d}a+ \frac{(Y_i -  f(A_i,X_i)-\widehat U(S_i))}{p(A_{i}|X_{i},\widehat U(S_{i}))}  \int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\\
-    \leq & \|\theta-\theta^\prime\|\cdot  \sup_{y,a,u,x}|\mathcal{T} - f(a,X_i)-\widehat U(S_i)| + \|\theta-\theta^\prime\|\cdot\sup_{y,a,u,x}\left|\frac{(Y_i -  f(A_i,X_i)-\widehat U(S_i))}{p(A_{i}|X_{i},\widehat U(S_{i}))}\right|\sup_a |K(a)|\\
-    \leq & 
+    = & \underbrace{\int_{\theta^\prime(x,u)}^{\theta(x,u)}(\mathcal{T} - f(a^\prime,x)-u)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(I)}}
+    + \underbrace{\frac{(y - f(a,x)-u)}{p(a|x,u)}\int_{\theta^\prime(x,u)}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(II)}}.
 \end{align*}
+
+\noindent\textit{Bound on Term (I).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|\mathcal{T} - f(a^\prime,x) - u|\leq C^\prime$ uniformly over $(a^\prime,x,u)$. Therefore,
+\begin{align*}
+    |\mathrm{Term\;(I)}| \leq \sup_{a^\prime,x,u}|\mathcal{T}-f(a^\prime,x)-u|\cdot|\theta(x,u)-\theta^\prime(x,u)| \leq C^\prime\|\theta-\theta^\prime\|_\infty.
+\end{align*}
+
+\noindent\textit{Bound on Term (II).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|y-f(a,x)-u|\leq C^\prime$ uniformly; by Assumption~\ref{condition:excess_risk:overlap}, $p(a|x,u)\geq c^\prime>0$. For the kernel integral, since $K_{\delta_n}(t)=K(t/\delta_n)/\delta_n$ and $\kappa:=\|K\|_\infty<\infty$:
+\begin{align*}
+    \left|\int_{\theta^\prime(x,u)}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime\right|
+    \leq |\theta(x,u)-\theta^\prime(x,u)|\cdot\|K_{\delta_n}\|_\infty
+    = |\theta(x,u)-\theta^\prime(x,u)|\cdot\frac{\kappa}{\delta_n}.
+\end{align*}
+Therefore,
+\begin{align*}
+    |\mathrm{Term\;(II)}| \leq \frac{C^\prime}{c^\prime}\cdot\frac{\kappa}{\delta_n}\cdot\|\theta-\theta^\prime\|_\infty.
+\end{align*}
+
+\noindent\textit{Combining.}
+Adding the two bounds and taking the supremum over $(y,a,u,x)$:
+\begin{align*}
+    &\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
+    \leq &\left(C^\prime + \frac{C^\prime\kappa}{c^\prime\delta_n}\right)\|\theta-\theta^\prime\|_\infty
+    \leq \frac{C}{\delta_n}\|\theta-\theta^\prime\|,
+\end{align*}
+where $C:=C^\prime(1+\kappa/c^\prime)$ is a generic constant, and the last inequality absorbs the $\delta_n^0$ term in Term (I) since $\delta_n\leq 1$ implies $1\leq \delta_n^{-1}$.
 \end{proof}
 
 \begin{lemma}\label{lemma:L_i_derivative_Y_diff}
