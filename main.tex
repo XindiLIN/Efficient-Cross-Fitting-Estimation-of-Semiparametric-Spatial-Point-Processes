@@ -1661,15 +1661,25 @@ To bound each $\psi_2$-norm in the right-hand-side of the above inequality, we v
 As we mentioned in the previous section, we need to characterize the effect of the latent variables $(X_i,U(S_i),\xi_i,\epsilon_i)$ on the empirical risk. In this section, we first (i) write out the formulas, and (ii) calculate the derivatives. Furthermore, because the loss function outside the policy domain $\mathcal{A}=[a_L,a_U]$ is defined simply as the sum of its boundary values and a monotonic function, our analysis focuses exclusively on the empirical risk restricted within $\mathcal{A}$. To minimize notation, we use $U_i$ to denote $U(S_i)$, and $U$ to denote vector of $(U(S_1),\ldots,U(S_n))$.
 
 \noindent \textbf{Formula: Mapping from latent variable to observations}
-\begin{gather*}
-    X_i = X_i,\\
-    \widehat U(S_i) = \sum_{j\neq i}\alpha_{ij}\{U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i)\},\\
-    A_i = g(X_i,U(S_i)) +\xi_i,\\
-    Y_i = f(A_i,U(S_i))+\epsilon_i,
-\end{gather*}
+\begin{gather}
+    X_i = X_i,\nonumber\\
+    \widehat U(S_i) = \sum_{j\neq i}\alpha_{ij}\{U(S_j)+\epsilon_j+f^*(A_i,X_i) - f(A_i,X_i)\},\label{eq:widehat_U_i}\\
+    A_i = g(X_i,U(S_i)) +\xi_i,\nonumber\\
+    Y_i = f(A_i,U(S_i))+\epsilon_i.\nonumber
+\end{gather}
 \noindent \textbf{Formula: Mapping from observations to empirical risk}
+
+\noindent We first denote the loss function as a function of $i$-th observation:
+\begin{align}
+& L^{(\delta_n)}_i(\theta,\psi,f,p)\nonumber\\
+:=&L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)\label{eq:loss_function_i}\\
+:= & \int_{a_L}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} - f(a,X_i)-\widehat U(S_i))\mathrm{d}a\nonumber\\
+    & + \frac{(Y_i -  f(A_i,X_i)-\widehat U(S_i))}{p(A_{i}|X_{i},\widehat U(S_{i}))}  \int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a\nonumber
+\end{align}
+Then, the empirical risk is a function of observations as follows:
 \begin{align*}
-    R_n^{(\delta_n)} = &\frac{1}{n}\sum_{i=1}^n\int_{a_L}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} - f(a,X_i)-\widehat U(S_i))\mathrm{d}a\\
+R_n^{(\delta_n)} = &\frac{1} {n}\sum_{i=1}^n L^{(\delta_n)}_i(\theta,\psi,f,p)\\
+ = &\frac{1}{n}\sum_{i=1}^n\int_{a_L}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T} - f(a,X_i)-\widehat U(S_i))\mathrm{d}a\\
     & + \frac{1}{n}\sum_{i=1}^n\frac{(Y_i -  f(A_i,X_i)-\widehat U(S_i))}{p(A_{i}|X_{i},\widehat U(S_{i}))}  \int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a
 \end{align*}
 \noindent \textbf{Derivatives: Mapping from latent variable to observations}
@@ -1759,42 +1769,42 @@ As we mentioned in the previous section, we need to characterize the effect of t
 \noindent \textbf{Derivatives: Mapping from observations to empirical risk}
 
 \noindent \textit{Derivative: from $Y_i$ to $R_n$}
-\begin{align*}
-    &\partial_{Y_i}R_n^{(\delta)}(h;\psi,f,p)\\
-    =& -\frac{1}{n}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)da
-\end{align*}
+\begin{align}
+    &\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
+    =& -\frac{1}{n}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)da\label{eq:derivative_R_n_Y}
+\end{align}
 
 \noindent \textit{Derivative: from $\widehat U(S_i)$ to $R_n$}
-\begin{align*}
-&\partial_{\widehat U(S_i)}R_n^{(\delta)}(h;\psi,f,p)\\
-    = & n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} -n^{-1}(h(X_i,\widehat U(S_i)) - a_L)\\
-    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \\
-    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \\
-    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a 
-\end{align*}
+\begin{align}
+&\partial_{\widehat U(S_i)}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
+    = & n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} -n^{-1}(h(X_i,\widehat U(S_i)) - a_L) \label{eq:derivative_R_n_hat_U_1}\\
+    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \label{eq:derivative_R_n_hat_U_2}\\
+    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_hat_U_3}\\
+    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_hat_U_4}
+\end{align}
 
 \noindent \textit{Derivative: from $A_i$ to $R_n$}
-\begin{align*}
-&\partial_{A_i}R_n^{(\delta)}(h;\psi,f,p)\\
-= & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(a|X_i,\widehat U(S_i))}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \\
-& - n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(a,X_i)}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \\
-    & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} \partial a^\prime K_{\delta_n}(a^\prime-a)|_{a^\prime=A_i}\mathrm{d}a
-\end{align*}
+\begin{align}
+&\partial_{A_i}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
+= & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(a|X_i,\widehat U(S_i))}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \label{eq:derivative_R_n_A_1}\\
+& - n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(a,X_i)}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_A_2} \\
+    & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} \partial a^\prime K_{\delta_n}(a^\prime-a)|_{a^\prime=A_i}\mathrm{d}a \label{eq:derivative_R_n_A_3}
+\end{align}
 
 \noindent \textit{Derivative: from $X_i$ to $R_n$}
-\begin{align*}
-&\partial_{X_i}R_n^{(\delta)}(h;\psi,f,p)\\
-= & -n^{-1}\int_{a_L}^{h(X_i,\widehat U(S_i))}\frac{\partial f(a,x)}{\partial x}\bigg|_{x=X_i}\mathrm{d}a \\
-    & + n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = \widehat X_i}\\
-    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \\
-    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \cdot \frac{\partial p(A_i|X_i,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \\
-    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(A_i,x)}{\partial x}\bigg|_{x = X_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a 
-\end{align*}
+\begin{align}
+&\partial_{X_i}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
+= & -n^{-1}\int_{a_L}^{h(X_i,\widehat U(S_i))}\frac{\partial f(a,x)}{\partial x}\bigg|_{x=X_i}\mathrm{d}a \label{eq:derivative_R_n_X_1}\\
+    & + n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = \widehat X_i}\label{eq:derivative_R_n_X_2}\\
+    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \label{eq:derivative_R_n_X_3}\\
+    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \cdot \frac{\partial p(A_i|X_i,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \label{eq:derivative_R_n_X_4}\\
+    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(A_i,x)}{\partial x}\bigg|_{x = X_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \label{eq:derivative_R_n_X_5}
+\end{align}
 
 \subsubsection{Sub-Gaussianity over $\theta$}
 In this section, for any $\theta,\theta^\prime\in\mathcal{H}_{\mathcal{K}}$, we provide the upper bound for
-$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)\right]\right\|_{\psi_2}.$$
-We denote 
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}.$$
+Specifically, 
 \begin{align*}
     &R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\\
     := & \frac{1}{n}\sum_{i=1}^n \left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L_i(\theta^\prime;\psi,f,p)\right)
@@ -1809,53 +1819,88 @@ We use the conditional expectation to decompose the $\psi_2$-norm above into fou
 \noindent\textbf{First Layer Randomness: $\epsilon$}
 
 \noindent We first provide the upper bound of 
-$$\left\|R_n^{(\delta_n)}(h;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}.$$
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}.$$
 
 
-Conditioning on $(X,U,\xi):=\mathcal{D}_0 = \{X_i, U(S_i), \xi_i\}_{i=1}^n$, the empirical risk as a function of $(\epsilon_1,\ldots,\epsilon_n)$. we treat the empirical risk as a function of the outcome error vector $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$. Consider two realizations that differ only in the first coordinate, $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$ and $(\epsilon_1, \ldots,\epsilon_i^\prime,\ldots, \epsilon_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\epsilon_i$ to $\epsilon_i^\prime$ only affects the observed outcome $Y_i$ and the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.  Specifically, the direct impact of $\epsilon_i$ on $R_n$ through $Y_i$ yields the difference:
+Conditioning on $(X,U,\xi):=\mathcal{D}_0 = \{X_i, U(S_i), \xi_i\}_{i=1}^n$, the empirical risk as a function of $(\epsilon_1,\ldots,\epsilon_n)$. we treat the empirical risk as a function of the outcome error vector $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$ and $(\epsilon_1, \ldots,\epsilon_i^\prime,\ldots, \epsilon_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\epsilon_i$ to $\epsilon_i^\prime$ affects the empirical risk through the observed outcome $Y_i$ and the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.  
+
+Specifically, let $Y_i^\prime:= Y_i - \epsilon_i + \epsilon_i^\prime$, i.e., the value of $Y_i$ when we change $\epsilon_i$ to $\epsilon_j$. Then, the impact of $\epsilon_i$ on $R_n$ through $Y_i$ yields the difference:
 \begin{align*}
-n^{-1}\left|\frac{\epsilon_i-\epsilon_i^\prime}{p(A_i|X_i,\widehat U(S_i))}\int_{h^\prime(X_i,\widehat U(S_i))}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \right|\leq n^{-1}\delta_n^{-1}C\|h-h^\prime\|_\infty
+&L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)\\
+        & -\left[L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)\right]\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
+        \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
-Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining  observations $Y_j$ (for $j\neq 1$ where $\alpha_{j,1}\neq 0$), and this cross-influence difference is similarly bounded by 
+Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining observations $\widehat U(S_j)$ for $j\neq i$ and $\alpha_{j,i}\neq 0$ (see equation \eqref{eq:widehat_U_i}). Let $\widehat U^\prime(S_j)$ be the value of $\widehat U(S_j)$ when we change $\epsilon_i$ to $\epsilon_i^\prime$. Then, this cross-influence difference is similarly bounded by 
 \begin{align*}
-    2\left(L^{(\delta_n)}_j(\theta;\psi,f,p) - L_j(\theta^\prime;\psi,f,p)\right)\leq n^{-1}\delta_n^{-1}C\|h-h^\prime\|_\infty
+&L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)\\
+        & -\left[L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta^\prime,\psi,f,p)\right]\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
+        \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
-The number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
-    &\left\|R_n^{(\delta_n)}(h;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
     \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|h - h^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
 
 \noindent We provide the upper bound of 
-$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.$$
-we treat the empirical risk as a function of the outcome error vector $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$. Consider two realizations that differ only in the first coordinate, $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$ and $(\xi_1, \ldots,\xi_i^\prime,\ldots, \xi_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\xi_i$ to $\xi_i^\prime$ only affects the observed treatment $A_i$. The difference in the empirical risk due to the direct impact of $\xi_i$ on $R_n$ through $A_i$ is bounded by
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.$$
+Fixing $X,U$, we view the conditional expectation of the empirical risk as a function of $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$ and $(\xi_1, \ldots,\xi_i^\prime,\ldots, \xi_n)$. According to Table \ref{tab:filled_jacobian}, changing $\xi_i$ to $\xi_i^\prime$ only affects the observed treatment $A_i$. Let $A_i^\prime$ be the value of $A_i$ when we change $\xi_i$ to $\xi_i^\prime$. Then, the perturbation in the empirical risk is bounded by
+
 \begin{align*}
-2\left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L_i(\theta^\prime;\psi,f,p)\right)\leq n^{-1}\delta_n^{-1}C\|h-h^\prime\|_\infty.
+&L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)\\
+        & -\left[L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i),X_i);\theta^\prime,\psi,f,p)\right]\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
+        \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
 Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
-    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.\\
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.\\
     \leq & C n^{-1/2}\delta_n^{-1}\|h - h^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Third Layer of Randomness: $U(S_i)$}
 
 \noindent We provide the upper bound of 
-$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)|U\right]\right\|_{\psi_2}.$$
-The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. We let $\widetilde U=\Sigma^{-1/2} U$ where $\widetilde U$ is a vector of standard normal distribution. We then view the empirical risk as a function of $\widetilde U$ whose derivative can be calculated as follows:
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|U\right]\right\|_{\psi_2}.$$
+The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. Let $\widetilde U=\Sigma^{-1/2} U$ where $\widetilde U$ is a vector of i.i.d. standard normal distribution. We then view the empirical risk as a function of $\widetilde U$ whose derivative can be calculated as follows:
 \begin{align*}
-    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(h;\psi,f,p)| U,X\right]\\
-    = & \frac{\partial U}{ \partial \widetilde  U}\cdot  \E\left[\partial_{ U }R_n^{(\delta)}(h;\psi,f,p)| U,X\right]\\
-    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}R_n^{(\delta)}(h;\psi,f,p),\ldots,\partial_{U(S_n)}R_n^{(\delta)}(h;\psi,f,p)| U,X\right]
+    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\\
+    = & \frac{\partial U}{ \partial \widetilde  U}\cdot  \E\left[\partial_{ U }R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\\
+    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}R_n^{(\delta)}(\theta;\psi,f,p),\ldots,\partial_{U(S_n)}R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]
 \end{align*}
-Furthermore, for every $i$, 
+Furthermore, for every $i$, the derivative of the empirical risk with respect to $U(S_i)$ can be written as:
 \begin{align*}
-    &\E\left[\partial_{U(S_i)}\{R_n^{(\delta_n)}(h;\psi,f,p)-R_n^{({\delta_n})}(h^\prime;\psi,f,p)\}| U,X\right]\\
-    = & \sum_{j\neq i}^n  \alpha_{i,j}\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(h;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(h^\prime;\psi,f,p)\right\}| U,X\right]\\
-    &+ \E\left[\partial_{Y_i}R_n^{(\delta)}(h;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(h^\prime;\psi,f,p)| U,X\right]
+    &\E\left[\partial_{U(S_i)}\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\}| U,X\right]\\
+    = & \sum_{j\neq i}^n  \alpha_{i,j}\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta^\prime;\psi,f,p)\right\}| U,X\right]\\
+    &+ \E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta^\prime;\psi,f,p)| U,X\right]
 \end{align*}
+
+\subsubsection{Auxiliary Lemmas/Calculations for Sub-Gaussianity}
+
+\begin{lemma}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss function defined in \eqref{eq:loss_function_i}. Consider two different policy $\theta,\theta^\prime$, then the difference of the loss function have the following bounds:
+    \begin{align}
+        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\leq C\delta_n^{-1}\|\theta-\theta^\prime\|.\label{eq:L_i_diff}
+    \end{align}
+The difference of the conditional expectation of the derivative of the loss function with respect to the response have the following bound:
+       \begin{align}
+        \sup_{y,a,u,x}\left|\partial_y \E[L^{(\delta_n)}_i(\theta,\psi,f,p)|U,X] - \partial_y\E[L^{(\delta_n)}_i(\theta^\prime,\psi,f,p)|U,X]\right|\leq C\|\theta-\theta^\prime\| \label{eq:L_i_derivative_Y_diff}
+    \end{align}
+The difference of the derivative of the loss function with respect to the estimated latent Gaussian process have the following bound:
+    \begin{align}
+        \sup_{y,a,u,x}\left|\partial_u L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - \partial_uL^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\leq C\delta_n^{-1}\|\theta-\theta^\prime\| \label{eq:L_i_derivative_Y_diff}
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    
+\end{proof}
+
+
 
 \subsection{Auxiliary Lemmas}
 
@@ -1866,7 +1911,7 @@ $R_n^{({\delta_n})}(\theta;f,p,\psi)$ and $R^{({\delta_n})}(\theta;f,p,\psi)$
 denote the empirical risk and its expectation plugging-in nuisance parameters $f,p,\psi$, respectively. Suppose Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap} hold. Let $\mathcal{H}_{\gamma_n}$ be the RKHS over $(X_i,\widehat{U}(S_i))$ with Gaussian kernel. Let $B_{\mathcal{H}_{\gamma_n}}$ be a unit ball in $\mathcal{H}_{\gamma_n}$ with radius $\lambda_n^{-1/2}$. Let $\mathcal{C}_\theta$ be a minimal $\epsilon_\theta$-net of the function class $B_{\mathcal{H}_{\gamma_n}}$ with respect to the $L_\infty$ norm. Then, the following bound holds with probability no less than $1 - 32e^{-\tau}$:
 
 \begin{align*}
-&\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}},\psi\in\Psi,f\in\mathcal{F}_f,p\in\mathcal{F}_p}|R_n^{({\delta_n})}(h;\psi,f,p)-R^{({\delta_n})}(h;\psi,f,p)|\\
+&\sup_{\theta\in B_{\mathcal{H}_{\gamma_n}},\psi\in\Psi,f\in\mathcal{F}_f,p\in\mathcal{F}_p}|R_n^{({\delta_n})}(\theta;\psi,f,p)-R^{({\delta_n})}(\theta;\psi,f,p)|\\
 \leq & 
 \end{align*}
 
