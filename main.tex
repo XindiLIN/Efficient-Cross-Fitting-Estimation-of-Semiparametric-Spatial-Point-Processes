@@ -620,7 +620,7 @@ In our nitrate example, both the observed nitrate levels and the covariates \XL{
 
 
 \subsection{Support Vector Machines Under Spatial Dependence} \label{subsec:SVM}
-In this paper, we consider an SVM approach to solve for $\theta^*$, which was shown to be a solution to a risk minimization problem in Lemma \ref{lemma:risk_db}. Consider a Gaussian kernel  $\mathcal{K}[(x,u),(x^{'},u^{'})] = \exp\left\{(\|x-x^\prime\|_2^2 + \|u - u^\prime\|_2^2)/\gamma_n\right\}$ with bandwidth $\gamma_n$. Let $\mathcal{H}_\mathcal{K}$ denote the corresponding reproducing kernel Hilbert space (RKHS). The representer theorem \citep{KW1970,SHS2001} states that the estimated policy can be written as $\widetilde\theta(x,u) = \sum_{j=1}^n \widehat\eta_j\mathcal{K}[(x,u),(x_j,u_j)]+\widehat b$ where $\widehat\eta_j$ and $\widehat b$ are solutions to the following optimization problem:
+In this paper, we consider an SVM approach to solve for $\theta^*$, which was shown to be a solution to a risk minimization problem in Lemma \ref{lemma:risk_db}. Consider a Gaussian kernel  $\mathcal{K}[(x,u),(x^{'},u^{'})] = \exp\left\{(\|x-x^\prime\|_2^2 + \|u - u^\prime\|_2^2)/\gamma_n^2\right\}$ with bandwidth $\gamma_n$. Let $\mathcal{H}_\mathcal{K}$ denote the corresponding reproducing kernel Hilbert space (RKHS). The representer theorem \citep{KW1970,SHS2001} states that the estimated policy can be written as $\widetilde\theta(x,u) = \sum_{j=1}^n \widehat\eta_j\mathcal{K}[(x,u),(x_j,u_j)]+\widehat b$ where $\widehat\eta_j$ and $\widehat b$ are solutions to the following optimization problem:
 \begin{align}
     \widetilde\theta = & \arg\min_{\theta\in\mathcal{H}_\mathcal{K}}\left\{\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(\theta(X_i,\widehat U(S_i)),O_i)+\lambda_n\|\theta\|^2_{\mathcal{H}_\mathcal{K}}\right\} \nonumber\\
     =& \arg\min_{\eta,b}\left\{\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(k_i^\top\eta+b,O_i)+\frac{\lambda_n}{2}\eta^\top K\eta\right\}. \label{eq:objective function} 
@@ -2797,31 +2797,62 @@ $$\|\tilde\theta\|_{\mathcal{H}}=O(\sqrt{1/\lambda_n}) $$
 The objective value of $\tilde\theta$ must be less than or equal to the objective value of the zero function $\theta = 0$:
 $$\frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(\tilde\theta(X_i,\widehat U(S_i)),O_i)+\lambda_n\|\tilde\theta\|^2_{\mathcal{H}_\mathcal{K}}\leq \frac{1}{n}\sum_{i=1}^n \widehat L^{({\delta_n})}(0,O_i)+\lambda_n\|0\|^2_{\mathcal{H}_\mathcal{K}}$$
 By Assumption \ref{condition:excess_risk:smooth} and \ref{condition:overlap}, and the fact that the integral of scaled kernel function is bounded. The loss function defined as \eqref{eq:loss_function_complete} is positive and upper bounded. Thus, $\|\tilde\theta\|_{\mathcal{H}_\mathcal{K}}= O(\sqrt{1/\lambda_n})$.
+
 \end{proof}
 
-\begin{lemma}[Derivative of SVM]\label{lemma:derivative_svm}
-Let $\mathcal{H}$ be the RKHS over $\R^{d+1}$ using Gaussian kernel with bandwidth $\gamma_n$, i.e., $K(x,y) = \exp(-\|x-y\|_2^2/\gamma_n)$. Then,
-$$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}}/\gamma$$
-$$\|\nabla_x f(x)\| \leq  \sqrt{d}\|f\|_{\mathcal{H}}/\gamma.$$
-    
+\begin{lemma}[Upper Bound of Derivative of SVM]\label{lemma:derivative_svm}
+Let $\mathcal{H}$ be the RKHS over $\R^{d}$ using Gaussian kernel with bandwidth $\gamma_n$, i.e., $K(x,y) = \exp(-\|x-y\|_2^2/\gamma^2)$. Then, for any $f\in\mathcal{H},$
+% $$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}}/\gamma$$
+$$\|\nabla f(x)\|_2 \leq  \sqrt{2}\gamma^{-1} \|f\|_{\mathcal{H}}.$$
+$$\|\nabla^2 f(x)\|_2 \leq  2\sqrt{3}\gamma^{-2} \|f\|_{\mathcal{H}}.$$
+Here, $\|\cdot\|_2$ is the $L_2$-norm of the vector, and spectral norm of the matrix.
 \end{lemma}
+\begin{proof}\textbf{Bounding Derivative:}
+The $L_2$-norm of the derivative of the function  $f$ can be written as: 
+    $$\|\nabla f(x)\|_2 = \sup_{\|u\|_2=1} u^\top \nabla f(x).$$
+By Riesz representation theorem, the function value any $f(\cdot)\in \mathcal{H}$ at any point $x$ is given by the inner product:$$f(x) = \langle f(\cdot), K(x, \cdot) \rangle_{\mathcal{H}}.$$
+The operator of inner-product and the operator of derivative and vector multiplication are inter-changeable. Then, we have
+$$u^\top \nabla f(x) = \left\langle f(\cdot), u^\top \nabla K(x, \cdot) \right\rangle_{\mathcal{H}}.$$
+Applying Cauchy-Schwartz inequality to this inner-product:
+$$\left|u^\top \nabla f(x)\right| \leq \|f\|_{\mathcal{H}} \cdot \left\| u^\top \nabla K(x, \cdot)\right\|_{\mathcal{H}}.$$
+The RKHS norm of the directional derivative of the kernel function can be further expressed as
+\begin{align*}
+    \left\| u^\top \nabla K(x, \cdot)\right\|^2_{\mathcal{H}}=& \left\langle u^\top \nabla K(x, \cdot), u^\top \nabla K(x, \cdot) \right\rangle_{\mathcal{H}}\\
+    =& u^\top \nabla\left\langle  K(x, \cdot),  K(x, \cdot) \right\rangle_{\mathcal{H}}(u^\top \nabla)^\top\\
+    = & u^\top\nabla_x \nabla_yK(x,y)|_{y=x}u\\
+    = & u^\top\left\{\exp(-\|x-y\|_2^2/\gamma^2)\left(\gamma^{-4}4(x-y)(x-y)^\top +2\gamma^{-2}I_n\right)\right\}\big|_{y=x}u\\
+    = & 2\gamma^{-2}\|u\|_2^2
+\end{align*}
+The second equality follows from the inter-change between inner-product and derivative and vector multiplication. The third inequality follows from Riesz representation theorem. Then, we have
+\begin{align*}
+    \|\nabla f(x)\|_2 = & \sup_{\|u\|_2=1} u^\top \nabla f(x)\\
+    \leq  & \sup_{\|u\|_2=1}\|f\|_{\mathcal{H}}\sqrt{2}\gamma^{-1}\|u\|_2\\
+    = &\sqrt{2}\gamma^{-1} \|f\|_{\mathcal{H}}
+\end{align*}
+\textbf{Bounding Hessian Matrix:} The spectral norm of the Hessian matrix of the function $f$ can be written as: 
+    $$\|\nabla^2 f(x)\|_2 = \sup_{\|u\|_2=1} |u^\top \nabla^2 f(x) u|.$$
+By Riesz representation theorem, the function value any $f(\cdot)\in \mathcal{H}$ at any point $x$ is given by the inner product:$$f(x) = \langle f(\cdot), K(x, \cdot) \rangle_{\mathcal{H}}.$$
+The operator of inner-product and the operator of derivative and vector multiplication are inter-changeable. Then, we have
+$$u^\top \nabla^2 f(x) u = \left\langle f(\cdot), u^\top \nabla^2 K(x, \cdot) u \right\rangle_{\mathcal{H}}.$$
+Applying Cauchy-Schwartz inequality to this inner-product:
+$$\left|u^\top \nabla f(x)\right| \leq \|f\|_{\mathcal{H}} \cdot \left\| u^\top \nabla^2 K(x, \cdot) u\right\|_{\mathcal{H}}.$$
+The RKHS norm of the directional derivative of the kernel function can be further expressed as
+\begin{align*}
+    \left\| u^\top \nabla^2 K(x, \cdot)u\right\|^2_{\mathcal{H}}=& \left\langle u^\top \nabla^2 K(x, \cdot)u, u^\top \nabla^2 K(x, \cdot)u \right\rangle_{\mathcal{H}}\\
+    =& u^\top \nabla\left\langle  K(x, \cdot),  K(x, \cdot) \right\rangle_{\mathcal{H}}(u^\top \nabla)^\top\\
+    = & u^\top\nabla_y^2\left\{u^\top\nabla_x^2 K(x,y) u\right\}|_{y=x} u\\
+    = & 12\gamma^{-4}\|u\|_2^4
+\end{align*}
+The second equality follows from the inter-change between inner-product and derivative and vector multiplication. The third inequality follows from Riesz representation theorem. Then, we have
+\begin{align*}
+    \|\nabla^2 f(x)\|_2 = &\sup_{\|u\|_2=1} |u^\top \nabla^2 f(x) u|\\
+    \leq  & \sup_{\|u\|_2=1}\|f\|_{\mathcal{H}}2\sqrt{3}\gamma^{-2}\|u\|_2^2\\
+    = &2\sqrt{3}\gamma^{-2} \|f\|_{\mathcal{H}}
+\end{align*}
 
-\begin{proof}
-    In an RKHS, the function value any $f(\cdot)\in \mathcal{H}$ at any point $x$ is given by the inner product:$$f(x) = \langle f, K(x, \cdot) \rangle_{\mathcal{H}}.$$ 
-    Since the kernel $K$ is continuously differentiable, the differentiation operator is a bounded linear functional. Therefore, the partial derivative with respect to the $j$-th component of $x$ (denoted $x_j$) can be written as:$$\frac{\partial}{\partial x_j} f(x) = \frac{\partial}{\partial x_j} \langle f, K(x, \cdot) \rangle_{\mathcal{H}} = \langle f, \frac{\partial}{\partial x_j} K(x, \cdot) \rangle_{\mathcal{H}}.$$
-    Applying the Cauchy-Schwarz inequality to this inner product:$$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}} \cdot \left\| \frac{\partial}{\partial x_j} K(x, \cdot) \right\|_{\mathcal{H}}$$
-    Using the property that $\langle \frac{\partial}{\partial x_j} K(x, \cdot), \frac{\partial}{\partial y_j} K(y, \cdot) \rangle_{\mathcal{H}} = \frac{\partial^2}{\partial x_j \partial y_j} K(x, y)$, we find:$$\left\| \frac{\partial}{\partial x_j} K(x, \cdot) \right\|_{\mathcal{H}}^2 = \left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}.$$ 
-    For a Gaussian kernel $K(x,y) = \exp(-\|x-y\|_2^2/\gamma_n)$,
-    $$\left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}  = \left.\left[ \frac{2}{\gamma^2} - \frac{4(x_j - y_j)^2}{\gamma^2} \right] K(x, y) \right|_{y=x} =  2/\gamma^2.$$
-    Thus, the partial derivative of $f$ satisfies
-    $$\left| \frac{\partial}{\partial x_j} f(x) \right| \leq \|f\|_{\mathcal{H}} \cdot \sqrt{\left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}} = \sqrt{2}\|f\|_{\mathcal{H}}/\gamma$$
-    Summing over all dimensions $j=1, \dots, d$ to get the Euclidean norm of the gradient $\nabla_x f(x)$:$$\|\nabla_x f(x)\| \leq \|f\|_{\mathcal{H}} \cdot \sqrt{\sum_{j=1}^d \left. \frac{\partial^2}{\partial x_j \partial y_j} K(x, y) \right|_{y=x}} = \sqrt{2d}\|f\|_{\mathcal{H}}/\gamma.$$
-    
-    
-    
-    % If we set $f(\cdot) = \frac{\partial}, {\partial y_j} K(y, \cdot)$, we can get$$\frac{\partial}{\partial x_j} \left[ \frac{\partial}{\partial y_j} K(y, x) \right] = \left\langle \frac{\partial}{\partial y_j} K(y, \cdot), \frac{\partial}{\partial x_j} K(x, \cdot) \right\rangle_{\mathcal{H}}$$
-    
+
 \end{proof}
+
 
 % \begin{proof}
 %     To derive the Lipschitz norm, we need to bound the derivative $\nabla_u\theta(x,u)$. In the RKHS $\mathcal{H}_{\gamma_n}$, the value of $\theta(x,u)$ is given by the inner product
