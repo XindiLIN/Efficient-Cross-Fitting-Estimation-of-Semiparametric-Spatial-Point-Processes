@@ -1982,7 +1982,7 @@ where $C:=C^\prime(1+\kappa/c^\prime)$ is a generic constant, and the last inequ
 \end{lemma}
 
 \begin{proof}
-Substituting \eqref{eq:loss_function_i} and keeping $\theta$ fixed, the difference telescopes in $f$:
+Substituting \eqref{eq:loss_function_i}, the difference telescopes in $f$:
 \begin{align*}
     &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\\
     =\;&\underbrace{\int_{a_L}^{\theta(x,u)}\bigl(f^\prime(a^\prime,x)-f(a^\prime,x)\bigr)\mathrm{d}a^\prime}_{\mathrm{Term\;(I)}}
@@ -1991,12 +1991,12 @@ Substituting \eqref{eq:loss_function_i} and keeping $\theta$ fixed, the differen
 Note that $\mathcal{T}$ and $u$ are unaffected by the change from $f$ to $f^\prime$.
 
 \noindent\textit{Bound on Term (I).}
-Since $|\theta(x,u)-a_L|$ is uniformly bounded by $C^\prime$ (Assumption~\ref{condition:excess_risk:smooth}),
+Since $|\theta(x,u)-a_L|$ is uniformly bounded by $|\mathcal{A}|$,
 \begin{align*}
     |\mathrm{Term\;(I)}|
     \leq \int_{a_L}^{\theta(x,u)}\bigl|f(a^\prime,x)-f^\prime(a^\prime,x)\bigr|\,\mathrm{d}a^\prime
     \leq |\theta(x,u)-a_L|\cdot\|f-f^\prime\|_\infty
-    \leq C^\prime\|f-f^\prime\|_\infty.
+    \leq |\mathcal{A}|\|f-f^\prime\|_\infty.
 \end{align*}
 
 \noindent\textit{Bound on Term (II).}
@@ -2014,7 +2014,7 @@ Adding the two bounds and taking the supremum over $(y,a,u,x)$,
     \leq \left(C^\prime + \frac{1}{c^\prime}\right)\|f-f^\prime\|_\infty
     =: C\|f-f^\prime\|_\infty,
 \end{align*}
-where $C:=C^\prime+1/c^\prime$ is a generic constant.
+where $C:= |\mathcal{A}|+1/c^\prime$ is a generic constant.
 \end{proof}
 
 \begin{lemma}\label{lemma:L_i_derivative_Y_diff}
