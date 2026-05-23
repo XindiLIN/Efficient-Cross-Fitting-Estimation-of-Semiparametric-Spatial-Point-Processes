@@ -2051,26 +2051,46 @@ where $C = C_1+C_2+C_3$.  Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_
 \end{proof}
     
 
-\noindent\textbf{Bound of Conditional Expectation of Kernel}\label{bound_kernel_exp}
+\begin{lemma}[Bound on Conditional Kernel Expectation]\label{lemma:kernel_exp_bound}
+Let $\theta\in\mathcal{H}_\mathcal{K}$ and let $p(a|X_i,\widehat{U}(S_i))$ denote the conditional density of $A_i$ given $(X_i,\widehat{U}(S_i))$. Under Assumption~\ref{condition:excess_risk:overlap}, there exists a constant $C'>0$ such that
+$$\E\!\left[K_{\delta_n}\!\left(A_i - \theta(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right] \leq C'.$$
+\end{lemma}
 
+\begin{proof}
+Conditioning on $(U,X)$, the policy evaluation $\theta(X_i,\widehat{U}(S_i))$ is stochastic through $\widehat{U}(S_i)$, which depends on $\tilde\varepsilon_i := \sum_{j\neq i}\alpha_{ij}\varepsilon_j$ via \eqref{eq:widehat_U_i}.  The treatment $A_i$ depends on $\xi_i$, and $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ conditionally on $(U,X)$ by the data-generating model \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}.  Hence $A_i$ and $\theta(X_i,\widehat{U}(S_i))$ are conditionally independent given $(U,X)$.
 
-\noindent Conditioning on $U,X$, $A_i$ depends on the randomness of $\xi_i$ while $h_i$, i.e., $h(X_i,\widehat U(S_i))$ depends on the randomness of $\sum_{j\neq i}\alpha_{i,j}\epsilon_j$. Thus, $A_i$ and $h_i$ are conditionally independent. Let $p_{\tilde \epsilon}(\cdot)$ and $p_A(\cdot)$ be density function of $\tilde\epsilon_i:=\sum_{j\neq i}\alpha_{i,j}\epsilon_j$ and $A_i$ given $X,U$. We also denote $h(\tilde\epsilon_i):=h_i$,
-Then, we have
+Let $p_{\tilde\varepsilon}(\cdot)$ denote the density of $\tilde\varepsilon_i$ given $(U,X)$, and let $p_A(a) := p(a|X_i,\widehat{U}(S_i))$.  By the conditional independence and Fubini's theorem,
 \begin{align*}
-    &\E\left[K_{\delta_n}(A_i-h_i)\bigg|U,X\right]\\
-    = &\int_\R\left\{\int_{\mathcal{A}}\delta_n^{-1}K((a-h(\tilde\epsilon))/\delta_n)p_A(a)\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon \\
-    = &\int_\R\left\{\int_{\mathcal{A}}K(u)p_A(\delta_n u +h(\tilde\epsilon))\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon \\
-    \leq & \sup|p_A(a)| \int_\R\left\{\int_{\mathcal{A}}K(u)\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon\\
-    = & \sup|p_A(a)|  = C^\prime
+&\E\!\left[K_{\delta_n}\!\left(A_i-\theta(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right]\\
+= \;&\int_{\R}\left\{\int_{\mathcal{A}}\delta_n^{-1}K\!\left(\frac{a-\theta(X_i,\widehat{U}(S_i))}{\delta_n}\right)p_A(a)\,\mathrm{d}a\right\}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon.
 \end{align*}
-
-Also, the difference of the expectation of the kernel function:
+Substituting $v = (a - \theta(X_i,\widehat{U}(S_i)))/\delta_n$ in the inner integral,
 \begin{align*}
-    &\E\left[K_{\delta_n}(A_i-h_i)-K_{\delta_n}(A_i-h^\prime_i)\bigg|U,X\right]\\
-    = &\int_\R\left\{\int_{\mathcal{A}}K(u)\left[p_A(\delta_n u +h(\tilde\epsilon))-p_A(\delta_n u +h^\prime(\tilde\epsilon))\right]\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon \\
-    \leq & \sup|\partial_a p_A(a)|\cdot\|h-h^\prime\|_\infty \int_\R\left\{\int_{\mathcal{A}}K(u)\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon\\
-    = &  C^\prime \|h-h^\prime\|_\infty
+= \;&\int_{\R}\left\{\int_{\mathcal{A}}K(v)\,p_A\!\left(\theta(X_i,\widehat{U}(S_i))+\delta_n v\right)\mathrm{d}v\right\}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon\\
+\leq \;&\sup_{a}p_A(a)\int_{\R}\left\{\int_{\mathcal{A}}K(v)\,\mathrm{d}v\right\}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon
+= \sup_{a}p_A(a) =: C',
 \end{align*}
+where the last equality uses $\int K(v)\,\mathrm{d}v=1$ and $\int p_{\tilde\varepsilon}\,\mathrm{d}\tilde\varepsilon=1$, and $C'$ is finite by the bounded density assumption (Assumption~\ref{condition:excess_risk:overlap}).
+\end{proof}
+
+\begin{lemma}[Bound on Conditional Kernel Difference Expectation]\label{lemma:kernel_exp_diff}
+Let $\theta,\theta'\in\mathcal{H}_\mathcal{K}$.  Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, there exists a constant $C'>0$ such that
+$$\left|\E\!\left[K_{\delta_n}\!\left(A_i-\theta(X_i,\widehat{U}(S_i))\right) - K_{\delta_n}\!\left(A_i-\theta'(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right]\right| \leq C'\|\theta-\theta'\|_\infty.$$
+\end{lemma}
+
+\begin{proof}
+By the same conditional independence argument as in Lemma~\ref{lemma:kernel_exp_bound}, $A_i$ and $(\theta(X_i,\widehat{U}(S_i)),\theta'(X_i,\widehat{U}(S_i)))$ are jointly conditionally independent of $A_i$ given $(U,X)$.  Applying Fubini and the substitution $v=(a-\theta(X_i,\widehat{U}(S_i)))/\delta_n$ in the first kernel and $v=(a-\theta'(X_i,\widehat{U}(S_i)))/\delta_n$ in the second,
+\begin{align*}
+&\E\!\left[K_{\delta_n}\!\left(A_i-\theta(X_i,\widehat{U}(S_i))\right) - K_{\delta_n}\!\left(A_i-\theta'(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right]\\
+= \;&\int_{\R}\left\{\int_{\mathcal{A}}K(v)\!\left[p_A\!\left(\theta(X_i,\widehat{U}(S_i))+\delta_n v\right) - p_A\!\left(\theta'(X_i,\widehat{U}(S_i))+\delta_n v\right)\right]\mathrm{d}v\right\}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon.
+\end{align*}
+By the mean-value theorem, $|p_A(\theta+\delta_n v) - p_A(\theta'+\delta_n v)|\leq \sup_a|\partial_a p_A(a)|\cdot|\theta(X_i,\widehat{U}(S_i))-\theta'(X_i,\widehat{U}(S_i))|$.  Therefore,
+\begin{align*}
+&\left|\E\!\left[K_{\delta_n}(A_i-\theta(X_i,\widehat{U}(S_i))) - K_{\delta_n}(A_i-\theta'(X_i,\widehat{U}(S_i)))\bigg|U,X\right]\right|\\
+\leq\;& \sup_a|\partial_a p_A(a)|\cdot\|\theta-\theta'\|_\infty \int_{\R}\left\{\int_{\mathcal{A}}K(v)\,\mathrm{d}v\right\}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon = C'\|\theta-\theta'\|_\infty,
+\end{align*}
+where $C' := \sup_a|\partial_a p_A(a)|$ is finite by Assumption~\ref{condition:excess_risk:smooth}.
+\end{proof}
 
 
 \subsection{Auxiliary Lemmas}
