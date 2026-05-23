@@ -1976,6 +1976,11 @@ Crucially, the $\delta_n^{-1}$ factor inside $K_{\delta_n}$ is absorbed by the w
     = &\E\!\left[|\theta(X_i,\widehat U(S_i))-\theta^\prime(X_i,\widehat U(S_i))|\,\big|\,U,X\right]
     \leq \|\theta-\theta^\prime\|_\infty.
 \end{align*}
+Thus, we have 
+\begin{align}
+&\E\!\left[\int_{\theta^\prime(X_i,\widehat U(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]
+    =\;& C^\prime \|\theta-\theta^\prime\|_\infty\label{eq:kernel_int_diff_exp}
+\end{align}
 
 \noindent\textit{Step 4: Combine and take the supremum.}
 
@@ -2028,17 +2033,15 @@ $$|\mathrm{Term\ (I)}| \leq C'\cdot c\,\gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\the
 
 \noindent\textbf{Bounding Terms (II)--(IV) after taking conditional expectation.}
 For Term (II), decompose the kernel-boundary contribution as
-$$K_{\delta_n}(A_i-\theta)\partial_u\theta - K_{\delta_n}(A_i-\theta')\partial_u\theta' = K_{\delta_n}(A_i-\theta)\underbrace{(\partial_u\theta-\partial_u\theta')}_{\text{use \eqref{eq:LK_derivative}}} + \underbrace{(K_{\delta_n}(A_i-\theta)-K_{\delta_n}(A_i-\theta'))}_{\leq\,L_K\|\theta-\theta'\|_\infty/\delta_n^2}\partial_u\theta'.$$
+$$K_{\delta_n}(A_i-\theta)\partial_u\theta - K_{\delta_n}(A_i-\theta')\partial_u\theta' = \underbrace{K_{\delta_n}(A_i-\theta)}_{\text{use Lemma \ref{lemma:kernel_exp_bound}}}\underbrace{(\partial_u\theta-\partial_u\theta')}_{\text{use \eqref{eq:LK_derivative}}} + \underbrace{(K_{\delta_n}(A_i-\theta)-K_{\delta_n}(A_i-\theta'))}_{\text{use Lemma \ref{lemma:kernel_exp_diff}}}\partial_u\theta'.$$
 After taking $\E[\,\cdot\,|U,X]$, the first part gives:
 \begin{align*}
 &\E\left[K_{\delta_n}(A_i-\theta)(\partial_u\theta-\partial_u\theta')|U,X\right]\\
 = & \sup\left|(\partial_u\theta-\partial_u\theta')\right| \E\left[K_{\delta_n}(A_i-\theta)|U,X\right]\\
 \leq & C'\cdot c\,\gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}
 \end{align*}
-by the conditional independence  $(X_i,\widehat U(S_i))\perp A_i|X,U$
-
-(using $\E[K_{\delta_n}(A_i-\theta)|U,X]\leq C'$ since $\int K_{\delta_n}\,\mathrm{d}t=1$ and the density of $A_i$ is bounded).  The second part gives $(L_K\|\theta-\theta'\|_\infty/\delta_n^2)\cdot C/(\gamma_n\sqrt{\lambda_n})$, which is lower order.  Hence
-$$\left|\E[\mathrm{Term\ (II)}|U,X]\right| \leq C_2\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.$$
+by Lemma \ref{lemma:kernel_exp_bound} and equation \eqref{eq:LK_derivative}. The second part gives $(C^\prime\|\theta-\theta'\|_\infty)/(\gamma_n\sqrt{\lambda_n})$, which is lower order.  Hence
+$$\left|\E[\mathrm{Term\ (II)}|U,X]\right| \leq C_2\,\gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}+(C^\prime\|\theta-\theta'\|_\infty)/(\gamma_n\sqrt{\lambda_n}).$$
 For Terms (III) and (IV), $\int_{a_L}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta'}K_{\delta_n}(A_i-a)\,\mathrm{d}a = \int_{\theta'}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a$.  By conditional independence and Fubini,
 $$\E\!\left[\int_{\theta'(X_i,u)}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C'\|\theta-\theta'\|_\infty.$$
 Using $|\partial_u p|\leq C'$ and $p\geq c'$ (Assumption~\ref{condition:excess_risk:smooth}), the linear factor $\|\theta-\theta'\|_\infty \leq \|\theta-\theta'\|_\infty^{1/2}$ (on the bounded ball), so
