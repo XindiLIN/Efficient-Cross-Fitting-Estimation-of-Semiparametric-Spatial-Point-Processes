@@ -2095,6 +2095,48 @@ By the mean-value theorem, $|p_A(\theta+\delta_n v) - p_A(\theta'+\delta_n v)|\l
 where $C' := \sup_a|\partial_a p_A(a)|$ is finite by Assumption~\ref{condition:excess_risk:smooth}.
 \end{proof}
 
+\begin{lemma}[Bound on Conditional Kernel Integral Expectation]\label{lemma:kernel_int_exp_bound}
+Let $\theta,\theta'\in\mathcal{H}_\mathcal{K}$.  Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, there exists a constant $C'>0$ such that
+$$\E\!\left[\int_{\theta'(X_i,\widehat{U}(S_i))}^{\theta(X_i,\widehat{U}(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right] \leq C'\|\theta-\theta'\|_\infty.$$
+\end{lemma}
+
+\begin{proof}
+\noindent\textit{Step 1: Conditional independence of $A_i$ and the integration limits.}
+
+The integration limits $\theta(X_i,\widehat{U}(S_i))$ and $\theta'(X_i,\widehat{U}(S_i))$ are stochastic: from \eqref{eq:widehat_U_i}, $\widehat{U}(S_i)$ depends on the outcome noise $\{\varepsilon_j\}_{j\neq i}$, while $A_i = g(X_i,U(S_i))+\xi_i$ depends on the treatment noise $\xi_i$.  Since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ conditional on $(U,X)$ by the data-generating model \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}, the integration limits and $A_i$ are \emph{conditionally independent} given $(U,X)$.
+
+\noindent\textit{Step 2: Rewrite the integral as an indicator and apply Fubini.}
+
+Writing the integral as an indicator function over $a$ and applying Fubini's theorem to swap the integral over $a$ with the expectation over $A_i$ and $\widehat{U}(S_i)$:
+\begin{align*}
+&\E\!\left[\int_{\theta'(X_i,\widehat{U}(S_i))}^{\theta(X_i,\widehat{U}(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]\\
+=\;&\int_{\R}\E\!\left[K_{\delta_n}(A_i-a)\cdot\mathbf{1}\!\left(\theta'(X_i,\widehat{U}(S_i))\leq a\leq\theta(X_i,\widehat{U}(S_i))\right)\Big|\,U,X\right]\mathrm{d}a\\
+=\;&\int_{\R}\E\!\left[K_{\delta_n}(A_i-a)\,\big|\,U,X\right]\cdot\E\!\left[\mathbf{1}\!\left(\theta'(X_i,\widehat{U}(S_i))\leq a\leq\theta(X_i,\widehat{U}(S_i))\right)\Big|\,U,X\right]\mathrm{d}a,
+\end{align*}
+where the last equality uses the conditional independence of $A_i$ and the limits given $(U,X)$.
+
+\noindent\textit{Step 3: Bound the two conditional expectations separately.}
+
+For the kernel factor, by Assumption~\ref{condition:excess_risk:smooth} the conditional density $p^*(A_i|X_i,U(S_i))$ is bounded above by $C'$, and $K_{\delta_n}$ integrates to one:
+$$\sup_{a,u,x}\E\!\left[K_{\delta_n}(A_i-a)\,\big|\,U(S_i)=u,X_i=x\right] = \sup_{a,u,x}\int K_{\delta_n}(t-a)\,p^*(t|x,u)\,\mathrm{d}t \leq C'\int K_{\delta_n}(t)\,\mathrm{d}t = C'.$$
+Crucially, the $\delta_n^{-1}$ factor inside $K_{\delta_n}$ is absorbed by the width-$\delta_n$ support of the kernel, leaving an $O(1)$ bound independent of $\delta_n$.
+
+For the indicator factor, interchanging the integral over $a$ with the outer expectation:
+\begin{align*}
+\int_{\R}\E\!\left[\mathbf{1}\!\left(\theta'(X_i,\widehat{U}(S_i))\leq a\leq\theta(X_i,\widehat{U}(S_i))\right)\Big|\,U,X\right]\mathrm{d}a
+= \E\!\left[|\theta(X_i,\widehat{U}(S_i))-\theta'(X_i,\widehat{U}(S_i))|\,\big|\,U,X\right]
+\leq \|\theta-\theta'\|_\infty.
+\end{align*}
+
+\noindent\textit{Step 4: Combine.}
+
+Multiplying the two bounds and collecting constants,
+\begin{align}
+\E\!\left[\int_{\theta'(X_i,\widehat{U}(S_i))}^{\theta(X_i,\widehat{U}(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]
+\leq C'\|\theta-\theta'\|_\infty.\label{eq:kernel_int_diff_exp}
+\end{align}
+\end{proof}
+
 
 \subsection{Auxiliary Lemmas}
 
