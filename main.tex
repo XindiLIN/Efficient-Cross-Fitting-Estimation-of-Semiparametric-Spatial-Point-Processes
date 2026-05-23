@@ -2010,11 +2010,11 @@ Given $(U,X)$, the integration limits $\theta(X_i,\widehat{U}(S_i))$ and $\theta
 \noindent\textbf{Bounding $\|\partial_u(\theta-\theta')\|_\infty$ via Landau–Kolmogorov.}
 We cannot directly apply Lemma~\ref{lemma:derivative_svm} to $\theta-\theta'$ and call the result proportional to $\|\theta-\theta'\|_\infty$, since the RKHS norm of the difference is not in general controlled by the $L^\infty$ norm.  Instead, we use the Landau–Kolmogorov interpolation inequality:
 $$\|\partial_u(\theta-\theta')\|_\infty \leq \sqrt{2\,\|\partial^2_u(\theta-\theta')\|_\infty\cdot\|\theta-\theta'\|_\infty}.$$
-For the second derivative, applying Lemma~\ref{lemma:derivative_svm} to $\partial_u(\theta-\theta') \in \mathcal{H}_\mathcal{K}$ gives $\|\partial^2_u(\theta-\theta')\|_\infty \leq c\,\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}/\gamma_n$.  By Lemma~\ref{lemma:bound_svm}, $\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}} \leq \|\theta\|_{\mathcal{H}_\mathcal{K}}+\|\theta'\|_{\mathcal{H}_\mathcal{K}} = O(1/\sqrt{\lambda_n})$, so
-$$\|\partial^2_u(\theta-\theta')\|_\infty \leq \frac{c}{\gamma_n\sqrt{\lambda_n}}.$$
+For the second derivative, applying Lemma~\ref{lemma:derivative_svm} to $\partial_u(\theta-\theta') \in \mathcal{H}_\mathcal{K}$ gives $\|\partial^2_u(\theta-\theta')\|_\infty \leq c\,\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}}/\gamma_n^2$.  By Lemma~\ref{lemma:bound_svm}, $\|\theta-\theta'\|_{\mathcal{H}_\mathcal{K}} \leq \|\theta\|_{\mathcal{H}_\mathcal{K}}+\|\theta'\|_{\mathcal{H}_\mathcal{K}} = O(1/\sqrt{\lambda_n})$, so
+$$\|\partial^2_u(\theta-\theta')\|_\infty \leq \frac{c}{\gamma_n^2\sqrt{\lambda_n}}.$$
 Substituting back,
 \begin{equation}\label{eq:LK_derivative}
-\|\partial_u(\theta-\theta')\|_\infty \leq c\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.
+\|\partial_u(\theta-\theta')\|_\infty \leq c\,\gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.
 \end{equation}
 
 \noindent\textbf{Bounding Term (I).}
@@ -2024,13 +2024,20 @@ Adding and subtracting $(\mathcal{T}-f(\theta'(X_i,u),X_i)-u)\partial_u\theta(X_
 &+ \underbrace{\left|f(\theta(X_i,u),X_i) - f(\theta'(X_i,u),X_i)\right|}_{\leq\,C'\|\theta-\theta'\|_\infty}\cdot\underbrace{\left|\partial_u\theta'(X_i,u)\right|}_{\leq\,C/(\gamma_n\sqrt{\lambda_n})}.
 \end{align*}
 The first factor of the second sub-term uses Lipschitzness of $f$ (Assumption~\ref{condition:excess_risk:smooth}); the second factor uses Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}.  Applying \eqref{eq:LK_derivative} to the first sub-term,
-$$|\mathrm{Term\ (I)}| \leq C'\cdot c\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \frac{C'^2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|_\infty \leq C_1\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty},$$
-where the last step holds because $\|\theta-\theta'\|_\infty\leq 1$ (on a bounded RKHS ball) so the linear term is dominated by the square-root term up to constants.
+$$|\mathrm{Term\ (I)}| \leq C'\cdot c\,\gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \frac{C'^2}{\gamma_n\sqrt{\lambda_n}}\|\theta-\theta'\|_\infty.$$
 
 \noindent\textbf{Bounding Terms (II)--(IV) after taking conditional expectation.}
 For Term (II), decompose the kernel-boundary contribution as
 $$K_{\delta_n}(A_i-\theta)\partial_u\theta - K_{\delta_n}(A_i-\theta')\partial_u\theta' = K_{\delta_n}(A_i-\theta)\underbrace{(\partial_u\theta-\partial_u\theta')}_{\text{use \eqref{eq:LK_derivative}}} + \underbrace{(K_{\delta_n}(A_i-\theta)-K_{\delta_n}(A_i-\theta'))}_{\leq\,L_K\|\theta-\theta'\|_\infty/\delta_n^2}\partial_u\theta'.$$
-After taking $\E[\,\cdot\,|U,X]$, the first part gives $\E[K_{\delta_n}(A_i-\theta)|U,X]\cdot\|\partial_u(\theta-\theta')\|_\infty \leq C'\cdot c\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}$ (using $\E[K_{\delta_n}(A_i-\theta)|U,X]\leq C'$ since $\int K_{\delta_n}\,\mathrm{d}t=1$ and the density of $A_i$ is bounded).  The second part gives $(L_K\|\theta-\theta'\|_\infty/\delta_n^2)\cdot C/(\gamma_n\sqrt{\lambda_n})$, which is lower order.  Hence
+After taking $\E[\,\cdot\,|U,X]$, the first part gives:
+\begin{align*}
+&\E\left[K_{\delta_n}(A_i-\theta)(\partial_u\theta-\partial_u\theta')|U,X\right]\\
+= & \sup\left|(\partial_u\theta-\partial_u\theta')\right| \E\left[K_{\delta_n}(A_i-\theta)|U,X\right]\\
+\leq & C'\cdot c\,\gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}
+\end{align*}
+by the conditional independence  $(X_i,\widehat U(S_i))\perp A_i|X,U$
+
+(using $\E[K_{\delta_n}(A_i-\theta)|U,X]\leq C'$ since $\int K_{\delta_n}\,\mathrm{d}t=1$ and the density of $A_i$ is bounded).  The second part gives $(L_K\|\theta-\theta'\|_\infty/\delta_n^2)\cdot C/(\gamma_n\sqrt{\lambda_n})$, which is lower order.  Hence
 $$\left|\E[\mathrm{Term\ (II)}|U,X]\right| \leq C_2\,\gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty}.$$
 For Terms (III) and (IV), $\int_{a_L}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a - \int_{a_L}^{\theta'}K_{\delta_n}(A_i-a)\,\mathrm{d}a = \int_{\theta'}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a$.  By conditional independence and Fubini,
 $$\E\!\left[\int_{\theta'(X_i,u)}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C'\|\theta-\theta'\|_\infty.$$
@@ -2044,7 +2051,26 @@ where $C = C_1+C_2+C_3$.  Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_
 \end{proof}
     
 
+\noindent\textbf{Bound of Conditional Expectation of Kernel}\label{bound_kernel_exp}
 
+
+\noindent Conditioning on $U,X$, $A_i$ depends on the randomness of $\xi_i$ while $h_i$, i.e., $h(X_i,\widehat U(S_i))$ depends on the randomness of $\sum_{j\neq i}\alpha_{i,j}\epsilon_j$. Thus, $A_i$ and $h_i$ are conditionally independent. Let $p_{\tilde \epsilon}(\cdot)$ and $p_A(\cdot)$ be density function of $\tilde\epsilon_i:=\sum_{j\neq i}\alpha_{i,j}\epsilon_j$ and $A_i$ given $X,U$. We also denote $h(\tilde\epsilon_i):=h_i$,
+Then, we have
+\begin{align*}
+    &\E\left[K_{\delta_n}(A_i-h_i)\bigg|U,X\right]\\
+    = &\int_\R\left\{\int_{\mathcal{A}}\delta_n^{-1}K((a-h(\tilde\epsilon))/\delta_n)p_A(a)\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon \\
+    = &\int_\R\left\{\int_{\mathcal{A}}K(u)p_A(\delta_n u +h(\tilde\epsilon))\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon \\
+    \leq & \sup|p_A(a)| \int_\R\left\{\int_{\mathcal{A}}K(u)\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon\\
+    = & \sup|p_A(a)|  = C^\prime
+\end{align*}
+
+Also, the difference of the expectation of the kernel function:
+\begin{align*}
+    &\E\left[K_{\delta_n}(A_i-h_i)-K_{\delta_n}(A_i-h^\prime_i)\bigg|U,X\right]\\
+    = &\int_\R\left\{\int_{\mathcal{A}}K(u)\left[p_A(\delta_n u +h(\tilde\epsilon))-p_A(\delta_n u +h^\prime(\tilde\epsilon))\right]\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon \\
+    \leq & \sup|\partial_a p_A(a)|\cdot\|h-h^\prime\|_\infty \int_\R\left\{\int_{\mathcal{A}}K(u)\mathrm{d}a\right\} p_{\tilde \epsilon}(\tilde\epsilon)\mathrm{d}\tilde\epsilon\\
+    = &  C^\prime \|h-h^\prime\|_\infty
+\end{align*}
 
 
 \subsection{Auxiliary Lemmas}
