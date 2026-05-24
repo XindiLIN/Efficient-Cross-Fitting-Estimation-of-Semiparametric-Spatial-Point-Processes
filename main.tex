@@ -1937,7 +1937,7 @@ Specifically, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $\psi$, and $p\in\ma
     & - \frac{1}{n}\sum_{i=1}^n\frac{f^\prime(A_i,X_i)-f(A_i,X_i)}{p(A_{i}|X_{i},\widehat U(S_{i}))}  \int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\mathrm{d}a
 \end{align*}
 Note that $Y_i$ cancels exactly in this difference, so the direct influence of $\epsilon_i$ on the deviation process through $Y_i$ is zero.
-We use the conditional expectation to decompose the $\psi_2$-norm above into four terms, i.e., the randomness from $X_i,u(S_i),\xi_i$ and $\epsilon_i$ as in \eqref{ref:randomness_decomposition} and provide the upper bound of each term.
+We use the conditional expectation to decompose the $\psi_2$-norm above into four terms, i.e., the randomness from $X_i,U(S_i),\xi_i,\epsilon_i)$ and $\epsilon_i$ as in \eqref{ref:randomness_decomposition} and provide the upper bound of each term.
 
 \noindent\textbf{First Layer Randomness: $\epsilon$}
 
@@ -2052,6 +2052,7 @@ Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation
 
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
+\noindent\textbf{Lipschitz Property over $\theta$}
 \begin{lemma}\label{lemma:L_i_diff_theta}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, difference of the loss function have the following bounds:
     \begin{align*}
@@ -2094,6 +2095,8 @@ Adding the two bounds and taking the supremum over $(y,a,u,x)$:
 \end{align*}
 where $C:=C^\prime(1+\kappa/c^\prime)$ is a generic constant, and the last inequality absorbs the $\delta_n^0$ term in Term (I) since $\delta_n\leq 1$ implies $1\leq \delta_n^{-1}$.
 \end{proof}
+
+\noindent\textbf{Lipschitz Property over $f$}
 
 \begin{lemma}\label{lemma:L_i_diff_f}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $f,f^\prime\in\mathcal{F}_f$, the difference of the loss function satisfies
