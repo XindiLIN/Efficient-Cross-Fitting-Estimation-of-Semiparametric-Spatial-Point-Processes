@@ -2096,124 +2096,6 @@ Adding the two bounds and taking the supremum over $(y,a,u,x)$:
 where $C:=C^\prime(1+\kappa/c^\prime)$ is a generic constant, and the last inequality absorbs the $\delta_n^0$ term in Term (I) since $\delta_n\leq 1$ implies $1\leq \delta_n^{-1}$.
 \end{proof}
 
-\noindent\textbf{Lipschitz Property over $f$}
-
-\begin{lemma}\label{lemma:L_i_diff_f}
-    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $f,f^\prime\in\mathcal{F}_f$, the difference of the loss function satisfies
-    \begin{align*}
-        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right| \leq C\|f-f^\prime\|_\infty.
-    \end{align*}
-\end{lemma}
-
-\begin{proof}
-Substituting \eqref{eq:loss_function_i}, the difference telescopes in $f$:
-\begin{align*}
-    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\\
-    =\;&\underbrace{\int_{a_L}^{\theta(x,u)}\bigl(f^\prime(a^\prime,x)-f(a^\prime,x)\bigr)\mathrm{d}a^\prime}_{\mathrm{Term\;(I)}}
-    +\underbrace{\frac{f^\prime(a,x)-f(a,x)}{p(a|x,u)}\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(II)}}.
-\end{align*}
-Note that $\mathcal{T}$ and $u$ are unaffected by the change from $f$ to $f^\prime$.
-
-\noindent\textit{Bound on Term (I).}
-Since $|\theta(x,u)-a_L|$ is uniformly bounded by $|\mathcal{A}|$,
-\begin{align*}
-    |\mathrm{Term\;(I)}|
-    \leq \int_{a_L}^{\theta(x,u)}\bigl|f(a^\prime,x)-f^\prime(a^\prime,x)\bigr|\,\mathrm{d}a^\prime
-    \leq |\theta(x,u)-a_L|\cdot\|f-f^\prime\|_\infty
-    \leq |\mathcal{A}|\|f-f^\prime\|_\infty.
-\end{align*}
-
-\noindent\textit{Bound on Term (II).}
-By Assumption~\ref{condition:excess_risk:overlap}, $p(a|x,u)\geq c^\prime>0$, and since $K_{\delta_n}$ integrates to one, $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$. Therefore,
-\begin{align*}
-    |\mathrm{Term\;(II)}|
-    \leq \frac{|f(a,x)-f^\prime(a,x)|}{c^\prime}
-    \leq \frac{\|f-f^\prime\|_\infty}{c^\prime}.
-\end{align*}
-
-\noindent\textit{Combining.}
-Adding the two bounds and taking the supremum over $(y,a,u,x)$,
-\begin{align*}
-    \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|
-    \leq \left(C^\prime + \frac{1}{c^\prime}\right)\|f-f^\prime\|_\infty
-    =: C\|f-f^\prime\|_\infty,
-\end{align*}
-where $C:= |\mathcal{A}|+1/c^\prime$ is a generic constant.
-\end{proof}
-
-\begin{lemma}\label{lemma:L_i_diff_p}
-    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $p,p^\prime\in\mathcal{F}_p$, $f\in\mathcal{F}_f$, the difference of the loss function satisfies
-    \begin{align*}
-        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right| \leq C\|p-p^\prime\|_\infty.
-    \end{align*}
-\end{lemma}
-
-\begin{proof}
-Since $p$ appears only in the denominator of the IPW term in \eqref{eq:loss_function_i}, the first integral (which does not involve $p$) cancels exactly, leaving a single-term difference:
-\begin{align*}
-    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\\
-    =\;&\left(y-f(a,x)-u\right)\left[\frac{1}{p(a|x,u)}-\frac{1}{p^\prime(a|x,u)}\right]\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime.
-\end{align*}
-Writing the difference of reciprocals as $\frac{1}{p}-\frac{1}{p^\prime} = \frac{p^\prime-p}{p\cdot p^\prime}$ and bounding each factor pointwise: $|y-f(a,x)-u|\leq C^\prime$ by Assumption~\ref{condition:excess_risk:smooth}; $p,p^\prime\geq c^\prime>0$ by Assumption~\ref{condition:excess_risk:overlap}; and $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$, we obtain
-\begin{align*}
-    \left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
-    \leq \frac{C^\prime}{c^{\prime 2}}\left|p(a|x,u)-p^\prime(a|x,u)\right|
-    \leq \frac{C^\prime}{c^{\prime 2}}\|p-p^\prime\|_\infty.
-\end{align*}
-Taking the supremum over $(y,a,u,x)$ and setting $C:=C^\prime/c^{\prime 2}$ yields the stated bound.
-\end{proof}
-
-\begin{lemma}\label{lemma:L_i_diff_psi}
-    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
-    \begin{align*}
-        &\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
-        \leq &  C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
-    \end{align*}
-\end{lemma}
-
-\begin{proof}
-The proof proceeds in two steps.
-
-\noindent\textbf{Step 1: Lipschitz bound of the loss in $\widehat U(S_i)$.}
-
-From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. By Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, $\theta(X_i,\widehat U(S_i))$ is uniformly Lipschitz with $\widehat U(S_i)$ with constant $\gamma_n^{-1}\lambda_n^{-1/2}$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, other three terms are uniformly Lipschitz in $u$ with a constant $C$. Therefore, applying the mean value theorem,
-\begin{align*}
-    \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta,\psi,f,p) - L^{(\delta_n)}_i(\theta,\psi^\prime,f,p)\right|
-    \leq C\gamma_n^{-1}\lambda_n^{-1/2} \sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
-\end{align*}
-
-\noindent\textbf{Step 2: Bounding $\sup_i|\widehat U(S_i,\psi)-\widehat U(S_i,\psi^\prime)|$ by $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.}
-
-Let $\Lambda=\Lambda_n(\psi)$, $\Lambda^\prime=\Lambda_n(\psi^\prime)$, $\Lambda_{ii}=e_i^\top\Lambda e_i$, and $\widehat{R}=(\widehat R_1,\ldots,\widehat R_n)^\top$ with $\widehat R_j$ defined in \eqref{eq:widehat_U_i}. From the definition $\alpha_{ij}=-\Lambda_{ii}^{-1}\Lambda_{ij}$ and $\widehat U(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}\widehat R_j$, a direct computation gives
-$$\widehat U(S_i,\psi) = \widehat R_i - \frac{e_i^\top \Lambda\,\widehat{R}}{e_i^\top\Lambda e_i}.$$
-Hence the difference is
-\begin{align*}
-\Delta\widehat U_i := \widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)
-= \frac{e_i^\top\Lambda^\prime\widehat{R}}{\Lambda^\prime_{ii}} - \frac{e_i^\top\Lambda\widehat{R}}{\Lambda_{ii}}.
-\end{align*}
-Adding and subtracting the cross-term $e_i^\top\Lambda^\prime\widehat{R}/\Lambda_{ii}$ splits the perturbation into denominator and numerator parts:
-\begin{align*}
-\Delta\widehat U_i
-= \underbrace{(e_i^\top\Lambda^\prime\widehat{R})\cdot\frac{\Lambda_{ii}-\Lambda^\prime_{ii}}{\Lambda_{ii}\Lambda^\prime_{ii}}}_{\text{denominator perturbation}}
-+ \underbrace{\frac{e_i^\top(\Lambda^\prime-\Lambda)\widehat{R}}{\Lambda_{ii}}}_{\text{numerator perturbation}}.
-\end{align*}
-Taking absolute values and applying Cauchy--Schwarz ($|x^\top y|\leq\|x\|_2\|y\|_2$) and the operator norm bound ($\|Ax\|_2\leq\|A\|_{\mathrm{op}}\|x\|_2$):
-\begin{align*}
-|\Delta\widehat U_i|
-&\leq \|\Lambda^\prime\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2\cdot\frac{|\Lambda_{ii}-\Lambda^\prime_{ii}|}{\Lambda_{ii}\Lambda^\prime_{ii}}
-+ \frac{\|\Lambda^\prime-\Lambda\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2}{\Lambda_{ii}},
-\end{align*}
-where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to the $O(\log n)$ nonzero neighbours of $i$ in the Vecchia approximation \eqref{eq:vecchina_approximation_nonzero}, so $\|\widehat{R}_{N(i)}\|_2=O(\sqrt{\log n})$ is bounded. Since $|\Lambda_{ii}-\Lambda^\prime_{ii}|=|e_i^\top(\Lambda-\Lambda^\prime)e_i|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$, we factor:
-\begin{align*}
-|\Delta\widehat U_i|
-\leq \|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\,\|\widehat{R}_{N(i)}\|_2\left(\frac{\|\Lambda^\prime\|_{\mathrm{op}}}{\Lambda_{ii}\Lambda^\prime_{ii}}+\frac{1}{\Lambda_{ii}}\right)
-\leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
-\end{align*}
-where the last inequality absorbs $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
-$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
-Taking $\sup_i$ and combining with Step~1 yields the stated bound.
-\end{proof}
-
 \begin{lemma}\label{lemma:L_i_derivative_Y_diff}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, the difference of the conditional expectation of the derivative of the loss function with respect to the response have the following bound:
        \begin{align*}
@@ -2377,6 +2259,130 @@ Collecting the three bounds and noting that $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1
 $$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)\,\big|\,U,X\right]\right|
 \leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.$$
 Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
+\end{proof}
+
+
+
+\noindent\textbf{Lipschitz Property over $f$}
+
+\begin{lemma}\label{lemma:L_i_diff_f}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $f,f^\prime\in\mathcal{F}_f$, the difference of the loss function satisfies
+    \begin{align*}
+        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right| \leq C\|f-f^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Substituting \eqref{eq:loss_function_i}, the difference telescopes in $f$:
+\begin{align*}
+    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\\
+    =\;&\underbrace{\int_{a_L}^{\theta(x,u)}\bigl(f^\prime(a^\prime,x)-f(a^\prime,x)\bigr)\mathrm{d}a^\prime}_{\mathrm{Term\;(I)}}
+    +\underbrace{\frac{f^\prime(a,x)-f(a,x)}{p(a|x,u)}\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(II)}}.
+\end{align*}
+Note that $\mathcal{T}$ and $u$ are unaffected by the change from $f$ to $f^\prime$.
+
+\noindent\textit{Bound on Term (I).}
+Since $|\theta(x,u)-a_L|$ is uniformly bounded by $|\mathcal{A}|$,
+\begin{align*}
+    |\mathrm{Term\;(I)}|
+    \leq \int_{a_L}^{\theta(x,u)}\bigl|f(a^\prime,x)-f^\prime(a^\prime,x)\bigr|\,\mathrm{d}a^\prime
+    \leq |\theta(x,u)-a_L|\cdot\|f-f^\prime\|_\infty
+    \leq |\mathcal{A}|\|f-f^\prime\|_\infty.
+\end{align*}
+
+\noindent\textit{Bound on Term (II).}
+By Assumption~\ref{condition:excess_risk:overlap}, $p(a|x,u)\geq c^\prime>0$, and since $K_{\delta_n}$ integrates to one, $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$. Therefore,
+\begin{align*}
+    |\mathrm{Term\;(II)}|
+    \leq \frac{|f(a,x)-f^\prime(a,x)|}{c^\prime}
+    \leq \frac{\|f-f^\prime\|_\infty}{c^\prime}.
+\end{align*}
+
+\noindent\textit{Combining.}
+Adding the two bounds and taking the supremum over $(y,a,u,x)$,
+\begin{align*}
+    \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|
+    \leq \left(C^\prime + \frac{1}{c^\prime}\right)\|f-f^\prime\|_\infty
+    =: C\|f-f^\prime\|_\infty,
+\end{align*}
+where $C:= |\mathcal{A}|+1/c^\prime$ is a generic constant.
+\end{proof}
+
+\noindent\textbf{Lipschitz Property over $p$}
+
+\begin{lemma}\label{lemma:L_i_diff_p}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $p,p^\prime\in\mathcal{F}_p$, $f\in\mathcal{F}_f$, the difference of the loss function satisfies
+    \begin{align*}
+        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right| \leq C\|p-p^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Since $p$ appears only in the denominator of the IPW term in \eqref{eq:loss_function_i}, the first integral (which does not involve $p$) cancels exactly, leaving a single-term difference:
+\begin{align*}
+    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\\
+    =\;&\left(y-f(a,x)-u\right)\left[\frac{1}{p(a|x,u)}-\frac{1}{p^\prime(a|x,u)}\right]\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime.
+\end{align*}
+Writing the difference of reciprocals as $\frac{1}{p}-\frac{1}{p^\prime} = \frac{p^\prime-p}{p\cdot p^\prime}$ and bounding each factor pointwise: $|y-f(a,x)-u|\leq C^\prime$ by Assumption~\ref{condition:excess_risk:smooth}; $p,p^\prime\geq c^\prime>0$ by Assumption~\ref{condition:excess_risk:overlap}; and $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$, we obtain
+\begin{align*}
+    \left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+    \leq \frac{C^\prime}{c^{\prime 2}}\left|p(a|x,u)-p^\prime(a|x,u)\right|
+    \leq \frac{C^\prime}{c^{\prime 2}}\|p-p^\prime\|_\infty.
+\end{align*}
+Taking the supremum over $(y,a,u,x)$ and setting $C:=C^\prime/c^{\prime 2}$ yields the stated bound.
+\end{proof}
+
+\noindent\textbf{Lipschitz Property over $\psi$}
+
+\begin{lemma}\label{lemma:L_i_diff_psi}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
+    \begin{align*}
+        &\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
+        \leq &  C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+The proof proceeds in two steps.
+
+\noindent\textbf{Step 1: Lipschitz bound of the loss in $\widehat U(S_i)$.}
+
+From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. By Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, $\theta(X_i,\widehat U(S_i))$ is uniformly Lipschitz with $\widehat U(S_i)$ with constant $\gamma_n^{-1}\lambda_n^{-1/2}$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, other three terms are uniformly Lipschitz in $u$ with a constant $C$. Therefore, applying the mean value theorem,
+\begin{align*}
+    \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta,\psi,f,p) - L^{(\delta_n)}_i(\theta,\psi^\prime,f,p)\right|
+    \leq C\gamma_n^{-1}\lambda_n^{-1/2} \sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
+\end{align*}
+
+\noindent\textbf{Step 2: Bounding $\sup_i|\widehat U(S_i,\psi)-\widehat U(S_i,\psi^\prime)|$ by $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.}
+
+Let $\Lambda=\Lambda_n(\psi)$, $\Lambda^\prime=\Lambda_n(\psi^\prime)$, $\Lambda_{ii}=e_i^\top\Lambda e_i$, and $\widehat{R}=(\widehat R_1,\ldots,\widehat R_n)^\top$ with $\widehat R_j$ defined in \eqref{eq:widehat_U_i}. From the definition $\alpha_{ij}=-\Lambda_{ii}^{-1}\Lambda_{ij}$ and $\widehat U(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}\widehat R_j$, a direct computation gives
+$$\widehat U(S_i,\psi) = \widehat R_i - \frac{e_i^\top \Lambda\,\widehat{R}}{e_i^\top\Lambda e_i}.$$
+Hence the difference is
+\begin{align*}
+\Delta\widehat U_i := \widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)
+= \frac{e_i^\top\Lambda^\prime\widehat{R}}{\Lambda^\prime_{ii}} - \frac{e_i^\top\Lambda\widehat{R}}{\Lambda_{ii}}.
+\end{align*}
+Adding and subtracting the cross-term $e_i^\top\Lambda^\prime\widehat{R}/\Lambda_{ii}$ splits the perturbation into denominator and numerator parts:
+\begin{align*}
+\Delta\widehat U_i
+= \underbrace{(e_i^\top\Lambda^\prime\widehat{R})\cdot\frac{\Lambda_{ii}-\Lambda^\prime_{ii}}{\Lambda_{ii}\Lambda^\prime_{ii}}}_{\text{denominator perturbation}}
++ \underbrace{\frac{e_i^\top(\Lambda^\prime-\Lambda)\widehat{R}}{\Lambda_{ii}}}_{\text{numerator perturbation}}.
+\end{align*}
+Taking absolute values and applying Cauchy--Schwarz ($|x^\top y|\leq\|x\|_2\|y\|_2$) and the operator norm bound ($\|Ax\|_2\leq\|A\|_{\mathrm{op}}\|x\|_2$):
+\begin{align*}
+|\Delta\widehat U_i|
+&\leq \|\Lambda^\prime\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2\cdot\frac{|\Lambda_{ii}-\Lambda^\prime_{ii}|}{\Lambda_{ii}\Lambda^\prime_{ii}}
++ \frac{\|\Lambda^\prime-\Lambda\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2}{\Lambda_{ii}},
+\end{align*}
+where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to the $O(\log n)$ nonzero neighbours of $i$ in the Vecchia approximation \eqref{eq:vecchina_approximation_nonzero}, so $\|\widehat{R}_{N(i)}\|_2=O(\sqrt{\log n})$ is bounded. Since $|\Lambda_{ii}-\Lambda^\prime_{ii}|=|e_i^\top(\Lambda-\Lambda^\prime)e_i|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$, we factor:
+\begin{align*}
+|\Delta\widehat U_i|
+\leq \|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\,\|\widehat{R}_{N(i)}\|_2\left(\frac{\|\Lambda^\prime\|_{\mathrm{op}}}{\Lambda_{ii}\Lambda^\prime_{ii}}+\frac{1}{\Lambda_{ii}}\right)
+\leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
+\end{align*}
+where the last inequality absorbs $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
+$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
+Taking $\sup_i$ and combining with Step~1 yields the stated bound.
 \end{proof}
 
 
