@@ -2051,6 +2051,129 @@ The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the
 \end{align*}
 
 
+\subsubsection{Sub-Gaussianity over $p$}
+
+In this section, for any $p,p^\prime\in\mathcal{F}_{p}$, we provide the upper bound for
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}.$$
+Specifically, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $\psi$, and $f\in\mathcal{F}_f$,
+\begin{align*}
+    &R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\\
+    := & \frac{1}{n}\sum_{i=1}^n \left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right)
+    \\
+    = & \frac{1}{n}\sum_{i=1}^n \left(Y_i-f(A_i,X_i)-\widehat{U}(S_i)\right)\left[\frac{1}{p(A_i|X_i,\widehat{U}(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat{U}(S_i))}\right]\int_{a_L}^{\theta(X_i,\widehat{U}(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+\end{align*}
+Note that $Y_i$ does \emph{not} cancel in this difference; the residual $(Y_i-f(A_i,X_i)-\widehat{U}(S_i))$ is multiplied by the difference of reciprocal propensities.
+We use the conditional expectation to decompose the $\psi_2$-norm above into four terms, i.e., the randomness from $(X_i,U(S_i),\xi_i,\epsilon_i)$ as in \eqref{ref:randomness_decomposition} and provide the upper bound of each term.
+
+\noindent\textbf{First Layer Randomness: $\epsilon$}
+
+\noindent We first provide the upper bound of
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U,\xi\right]\right\|_{\psi_2}.$$
+We treat the empirical risk as a function of the outcome error vector $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$ and $(\epsilon_1, \ldots,\epsilon_i^\prime,\ldots, \epsilon_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\epsilon_i$ to $\epsilon_i^\prime$ affects the empirical risk through the observed outcome $Y_i$ and the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.
+
+Since $Y_i$ appears in $L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)$ through the residual factor, changing $\epsilon_i$ to $\epsilon_i^\prime$ (which changes $Y_i$ to $Y_i^\prime := Y_i - \epsilon_i + \epsilon_i^\prime$) has a direct nonzero effect on the deviation process. Bounding this direct channel,
+\begin{align*}
+&\left|\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p^\prime)\right]\right.\\
+        &\quad\left. -\left[L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p^\prime)\right]\right|\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+        \leq  C\|p-p^\prime\|_\infty,
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining observations $\widehat U(S_j)$ for $j\neq i$ and $\alpha_{j,i}\neq 0$ (see equation \eqref{eq:widehat_U_i}). Let $\widehat U^\prime(S_j)$ be the value of $\widehat U(S_j)$ when we change $\epsilon_i$ to $\epsilon_i^\prime$. Then, this cross-influence difference is also bounded by
+\begin{align*}
+&\left|\left[L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j),X_j);\theta,\psi,f,p^\prime)\right]\right.\\
+        &\quad\left.-\left[L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j),X_j);\theta,\psi,f,p^\prime)\right]\right|\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+        \leq  C\|p-p^\prime\|_\infty,
+\end{align*}
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\|p - p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U,\xi\right]\right\|_{\psi_2}\\
+    \leq & C\log(n) n^{-1/2}\|p - p^\prime\|_{\infty}.
+\end{align*}
+
+\noindent\textbf{Second Layer of Randomness: $\xi_i$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U\right]\right\|_{\psi_2}.$$
+Fixing $X,U$, we view the conditional expectation of the empirical risk as a function of $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$ and $(\xi_1, \ldots,\xi_i^\prime,\ldots, \xi_n)$. According to Table \ref{tab:filled_jacobian}, changing $\xi_i$ to $\xi_i^\prime$ only affects the observed treatment $A_i$. Let $A_i^\prime$ be the value of $A_i$ when we change $\xi_i$ to $\xi_i^\prime$. Then, the perturbation in the empirical risk is bounded by
+\begin{align*}
+&\left|\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p^\prime)\right]\right.\\
+        &\quad\left.-\left[L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i),X_i);\theta,\psi,f,p^\prime)\right]\right|\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+        \leq  C\|p-p^\prime\|_\infty,
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Consequently, applying McDiarmid's inequality yields:
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U\right]\right\|_{\psi_2}\\
+    \leq & C n^{-1/2}\|p - p^\prime\|_{\infty}.
+\end{align*}
+
+\noindent\textbf{Third Layer of Randomness: $U(S_i)$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|U\right]\right\|_{\psi_2}.$$
+The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. Let $\widetilde U=\Sigma^{-1/2} U$ where $\widetilde U$ is a vector of i.i.d. standard normal distribution. We then view the empirical risk as a function of $\widetilde U$ whose derivative can be calculated as follows:
+\begin{align*}
+    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]\\
+    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f,p^\prime)\right\},\ldots,\partial_{U(S_n)}\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f,p^\prime)\right\}\bigg| U,X\right].
+\end{align*}
+Furthermore, for every $i$, the derivative of the empirical risk difference with respect to $U(S_i)$ decomposes as:
+\begin{align*}
+    &\E\left[\partial_{U(S_i)}\left\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right\}\bigg| U,X\right]\\
+    = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\right\}\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_U_diff_p}}}\\
+    &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff_p}}}\\
+    \leq &\;Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|p-p^\prime\|_\infty + Cn^{-1}\|p-p^\prime\|_\infty\\
+    \leq &\;Cn^{-1}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
+\end{align*}
+The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_p}, and the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). The $\partial_{Y_i}$ term is bounded by Lemma~\ref{lemma:L_i_derivative_Y_diff_p} and contributes an $O(n^{-1})$ factor. Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
+\begin{align*}
+    &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]\right\|_2\\
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
+\end{align*}
+By Theorem \ref{thm:gaussian_concentration}, we have
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|U\right]\right\|_{\psi_2}\\
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
+\end{align*}
+
+\noindent\textbf{Fourth Layer of Randomness: $X_i$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}.$$
+We treat the empirical risk as a function of the covariate vector $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $X_i^\prime$ affects the $p,p^\prime$-difference of the loss $L_i^{(\delta_n)}$ directly through the covariate $X_i$ in $f(\cdot,X_i)$, $p(\cdot|X_i,\widehat U(S_i))$, and $p^\prime(\cdot|X_i,\widehat U(S_i))$, and also affects $L_j^{(\delta_n)}$ indirectly through the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.
+
+Specifically, let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and let $O_i^\prime$ be the observation when we change $X_i$ to $X_i^\prime$. Then, the direct impact of changing $X_i$ on the $p,p^\prime$-difference of the loss yields:
+\begin{align*}
+&\left|L^{(\delta_n)}(O_i;\theta,\psi,f,p) - L^{(\delta_n)}(O_i;\theta,\psi,f,p^\prime)\right.\\
+        &\quad\left. -\left[L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p) - L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p^\prime)\right]\right|\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+        \leq  C\|p-p^\prime\|_\infty,
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Additionally, $X_i$ propagates to the empirical risk indirectly through the remaining observations $\widehat U(S_j)$ for $j\neq i$ and $\alpha_{j,i}\neq 0$ (see equation \eqref{eq:widehat_U_i}). Let $O_j^\prime$ be the $j$-th observation when we change $X_i$ to $X_i^\prime$. Then, this cross-influence difference is similarly bounded by
+\begin{align*}
+&\left|L^{(\delta_n)}(O_j;\theta,\psi,f,p) - L^{(\delta_n)}(O_j;\theta,\psi,f,p^\prime)\right.\\
+        &\quad\left.-\left[L^{(\delta_n)}(O_j^\prime;\theta,\psi,f,p) - L^{(\delta_n)}(O_j^\prime;\theta,\psi,f,p^\prime)\right]\right|\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+        \leq  C\|p-p^\prime\|_\infty,
+\end{align*}
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)n^{-1}\|p-p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}\\
+    \leq & C\log(n)\,n^{-1/2}\|p-p^\prime\|_{\infty}.
+\end{align*}
+
+\noindent \textbf{Sub-Gaussianity:} Combining the results above, we have
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}\\
+    \leq & \underbrace{\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[\cdots|X,U,\xi\right]\right\|_{\psi_2}}_{\text{Randomness in $\epsilon$}}\\
+    & + \underbrace{\left\|\E\left[\cdots|X,U,\xi\right]-\E\left[\cdots|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
+    & + \underbrace{\left\|\E\left[\cdots|X,U\right]-\E\left[\cdots|U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
+    & + \underbrace{\left\|\E\left[\cdots|X\right]-\E\left[\cdots\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
+    \leq & C\log(n)\,n^{-1/2}\|p-p^\prime\|_\infty + C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|p-p^\prime\|_\infty.
+\end{align*}
+
+
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
 \noindent\textbf{Lipschitz Property over $\theta$}
@@ -2330,6 +2453,95 @@ Writing the difference of reciprocals as $\frac{1}{p}-\frac{1}{p^\prime} = \frac
     \leq \frac{C^\prime}{c^{\prime 2}}\|p-p^\prime\|_\infty.
 \end{align*}
 Taking the supremum over $(y,a,u,x)$ and setting $C:=C^\prime/c^{\prime 2}$ yields the stated bound.
+\end{proof}
+
+\begin{lemma}\label{lemma:L_i_derivative_U_diff_p}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Let $U = (U(S_1),\ldots,U(S_n))$ and $X = (X_1,\ldots,X_n)$ be as in \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}. Then, for $p,p^\prime\in\mathcal{F}_p$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, the difference of the conditional expectation of the $\widehat{U}(S_i)$-derivative of the loss satisfies
+    \begin{align*}
+        &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i)} \E\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p^\prime)\big|U,X\right]\right|\\
+        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\|p-p^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Let $u = \widehat{U}(S_i)$ for brevity.  From the definition \eqref{eq:loss_function_i} and Lemma~\ref{lemma:L_i_diff_p}, the $p,p^\prime$-difference of the loss (for fixed $\theta$, $f$) is
+\begin{align*}
+&L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\\
+= &\left(Y_i - f(A_i,X_i) - u\right)\left[\frac{1}{p(A_i|X_i,u)}-\frac{1}{p^\prime(A_i|X_i,u)}\right]\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+\end{align*}
+Applying the Leibniz rule to differentiate with respect to $u$ yields three terms:
+\begin{align*}
+&\partial_u\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right]\\
+=\;&\underbrace{\left(Y_i-f(A_i,X_i)-u\right)\left[\frac{1}{p(A_i|X_i,u)}-\frac{1}{p^\prime(A_i|X_i,u)}\right]K_{\delta_n}(A_i-\theta(X_i,u))\frac{\partial\theta(X_i,u)}{\partial u}}_{\mathrm{Term\ (I)}}\\
+&+\underbrace{(-1)\left[\frac{1}{p(A_i|X_i,u)}-\frac{1}{p^\prime(A_i|X_i,u)}\right]\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (II)}}\\
+&+\underbrace{\left(Y_i-f(A_i,X_i)-u\right)\partial_u\!\left[\frac{1}{p(A_i|X_i,u)}-\frac{1}{p^\prime(A_i|X_i,u)}\right]\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (III)}},
+\end{align*}
+where Term (I) arises from differentiating the upper limit $\theta(X_i,u)$ of $\int K$, Term (II) from differentiating the residual factor $(Y_i-f-u)$ with respect to $u$ (yielding $-1$), and Term (III) from differentiating $[1/p-1/p^\prime]$ via the quotient rule.
+
+\noindent\textbf{Conditional expectation and independence.}
+Given $(U,X)$, $\theta(X_i,\widehat{U}(S_i))$ depends on $\{\varepsilon_j\}_{j\neq i}$ while $A_i$ depends on $\xi_i$; since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ given $(U,X)$, we may factor conditional expectations of products involving $A_i$ and $\theta(X_i,\widehat{U}(S_i))$.
+
+\noindent\textbf{Bounding Term (I).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|Y_i-f(A_i,X_i)-u|\leq C^\prime$.  Writing $|1/p - 1/p^\prime|=(p^\prime-p)/(pp^\prime)\leq \|p-p^\prime\|_\infty/c^{\prime 2}$ by Assumption~\ref{condition:excess_risk:overlap},
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (I)}\,\big|\,U,X\right]\right|
+&\leq \frac{C^\prime\|p-p^\prime\|_\infty}{c^{\prime 2}}\cdot\E\!\left[K_{\delta_n}(A_i-\theta(X_i,u))\,\big|\,U,X\right]\cdot\sup_u\left|\frac{\partial\theta(X_i,u)}{\partial u}\right|\\
+&\leq \frac{C^\prime\|p-p^\prime\|_\infty}{c^{\prime 2}}\cdot C\cdot\frac{C}{\gamma_n\sqrt{\lambda_n}},
+\end{align*}
+where we applied Lemma~\ref{lemma:kernel_theta_exp_bound} and Lemmas~\ref{lemma:derivative_svm}--\ref{lemma:bound_svm}.
+
+\noindent\textbf{Bounding Term (II).}
+By the same $|1/p-1/p^\prime|\leq\|p-p^\prime\|_\infty/c^{\prime 2}$ bound and Lemma~\ref{lemma:kernel_int_theta_bound},
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (II)}\,\big|\,U,X\right]\right|
+&\leq \frac{\|p-p^\prime\|_\infty}{c^{\prime 2}}\cdot\E\!\left[\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\Bigg|U,X\right]
+\leq \frac{C}{c^{\prime 2}}\|p-p^\prime\|_\infty.
+\end{align*}
+
+\noindent\textbf{Bounding Term (III).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|\partial_u p|,|\partial_u p^\prime|\leq C^\prime$, so
+$$\left|\partial_u\!\left[\frac{1}{p}-\frac{1}{p^\prime}\right]\right| = \left|\frac{-\partial_u p}{p^2}+\frac{\partial_u p^\prime}{p^{\prime 2}}\right|\leq \frac{2C^\prime}{c^{\prime 2}}.$$
+Combined with $|Y_i-f-u|\leq C^\prime$ and Lemma~\ref{lemma:kernel_int_theta_bound},
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (III)}\,\big|\,U,X\right]\right|
+&\leq \frac{2C^{\prime 2}}{c^{\prime 2}}\cdot\E\!\left[\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\Bigg|U,X\right]
+\leq \frac{2C^{\prime 2}C}{c^{\prime 2}}.
+\end{align*}
+
+\noindent\textbf{Final assembly.}
+Collecting the three bounds and noting that $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ for the relevant rate regime (so that the constant terms from Terms (II) and (III) are absorbed into the dominant $\gamma_n^{-1}\lambda_n^{-1/2}$ factor),
+$$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\,\big|\,U,X\right]\right|
+\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\|p-p^\prime\|_\infty.$$
+Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
+\end{proof}
+
+\begin{lemma}\label{lemma:L_i_derivative_Y_diff_p}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $p,p^\prime\in\mathcal{F}_p$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$,
+    \begin{align*}
+        \sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\E\!\left[\partial_{Y_i}\!\left\{L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right\}\Big|U,X\right]\right|
+        \leq C\|p-p^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+From Lemma~\ref{lemma:L_i_diff_p}, the $p,p^\prime$-difference of the loss is
+\begin{align*}
+L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)
+= \left(Y_i-f(A_i,X_i)-\widehat U(S_i)\right)\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat U(S_i))}\right]\int_{a_L}^{\theta}K_{\delta_n}\,\mathrm{d}a.
+\end{align*}
+Differentiating with respect to $Y_i$ (noting that $Y_i$ enters only through the residual factor $(Y_i-f(A_i,X_i)-\widehat U(S_i))$),
+\begin{align*}
+\partial_{Y_i}\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right]
+= \left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat U(S_i))}\right]\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+\end{align*}
+Taking the conditional expectation given $(U,X)$ and bounding each factor: $|1/p-1/p^\prime|\leq\|p-p^\prime\|_\infty/c^{\prime 2}$ by Assumption~\ref{condition:excess_risk:overlap}, and
+$$\E\!\left[\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\Bigg|U,X\right]\leq C$$
+by Lemma~\ref{lemma:kernel_int_theta_bound}.  Therefore,
+\begin{align*}
+\left|\E\!\left[\partial_{Y_i}\!\left\{L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right\}\Big|U,X\right]\right|
+\leq \frac{C}{c^{\prime 2}}\|p-p^\prime\|_\infty =: C\|p-p^\prime\|_\infty.
+\end{align*}
+Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
 
 \noindent\textbf{Lipschitz Property over $\psi$}
