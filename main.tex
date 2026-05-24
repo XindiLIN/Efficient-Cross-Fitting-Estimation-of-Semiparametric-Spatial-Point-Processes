@@ -2039,6 +2039,56 @@ Writing the difference of reciprocals as $\frac{1}{p}-\frac{1}{p^\prime} = \frac
 Taking the supremum over $(y,a,u,x)$ and setting $C:=C^\prime/c^{\prime 2}$ yields the stated bound.
 \end{proof}
 
+\begin{lemma}\label{lemma:L_i_diff_psi}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, for fixed $\theta,f,p$,
+    \begin{align*}
+        \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right| \leq C\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+The proof proceeds in two steps.
+
+\noindent\textbf{Step 1: Lipschitz bound of the loss in $\widehat U(S_i)$.}
+
+From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap} and Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, each of these contributions is uniformly Lipschitz in $u$ with a constant $C^\prime$. Therefore, applying the mean value theorem,
+\begin{align*}
+    \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta,\psi,f,p) - L^{(\delta_n)}_i(\theta,\psi^\prime,f,p)\right|
+    \leq C^\prime \sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
+\end{align*}
+
+\noindent\textbf{Step 2: Bounding $\sup_i|\widehat U(S_i,\psi)-\widehat U(S_i,\psi^\prime)|$ by $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.}
+
+Let $\Lambda=\Lambda_n(\psi)$, $\Lambda^\prime=\Lambda_n(\psi^\prime)$, $\Lambda_{ii}=e_i^\top\Lambda e_i$, and $\widehat{R}=(\widehat R_1,\ldots,\widehat R_n)^\top$ with $\widehat R_j$ defined in \eqref{eq:widehat_U_i}. From the definition $\alpha_{ij}=-\Lambda_{ii}^{-1}\Lambda_{ij}$ and $\widehat U(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}\widehat R_j$, a direct computation gives
+$$\widehat U(S_i,\psi) = \widehat R_i - \frac{e_i^\top \Lambda\,\widehat{R}}{e_i^\top\Lambda e_i}.$$
+Hence the difference is
+\begin{align*}
+\Delta\widehat U_i := \widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)
+= \frac{e_i^\top\Lambda^\prime\widehat{R}}{\Lambda^\prime_{ii}} - \frac{e_i^\top\Lambda\widehat{R}}{\Lambda_{ii}}.
+\end{align*}
+Adding and subtracting the cross-term $e_i^\top\Lambda^\prime\widehat{R}/\Lambda_{ii}$ splits the perturbation into denominator and numerator parts:
+\begin{align*}
+\Delta\widehat U_i
+= \underbrace{(e_i^\top\Lambda^\prime\widehat{R})\cdot\frac{\Lambda_{ii}-\Lambda^\prime_{ii}}{\Lambda_{ii}\Lambda^\prime_{ii}}}_{\text{denominator perturbation}}
++ \underbrace{\frac{e_i^\top(\Lambda^\prime-\Lambda)\widehat{R}}{\Lambda_{ii}}}_{\text{numerator perturbation}}.
+\end{align*}
+Taking absolute values and applying Cauchy--Schwarz ($|x^\top y|\leq\|x\|_2\|y\|_2$) and the operator norm bound ($\|Ax\|_2\leq\|A\|_{\mathrm{op}}\|x\|_2$):
+\begin{align*}
+|\Delta\widehat U_i|
+&\leq \|\Lambda^\prime\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2\cdot\frac{|\Lambda_{ii}-\Lambda^\prime_{ii}|}{\Lambda_{ii}\Lambda^\prime_{ii}}
++ \frac{\|\Lambda^\prime-\Lambda\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2}{\Lambda_{ii}},
+\end{align*}
+where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to the $O(\log n)$ nonzero neighbours of $i$ in the Vecchia approximation \eqref{eq:vecchina_approximation_nonzero}, so $\|\widehat{R}_{N(i)}\|_2=O(\sqrt{\log n})$ is bounded. Since $|\Lambda_{ii}-\Lambda^\prime_{ii}|=|e_i^\top(\Lambda-\Lambda^\prime)e_i|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$, we factor:
+\begin{align*}
+|\Delta\widehat U_i|
+\leq \|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\,\|\widehat{R}_{N(i)}\|_2\left(\frac{\|\Lambda^\prime\|_{\mathrm{op}}}{\Lambda_{ii}\Lambda^\prime_{ii}}+\frac{1}{\Lambda_{ii}}\right)
+\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
+\end{align*}
+where the last inequality absorbs $\|\widehat{R}_{N(i)}\|_2$, $\|\Lambda^\prime\|_{\mathrm{op}}$, and $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
+$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}\,\|\Sigma_n(\psi^\prime)^{-1}\|_{\mathrm{op}}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\leq C\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
+Taking $\sup_i$ and combining with Step~1 yields the stated bound.
+\end{proof}
+
 \begin{lemma}\label{lemma:L_i_derivative_Y_diff}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, the difference of the conditional expectation of the derivative of the loss function with respect to the response have the following bound:
        \begin{align*}
