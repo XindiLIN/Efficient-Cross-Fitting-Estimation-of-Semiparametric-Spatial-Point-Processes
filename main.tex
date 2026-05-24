@@ -2176,6 +2176,66 @@ where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Becau
 
 \subsubsection{Sub-Gaussianity over $\psi$}
 
+In this section, for any $\psi,\psi^\prime$, we provide the upper bound for
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}.$$
+Specifically, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, and $p\in\mathcal{F}_p$,
+\begin{align*}
+    &R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\\
+    := & \frac{1}{n}\sum_{i=1}^n \left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right),
+\end{align*}
+where, by contrast with the $f$- and $p$-perturbation cases, the parameter $\psi$ enters the $i$-th term through the estimated latent confounder $\widehat{U}(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}(\psi)\widehat{R}_j$: both the data fed into the loss and the implicit structure of the loss itself change when $\psi$ varies. Lemma~\ref{lemma:L_i_diff_psi} already accounts for both effects and yields
+\begin{align}
+    \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right|
+    \leq C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.\label{eq:Lipschitz_psi}
+\end{align}
+For brevity, we write $B_\psi := C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$ for the right-hand side of \eqref{eq:Lipschitz_psi}.
+We use the conditional expectation to decompose the $\psi_2$-norm into four terms as in \eqref{ref:randomness_decomposition} and provide the upper bound of each.
+
+\noindent\textbf{First Layer Randomness: $\epsilon$}
+
+\noindent We first provide the upper bound of
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]\right\|_{\psi_2}.$$
+We treat the empirical risk as a function of the outcome error vector $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(\epsilon_1, \ldots,\epsilon_i,\ldots, \epsilon_n)$ and $(\epsilon_1, \ldots,\epsilon_i^\prime,\ldots, \epsilon_n)$. According to Table \ref{tab:filled_jacobian}, a change from $\epsilon_i$ to $\epsilon_i^\prime$ affects the empirical risk through the observed outcome $Y_i$ and the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.
+
+The direct channel on the $i$-th term: since $\widehat{U}(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}(\psi)\widehat{R}_j$ does \emph{not} depend on $\epsilon_i$ (the sum excludes $j=i$), a change $\epsilon_i\to\epsilon_i^\prime$ only alters $Y_i\to Y_i^\prime:=Y_i-\epsilon_i+\epsilon_i^\prime$ in the $i$-th loss difference. This direct effect is bounded by
+\begin{align*}
+&\left|\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right]\big|_{Y_i}
+        -\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right]\big|_{Y_i^\prime}\right|\\
+        \leq  & 2\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right|
+        \leq  2B_\psi,
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through $\widehat{U}(S_j,\psi)$ and $\widehat{U}(S_j,\psi^\prime)$ for $j\neq i$ with $\alpha_{j,i}\neq 0$, by altering $\widehat{R}_i = Y_i - f(A_i,X_i)$. Let $\widehat{U}^\prime(S_j,\psi)$ (resp.\ $\widehat{U}^\prime(S_j,\psi^\prime)$) denote these estimates after the change. The resulting perturbation on the $j$-th loss difference is bounded by
+\begin{align*}
+&\left|\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}(S_j,\psi^\prime)}\right]\right.\\
+        &\quad\left.-\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}^\prime(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}^\prime(S_j,\psi^\prime)}\right]\right|\\
+        \leq  & 2\sup_{Y_j,A_j,X_j}\left|L^{(\delta_n)}_j(\theta;\psi,f,p) - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\right|
+        \leq  2B_\psi,
+\end{align*}
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
+    \leq & C\log(n)\, n^{-1/2} B_\psi
+    = C\log(n)\,n^{-1/2}\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+\end{align*}
+
+\noindent\textbf{Second Layer of Randomness: $\xi_i$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]\right\|_{\psi_2}.$$
+Fixing $X,U$, we view the conditional expectation of the empirical risk as a function of $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(\xi_1, \ldots,\xi_i,\ldots, \xi_n)$ and $(\xi_1, \ldots,\xi_i^\prime,\ldots, \xi_n)$. According to Table \ref{tab:filled_jacobian}, changing $\xi_i$ to $\xi_i^\prime$ only affects the observed treatment $A_i$; in particular, it does \emph{not} affect $\widehat{U}(S_j,\psi)$ or $\widehat{U}(S_j,\psi^\prime)$ for any $j$. Let $A_i^\prime$ be the value of $A_i$ when we change $\xi_i$ to $\xi_i^\prime$. Then, the perturbation in the empirical risk is bounded by
+\begin{align*}
+&\left|\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i,\psi),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i,\psi^\prime),X_i);\theta,\psi^\prime,f,p)\right]\right.\\
+        &\quad\left.-\left[L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i,\psi),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i,\psi^\prime),X_i);\theta,\psi^\prime,f,p)\right]\right|\\
+        \leq  & 2\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right|
+        \leq  2B_\psi,
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. There is no cross-influence from $\xi_i$ to other terms. Consequently, the bounded-difference constant is $Cn^{-1}B_\psi$ for each $i$, and applying McDiarmid's inequality yields:
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]\right\|_{\psi_2}\\
+    \leq & C\, n^{-1/2} B_\psi
+    = C\,n^{-1/2}\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+\end{align*}
+
 
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
