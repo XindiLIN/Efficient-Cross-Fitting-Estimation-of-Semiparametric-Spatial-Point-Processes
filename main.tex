@@ -2174,6 +2174,9 @@ where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Becau
 \end{align*}
 
 
+\subsubsection{Sub-Gaussianity over $\psi$}
+
+
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
 \noindent\textbf{Lipschitz Property over $\theta$}
@@ -2526,13 +2529,13 @@ Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated boun
 \begin{proof}
 From Lemma~\ref{lemma:L_i_diff_p}, the $p,p^\prime$-difference of the loss is
 \begin{align*}
-L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)
-= \left(Y_i-f(A_i,X_i)-\widehat U(S_i)\right)\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat U(S_i))}\right]\int_{a_L}^{\theta}K_{\delta_n}\,\mathrm{d}a.
+&L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\\
+= &\left(Y_i-f(A_i,X_i)-\widehat U(S_i)\right)\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat U(S_i))}\right]\int_{a_L}^{\theta}K_{\delta_n}\,\mathrm{d}a.
 \end{align*}
 Differentiating with respect to $Y_i$ (noting that $Y_i$ enters only through the residual factor $(Y_i-f(A_i,X_i)-\widehat U(S_i))$),
 \begin{align*}
-\partial_{Y_i}\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right]
-= \left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat U(S_i))}\right]\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+&\partial_{Y_i}\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f,p^\prime)\right]\\
+= &\left[\frac{1}{p(A_i|X_i,\widehat U(S_i))}-\frac{1}{p^\prime(A_i|X_i,\widehat U(S_i))}\right]\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
 \end{align*}
 Taking the conditional expectation given $(U,X)$ and bounding each factor: $|1/p-1/p^\prime|\leq\|p-p^\prime\|_\infty/c^{\prime 2}$ by Assumption~\ref{condition:excess_risk:overlap}, and
 $$\E\!\left[\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\Bigg|U,X\right]\leq C$$
