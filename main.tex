@@ -1838,7 +1838,7 @@ Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining 
 The last inequality follows from Lemma \ref{lemma:L_i_diff_theta}. Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|h - h^\prime\|_{\infty}.
+    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -1856,7 +1856,7 @@ Fixing $X,U$, we view the conditional expectation of the empirical risk as a fun
 The last inequality follows from Lemma \ref{lemma:L_i_diff_theta}. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}.\\
-    \leq & C n^{-1/2}\delta_n^{-1}\|h - h^\prime\|_{\infty}.
+    \leq & C n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Third Layer of Randomness: $U(S_i)$}
