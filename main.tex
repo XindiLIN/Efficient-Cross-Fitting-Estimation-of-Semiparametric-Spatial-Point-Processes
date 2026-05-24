@@ -2017,6 +2017,28 @@ Adding the two bounds and taking the supremum over $(y,a,u,x)$,
 where $C:= |\mathcal{A}|+1/c^\prime$ is a generic constant.
 \end{proof}
 
+\begin{lemma}\label{lemma:L_i_diff_p}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $p,p^\prime\in\mathcal{F}_p$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, the difference of the loss function satisfies
+    \begin{align*}
+        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right| \leq C\|p-p^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Since $p$ appears only in the denominator of the IPW term in \eqref{eq:loss_function_i}, the first integral (which does not involve $p$) cancels exactly, leaving a single-term difference:
+\begin{align*}
+    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\\
+    =\;&\left(y-f(a,x)-u\right)\left[\frac{1}{p(a|x,u)}-\frac{1}{p^\prime(a|x,u)}\right]\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime.
+\end{align*}
+Writing the difference of reciprocals as $\frac{1}{p}-\frac{1}{p^\prime} = \frac{p^\prime-p}{p\cdot p^\prime}$ and bounding each factor pointwise: $|y-f(a,x)-u|\leq C^\prime$ by Assumption~\ref{condition:excess_risk:smooth}; $p,p^\prime\geq c^\prime>0$ by Assumption~\ref{condition:excess_risk:overlap}; and $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$, we obtain
+\begin{align*}
+    \left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
+    \leq \frac{C^\prime}{c^{\prime 2}}\left|p(a|x,u)-p^\prime(a|x,u)\right|
+    \leq \frac{C^\prime}{c^{\prime 2}}\|p-p^\prime\|_\infty.
+\end{align*}
+Taking the supremum over $(y,a,u,x)$ and setting $C:=C^\prime/c^{\prime 2}$ yields the stated bound.
+\end{proof}
+
 \begin{lemma}\label{lemma:L_i_derivative_Y_diff}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss  defined in \eqref{eq:loss_function_i} as function of the observed variable. Let $U = (U(S_1),\ldots,U(S_n))$. Let $X = (X_1,\ldots,X_n)$ be the vector of the latent variables in \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2}. Then, for $\theta,\theta^\prime\in \mathcal{H}_{\mathcal{K}}$, the difference of the conditional expectation of the derivative of the loss function with respect to the response have the following bound:
        \begin{align*}
