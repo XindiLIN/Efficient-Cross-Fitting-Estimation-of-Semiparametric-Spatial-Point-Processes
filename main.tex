@@ -2316,7 +2316,69 @@ Collecting all terms,
 $$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta)-L^{(\delta_n)}_i(\theta')\,\big|\,U,X\right]\right|\leq C\cdot \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + C\gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty.$$
 Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
-    
+
+\begin{lemma}\label{lemma:L_i_derivative_U_diff_f}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Let $U = (U(S_1),\ldots,U(S_n))$ and $X = (X_1,\ldots,X_n)$ be as in \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}. Then, for $f,f^\prime\in\mathcal{F}_f$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, the difference of the conditional expectation of the $\widehat{U}(S_i)$-derivative of the loss satisfies
+    \begin{align*}
+        &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i)} \E\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f^\prime,p)\big|U,X\right]\right|\\
+        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Let $u = \widehat{U}(S_i)$ for brevity.  From the definition \eqref{eq:loss_function_i}, the $f,f^\prime$-difference of the loss (for fixed $\theta$) is
+\begin{align*}
+L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)
+= \int_{a_L}^{\theta(X_i,u)}\bigl(f^\prime(a,X_i)-f(a,X_i)\bigr)\mathrm{d}a
+- \frac{f^\prime(A_i,X_i)-f(A_i,X_i)}{p(A_i|X_i,u)}\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+\end{align*}
+Since $f$ and $f^\prime$ do not depend on $u$, applying the Leibniz rule to differentiate with respect to $u$ yields three terms:
+\begin{align*}
+&\partial_u\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)\right]\\
+=\;&\underbrace{\bigl(f^\prime(\theta(X_i,u),X_i)-f(\theta(X_i,u),X_i)\bigr)\cdot\frac{\partial\theta(X_i,u)}{\partial u}}_{\mathrm{Term\ (I)}}\\
+&+\underbrace{\frac{f(A_i,X_i)-f^\prime(A_i,X_i)}{p(A_i|X_i,u)}\cdot K_{\delta_n}\!\left(A_i-\theta(X_i,u)\right)\cdot\frac{\partial\theta(X_i,u)}{\partial u}}_{\mathrm{Term\ (II)}}\\
+&+\underbrace{\frac{f^\prime(A_i,X_i)-f(A_i,X_i)}{p^2(A_i|X_i,u)}\cdot\frac{\partial p(A_i|X_i,u)}{\partial u}\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (III)}},
+\end{align*}
+where Term (I) arises from differentiating the upper limit of the first integral, Term (II) from differentiating the upper limit of $\int K$ in the IPW term, and Term (III) from differentiating $1/p$ via the quotient rule.
+
+\noindent\textbf{Conditional expectation and independence.}
+Given $(U,X)$, $\theta(X_i,\widehat{U}(S_i))$ depends on $\{\varepsilon_j\}_{j\neq i}$ while $A_i$ depends on $\xi_i$; since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ given $(U,X)$, we may factor conditional expectations of products involving $A_i$ and $\theta(X_i,\widehat{U}(S_i))$.
+
+\noindent\textbf{Bounding Term (I).}
+Taking $\E[\,\cdot\,|U,X]$ and bounding pointwise,
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (I)}\,\big|\,U,X\right]\right|
+\leq \|f-f^\prime\|_\infty\cdot\sup_u\left|\frac{\partial\theta(X_i,u)}{\partial u}\right|
+\leq \frac{C}{\gamma_n\sqrt{\lambda_n}}\|f-f^\prime\|_\infty,
+\end{align*}
+where the last step uses Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}.
+
+\noindent\textbf{Bounding Term (II).}
+By Assumption~\ref{condition:excess_risk:overlap}, $p\geq c^\prime>0$.  Factoring out the nonstochastic quantities,
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (II)}\,\big|\,U,X\right]\right|
+&\leq \frac{\|f-f^\prime\|_\infty}{c^\prime}\cdot\E\!\left[K_{\delta_n}\!\left(A_i-\theta(X_i,u)\right)\Big|U,X\right]\cdot\sup_u\left|\frac{\partial\theta(X_i,u)}{\partial u}\right|\\
+&\leq \frac{C'\|f-f^\prime\|_\infty}{c^\prime}\cdot C\cdot\frac{1}{\gamma_n\sqrt{\lambda_n}}
+= \frac{CC^\prime}{c^\prime\,\gamma_n\sqrt{\lambda_n}}\|f-f^\prime\|_\infty,
+\end{align*}
+where we applied Lemma~\ref{lemma:kernel_theta_exp_bound} to bound $\E[K_{\delta_n}(A_i-\theta)|U,X]\leq C^\prime$, and Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm} to bound $\sup_u|\partial_u\theta|\leq C/(\gamma_n\sqrt{\lambda_n})$.
+
+\noindent\textbf{Bounding Term (III).}
+By the quotient rule bound $p^{-2}\leq c^{\prime-2}$ and Assumption~\ref{condition:excess_risk:smooth}, $|\partial_u p|\leq C^\prime$.  Hence,
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (III)}\,\big|\,U,X\right]\right|
+&\leq \frac{C^\prime\|f-f^\prime\|_\infty}{c^{\prime 2}}\cdot\E\!\left[\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\Bigg|U,X\right]\\
+&\leq \frac{C^\prime C}{c^{\prime 2}}\|f-f^\prime\|_\infty,
+\end{align*}
+where we applied Lemma~\ref{lemma:kernel_int_theta_bound} to bound the conditional kernel integral by the constant $C$.
+
+\noindent\textbf{Final assembly.}
+Collecting the three bounds and noting that $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ for the relevant rate regime (so that the constant from Term (III) is absorbed),
+$$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)\,\big|\,U,X\right]\right|
+\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.$$
+Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
+\end{proof}
+
 
 \begin{lemma}[Bound on Conditional Kernel Expectation]\label{lemma:kernel_exp_bound}
 Let $\theta\in\mathcal{H}_\mathcal{K}$ and let $p(a|X_i,\widehat{U}(S_i))$ denote the conditional density of $A_i$ given $(X_i,\widehat{U}(S_i))$. Under Assumption~\ref{condition:excess_risk:overlap}, there exists a constant $C'>0$ such that
