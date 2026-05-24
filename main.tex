@@ -2199,6 +2199,51 @@ $$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta)-L^{(\delta_
 Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
 
+
+\noindent\textbf{Lipschitz Property over $f$}
+
+\begin{lemma}\label{lemma:L_i_diff_f}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $f,f^\prime\in\mathcal{F}_f$, the difference of the loss function satisfies
+    \begin{align*}
+        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right| \leq C\|f-f^\prime\|_\infty.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Substituting \eqref{eq:loss_function_i}, the difference telescopes in $f$:
+\begin{align*}
+    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\\
+    =\;&\underbrace{\int_{a_L}^{\theta(x,u)}\bigl(f^\prime(a^\prime,x)-f(a^\prime,x)\bigr)\mathrm{d}a^\prime}_{\mathrm{Term\;(I)}}
+    +\underbrace{\frac{f^\prime(a,x)-f(a,x)}{p(a|x,u)}\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(II)}}.
+\end{align*}
+Note that $\mathcal{T}$ and $u$ are unaffected by the change from $f$ to $f^\prime$.
+
+\noindent\textit{Bound on Term (I).}
+Since $|\theta(x,u)-a_L|$ is uniformly bounded by $|\mathcal{A}|$,
+\begin{align*}
+    |\mathrm{Term\;(I)}|
+    \leq \int_{a_L}^{\theta(x,u)}\bigl|f(a^\prime,x)-f^\prime(a^\prime,x)\bigr|\,\mathrm{d}a^\prime
+    \leq |\theta(x,u)-a_L|\cdot\|f-f^\prime\|_\infty
+    \leq |\mathcal{A}|\|f-f^\prime\|_\infty.
+\end{align*}
+
+\noindent\textit{Bound on Term (II).}
+By Assumption~\ref{condition:excess_risk:overlap}, $p(a|x,u)\geq c^\prime>0$, and since $K_{\delta_n}$ integrates to one, $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$. Therefore,
+\begin{align*}
+    |\mathrm{Term\;(II)}|
+    \leq \frac{|f(a,x)-f^\prime(a,x)|}{c^\prime}
+    \leq \frac{\|f-f^\prime\|_\infty}{c^\prime}.
+\end{align*}
+
+\noindent\textit{Combining.}
+Adding the two bounds and taking the supremum over $(y,a,u,x)$,
+\begin{align*}
+    \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|
+    \leq \left(C^\prime + \frac{1}{c^\prime}\right)\|f-f^\prime\|_\infty
+    =: C\|f-f^\prime\|_\infty,
+\end{align*}
+where $C:= |\mathcal{A}|+1/c^\prime$ is a generic constant.
+\end{proof}
 \begin{lemma}\label{lemma:L_i_derivative_U_diff_f}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Let $U = (U(S_1),\ldots,U(S_n))$ and $X = (X_1,\ldots,X_n)$ be as in \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}. Then, for $f,f^\prime\in\mathcal{F}_f$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, the difference of the conditional expectation of the $\widehat{U}(S_i)$-derivative of the loss satisfies
     \begin{align*}
@@ -2210,8 +2255,8 @@ Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated boun
 \begin{proof}
 Let $u = \widehat{U}(S_i)$ for brevity.  From the definition \eqref{eq:loss_function_i}, the $f,f^\prime$-difference of the loss (for fixed $\theta$) is
 \begin{align*}
-L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)
-= \int_{a_L}^{\theta(X_i,u)}\bigl(f^\prime(a,X_i)-f(a,X_i)\bigr)\mathrm{d}a
+&L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)\\
+= &\int_{a_L}^{\theta(X_i,u)}\bigl(f^\prime(a,X_i)-f(a,X_i)\bigr)\mathrm{d}a
 - \frac{f^\prime(A_i,X_i)-f(A_i,X_i)}{p(A_i|X_i,u)}\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
 \end{align*}
 Since $f$ and $f^\prime$ do not depend on $u$, applying the Leibniz rule to differentiate with respect to $u$ yields three terms:
@@ -2261,52 +2306,6 @@ $$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - 
 Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
 
-
-
-\noindent\textbf{Lipschitz Property over $f$}
-
-\begin{lemma}\label{lemma:L_i_diff_f}
-    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}. Then, for $f,f^\prime\in\mathcal{F}_f$, the difference of the loss function satisfies
-    \begin{align*}
-        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right| \leq C\|f-f^\prime\|_\infty.
-    \end{align*}
-\end{lemma}
-
-\begin{proof}
-Substituting \eqref{eq:loss_function_i}, the difference telescopes in $f$:
-\begin{align*}
-    &L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\\
-    =\;&\underbrace{\int_{a_L}^{\theta(x,u)}\bigl(f^\prime(a^\prime,x)-f(a^\prime,x)\bigr)\mathrm{d}a^\prime}_{\mathrm{Term\;(I)}}
-    +\underbrace{\frac{f^\prime(a,x)-f(a,x)}{p(a|x,u)}\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime}_{\mathrm{Term\;(II)}}.
-\end{align*}
-Note that $\mathcal{T}$ and $u$ are unaffected by the change from $f$ to $f^\prime$.
-
-\noindent\textit{Bound on Term (I).}
-Since $|\theta(x,u)-a_L|$ is uniformly bounded by $|\mathcal{A}|$,
-\begin{align*}
-    |\mathrm{Term\;(I)}|
-    \leq \int_{a_L}^{\theta(x,u)}\bigl|f(a^\prime,x)-f^\prime(a^\prime,x)\bigr|\,\mathrm{d}a^\prime
-    \leq |\theta(x,u)-a_L|\cdot\|f-f^\prime\|_\infty
-    \leq |\mathcal{A}|\|f-f^\prime\|_\infty.
-\end{align*}
-
-\noindent\textit{Bound on Term (II).}
-By Assumption~\ref{condition:excess_risk:overlap}, $p(a|x,u)\geq c^\prime>0$, and since $K_{\delta_n}$ integrates to one, $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\mathrm{d}t=1$. Therefore,
-\begin{align*}
-    |\mathrm{Term\;(II)}|
-    \leq \frac{|f(a,x)-f^\prime(a,x)|}{c^\prime}
-    \leq \frac{\|f-f^\prime\|_\infty}{c^\prime}.
-\end{align*}
-
-\noindent\textit{Combining.}
-Adding the two bounds and taking the supremum over $(y,a,u,x)$,
-\begin{align*}
-    \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|
-    \leq \left(C^\prime + \frac{1}{c^\prime}\right)\|f-f^\prime\|_\infty
-    =: C\|f-f^\prime\|_\infty,
-\end{align*}
-where $C:= |\mathcal{A}|+1/c^\prime$ is a generic constant.
-\end{proof}
 
 \noindent\textbf{Lipschitz Property over $p$}
 
