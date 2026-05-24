@@ -2002,7 +2002,7 @@ Furthermore, for every $i$, the derivative of the empirical risk difference with
 The $\partial_{Y_i}$ term vanishes because $Y_i$ does not appear in $L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)$ (see the preamble of this section). The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_f}, and the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]\right\|_2\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
 By Theorem \ref{thm:gaussian_concentration}, we have
 \begin{align*}
