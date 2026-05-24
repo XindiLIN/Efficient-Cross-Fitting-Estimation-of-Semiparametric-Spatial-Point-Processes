@@ -1874,9 +1874,9 @@ Furthermore, for every $i$, the derivative of the empirical risk with respect to
     &\E\left[\partial_{U(S_i)}\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\}| U,X\right]\\
     = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta^\prime;\psi,f,p)\right\}| U,X\right]}_{\text{bounded by Lemma \ref{L_i_derivative_U_diff}}}\\
     &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta^\prime;\psi,f,p)| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff}}}\\
-    \leq &Cn^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty
+    \leq &Cn^{-1}\log(n)\cdot\left( \gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1/2}\|\theta-\theta'\|_\infty
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:L_i_derivative_Y_diff}, Lemma \ref{L_i_derivative_U_diff}, and equation \eqref{eq:vecchina_approximation_nonzero}. Then, the Lipschitz constant of the conditional expectation of the empirical risk with respect to $\tilde U$ given $U,X$ has the following bound:
+The last inequality follows from Lemma \ref{lemma:L_i_derivative_Y_diff}, Lemma \ref{L_i_derivative_U_diff}, and equation \eqref{eq:vecchina_approximation_nonzero}. Then, the Lipschitz constant of the conditional expectation of the empirical risk with respect to $\tilde U$ given $U,X$,i.e., the $L_2$-norm of $\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]$, has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\right\|_2\\
     \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty\right\}.
@@ -1884,7 +1884,7 @@ The last inequality follows from Lemma \ref{lemma:L_i_derivative_Y_diff}, Lemma 
 By Theorem \ref{thm:gaussian_concentration}, we have 
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}\\
-    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty\right\}.
+    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1/2}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1/2}\|\theta-\theta'\|_\infty\right\}.
 \end{align*}
 
 
@@ -1894,7 +1894,7 @@ By Theorem \ref{thm:gaussian_concentration}, we have
 \noindent We provide the upper bound of 
 $$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}.$$
 
-We treat the empirical risk as a function of the outcome error vector $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $\epsilon_i^\prime$ affects the loss function $L_i^{(\delta_n)}$ and $L_j^{(\delta_n)}$ through the the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.  X
+We treat the empirical risk as a function of $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $X_i^\prime$ affects the loss function $L_i^{(\delta_n)}$ and $L_j^{(\delta_n)}$ through the the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$. 
 
 Specifically, let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and let $O_i^\prime$ be the observation when we change $X_i$ to $X_i^\prime$. Then, the impact of the changing of $X_i$ on the loss function $L_i^{(\delta_n)}$ yields the difference:
 \begin{align*}
