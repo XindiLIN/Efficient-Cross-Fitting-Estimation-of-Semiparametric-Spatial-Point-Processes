@@ -2402,6 +2402,63 @@ Multiplying the two bounds and collecting constants,
 \end{align}
 \end{proof}
 
+\begin{lemma}[Bound on Integrated Kernel Expectation from $a_L$]\label{lemma:kernel_int_theta_bound}
+Let $\theta:\mathcal{X}\times\mathcal{U}\to\mathcal{A}$ be a measurable function with $\theta(x,u)\in\mathcal{A}=[a_L,a_H]$ for all $(x,u)$.  Under Assumption~\ref{condition:excess_risk:overlap}, there exists a constant $C>0$ (depending only on $\sup_a p_A(a)$ and $|\mathcal{A}|$) such that
+$$\E\!\left[\int_{a_L}^{\theta(X_i,\widehat{U}(S_i))} K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C.$$
+\end{lemma}
+
+\begin{proof}
+\noindent\textit{Step 1: Indicator reformulation and Fubini.}
+
+Write the integration range as an indicator and apply Fubini's theorem to exchange the integral over $a$ with the expectation:
+\begin{align*}
+&\E\!\left[\int_{a_L}^{\theta(X_i,\widehat{U}(S_i))} K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right]\\
+=\;&\int_{\R}\E\!\left[K_{\delta_n}(A_i-a)\cdot\mathbf{1}\!\left(a_L\leq a\leq \theta(X_i,\widehat{U}(S_i))\right)\Big|\,U,X\right]\mathrm{d}a.
+\end{align*}
+
+\noindent\textit{Step 2: Factor using conditional independence.}
+
+By the data-generating model \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}, $A_i$ depends on $\xi_i$ while $\theta(X_i,\widehat{U}(S_i))$ depends on $\{\varepsilon_j\}_{j\neq i}$ through $\widehat{U}(S_i)$.  Since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ conditionally on $(U,X)$, the indicator $\mathbf{1}(a_L\leq a\leq \theta(X_i,\widehat{U}(S_i)))$ and $K_{\delta_n}(A_i-a)$ are conditionally independent given $(U,X)$.  Hence the expectation factors:
+\begin{align*}
+=\;&\int_{\R}\E\!\left[K_{\delta_n}(A_i-a)\,\big|\,U,X\right]\cdot\E\!\left[\mathbf{1}\!\left(a_L\leq a\leq \theta(X_i,\widehat{U}(S_i))\right)\Big|\,U,X\right]\mathrm{d}a.
+\end{align*}
+
+\noindent\textit{Step 3: Bound each factor.}
+
+\emph{Kernel factor.} For fixed $a\in\mathcal{A}$, integrating over the distribution of $A_i$ and substituting $v=(a'-a)/\delta_n$,
+$$\E\!\left[K_{\delta_n}(A_i-a)\,\big|\,U,X\right] = \int_{\R}K(v)\,p_A(a+\delta_n v)\,\mathrm{d}v \leq \sup_{a'}p_A(a')\int_{\R}K(v)\,\mathrm{d}v = C' < \infty,$$
+uniformly in $a$ and $\delta_n$, by Assumption~\ref{condition:excess_risk:overlap}.
+
+\emph{Indicator factor.} Exchanging the integral over $a$ with the conditional expectation via Fubini,
+\begin{align*}
+\int_{\R}\E\!\left[\mathbf{1}\!\left(a_L\leq a\leq \theta(X_i,\widehat{U}(S_i))\right)\Big|\,U,X\right]\mathrm{d}a
+= \E\!\left[\theta(X_i,\widehat{U}(S_i))-a_L\,\big|\,U,X\right]
+\leq a_H - a_L =: |\mathcal{A}|,
+\end{align*}
+since $\theta(X_i,\widehat{U}(S_i))\in[a_L,a_H]$ by assumption.
+
+\noindent\textit{Step 4: Combine.}
+
+Multiplying the two bounds,
+$$\E\!\left[\int_{a_L}^{\theta(X_i,\widehat{U}(S_i))} K_{\delta_n}(A_i-a)\,\mathrm{d}a\,\bigg|\,U,X\right] \leq C'\cdot|\mathcal{A}| =: C.$$
+\end{proof}
+
+\begin{lemma}[Bound on Conditional Kernel Expectation]\label{lemma:kernel_theta_exp_bound}
+Let $\theta:\mathcal{X}\times\mathcal{U}\to\mathcal{A}$ be a measurable function.  Under Assumption~\ref{condition:excess_risk:overlap}, there exists a constant $C>0$ such that
+$$\E\!\left[K_{\delta_n}\!\left(A_i - \theta(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right] \leq C.$$
+\end{lemma}
+
+\begin{proof}
+The argument is identical to that of Lemma~\ref{lemma:kernel_exp_bound}.  By the data-generating model \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}, $A_i$ depends on $\xi_i$ while $\theta(X_i,\widehat{U}(S_i))$ depends on $\{\varepsilon_j\}_{j\neq i}$; since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ given $(U,X)$, the two are conditionally independent given $(U,X)$.  Let $p_{\tilde\varepsilon}$ be the density of $\tilde\varepsilon_i=\sum_{j\neq i}\alpha_{ij}\varepsilon_j$ given $(U,X)$.  Applying Fubini and the substitution $v=(a-\theta(X_i,\widehat{U}(S_i)))/\delta_n$,
+\begin{align*}
+\E\!\left[K_{\delta_n}\!\left(A_i-\theta(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right]
+&= \int_{\R}\!\left\{\int_{\mathcal{A}}K(v)\,p_A\!\left(\theta(X_i,\widehat{U}(S_i))+\delta_n v\right)\mathrm{d}v\right\}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon\\
+&\leq \sup_{a}p_A(a)\cdot\underbrace{\int_{\R}K(v)\,\mathrm{d}v}_{=1}\cdot\underbrace{\int_{\R}p_{\tilde\varepsilon}(\tilde\varepsilon)\,\mathrm{d}\tilde\varepsilon}_{=1}
+= \sup_a p_A(a) =: C,
+\end{align*}
+where $C<\infty$ by Assumption~\ref{condition:excess_risk:overlap}.
+\end{proof}
+
 
 \subsection{Auxiliary Lemmas}
 
