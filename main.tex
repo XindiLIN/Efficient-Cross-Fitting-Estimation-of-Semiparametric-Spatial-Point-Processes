@@ -1984,37 +1984,37 @@ The last inequality follows from Lemma \ref{lemma:L_i_diff_f}. Consequently, app
 
 \noindent\textbf{Third Layer of Randomness: $U(S_i)$}
 
-\noindent We provide the upper bound of 
-$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|U\right]\right\|_{\psi_2}.$$
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|U\right]\right\|_{\psi_2}.$$
 The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. Let $\widetilde U=\Sigma^{-1/2} U$ where $\widetilde U$ is a vector of i.i.d. standard normal distribution. We then view the empirical risk as a function of $\widetilde U$ whose derivative can be calculated as follows:
 \begin{align*}
-    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\\
-    = & \frac{\partial U}{ \partial \widetilde  U}\cdot  \E\left[\partial_{ U }R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\\
-    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}R_n^{(\delta)}(\theta;\psi,f,p),\ldots,\partial_{U(S_n)}R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]
+    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]\\
+    = & \frac{\partial U}{ \partial \widetilde  U}\cdot  \E\left[\partial_{ U }\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\right\}\bigg| U,X\right]\\
+    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\right\},\ldots,\partial_{U(S_n)}\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\right\}\bigg| U,X\right]
 \end{align*}
-Furthermore, for every $i$, the derivative of the empirical risk with respect to $U(S_i)$ can be written as:
+Furthermore, for every $i$, the derivative of the empirical risk difference with respect to $U(S_i)$ decomposes as:
 \begin{align*}
-    &\E\left[\partial_{U(S_i)}\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\}| U,X\right]\\
-    = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta^\prime;\psi,f,p)\right\}| U,X\right]}_{\text{bounded by Lemma \ref{L_i_derivative_U_diff}}}\\
-    &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta^\prime;\psi,f,p)| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff}}}\\
-    \leq &Cn^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty
+    &\E\left[\partial_{U(S_i)}\left\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right\}\bigg| U,X\right]\\
+    = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f^\prime,p)\right\}\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_U_diff_f}}}\\
+    &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]}_{=\;0}\\
+    \leq &\;Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:L_i_derivative_Y_diff}, Lemma \ref{L_i_derivative_U_diff}, and equation \eqref{eq:vecchina_approximation_nonzero}. Then, the Lipschitz constant of the conditional expectation of the empirical risk with respect to $\tilde U$ given $U,X$ has the following bound:
+The $\partial_{Y_i}$ term vanishes because $Y_i$ does not appear in $L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)$ (see the preamble of this section). The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_f}, and the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
-    &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\right\|_2\\
-    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty\right\}.
+    &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]\right\|_2\\
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
-By Theorem \ref{thm:gaussian_concentration}, we have 
+By Theorem \ref{thm:gaussian_concentration}, we have
 \begin{align*}
-    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}\\
-    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty\right\}.
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|U\right]\right\|_{\psi_2}\\
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
 
 
 
 \noindent\textbf{Fourth Layer of Randomness: $X_i$}
 
-\noindent We provide the upper bound of 
+\noindent We provide the upper bound of
 $$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}.$$
 
 We treat the empirical risk as a function of the outcome error vector $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $\epsilon_i^\prime$ affects the loss function $L_i^{(\delta_n)}$ and $L_j^{(\delta_n)}$ through the the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.  X
