@@ -2015,38 +2015,39 @@ By Theorem \ref{thm:gaussian_concentration}, we have
 \noindent\textbf{Fourth Layer of Randomness: $X_i$}
 
 \noindent We provide the upper bound of
-$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}.$$
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}.$$
 
-We treat the empirical risk as a function of the outcome error vector $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $\epsilon_i^\prime$ affects the loss function $L_i^{(\delta_n)}$ and $L_j^{(\delta_n)}$ through the the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.  X
+We treat the empirical risk as a function of the covariate vector $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $X_i^\prime$ affects the $f,f^\prime$-difference of the loss $L_i^{(\delta_n)}$ directly through the covariate $X_i$ in $f(\cdot,X_i)$ and $p(\cdot|X_i,\widehat U(S_i))$, and also affects $L_j^{(\delta_n)}$ indirectly through the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$.
 
-Specifically, let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and let $O_i^\prime$ be the observation when we change $X_i$ to $X_i^\prime$. Then, the impact of the changing of $X_i$ on the loss function $L_i^{(\delta_n)}$ yields the difference:
+Specifically, let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and let $O_i^\prime$ be the observation when we change $X_i$ to $X_i^\prime$. Then, the impact of changing $X_i$ on the $f,f^\prime$-difference of the loss yields:
 \begin{align*}
-&L^{(\delta_n)}(O_i;\theta,\psi,f,p) - L^{(\delta_n)}(O_i;\theta^\prime,\psi,f,p)\\
-        & -\left[L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p) - L^{(\delta_n)}(O_i^\prime;\theta^\prime,\psi,f,p)\right]\\
-        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
-        \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
+&L^{(\delta_n)}(O_i;\theta,\psi,f,p) - L^{(\delta_n)}(O_i;\theta,\psi,f^\prime,p)\\
+        & -\left[L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p) - L^{(\delta_n)}(O_i^\prime;\theta,\psi,f^\prime,p)\right]\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|\\
+        \leq & C\|f-f^\prime\|_\infty
 \end{align*}
-Additionally, $X_i$ propagates to the empirical risk indirectly through the remaining observations $\widehat U(S_j)$ for $j\neq i$ and $\alpha_{j,i}\neq 0$ (see equation \eqref{eq:widehat_U_i}). Let $O_j^\prime$ be $j$-th observation when we change $X_i$ to $X_i^\prime$. Then, this cross-influence difference is similarly bounded by 
+The last inequality follows from Lemma~\ref{lemma:L_i_diff_f}. Additionally, $X_i$ propagates to the empirical risk indirectly through the remaining observations $\widehat U(S_j)$ for $j\neq i$ and $\alpha_{j,i}\neq 0$ (see equation \eqref{eq:widehat_U_i}). Let $O_j^\prime$ be the $j$-th observation when we change $X_i$ to $X_i^\prime$. Then, this cross-influence difference is similarly bounded by
 \begin{align*}
-&L^{(\delta_n)}(O_j;\theta,\psi,f,p) - L^{(\delta_n)}(O_j;\theta^\prime,\psi,f,p)\\
-        & -\left[L^{(\delta_n)}(O_j^\prime;\theta,\psi,f,p) - L^{(\delta_n)}(O_j^\prime;\theta^\prime,\psi,f,p)\right]\\
-        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
-        \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
+&L^{(\delta_n)}(O_j;\theta,\psi,f,p) - L^{(\delta_n)}(O_j;\theta,\psi,f^\prime,p)\\
+        & -\left[L^{(\delta_n)}(O_j^\prime;\theta,\psi,f,p) - L^{(\delta_n)}(O_j^\prime;\theta,\psi,f^\prime,p)\right]\\
+        \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|\\
+        \leq & C\|f-f^\prime\|_\infty
 \end{align*}
-Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)n^{-1}\|f-f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
-    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}\\
+    \leq & C\log(n)\,n^{-1/2}\|f-f^\prime\|_{\infty}.
 \end{align*}
 
-\noindent \textbf{Sub-Gaussianity:} Combining the results above, we have 
+\noindent \textbf{Sub-Gaussianity:} Combining the results above, we have
 \begin{align*}
-    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\\
-    \leq & \underbrace{\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}}_{\text{Randomness in $\epsilon$}}\\
-    & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
-    & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
-    & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) 
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}\\
+    \leq & \underbrace{\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U,\xi\right]\right\|_{\psi_2}}_{\text{Randomness in $\epsilon$}}\\
+    & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
+    & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
+    & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
+    \leq & C\log(n)\,n^{-1/2}\|f-f^\prime\|_\infty + C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
 
 
