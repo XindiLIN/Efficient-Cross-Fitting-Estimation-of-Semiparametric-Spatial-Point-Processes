@@ -2040,9 +2040,10 @@ Taking the supremum over $(y,a,u,x)$ and setting $C:=C^\prime/c^{\prime 2}$ yiel
 \end{proof}
 
 \begin{lemma}\label{lemma:L_i_diff_psi}
-    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, for fixed $\theta,f,p$,
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
     \begin{align*}
-        \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right| \leq C\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+        &\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
+        \leq &  C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
@@ -2051,10 +2052,10 @@ The proof proceeds in two steps.
 
 \noindent\textbf{Step 1: Lipschitz bound of the loss in $\widehat U(S_i)$.}
 
-From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap} and Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, each of these contributions is uniformly Lipschitz in $u$ with a constant $C^\prime$. Therefore, applying the mean value theorem,
+From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. By Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, $\theta(X_i,\widehat U(S_i))$ is uniformly Lipschitz with $\widehat U(S_i)$ with constant $\gamma_n^{-1}\lambda_n^{-1/2}$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, other three terms are uniformly Lipschitz in $u$ with a constant $C$. Therefore, applying the mean value theorem,
 \begin{align*}
     \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta,\psi,f,p) - L^{(\delta_n)}_i(\theta,\psi^\prime,f,p)\right|
-    \leq C^\prime \sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
+    \leq C\gamma_n^{-1}\lambda_n^{-1/2} \sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
 \end{align*}
 
 \noindent\textbf{Step 2: Bounding $\sup_i|\widehat U(S_i,\psi)-\widehat U(S_i,\psi^\prime)|$ by $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.}
@@ -2082,10 +2083,10 @@ where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to 
 \begin{align*}
 |\Delta\widehat U_i|
 \leq \|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\,\|\widehat{R}_{N(i)}\|_2\left(\frac{\|\Lambda^\prime\|_{\mathrm{op}}}{\Lambda_{ii}\Lambda^\prime_{ii}}+\frac{1}{\Lambda_{ii}}\right)
-\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
+\leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
 \end{align*}
-where the last inequality absorbs $\|\widehat{R}_{N(i)}\|_2$, $\|\Lambda^\prime\|_{\mathrm{op}}$, and $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
-$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}\,\|\Sigma_n(\psi^\prime)^{-1}\|_{\mathrm{op}}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\leq C\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
+where the last inequality absorbs $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
+$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
 Taking $\sup_i$ and combining with Step~1 yields the stated bound.
 \end{proof}
 
