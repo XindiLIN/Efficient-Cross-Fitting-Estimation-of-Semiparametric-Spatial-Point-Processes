@@ -2191,7 +2191,7 @@ where, by contrast with the $f$- and $p$-perturbation cases, the parameter $\psi
 For brevity, we write $B_\psi := C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$ for the right-hand side of \eqref{eq:Lipschitz_psi}.
 We use the conditional expectation to decompose the $\psi_2$-norm into four terms as in \eqref{ref:randomness_decomposition} and provide the upper bound of each.
 
-\textcolor{red}{To bound this one, we should not use the same technique as the previous case where we investigate the change in $L_i$ first, then aggregate them to calculate the change in empirical risk $R_n$. This is because the upper bound in Lemma \ref{lemma:L_i_diff_psi} is too loose. If we use $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|$ as the norm, to upper bound the change in matrix/vector is much tighter than upper bounding the change in a single entry.}
+% \textcolor{red}{To bound this one, we should not use the same technique as the previous case where we investigate the change in $L_i$ first, then aggregate them to calculate the change in empirical risk $R_n$. This is because the upper bound in Lemma \ref{lemma:L_i_diff_psi} is too loose. If we use $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|$ as the norm, to upper bound the change in matrix/vector is much tighter than upper bounding the change in a single entry.}
 
 \noindent\textbf{First Layer Randomness: $\epsilon$}
 
@@ -2201,12 +2201,18 @@ We treat the empirical risk as a function of the outcome error vector $(\epsilon
 
 The direct channel on the $i$-th term: since $\widehat{U}(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}(\psi)\widehat{R}_j$ does \emph{not} depend on $\epsilon_i$ (the sum excludes $j=i$), a change $\epsilon_i\to\epsilon_i^\prime$ only alters $Y_i\to Y_i^\prime:=Y_i-\epsilon_i+\epsilon_i^\prime$ in the $i$-th loss difference. This direct effect is bounded by
 \begin{align*}
-&\left|\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right]\big|_{Y_i}
-        -\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right]\big|_{Y_i^\prime}\right|\\
-        \leq  & 2\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right|
-        \leq  2B_\psi,
+    &L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p) \\
+    & - \left[L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right]\\
+    \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
+    \leq & C\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
 \end{align*}
 where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through $\widehat{U}(S_j,\psi)$ and $\widehat{U}(S_j,\psi^\prime)$ for $j\neq i$ with $\alpha_{j,i}\neq 0$, by altering $\widehat{R}_i = Y_i - f(A_i,X_i)$. Let $\widehat{U}^\prime(S_j,\psi)$ (resp.\ $\widehat{U}^\prime(S_j,\psi^\prime)$) denote these estimates after the change. The resulting perturbation on the $j$-th loss difference is bounded by
+\begin{align*}
+    &\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\left|\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}(S_j,\psi^\prime)}\right]\right|\\
+    & \quad \left|+L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}^\prime(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}^\prime(S_j,\psi^\prime)}\right|
+\end{align*}
+
+
 \begin{align*}
 &\left|\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}(S_j,\psi^\prime)}\right]\right.\\
         &\quad\left.-\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}^\prime(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}^\prime(S_j,\psi^\prime)}\right]\right|\\
@@ -2615,7 +2621,7 @@ Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated boun
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
     \begin{align*}
         &\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
-        \leq &  C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+        \leq &  C\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
@@ -2659,15 +2665,15 @@ where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to 
 \end{align*}
 where the last inequality absorbs $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
 $$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
-Taking $\sup_i$ and combining with Step~1 yields the stated bound.
+The spectral norm of the precison matrix $\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}$ equal to the inverse of the minimum eigenvalue of the covariance matrix, which is bounded above by the nugget effect variance $1/\sigma_\epsilon^2$. Then, taking $\sup_i$ and combining with Step~1 yields the stated bound.
 \end{proof}
 
 \begin{lemma}[$\ell_2$-Norm Bound on $\widehat{U}$ Perturbation]\label{lemma:widehat_U_diff_L2}
-Let $\widehat{\mathbf{U}}(\psi):=(\widehat{U}(S_1,\psi),\ldots,\widehat{U}(S_n,\psi))^\top$ and $\widehat{\mathbf{U}}(\psi^\prime):=(\widehat{U}(S_1,\psi^\prime),\ldots,\widehat{U}(S_n,\psi^\prime))^\top$ be computed via \eqref{eq:widehat_U_i} with precision matrices $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ and $\Lambda_n(\psi^\prime)=\Sigma_n(\psi^\prime)^{-1}$, respectively.  Let $\widehat{\mathbf{R}}=(\widehat{R}_1,\ldots,\widehat{R}_n)^\top$ with $\widehat{R}_j=Y_j-f(A_j,X_j)$.  Under Assumption~\ref{condition:excess_risk:smooth},
+Let $\widehat{\mathbf{U}}(\psi):=(\widehat{U}(S_1,\psi),\ldots,\widehat{U}(S_n,\psi))^\top$ and $\widehat{\mathbf{U}}(\psi^\prime):=(\widehat{U}(S_1,\psi^\prime),\ldots,\widehat{U}(S_n,\psi^\prime))^\top$ be computed via \eqref{eq:widehat_U_i} with precision matrices $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ and $\Lambda_n(\psi^\prime)=\Sigma_n(\psi^\prime)^{-1}$, respectively. Let $\widehat{\mathbf{R}}=(\widehat{R}_1,\ldots,\widehat{R}_n)^\top$ with $\widehat{R}_j=Y_j-f(A_j,X_j)$.  Under Assumption~\ref{condition:excess_risk:smooth},
 \begin{align*}
 \|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2
-\leq C\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\,\|\widehat{\mathbf{R}}\|_2
-\leq C\sqrt{n}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+\leq & C\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\,\|\widehat{\mathbf{R}}\|_2\\
+\leq & C\sqrt{n}\,\|\Sigma_n(\psi)^{-1}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
 \end{align*}
 \end{lemma}
 
@@ -2690,12 +2696,32 @@ M(\Lambda^\prime)-M(\Lambda) = D(\Lambda)^{-1}\Lambda - D(\Lambda^\prime)^{-1}\L
 + \underbrace{(D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1})\Lambda}_{\text{denominator perturbation}}.
 \end{align*}
 \emph{Numerator perturbation.}
-Since the diagonal entries $\Lambda_{ii}^\prime\geq c>0$ are bounded below (by the regularity of $\Sigma_n(\psi^\prime)$), $\|D(\Lambda^\prime)^{-1}\|_{\mathrm{op}}\leq 1/c$.  Hence
+Since the diagonal entries of the precision matrix are bounded below as:
+\begin{align*}
+    \Lambda_{ii} =& 1/\text{Var}(U(S_i)+\epsilon_i|U_{-i})\\
+    \geq & 1/\text{Var}(U(S_i)+\epsilon_i)\\
+    = & 1/(\sigma_\epsilon^{2} +\sigma_{\text{gp}}^{2})
+\end{align*}
+where $\sigma_\epsilon^{2}$ and $\sigma_{gp}^{2}$ are the coefficients of the nugget effect variance corresponding to the covariance parameter $\psi$. Thus, we have
+$\|D(\Lambda^\prime)^{-1}\|_{\mathrm{op}}\leq C$ for some positive constant $C$.  Hence
 $$\|D(\Lambda^\prime)^{-1}(\Lambda-\Lambda^\prime)\|_{\mathrm{op}}\leq \|D(\Lambda^\prime)^{-1}\|_{\mathrm{op}}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}.$$
 \emph{Denominator perturbation.}
-$D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1}$ is diagonal with $i$-th entry $\Lambda_{ii}^{-1}-(\Lambda_{ii}^\prime)^{-1}=(\Lambda_{ii}^\prime-\Lambda_{ii})/(\Lambda_{ii}\Lambda_{ii}^\prime)$, so
+$D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1}$ is diagonal with $i$-th entry $\Lambda_{ii}^{-1}-(\Lambda_{ii}^\prime)^{-1}=(\Lambda_{ii}^\prime-\Lambda_{ii})/(\Lambda_{ii}\Lambda_{ii}^\prime)$. In addition to be bounded below, diagonal entries of the precision matrix are above as:
+\begin{align*}
+    \Lambda_{ii} =& 1/\text{Var}(U(S_i)+\epsilon_i|U_{-i})\\
+    = & 1/\left\{\text{Var}(U(S_i)|U_{-i})+\text{Var}(\epsilon_i|U_{-i})\right\}\\
+    \leq & 1/\text{Var}(\epsilon_i|U_{-i})\\
+    = & 1/\text{Var}(\epsilon_i) = \sigma_\epsilon^2
+\end{align*}
+where $\sigma_\epsilon^{2}$ is the coefficients of the nugget effect variance corresponding to the covariance parameter $\psi$. So,
 $$\|D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1}\|_{\mathrm{op}} = \max_i\frac{|\Lambda_{ii}-\Lambda_{ii}^\prime|}{\Lambda_{ii}\Lambda_{ii}^\prime}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},$$
-since $|\Lambda_{ii}-\Lambda_{ii}^\prime|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$ and the denominators are bounded below.  Combined with $\|\Lambda\|_{\mathrm{op}}\leq C$,
+since $|\Lambda_{ii}-\Lambda_{ii}^\prime|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$ and the denominators are bounded below. Combined with 
+\begin{align*}
+\|\Lambda\|_{\mathrm{op}}=&\|\Sigma^{-1}\|_{\mathrm{op}}\\
+    =& (\lambda_{\min}(\Sigma))^{-1}\\
+    \leq & 1/\sigma^2_\epsilon.
+\end{align*}
+We then have
 $$\|(D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1})\Lambda\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}.$$
 Adding the two parts,
 $$\|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}.$$
@@ -2705,10 +2731,11 @@ $$\|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|
 Applying the operator norm and using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ as in Lemma~\ref{lemma:L_i_diff_psi},
 \begin{align*}
 \|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2
-= \|(M(\Lambda^\prime)-M(\Lambda))\widehat{\mathbf{R}}\|_2
-\leq \|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2
-\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2
-\leq C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2.
+= &\|(M(\Lambda^\prime)-M(\Lambda))\widehat{\mathbf{R}}\|_2
+\leq \|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2\\
+\leq & C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2\\
+\leq &C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2\\
+& C \|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2
 \end{align*}
 
 \noindent\textbf{Step 4: Bounding $\|\widehat{\mathbf{R}}\|_2$.}
