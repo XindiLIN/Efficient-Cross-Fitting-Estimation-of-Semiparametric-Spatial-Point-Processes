@@ -3227,6 +3227,83 @@ Substituting $\eta = C'D\,e^{-t}$ transforms this into $C'D\int_0^\infty \sqrt{t
 The Lipschitz structure is essential: without it, converting $L^2(P)$ Donsker to $L^\infty$ Donsker may fail. For instance, a class with $\log\mathcal{N}(\mathcal{F},\|\cdot\|_{L^2},\epsilon)\leq C\epsilon^{-2\alpha}$ (Donsker for $\alpha<1$) would yield $\log\mathcal{N}(\mathcal{F},\|\cdot\|_\infty,\eta)\leq C\eta^{-\alpha(d+2)}$, whose entropy integral diverges for $\alpha(d+2)\geq 2$. The VC-type (logarithmic) structure in Assumption~\ref{condition:excess_risk:VC-type} is what keeps the $L^\infty$ entropy logarithmic after the norm conversion.
 \end{remark}
 
+\begin{lemma}[Donsker Condition for GP Covariance Parameter Space]\label{lemma:covering_number_psi}
+Suppose the covariance parameter space $\Psi\subset\mathbb{R}^p$ is compact with Euclidean diameter $D_\Psi$, and the covariance function $C(\cdot,\cdot;\psi)$ is continuously differentiable in $\psi\in\Psi$ with uniformly bounded gradient:
+\[
+\kappa \;:=\; \sup_{s,s'\in\mathcal{S},\;\psi\in\Psi}\|\nabla_\psi C(s,s';\psi)\|_{\mathbb{R}^p} \;<\; \infty.
+\]
+Equip $\Psi$ with the semi-metric $\|\psi-\psi'\|_\Psi := \|\Sigma_n(\psi)-\Sigma_n(\psi')\|_{\mathrm{op}}$, where $\Sigma_n(\psi)$ is the $n\times n$ covariance matrix with $(i,j)$-entry $C(S_i,S_j;\psi)$. Then the covering numbers satisfy
+\begin{equation}\label{eq:covering_psi}
+\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,\epsilon) \;\leq\; p\log\!\frac{Cn\kappa D_\Psi}{\epsilon}
+\end{equation}
+for a universal constant $C$, and $\Psi$ satisfies the Donsker condition:
+\[
+\int_0^{D}\sqrt{\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,\epsilon)}\,\mathrm{d}\epsilon \;<\;\infty,
+\]
+where $D:=\sup_{\psi,\psi'\in\Psi}\|\psi-\psi'\|_\Psi\leq n\kappa D_\Psi$ is the diameter of $\Psi$ under $\|\cdot\|_\Psi$.
+\end{lemma}
+
+\begin{proof}
+\noindent\textbf{Step 1 (Per-entry Lipschitz bound).}
+Fix any $\psi,\psi'\in\Psi$ and any pair of locations $S_i,S_j$. By the mean value theorem applied to $\psi\mapsto C(S_i,S_j;\psi)$ along the segment from $\psi'$ to $\psi$,
+\[
+\bigl|C(S_i,S_j;\psi)-C(S_i,S_j;\psi')\bigr|
+\;\leq\; \|\nabla_\psi C(S_i,S_j;\bar\psi)\|_{\mathbb{R}^p}\,\|\psi-\psi'\|_{\mathbb{R}^p}
+\;\leq\; \kappa\|\psi-\psi'\|_{\mathbb{R}^p}
+\]
+for some $\bar\psi$ on the segment.
+
+\noindent\textbf{Step 2 (Spectral norm Lipschitz bound).}
+Let $\Delta_n(\psi,\psi'):=\Sigma_n(\psi)-\Sigma_n(\psi')$, whose $(i,j)$-entry satisfies $|\Delta_{ij}|\leq\kappa\|\psi-\psi'\|_{\mathbb{R}^p}$ by Step~1. For the spectral norm of a symmetric matrix, $\|A\|_{\mathrm{op}}\leq\|A\|_{\infty} = \max_i\sum_j|a_{ij}|$. Since $\Delta_n$ has $n$ columns and each entry is bounded by $\kappa\|\psi-\psi'\|_{\mathbb{R}^p}$:
+\[
+\|\Sigma_n(\psi)-\Sigma_n(\psi')\|_{\mathrm{op}}
+\;\leq\; \max_i\sum_{j=1}^n|\Delta_{ij}|
+\;\leq\; n\kappa\|\psi-\psi'\|_{\mathbb{R}^p}.
+\]
+Hence the identity map $(\Psi,\|\cdot\|_{\mathbb{R}^p})\to(\Psi,\|\cdot\|_\Psi)$ is $(n\kappa)$-Lipschitz.
+
+\noindent\textbf{Step 3 (Covering number bound).}
+Any $\delta$-cover of $\Psi$ in $\|\cdot\|_{\mathbb{R}^p}$ is an $(n\kappa\delta)$-cover in $\|\cdot\|_\Psi$. Therefore, setting $\delta=\epsilon/(n\kappa)$:
+\[
+\mathcal{N}(\Psi,\|\cdot\|_\Psi,\epsilon)
+\;\leq\; \mathcal{N}\!\left(\Psi,\|\cdot\|_{\mathbb{R}^p},\frac{\epsilon}{n\kappa}\right).
+\]
+Since $\Psi\subset\mathbb{R}^p$ is compact with Euclidean diameter $D_\Psi$, a standard volumetric argument yields
+\[
+\mathcal{N}\!\left(\Psi,\|\cdot\|_{\mathbb{R}^p},\frac{\epsilon}{n\kappa}\right)
+\;\leq\; \left(\frac{2n\kappa D_\Psi}{\epsilon}+1\right)^p
+\;\leq\; \left(\frac{Cn\kappa D_\Psi}{\epsilon}\right)^p
+\]
+for $\epsilon\leq n\kappa D_\Psi$, giving \eqref{eq:covering_psi}: $\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,\epsilon)\leq p\log(Cn\kappa D_\Psi/\epsilon)$.
+
+\noindent\textbf{Step 4 (Entropy integral).}
+With $D=n\kappa D_\Psi$ (an upper bound on the diameter of $\Psi$ under $\|\cdot\|_\Psi$):
+\[
+\int_0^D\!\sqrt{\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,\epsilon)}\,\mathrm{d}\epsilon
+\;\leq\; \sqrt{p}\int_0^D\!\sqrt{\log\!\tfrac{D}{\epsilon}}\,\mathrm{d}\epsilon.
+\]
+The substitution $\epsilon=De^{-t}$ gives $\mathrm{d}\epsilon = De^{-t}\mathrm{d}t$ and $\log(D/\epsilon)=t$, so
+\[
+\int_0^D\sqrt{\log\!\tfrac{D}{\epsilon}}\,\mathrm{d}\epsilon
+\;=\; D\int_0^\infty\sqrt{t}\,e^{-t}\,\mathrm{d}t
+\;=\; D\,\Gamma\!\left(\tfrac{3}{2}\right)
+\;=\; \frac{D\sqrt{\pi}}{2}
+\;<\;\infty,
+\]
+completing the proof.
+\end{proof}
+
+\begin{remark}
+The gradient bound $\kappa<\infty$ holds for any covariance function that is $C^1$ in $\psi$ on a compact set $\Psi$. In particular, it holds for the Mat\'{e}rn covariance
+\[
+C_{\mathrm{Mat}}(s,s';\sigma^2,\ell,\nu)
+= \frac{\sigma^2 2^{1-\nu}}{\Gamma(\nu)}
+\!\left(\frac{\sqrt{2\nu}\|s-s'\|}{\ell}\right)^{\!\nu}\!
+K_\nu\!\!\left(\frac{\sqrt{2\nu}\|s-s'\|}{\ell}\right),
+\]
+whenever $\Psi$ is bounded away from $0$ in all coordinates $(\sigma^2,\ell,\nu)$, since the partial derivatives w.r.t.\ $(\sigma^2,\ell,\nu)$ are continuous and bounded on such sets.
+\end{remark}
+
 \subsection{Auxiliary Lemmas}
 
 \subsubsection{Empirical Process Bound}
