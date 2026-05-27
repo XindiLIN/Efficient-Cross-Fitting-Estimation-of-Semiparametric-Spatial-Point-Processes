@@ -1626,9 +1626,9 @@ Let $\epsilon_\theta \propto n^{-1}$, $\epsilon_p \propto n^{-1}, \epsilon_\mu\p
 \end{proof}
 
 
-\subsection{Sub-Gaussianity}
+\subsection{Sub-Gaussianity}\label{sec:sub-gaussianity}
 
-In this section, we derive the sub-Gaussianity of $R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$ w.r.t. $\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}, p\in\mathcal{F}_p, \psi\in\Psi$. The main challenge is that the empirical risk $R_n^{(\delta_n)}(\theta;f,p,\psi)$ is defined as a function of random variable $(X_i,\widehat U(S_i), A_i, Y_i)$ while the underlying data generative process \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} are defined via random variables $X_i,U(S_i), \xi_i,\epsilon_i$. In the next section, we show that $\widehat U(S_i)$ is a linear combination of random variables at nearby locations.
+In this section, we derive the sub-Gaussianity of $R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$ w.r.t. $\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, \psi\in\Psi$. The main challenge is that the empirical risk $R_n^{(\delta_n)}(\theta;f,p,\psi)$ is defined as a function of random variable $(X_i,\widehat U(S_i), A_i, Y_i)$ while the underlying data generative process \eqref{eq:data_generative_model_1} and \eqref{eq:data_generative_model_2} are defined via random variables $X_i,U(S_i), \xi_i,\epsilon_i$. In the next section, we show that $\widehat U(S_i)$ is a linear combination of random variables at nearby locations.
 
 \subsubsection{Theory of Vecchia Approximation}
 Denote $\Lambda_n(\psi)$ as the inverse of the covariance matrix $\Sigma_n(\psi)$ where $\psi$ is the parameter of the covariance function of the Gaussian process. Then, $\widehat U(S_i)$, i.e, the estimation of the latent unobserved process $U(S_i)$, is a linear combination of the neighbored observations as follows:
@@ -2178,7 +2178,7 @@ where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Becau
 
 In this section, for any $\psi,\psi^\prime$, we provide the upper bound for
 $$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}.$$
-Specifically, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, and $p\in\mathcal{F}_p$,
+Specifically, 
 \begin{align*}
     &R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\\
     := & \frac{1}{n}\sum_{i=1}^n \left(L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right),
@@ -2208,8 +2208,8 @@ The direct channel on the $i$-th term: since $\widehat{U}(S_i,\psi)=\sum_{j\neq 
 \end{align*}
 where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through $\widehat{U}(S_j,\psi)$ and $\widehat{U}(S_j,\psi^\prime)$ for $j\neq i$ with $\alpha_{j,i}\neq 0$, by altering $\widehat{R}_i = Y_i - f(A_i,X_i)$. Let $\widehat{U}^\prime(S_j,\psi)$ (resp.\ $\widehat{U}^\prime(S_j,\psi^\prime)$) denote these estimates after the change. The resulting perturbation on the $j$-th loss difference is bounded by
 \begin{align*}
-    &L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i,\psi),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i,\psi^\prime),X_i);\theta,\psi^\prime,f,p) \\
-    & - \left[L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i,\psi),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i,\psi^\prime),X_i);\theta,\psi^\prime,f,p)\right]\\
+    &L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j,\psi),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j,\psi^\prime),X_j);\theta,\psi^\prime,f,p) \\
+    & - \left[L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j,\psi),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j,\psi^\prime),X_j);\theta,\psi^\prime,f,p)\right]\\
     \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
     \leq & B_{\psi,\psi^\prime}.
 \end{align*}
@@ -2246,6 +2246,78 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. There is 
 \end{align*}
 
 \noindent\textbf{Third Layer of Randomness: $U(S_i)$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|U\right]\right\|_{\psi_2}.$$
+The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. Let $\widetilde U=\Sigma^{-1/2} U$ where $\widetilde U$ is a vector of i.i.d. standard normal distribution. We then view the empirical risk as a function of $\widetilde U$ whose derivative can be calculated as follows:
+\begin{align*}
+    &\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]\\
+    = & \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi^\prime,f,p)\right\},\ldots,\partial_{U(S_n)}\left\{R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi^\prime,f,p)\right\}\bigg| U,X\right].
+\end{align*}
+Furthermore, for every $i$, the derivative of the empirical risk difference with respect to $U(S_i)$ decomposes as:
+\begin{align*}
+    &\E\left[\partial_{U(S_i)}\left\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right\}\bigg| U,X\right]\\
+    = & \sum_{j\neq i}^n  \left\{\alpha_{i,j}(\psi)\E\left[\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)\bigg| U,X\right]-\alpha_{i,j}(\psi^\prime)\E\left[\partial_{\widehat U^\prime(S_j)}R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]\right\}\\
+    &+ \E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]\\
+    \leq & \sum_{j\neq i}^n  \left\{\alpha_{i,j}(\psi)\underbrace{\E\left[\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p) - \partial_{\widehat U^\prime(S_j)}R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_U_diff_psi}}}\right\}\\
+    & + \sum_{j\neq i}^n  \left\{\underbrace{\left(\alpha_{i,j}(\psi)-\alpha_{i,j}(\psi^\prime)\right)}_{\text{bounded by $\|\Sigma_n(\psi)-\Sigma_n(\psi)^\prime\|_{\text{op}}$}}\underbrace{\E\left[\partial_{\widehat U^\prime(S_j)}R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]}_{\text{bounded by $C\gamma_n^{-1}\lambda_n^{-1/2}$}}\right\}\\
+    & + \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff_psi}}}\\
+    \leq & C\log(n)\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\log(n)^{1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    & + C\log(n)^{1/2}\gamma_n^{-1}\lambda^{-1/2}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    & + C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    \leq & C\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}
+\end{align*}
+
+Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
+\begin{align*}
+    &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]\right\|_2\\
+    \leq & C\|\Sigma_n\|_{\text{op}}\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+\end{align*}
+By Theorem \ref{thm:gaussian_concentration}, we have
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|U\right]\right\|_{\psi_2}\\
+    \leq & C\|\Sigma_n\|_{\text{op}}\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+\end{align*}
+
+\noindent\textbf{Fourth Layer of Randomness: $X_i$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}.$$
+We treat the empirical risk as a function of the covariate vector $(X_1, \ldots,X_i,\ldots, X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1, \ldots,X_i,\ldots, X_n)$ and $(X_1, \ldots,X_i^\prime,\ldots, X_n)$. According to Table \ref{tab:filled_jacobian}, a change from $X_i$ to $X_i^\prime$ affects the $p,p^\prime$-difference of the loss $L_i^{(\delta_n)}$ directly through the covariate $X_i$ in $f(\cdot,X_i)$, $p(\cdot|X_i,\widehat U(S_i))$, and $p^\prime(\cdot|X_i,\widehat U(S_i))$, and also affects $L_j^{(\delta_n)}$ indirectly through the estimated latent structures $\{\widehat U(S_j)\}_{j\neq i}$ where $\alpha_{j,i}\neq 0$. Specifically, let $(Y_i^\prime,A_i^\prime,\widehat U(S_i),X_i^\prime)$ be the observation when we change $X_i$ to $X_i^\prime$. Then, the direct impact of changing $X_i$ on the $\psi,\psi^\prime$-difference of the loss yields:
+
+\begin{align*}
+    &L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\\
+    & - \left[L^{(\delta_n)}((Y_i^\prime,A_i^\prime,\widehat U(S_i),X_i^\prime);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i^\prime,A_i^\prime,\widehat U^\prime(S_i),X_i^\prime);\theta,\psi^\prime,f,p) \right]\\
+    \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
+    \leq & 2B_{\psi,\psi^\prime}.
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additionally, $X_i$ propagates to the empirical risk indirectly through the remaining observations $\widehat U(S_j)$ for $j\neq i$ and $\alpha_{j,i}\neq 0$ (see equation \eqref{eq:widehat_U_i}). We write the estimated latent process at $j$-th observation as $\widehat U(S_j,X_i;\psi)$ as a function of $X_i$ and $\psi$. Then, this cross-influence difference is similarly bounded by
+\begin{align*}
+    &L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j,X_i;\psi),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j,X_i;\psi^\prime),X_j);\theta,\psi^\prime,f,p)\\
+    & - \left[L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j,X_i^\prime;\psi),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j,X_i^\prime;\psi^\prime),X_j);\theta,\psi^\prime,f,p) \right]\\
+    \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
+    \leq & 2B_{\psi,\psi^\prime}.
+\end{align*}
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $\log(n)B_{\psi,\psi^\prime}$. Consequently, applying McDiarmid's inequality yields:
+\begin{align*}
+    &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}\\
+    \leq &\log(n)n^{-1/2}B_{\psi,\psi^\prime}\\
+    \leq & C\log(n)^{3/2}n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
+\end{align*}
+
+\noindent \textbf{Sub-Gaussianity:} Combining the results above i.e., sub-Gaussianity from four layers of randomness, we have
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}\\
+    \leq & \underbrace{\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[\cdots|X,U,\xi\right]\right\|_{\psi_2}}_{\text{Randomness in $\epsilon$}}\\
+    & + \underbrace{\left\|\E\left[\cdots|X,U,\xi\right]-\E\left[\cdots|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
+    & + \underbrace{\left\|\E\left[\cdots|X,U\right]-\E\left[\cdots|U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
+    & + \underbrace{\left\|\E\left[\cdots|X\right]-\E\left[\cdots\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
+    \leq & C\log(n)^{3/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
+    & + C\log(n)^{1/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
+    & + C\|\Sigma_n\|_{\text{op}}\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    & +C\log(n)^{3/2}n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
+    \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
+\end{align*}
 
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
@@ -2836,13 +2908,13 @@ $$\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n
 \begin{lemma}\label{lemma:L_i_derivative_U_diff_psi}
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ and $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$. Let $U=(U(S_1),\ldots,U(S_n))$ and $X=(X_1,\ldots,X_n)$. Then, for $\psi,\psi^\prime$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$, the derivative of the conditional expectation of the loss difference with respect to $\widehat U(S_i,\psi)$ satisfies
     \begin{align*}
-        &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i,\psi)}\,\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\Big|\,U,X\right]\right|\\
-        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+        &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\E\!\left[\partial_{\widehat U(S_i,\psi)}\,L^{(\delta_n)}_i(\theta;\psi,f,p) - \partial_{\widehat U(S_i,\psi^\prime)}\,L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\Big|\,U,X\right]\right|\\
+        &\leq C\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\sqrt{\log(n)}\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
 \begin{proof}
-Let $u=\widehat{U}(S_i,\psi)$, $u^\prime=\widehat{U}(S_i,\psi^\prime)$, and $\Delta:=\Delta\widehat{U}_i=u-u^\prime$ (treated as a fixed offset so that $u^\prime=u-\Delta$). Setting $F(u):=L^{(\delta_n)}_i(\theta;\psi;u)-L^{(\delta_n)}_i(\theta;\psi^\prime;u-\Delta)$, the ψ,ψ$^\prime$-difference $F(u)$ has the four-term decomposition of Lemma~\ref{lemma:L_i_diff_psi}:
+Let $u=\widehat{U}(S_i,\psi)$, $u^\prime=\widehat{U}(S_i,\psi^\prime)$, and $\Delta:=\Delta\widehat{U}_i=u-u^\prime$ (treated as a fixed offset so that $u^\prime=u-\Delta$). Setting $F(u):=L^{(\delta_n)}_i(\theta;\psi;u)-L^{(\delta_n)}_i(\theta;\psi^\prime;u-\Delta)$, the $\psi$,$\psi^\prime$-difference $F(u)$ has the four-term decomposition of Lemma~\ref{lemma:L_i_diff_psi}:
 \begin{align*}
 F(u)
 =\;&\underbrace{-\Delta\bigl(\theta(X_i,u)-a_L\bigr)}_{\text{Term 1}}
@@ -2868,8 +2940,15 @@ Since $u^\prime=u-\Delta$ also varies with $u$, the Leibniz rule applied to $\in
 -\bigl(\mathcal{T}-f(\theta(u^\prime))-u\bigr)\partial_{u^\prime}\theta(u^\prime)
 -\bigl(\theta(X_i,u)-\theta(X_i,u^\prime)\bigr).
 \end{align*}
-The last sub-term satisfies $|\theta(u)-\theta(u^\prime)|\leq\sup|\partial_u\theta|\cdot|\Delta|\leq C|\Delta|/(\gamma_n\sqrt{\lambda_n})$ by Lipschitz continuity of $\theta$ (Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}). For the first two sub-terms, adding and subtracting shows their difference is $O(\gamma_n^{-2}\lambda_n^{-1/2}|\Delta|)$ (via $\|\partial^2_u\theta\|_\infty\leq C\gamma_n^{-2}\lambda_n^{-1/2}$ from Lemma~\ref{lemma:derivative_svm}), which is dominated. Hence
-$$\left|\E\!\left[\mathrm{Term\,(II)}\,\big|\,U,X\right]\right|\leq\frac{C|\Delta|}{\gamma_n\sqrt{\lambda_n}}.$$
+The last sub-term satisfies $|\theta(u)-\theta(u^\prime)|\leq\sup|\partial_u\theta|\cdot|\Delta|\leq C|\Delta|/(\gamma_n\sqrt{\lambda_n})$ by Lipschitz continuity of $\theta$ (Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}). For the first two sub-terms, 
+\begin{align*}
+    & \bigl(\mathcal{T}-f(\theta(u))-u\bigr)\partial_u\theta(u)
+-\bigl(\mathcal{T}-f(\theta(u^\prime))-u\bigr)\partial_{u^\prime}\theta(u^\prime)\\
+= & \bigl(\mathcal{T}-f(\theta(u))-u\bigr)\{\partial_u\theta(u) - \partial_{u^\prime}\theta(u^\prime)\}+ \{f(\theta(u)) - f(\theta(u^\prime))\}\partial_{u^\prime}\theta(u^\prime)\\
+\leq & C(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}|\Delta|
+\end{align*}
+The last inequality follows from (i) By Lemma \ref{lemma:bound_svm} and Lemma \ref{lemma:derivative_svm}, $\partial_{u^\prime}\theta(u^\prime)\leq \gamma_n^{-1}\lambda_n^{-1/2}$; (ii) By Assumption \ref{condition:excess_risk:smooth}, we have $f(\theta(u)) - f(\theta(u^\prime))\leq |\Delta|$ and $\mathcal{T}-f(\theta(u))-u\leq C$ (iii) Also, $\partial_u\theta(u) - \partial_{u^\prime}\theta(u^\prime)\leq \gamma_n^{-2}\lambda_n^{-1/2}|\Delta|$ from Lemma Lemma \ref{lemma:bound_svm} and Lemma \ref{lemma:derivative_svm}. Hence
+$$\left|\E\!\left[\mathrm{Term\,(II)}\,\big|\,U,X\right]\right|\leq\frac{C|\Delta|}{\gamma_n\sqrt{\lambda_n}}+\frac{C|\Delta|}{\gamma_n^2\sqrt{\lambda_n}}.$$
 
 \noindent\textbf{Term (III): derivative of Term 3.}
 Applying the product rule to $\bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\bigr)\int_{a_L}^{\theta(u)}K\,\mathrm{d}a$, the derivative w.r.t.\ $u$ (with $u^\prime=u-\Delta$) produces two parts:
@@ -2877,8 +2956,15 @@ Applying the product rule to $\bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-
 \text{Part (a):}&\quad\frac{\mathrm{d}}{\mathrm{d}u}\Bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\Bigr)\cdot\int_{a_L}^{\theta(u)}K\,\mathrm{d}a,\\
 \text{Part (b):}&\quad\Bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\Bigr)\cdot K_{\delta_n}(A_i-\theta(u))\,\partial_u\theta(u).
 \end{align*}
-For Part (a): differentiating each fraction with $\mathrm{d}u^\prime/\mathrm{d}u=1$ gives $\tfrac{\mathrm{d}}{\mathrm{d}u}(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p})=(\tfrac{1}{p}-\tfrac{1}{p^\prime})+O(|\Delta|)$ by Lipschitz of $p$ and $\partial_u p$, so $|\tfrac{1}{p}-\tfrac{1}{p^\prime}|\leq C|\Delta|/c^{\prime 2}$ and the whole factor is $O(|\Delta|)$. Combined with Lemma~\ref{lemma:kernel_int_theta_bound}, $\left|\E[\mathrm{Part\,(a)}|U,X]\right|\leq C|\Delta|$.
-For Part (b): $|\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}|\leq C|\Delta|$ (Lipschitz), and applying Lemma~\ref{lemma:kernel_theta_exp_bound} and Lemma~\ref{lemma:derivative_svm}+\ref{lemma:bound_svm}, $\left|\E[\mathrm{Part\,(b)}|U,X]\right|\leq C|\Delta|\cdot C\cdot C\gamma_n^{-1}\lambda_n^{-1/2}$.
+For Part (a): differentiating each fraction with $\mathrm{d}u^\prime/\mathrm{d}u=1$ gives 
+\begin{align*}
+    &\tfrac{\mathrm{d}}{\mathrm{d}u}(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p})\\
+    =&(\tfrac{1}{p}-\tfrac{1}{p^\prime})- \tfrac{1}{p^{\prime2}}\tfrac{\mathrm{d p^\prime}}{\mathrm{d}u} +\tfrac{1}{p^{2}}\tfrac{\mathrm{d p}}{\mathrm{d}u} \\
+    \leq & C|\Delta|
+\end{align*}
+ by Lipschitz of $p$ and $\partial_u p$ in Assumption \ref{condition:excess_risk:smooth}. Combined with Lemma~\ref{lemma:kernel_int_theta_bound}, we have $$\left|\E[\mathrm{Part\,(a)}|U,X]\right|\leq C|\Delta|.$$
+For Part (b): first, Assumption \ref{condition:excess_risk:smooth}(Lipschitz), we have
+$$|\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}|\leq C|\Delta|.$$ Applying Lemma~\ref{lemma:kernel_theta_exp_bound} (boundedness of the conditional expectation of the surrogate kernel) and Lemma~\ref{lemma:derivative_svm} plus \ref{lemma:bound_svm} (boundedness of SVM and its derivatives), we have $$\left|\E[\mathrm{Part\,(b)}|U,X]\right|\leq C|\Delta|\cdot C\cdot C\gamma_n^{-1}\lambda_n^{-1/2}.$$
 Hence $\left|\E[\mathrm{Term\,(III)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$ (since $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ absorbs Part (a)).
 
 \noindent\textbf{Term (IV): derivative of Term 4.}
@@ -2887,14 +2973,23 @@ Applying the product rule to $\tfrac{Y_i-f-u}{p}\int_{\theta(u^\prime)}^{\theta(
 \text{Part (c):}&\quad\partial_u\!\Bigl(\tfrac{Y_i-f-u}{p}\Bigr)\int_{\theta(u^\prime)}^{\theta(u)}K\,\mathrm{d}a,\\
 \text{Part (d):}&\quad\tfrac{Y_i-f-u}{p}\,\bigl[K_{\delta_n}(A_i-\theta(u))\partial_u\theta(u)-K_{\delta_n}(A_i-\theta(u^\prime))\partial_{u^\prime}\theta(u^\prime)\bigr].
 \end{align*}
-For Part (c): $|\partial_u(\tfrac{Y_i-f-u}{p})|\leq C$ (Assumption~\ref{condition:excess_risk:smooth},~\ref{condition:excess_risk:overlap}), and by the same Lipschitz argument as in Lemma~\ref{lemma:kernel_int_exp_bound}, $\E[\int_{\theta(u^\prime)}^{\theta(u)}K\,\mathrm{d}a|U,X]\leq C|\theta(u)-\theta(u^\prime)|\leq C|\Delta|/(\gamma_n\sqrt{\lambda_n})$.
-For Part (d): $|\tfrac{Y_i-f-u}{p}|\leq C^\prime$; using Lemma~\ref{lemma:kernel_theta_exp_bound} and the bound $\E[|K_{\delta_n}(A_i-\theta(u))-K_{\delta_n}(A_i-\theta(u^\prime))||U,X]\leq C|\theta(u)-\theta(u^\prime)|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$ (analogous to Lemma~\ref{lemma:kernel_exp_diff}), together with $|\partial_u\theta|\leq C\gamma_n^{-1}\lambda_n^{-1/2}$, $\left|\E[\mathrm{Part\,(d)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$.
+For Part (c): By Assumption~\ref{condition:excess_risk:smooth},~\ref{condition:excess_risk:overlap}, we have 
+$$|\partial_u(\tfrac{Y_i-f-u}{p})|\leq C.$$
+Then, by the boundedness of the derivative of the kernel SVM in Lemma~\ref{lemma:kernel_int_exp_bound}, we have $$\E[\int_{\theta(u^\prime)}^{\theta(u)}K\,\mathrm{d}a|U,X]\leq C|\theta(u)-\theta(u^\prime)|\leq C|\Delta|/(\gamma_n\sqrt{\lambda_n}).$$
+For Part (d): By Assumption~\ref{condition:excess_risk:smooth},~\ref{condition:excess_risk:overlap}, we have
+$$|\tfrac{Y_i-f-u}{p}|\leq C^\prime.$$ 
+Then, by Lemma~\ref{lemma:kernel_theta_exp_bound}, we have
+\begin{align*}
+    &\E[|K_{\delta_n}(A_i-\theta(u))-K_{\delta_n}(A_i-\theta(u^\prime))||U,X]\\
+    \leq & C|\theta(u)-\theta(u^\prime)|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|
+\end{align*}
+together with $|\partial_u\theta|\leq C\gamma_n^{-1}\lambda_n^{-1/2}$, $\left|\E[\mathrm{Part\,(d)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$.
 Hence $\left|\E[\mathrm{Term\,(IV)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$.
 
 \noindent\textbf{Final assembly.}
 Collecting Terms (I)--(IV), each bounded by $C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta\widehat{U}_i|$,
-$$\left|\partial_{\widehat{U}(S_i,\psi)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\big|\,U,X\right]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta\widehat{U}_i|.$$
-Applying the pathwise bound $|\Delta\widehat{U}_i|\leq C\sqrt{\log(n)}\|\Lambda_n(\psi)-\Lambda_n(\psi^\prime)\|_{\mathrm{op}}\leq C\sqrt{\log(n)}\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$ from Step~3 of Lemma~\ref{lemma:L_i_diff_psi}, and taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$, yields the stated bound.
+$$\left|\partial_{\widehat{U}(S_i,\psi)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\big|\,U,X\right]\right|\leq C(\gamma_n^{-1} +\gamma_n^{-2})\lambda_n^{-1/2}|\Delta\widehat{U}_i|.$$
+Applying the bound of $|\Delta \widehat U_i|$ in Step 3 of Lemma~\ref{lemma:L_i_diff_psi}, and taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$, yields the stated bound.
 \end{proof}
 
 
@@ -3039,6 +3134,33 @@ The argument is identical to that of Lemma~\ref{lemma:kernel_exp_bound}.  By the
 where $C<\infty$ by Assumption~\ref{condition:excess_risk:overlap}.
 \end{proof}
 
+\subsection{Weak Convergence Rate}
+In Section \ref{sec:sub-gaussianity}, we derived the sub-Gaussianity of $R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$ w.r.t. $\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, \psi\in\Psi$. In this section, we combine them with the complexity of the parameter space, i.e., rate of covering number to derive the weak convergence rate: 
+$$\sup_{\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, \psi\in\Psi}R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$$ 
+Specifically, for $\theta\in\mathcal{H}_\mathcal{K}$, we have  
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\\
+    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) 
+\end{align*}
+For $ f\in\mathcal{F}_f$, we have 
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|f-f^\prime\|_\infty.
+\end{align*}
+For $ p\in\mathcal{F}_p$, we have 
+\begin{align*}
+    &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|p-p^\prime\|_\infty.
+\end{align*}
+For $\psi\in\Psi$, we have 
+\begin{align*}
+&\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}\\
+    \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
+\end{align*}
+
+\subsubsection{Covering Number of Parameter Space}
+
+\noindent By Assumption \ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_{P,2}$ norm. We will show that under Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the with respect to infinity norm.
 
 \subsection{Auxiliary Lemmas}
 
