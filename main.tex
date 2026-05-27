@@ -3160,7 +3160,72 @@ For $\psi\in\Psi$, we have
 
 \subsubsection{Covering Number of Parameter Space}
 
-\noindent By Assumption \ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_{P,2}$ norm. We will show that under Assumption \ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the with respect to infinity norm.
+\noindent By Assumption \ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_{P,2}$ norm. We show below that under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ also satisfy the Donsker condition with respect to the supremum norm $\|\cdot\|_\infty$. The key ingredient is a Lipschitz interpolation inequality that converts the VC-type (logarithmic) entropy in $\|\cdot\|_{L_2(P)}$ into logarithmic entropy in $\|\cdot\|_\infty$. Assumption~\ref{condition:excess_risk:overlap} is not required for this result.
+
+\begin{lemma}[Donsker Condition under $L^\infty$]\label{lemma:covering_number_Linfty}
+Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, the function classes $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_\infty$. Specifically, for every $\eta\in(0,1)$,
+\begin{align*}
+\log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,\eta)
+&\;\leq\; \frac{V(d_{\mathcal{D}}+2)}{2}\,\log\!\frac{C'\!D}{\eta},\\
+\log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,\eta)
+&\;\leq\; \frac{V(d_{\mathcal{D}}+2)}{2}\,\log\!\frac{C'\!D}{\eta},
+\end{align*}
+where $V$ and $A$ are the VC-type constants in Assumption~\ref{condition:excess_risk:VC-type}, $D$ is the diameter of $\mathcal{D}=\mathcal{A}\times\mathcal{X}\times\mathcal{U}$, $d_{\mathcal{D}}=\dim\mathcal{D}$, and $C$ absorbs universal constants. In particular,
+\[
+\int_0^{D}\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta)}\,\mathrm{d}\eta \;<\;\infty,
+\]
+and the same holds for $\mathcal{F}_p$.
+\end{lemma}
+
+\begin{proof}
+We argue for $\mathcal{F}_f$; the proof for $\mathcal{F}_p$ is identical. The proof combines a Lipschitz interpolation inequality with the VC-type covering number bound.
+
+\noindent\textbf{Step 1 (Lipschitz interpolation).}
+By Assumption~\ref{condition:excess_risk:smooth}, every $f\in\mathcal{F}_f$ is $C'$-Lipschitz on $\mathcal{D}$ (since $\|\nabla f\|_\infty\leq C'$). Consequently, for any $h = f-g$ with $f,g\in\mathcal{F}_f$, $h$ is $2C'$-Lipschitz. We claim:
+\begin{equation}\label{eq:lipschitz_interpolation}
+\|h\|_\infty \;\leq\; C\,(2C')^{d_{\mathcal{D}}/(d_{\mathcal{D}}+2)}\,\|h\|_{L^2(\mathrm{Leb})}^{2/(d_{\mathcal{D}}+2)}.
+\end{equation}
+To see this, fix any $x\in\mathcal{D}$ and radius $r>0$. By Lipschitz continuity, $|h(x)-h(y)|\leq 2C' r$ for all $y\in B(x,r)\cap\mathcal{D}$. Averaging over $B(x,r)\cap\mathcal{D}$ and applying the Cauchy--Schwarz inequality:
+\[
+|h(x)| \;\leq\; 2C' r + \frac{\|h\|_{L^2(\mathrm{Leb})}}{\sqrt{|B(x,r)\cap\mathcal{D}|}}
+\;\leq\; 2C' r + \frac{C\,\|h\|_{L^2(\mathrm{Leb})}}{r^{d_{\mathcal{D}}/2}}.
+\]
+Minimising the right-hand side over $r>0$ by setting $r^* = \bigl(C\|h\|_{L^2}/(2C')\bigr)^{2/(d_{\mathcal{D}}+2)}$ yields \eqref{eq:lipschitz_interpolation}.
+
+\noindent\textbf{Step 2 (Converting $L^2$ covers to $L^\infty$ covers).}
+Since Assumption~\ref{condition:excess_risk:VC-type} gives the VC-type bound for \emph{all} probability measures $Q$ — in particular for normalised Lebesgue measure $\mathrm{Leb}$ on $\mathcal{D}$ — we have:
+\[
+\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_{L^2(\mathrm{Leb})},\epsilon) \;\leq\; V\log\frac{A}{\epsilon}.
+\]
+Now let $\{f_1,\ldots,f_N\}$ be a minimal $\epsilon$-cover of $\mathcal{F}_f$ in $\|\cdot\|_{L^2(\mathrm{Leb})}$. For any $f\in\mathcal{F}_f$, pick $f_j$ with $\|f-f_j\|_{L^2(\mathrm{Leb})}\leq\epsilon$. By \eqref{eq:lipschitz_interpolation}:
+\[
+\|f-f_j\|_\infty \;\leq\; C\,(2C')^{d_{\mathcal{D}}/(d_{\mathcal{D}}+2)}\,\epsilon^{2/(d_{\mathcal{D}}+2)}.
+\]
+Hence the same set $\{f_1,\ldots,f_N\}$ is a $\eta$-cover in $\|\cdot\|_\infty$ with $\eta = C(2C')^{d/(d+2)}\epsilon^{2/(d+2)}$. Inverting: to achieve an $\eta$-cover in $\|\cdot\|_\infty$, it suffices to take $\epsilon = (\eta/(C(2C')^{d/(d+2)}))^{(d+2)/2}$. Therefore:
+\[
+\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta) \;\leq\; \mathcal{N}\!\left(\mathcal{F}_f,\|\cdot\|_{L^2(\mathrm{Leb})},\left(\frac{\eta}{C(2C')^{d/(d+2)}}\right)^{(d+2)/2}\right).
+\]
+
+\noindent\textbf{Step 3 (Logarithmic entropy bound in $L^\infty$).}
+Substituting the VC-type bound:
+\begin{align*}
+\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta)
+&\;\leq\; V\log\frac{A}{(\eta/(C(2C')^{d/(d+2)}))^{(d+2)/2}}\\
+&\;=\; V\cdot\frac{d_{\mathcal{D}}+2}{2}\cdot\log\frac{C'D}{\eta},
+\end{align*}
+where all constants $(A, C, 2C')$ have been absorbed into the diameter $D$ and constant prefactors.
+
+\noindent\textbf{Step 4 (Entropy integral).}
+\[
+\int_0^D\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta)}\,\mathrm{d}\eta
+\;\leq\; \sqrt{\frac{V(d_{\mathcal{D}}+2)}{2}}\int_0^D\sqrt{\log\frac{C'D}{\eta}}\,\mathrm{d}\eta.
+\]
+Substituting $\eta = C'D\,e^{-t}$ transforms this into $C'D\int_0^\infty \sqrt{t}\,e^{-t}\,\mathrm{d}t = C'D\,\Gamma(3/2) = C'D\sqrt{\pi}/2 < \infty$.
+\end{proof}
+
+\begin{remark}
+The Lipschitz structure is essential: without it, converting $L^2(P)$ Donsker to $L^\infty$ Donsker may fail. For instance, a class with $\log\mathcal{N}(\mathcal{F},\|\cdot\|_{L^2},\epsilon)\leq C\epsilon^{-2\alpha}$ (Donsker for $\alpha<1$) would yield $\log\mathcal{N}(\mathcal{F},\|\cdot\|_\infty,\eta)\leq C\eta^{-\alpha(d+2)}$, whose entropy integral diverges for $\alpha(d+2)\geq 2$. The VC-type (logarithmic) structure in Assumption~\ref{condition:excess_risk:VC-type} is what keeps the $L^\infty$ entropy logarithmic after the norm conversion.
+\end{remark}
 
 \subsection{Auxiliary Lemmas}
 
