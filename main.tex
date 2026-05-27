@@ -2774,6 +2774,64 @@ Applying the operator norm and using the identity $\Lambda-\Lambda^\prime=\Sigma
 Since $\widehat{R}_j=Y_j-f(A_j,X_j)$ and $|Y_j-f(A_j,X_j)|\leq C^\prime$ uniformly by Assumption~\ref{condition:excess_risk:smooth}, we have $\|\widehat{\mathbf{R}}\|_2\leq C^\prime\sqrt{n}$.  Substituting yields the stated bound.
 \end{proof}
 
+\begin{lemma}\label{lemma:L_i_derivative_Y_diff_psi}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ and $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$.  Let $U=(U(S_1),\ldots,U(S_n))$ and $X=(X_1,\ldots,X_n)$.  Then, for $\psi,\psi^\prime$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$, the derivative of the conditional expectation of the loss difference with respect to the response satisfies
+    \begin{align*}
+        &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\,\Big|\,U,X\right]\right|\\
+        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+\noindent\textbf{Identifying the $Y_i$-dependent terms.}
+
+From the decomposition in the proof of Lemma~\ref{lemma:L_i_diff_psi} (line \eqref{eq:loss_function_i}), the $\psi,\psi^\prime$-difference of the loss expands into four terms:
+\begin{align*}
+&L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\\
+=\;&\underbrace{\int_{a_L}^{\theta(X_i,\widehat U(S_i))}(\widehat U^\prime(S_i)-\widehat U(S_i))\,\mathrm{d}a}_{\text{Term (1): no }Y_i}
++\underbrace{\int_{\theta(X_i,\widehat U^\prime(S_i))}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T}-f(a,X_i)-\widehat U(S_i))\,\mathrm{d}a}_{\text{Term (2): no }Y_i}\\
+&+\underbrace{\left(\frac{Y_i-f(A_i,X_i)-\widehat U^\prime(S_i)}{p(A_i|X_i,\widehat U^\prime(S_i))}-\frac{Y_i-f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\right)\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\text{Term (3): contains }Y_i}\\
+&+\underbrace{\frac{Y_i-f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta(X_i,\widehat U^\prime(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\text{Term (4): contains }Y_i}.
+\end{align*}
+Terms (1) and (2) do not involve $Y_i$, so they contribute zero to $\partial_{Y_i}$.  Differentiating Terms (3) and (4) with respect to $Y_i$:
+\begin{align*}
+\partial_{Y_i}\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right]
+=\;&\underbrace{\left(\frac{1}{p(A_i|X_i,\widehat U^\prime(S_i))}-\frac{1}{p(A_i|X_i,\widehat U(S_i))}\right)\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (A)}}\\
+&+\underbrace{\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta(X_i,\widehat U^\prime(S_i))}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (B)}}.
+\end{align*}
+Since neither term depends on $Y_i$, the derivative commutes with the conditional expectation:
+$$\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}_i(\psi)-L^{(\delta_n)}_i(\psi^\prime)\,\big|\,U,X\right] = \E\!\left[\partial_{Y_i}\!\left[L^{(\delta_n)}_i(\psi)-L^{(\delta_n)}_i(\psi^\prime)\right]\Big|\,U,X\right].$$
+
+\noindent\textbf{Bounding Term (A).}
+
+Writing the difference of reciprocal propensities as
+$$\left|\frac{1}{p(A_i|X_i,\widehat U^\prime)}-\frac{1}{p(A_i|X_i,\widehat U)}\right| = \frac{|p(A_i|X_i,\widehat U)-p(A_i|X_i,\widehat U^\prime)|}{p\cdot p^\prime}\leq \frac{C^\prime|\Delta\widehat U_i|}{c^{\prime 2}},$$
+where we used the Lipschitz bound $|p(\cdot|x,u)-p(\cdot|x,u^\prime)|\leq C^\prime|u-u^\prime|$ from Assumption~\ref{condition:excess_risk:smooth} and $p,p^\prime\geq c^\prime>0$ from Assumption~\ref{condition:excess_risk:overlap}.  Since $\int_{a_L}^{\theta}K_{\delta_n}\,\mathrm{d}a\leq \int_\R K_{\delta_n}\,\mathrm{d}a = 1$,
+$$\left|\E\!\left[\mathrm{Term\ (A)}\,\big|\,U,X\right]\right| \leq \frac{C^\prime}{c^{\prime 2}}\,\E\!\left[|\Delta\widehat U_i|\,\big|\,U,X\right].$$
+By the pathwise bound $|\Delta\widehat U_i|\leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$ established in Step~3 of Lemma~\ref{lemma:L_i_diff_psi} and the operator-norm identity $\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$,
+\begin{align}
+\left|\E\!\left[\mathrm{Term\ (A)}\,\big|\,U,X\right]\right|
+\leq C\sqrt{\log(n)}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.\label{eq:termA_psi}
+\end{align}
+
+\noindent\textbf{Bounding Term (B).}
+
+By Assumption~\ref{condition:excess_risk:overlap}, $p\geq c^\prime>0$.  By the same conditional-independence and Fubini argument as in Lemma~\ref{lemma:kernel_int_exp_bound} — with integration limits $\theta(X_i,\widehat U^\prime(S_i))$ and $\theta(X_i,\widehat U(S_i))$ in place of $\theta^\prime$ and $\theta$ — we obtain
+$$\E\!\left[\int_{\theta(X_i,\widehat U^\prime)}^{\theta(X_i,\widehat U)}K_{\delta_n}(A_i-a)\,\mathrm{d}a\;\Bigg|\;U,X\right]\leq C^\prime\,\E\!\left[|\theta(X_i,\widehat U(S_i))-\theta(X_i,\widehat U^\prime(S_i))|\,\big|\,U,X\right].$$
+Applying the Lipschitz bound $|\theta(x,u)-\theta(x,u^\prime)|\leq \sup_u|\partial_u\theta|\cdot|u-u^\prime|\leq\frac{C}{\gamma_n\sqrt{\lambda_n}}|u-u^\prime|$ (Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}) and the pathwise bound on $|\Delta\widehat U_i|$,
+\begin{align}
+\left|\E\!\left[\mathrm{Term\ (B)}\,\big|\,U,X\right]\right|
+&\leq \frac{1}{c^\prime}\cdot\frac{CC^\prime}{\gamma_n\sqrt{\lambda_n}}\,\E\!\left[|\Delta\widehat U_i|\,\big|\,U,X\right]\nonumber\\
+&\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.\label{eq:termB_psi}
+\end{align}
+
+\noindent\textbf{Final assembly.}
+
+Adding \eqref{eq:termA_psi} and \eqref{eq:termB_psi} and noting that $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ in the relevant rate regime (so Term (A) is absorbed into the Term (B) bound),
+$$\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}_i(\psi)-L^{(\delta_n)}_i(\psi^\prime)\,\big|\,U,X\right]\right|
+\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
+\end{proof}
+
 
 \begin{lemma}[Bound on Conditional Kernel Expectation]\label{lemma:kernel_exp_bound}
 Let $\theta\in\mathcal{H}_\mathcal{K}$ and let $p(a|X_i,\widehat{U}(S_i))$ denote the conditional density of $A_i$ given $(X_i,\widehat{U}(S_i))$. Under Assumption~\ref{condition:excess_risk:overlap}, there exists a constant $C'>0$ such that
