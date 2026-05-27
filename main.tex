@@ -3136,8 +3136,9 @@ where $C<\infty$ by Assumption~\ref{condition:excess_risk:overlap}.
 
 \subsection{Weak Convergence Rate}
 In Section \ref{sec:sub-gaussianity}, we derived the sub-Gaussianity of $R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$ w.r.t. $\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, \psi\in\Psi$. In this section, we combine them with the complexity of the parameter space, i.e., rate of covering number to derive the weak convergence rate: 
-$$\sup_{\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, \psi\in\Psi}R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)]$$ 
-Specifically, for $\theta\in\mathcal{H}_\mathcal{K}$, we have  
+$$\sup_{\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, \psi\in\Psi}R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)].$$ 
+\subsubsection{Revisit Sub-Gaussianity}
+For $\theta\in\mathcal{H}_\mathcal{K}$, we have  
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\\
     \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) 
@@ -3303,6 +3304,24 @@ K_\nu\!\!\left(\frac{\sqrt{2\nu}\|s-s'\|}{\ell}\right),
 \]
 whenever $\Psi$ is bounded away from $0$ in all coordinates $(\sigma^2,\ell,\nu)$, since the partial derivatives w.r.t.\ $(\sigma^2,\ell,\nu)$ are continuous and bounded on such sets.
 \end{remark}
+
+\subsubsection{Union Bound \& Chaining}
+Let $\mathcal{C}_\theta$ be the $\epsilon_\theta$-net of $\mathcal{H}_{\mathcal{K}}$ where $\theta$ belongs to. Let $\mathcal{C}_\psi^k$ be the $\epsilon_\psi^k$-net of $\Psi$. Here, $\epsilon_\psi^k = 2^{-k}D_{\Psi}$ where $D_{\Psi}$ is the diameter of the parameter space. Similarly, we let $\mathcal{C}_f^k$ be the $\epsilon_f^k$-net of $\mathcal{F}_f$, and let $\mathcal{C}_p^k$ be the $\epsilon_p^k$-net of $\mathcal{F}_p$. Let $\pi(\theta)$ be the element in $\mathcal{C}_\theta$ that is closest to $\theta$. Let $\pi_k(\psi)$ be the element in $\mathcal{C}_\psi^k$ that is closest to $\psi$. We define $\pi_k(p)$ and $\pi_k(f)$ in a similar way.
+
+Denote $\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)$ as the centralized empirical loss:
+$$\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi):=R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)].$$
+Then, we do the decomposition as follows:
+\begin{align*}
+    &\sup_{h,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
+    =&\sup_{\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)+\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|\\
+    \leq & \sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|+\sup_{\theta\in \mathcal{C}_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)\right|
+\end{align*}
+Let $B_{\theta,\theta^\prime}$ be the upper bound of sub-Gaussianity w.r.t. $\theta$. Then, we have that with probability no less than $1-2e^{-\tau}$, 
+\begin{align*}
+    \sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|\leq B_{\theta,\theta^\prime}\sqrt{\tau}
+\end{align*}
+Since $B_{\theta,\theta^\prime}$ 
+
 
 \subsection{Auxiliary Lemmas}
 
