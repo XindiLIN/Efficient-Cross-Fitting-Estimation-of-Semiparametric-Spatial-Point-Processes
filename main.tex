@@ -1771,34 +1771,34 @@ R_n^{(\delta_n)} = &\frac{1} {n}\sum_{i=1}^n L^{(\delta_n)}_i(\theta,\psi,f,p)\\
 \noindent \textit{Derivative: from $Y_i$ to $R_n$}
 \begin{align}
     &\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
-    =& -\frac{1}{n}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)da\label{eq:derivative_R_n_Y}
+    =& -\frac{1}{n}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)da\label{eq:derivative_R_n_Y}
 \end{align}
 
 \noindent \textit{Derivative: from $\widehat U(S_i)$ to $R_n$}
 \begin{align}
 &\partial_{\widehat U(S_i)}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
-    = & n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} -n^{-1}(h(X_i,\widehat U(S_i)) - a_L) \label{eq:derivative_R_n_hat_U_1}\\
-    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \label{eq:derivative_R_n_hat_U_2}\\
-    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_hat_U_3}\\
-    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))} \int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_hat_U_4}
+    = & n^{-1}(\mathcal{T}-f\{\theta(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial \theta(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} -n^{-1}(\theta(X_i,\widehat U(S_i)) - a_L) \label{eq:derivative_R_n_hat_U_1}\\
+    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-\theta(X_i,\widehat U(S_i))\}\cdot \frac{\partial \theta(X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \label{eq:derivative_R_n_hat_U_2}\\
+    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(A_i|X_i,u)}{\partial u}\bigg|_{u = \widehat U(S_i)} \int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_hat_U_3}\\
+    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))} \int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_hat_U_4}
 \end{align}
 
 \noindent \textit{Derivative: from $A_i$ to $R_n$}
 \begin{align}
 &\partial_{A_i}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
-= & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(a|X_i,\widehat U(S_i))}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \label{eq:derivative_R_n_A_1}\\
-& - n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(a,X_i)}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_A_2} \\
-    & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} \partial a^\prime K_{\delta_n}(a^\prime-a)|_{a^\prime=A_i}\mathrm{d}a \label{eq:derivative_R_n_A_3}
+= & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial p(a|X_i,\widehat U(S_i))}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \label{eq:derivative_R_n_A_1}\\
+& - n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(a,X_i)}{\partial a}\bigg|_{a = A_i}\int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \label{eq:derivative_R_n_A_2} \\
+    & -n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{\theta(X_i,\widehat U(S_i))} \partial a^\prime K_{\delta_n}(a^\prime-a)|_{a^\prime=A_i}\mathrm{d}a \label{eq:derivative_R_n_A_3}
 \end{align}
 
 \noindent \textit{Derivative: from $X_i$ to $R_n$}
 \begin{align}
 &\partial_{X_i}R_n^{(\delta)}(\theta;\psi,f,p)\nonumber\\
-= & -n^{-1}\int_{a_L}^{h(X_i,\widehat U(S_i))}\frac{\partial f(a,x)}{\partial x}\bigg|_{x=X_i}\mathrm{d}a \label{eq:derivative_R_n_X_1}\\
-    & + n^{-1}(\mathcal{T}-f\{h(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = \widehat X_i}\label{eq:derivative_R_n_X_2}\\
-    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-h(X_i,\widehat U(S_i))\}\cdot \frac{\partial h(x,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \label{eq:derivative_R_n_X_3}\\
-    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \cdot \frac{\partial p(A_i|X_i,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \label{eq:derivative_R_n_X_4}\\
-    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(A_i,x)}{\partial x}\bigg|_{x = X_i}\int_{a_L}^{h(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \label{eq:derivative_R_n_X_5}
+= & -n^{-1}\int_{a_L}^{\theta(X_i,\widehat U(S_i))}\frac{\partial f(a,x)}{\partial x}\bigg|_{x=X_i}\mathrm{d}a \label{eq:derivative_R_n_X_1}\\
+    & + n^{-1}(\mathcal{T}-f\{\theta(X_i,\widehat U(S_i)),X_i\}-\widehat U(S_i))\cdot \frac{\partial \theta(x,\widehat U(S_i))}{\partial x}\bigg|_{x = \widehat X_i}\label{eq:derivative_R_n_X_2}\\
+    & - n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}K_{\delta_n}\{A_i-\theta(X_i,\widehat U(S_i))\}\cdot \frac{\partial \theta(x,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \label{eq:derivative_R_n_X_3}\\
+    & + n^{-1}\cdot\frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p^2(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a \cdot \frac{\partial p(A_i|X_i,\widehat U(S_i))}{\partial x}\bigg|_{x = X_i} \label{eq:derivative_R_n_X_4}\\
+    & + n^{-1}\cdot\frac{1}{p(A_i|X_i,\widehat U(S_i))}\cdot \frac{\partial f(A_i,x)}{\partial x}\bigg|_{x = X_i}\int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a  \label{eq:derivative_R_n_X_5}
 \end{align}
 
 \subsubsection{Sub-Gaussianity over $\theta$}
@@ -2186,9 +2186,9 @@ Specifically, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$,
 where, by contrast with the $f$- and $p$-perturbation cases, the parameter $\psi$ enters the $i$-th term through the estimated latent confounder $\widehat{U}(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}(\psi)\widehat{R}_j$: both the data fed into the loss and the implicit structure of the loss itself change when $\psi$ varies. Lemma~\ref{lemma:L_i_diff_psi} already accounts for both effects and yields
 \begin{align}
     \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right|
-    \leq C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.\label{eq:Lipschitz_psi}
+    \leq C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.\label{eq:Lipschitz_psi}
 \end{align}
-For brevity, we write $B_\psi := C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$ for the right-hand side of \eqref{eq:Lipschitz_psi}.
+For brevity, we write $B_{\psi,\psi^\prime}:= C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}$ for the right-hand side of \eqref{eq:Lipschitz_psi}.
 We use the conditional expectation to decompose the $\psi_2$-norm into four terms as in \eqref{ref:randomness_decomposition} and provide the upper bound of each.
 
 % \textcolor{red}{To bound this one, we should not use the same technique as the previous case where we investigate the change in $L_i$ first, then aggregate them to calculate the change in empirical risk $R_n$. This is because the upper bound in Lemma \ref{lemma:L_i_diff_psi} is too loose. If we use $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|$ as the norm, to upper bound the change in matrix/vector is much tighter than upper bounding the change in a single entry.}
@@ -2204,26 +2204,27 @@ The direct channel on the $i$-th term: since $\widehat{U}(S_i,\psi)=\sum_{j\neq 
     &L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p) \\
     & - \left[L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right]\\
     \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
-    \leq & C\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    \leq & 2B_{\psi,\psi^\prime}.
 \end{align*}
 where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through $\widehat{U}(S_j,\psi)$ and $\widehat{U}(S_j,\psi^\prime)$ for $j\neq i$ with $\alpha_{j,i}\neq 0$, by altering $\widehat{R}_i = Y_i - f(A_i,X_i)$. Let $\widehat{U}^\prime(S_j,\psi)$ (resp.\ $\widehat{U}^\prime(S_j,\psi^\prime)$) denote these estimates after the change. The resulting perturbation on the $j$-th loss difference is bounded by
 \begin{align*}
-    &\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\left|\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}(S_j,\psi^\prime)}\right]\right|\\
-    & \quad \left|+L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}^\prime(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}^\prime(S_j,\psi^\prime)}\right|
+    &L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i,\psi),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i,\psi^\prime),X_i);\theta,\psi^\prime,f,p) \\
+    & - \left[L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i,\psi),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i,\psi^\prime),X_i);\theta,\psi^\prime,f,p)\right]\\
+    \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
+    \leq & B_{\psi,\psi^\prime}.
 \end{align*}
-
-
-\begin{align*}
-&\left|\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}(S_j,\psi^\prime)}\right]\right.\\
-        &\quad\left.-\left[L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}^\prime(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}^\prime(S_j,\psi^\prime)}\right]\right|\\
-        \leq  & 2\sup_{Y_j,A_j,X_j}\left|L^{(\delta_n)}_j(\theta;\psi,f,p) - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\right|
-        \leq  2B_\psi,
-\end{align*}
-where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+% \begin{align*}
+%     &\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\left(L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}(S_j,\psi^\prime)}\right)\\
+%     & \quad +\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\left(L^{(\delta_n)}_j(\theta;\psi,f,p)\big|_{\widehat{U}^\prime(S_j,\psi)} - L^{(\delta_n)}_j(\theta;\psi^\prime,f,p)\big|_{\widehat{U}^\prime(S_j,\psi^\prime)}\right)\\
+%     \leq & \sum_{j\neq i} 1(\alpha_{i,j}\neq 0) \sup\left|\frac{\partial L_j^{(\delta_n)}(\theta;\psi,f,p)}{\partial \widehat U(S_j)}\right|\left(\widehat{U}(S_j,\psi)-\widehat{U}(S_j,\psi^\prime)+\widehat{U}^\prime(S_j,\psi)-\widehat{U}^\prime(S_j,\psi^\prime)\right)\\
+%     \leq & \gamma_n^{-1/2}\lambda_n^{-1/2}\left\{\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\right\}^{1/2}\left(\|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2 + \|\widehat{\mathbf{U}}^\prime(\psi)-\widehat{\mathbf{U}^\prime}(\psi^\prime)\|_2\right)\\
+%     \leq &C\sqrt{\log(n)n}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}
+% \end{align*}
+where the last inequality follows from Lemma~\ref{lemma:widehat_U_diff_psi_L2}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
     \leq & C\log(n)\, n^{-1/2} B_\psi
-    = C\log(n)\,n^{-1/2}\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    = C\log(n)^{3/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -2241,9 +2242,10 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. There is 
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]\right\|_{\psi_2}\\
     \leq & C\, n^{-1/2} B_\psi
-    = C\,n^{-1/2}\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    = C\log(n)^{1/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
 \end{align*}
 
+\noindent\textbf{Third Layer of Randomness: $U(S_i)$}
 
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
@@ -2621,7 +2623,7 @@ Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated boun
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
     \begin{align*}
         &\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
-        \leq &  C\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+        \leq &  C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
@@ -2630,15 +2632,45 @@ The proof proceeds in two steps.
 
 \noindent\textbf{Step 1: Lipschitz bound of the loss in $\widehat U(S_i)$.}
 
-From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. By Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, $\theta(X_i,\widehat U(S_i))$ is uniformly Lipschitz with $\widehat U(S_i)$ with constant $\gamma_n^{-1}\lambda_n^{-1/2}$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, other three terms are uniformly Lipschitz in $u$ with a constant $C$. Therefore, applying the mean value theorem,
+From \eqref{eq:loss_function_i}, $\widehat U(S_i)$ enters the loss through (a) the integration limits $\theta(X_i,\widehat U(S_i))$, (b) the integrand $\mathcal{T}-f(a,X_i)-\widehat U(S_i)$, (c) the residual numerator $Y_i-f(A_i,X_i)-\widehat U(S_i)$, and (d) the propensity score denominator $p(A_i|X_i,\widehat U(S_i))$. Specifically, the difference of the los function can be written as
 \begin{align*}
-    \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta,\psi,f,p) - L^{(\delta_n)}_i(\theta,\psi^\prime,f,p)\right|
-    \leq C\gamma_n^{-1}\lambda_n^{-1/2} \sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
+    &L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\\
+ = & \int_{a_L}^{\theta(X_i,\widehat U(S_i))}(\widehat U^\prime(S_i)-\widehat U(S_i))\mathrm{d}a \\
+ & + \int_{\theta(X_i,\widehat U^\prime(S_i))}^{\theta(X_i,\widehat U(S_i))}(\mathcal{T}-f(a,X_i)-\widehat U(S_i))\mathrm{d}a\\
+ & + \left(\frac{Y_i - f(A_i,X_i)-\widehat U^\prime(S_i)}{p(A_i|X_i,\widehat U^\prime(S_i))}- \frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\right)\int_{a_L}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a\\
+ & + \frac{Y_i - f(A_i,X_i)-\widehat U(S_i)}{p(A_i|X_i,\widehat U(S_i))}\int_{\theta(X_i,\widehat U^\prime(S_i))}^{\theta(X_i,\widehat U(S_i))} K_{\delta_n}(A_i-a)\mathrm{d}a
 \end{align*}
 
-\noindent\textbf{Step 2: Bounding $\sup_i|\widehat U(S_i,\psi)-\widehat U(S_i,\psi^\prime)|$ by $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.}
 
-Let $\Lambda=\Lambda_n(\psi)$, $\Lambda^\prime=\Lambda_n(\psi^\prime)$, $\Lambda_{ii}=e_i^\top\Lambda e_i$, and $\widehat{R}=(\widehat R_1,\ldots,\widehat R_n)^\top$ with $\widehat R_j$ defined in \eqref{eq:widehat_U_i}. From the definition $\alpha_{ij}=-\Lambda_{ii}^{-1}\Lambda_{ij}$ and $\widehat U(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}\widehat R_j$, a direct computation gives
+
+By Lemma~\ref{lemma:derivative_svm} together with Lemma~\ref{lemma:bound_svm}, $\theta(X_i,\widehat U(S_i))$ is uniformly Lipschitz with $\widehat U(S_i)$ with constant $\gamma_n^{-1}\lambda_n^{-1/2}$. By Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, other three terms are uniformly Lipschitz in $u$ with a constant $C$. Therefore, applying the mean value theorem,
+\begin{align*}
+    \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta,\psi,f,p) - L^{(\delta_n)}_i(\theta,\psi^\prime,f,p)\right|
+    \leq C\gamma_n^{-1}\lambda_n^{-1/2} \delta_n^{-1}\sup_i\left|\widehat U(S_i,\psi) - \widehat U(S_i,\psi^\prime)\right|.
+\end{align*}
+
+\noindent\textbf{Step 2: Bounding Diagonal Entry and Spectral Norm of precision Matrix.} Let $\Lambda=\Lambda_n(\psi)$, $\Lambda^\prime=\Lambda_n(\psi^\prime)$, $\Lambda_{ii}=e_i^\top\Lambda e_i$, and $\widehat{R}=(\widehat R_1,\ldots,\widehat R_n)^\top$ with $\widehat R_j$ defined in \eqref{eq:widehat_U_i}. First of all, we show that there exists constants $C>c>0$ such that $0<c<\Lambda_{ii},\Lambda^\prime_{ii}<C$ for every $i$ and both $\|\Lambda\|_{\text{op}}$ and $\|\Lambda^\prime\|_{\text{op}}<C$. The diagonal entries of the precision matrix are bounded below as:
+\begin{align*}
+    \Lambda_{ii} =& 1/\text{Var}(U(S_i)+\epsilon_i|U_{-i})\\
+    \geq & 1/\text{Var}(U(S_i)+\epsilon_i)\\
+    = & 1/(\sigma_\epsilon^{2} +\sigma_{\text{gp}}^{2})
+\end{align*}
+The diagonal entries of the precision matrix are bounded above as:
+\begin{align*}
+    \Lambda_{ii} =& 1/\text{Var}(U(S_i)+\epsilon_i|U_{-i})\\
+    = & 1/\left\{\text{Var}(U(S_i)|U_{-i})+\text{Var}(\epsilon_i|U_{-i})\right\}\\
+    \leq & 1/\text{Var}(\epsilon_i|U_{-i})\\
+    = & 1/\text{Var}(\epsilon_i) = \sigma_\epsilon^2
+\end{align*}
+Additionally, the spectral norm of the precision matrix is bounded above as:\begin{align*}
+\|\Lambda\|_{\mathrm{op}}=&\|\Sigma^{-1}\|_{\mathrm{op}}
+    = (\lambda_{\min}(\Sigma))^{-1}
+    \leq & 1/\sigma^2_\epsilon.
+\end{align*}
+Here, $\sigma_\epsilon^{2}$ and $\sigma_{gp}^{2}$ are the coefficients of the nugget effect variance corresponding to the covariance parameter $\psi$. 
+
+
+\noindent\textbf{Step 3: Bounding $\sup_i|\widehat U(S_i,\psi)-\widehat U(S_i,\psi^\prime)|$ by $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.} From the definition $\alpha_{ij}=-\Lambda_{ii}^{-1}\Lambda_{ij}$ and $\widehat U(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}\widehat R_j$, a direct computation gives
 $$\widehat U(S_i,\psi) = \widehat R_i - \frac{e_i^\top \Lambda\,\widehat{R}}{e_i^\top\Lambda e_i}.$$
 Hence the difference is
 \begin{align*}
@@ -2663,17 +2695,16 @@ where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to 
 \leq \|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\,\|\widehat{R}_{N(i)}\|_2\left(\frac{\|\Lambda^\prime\|_{\mathrm{op}}}{\Lambda_{ii}\Lambda^\prime_{ii}}+\frac{1}{\Lambda_{ii}}\right)
 \leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
 \end{align*}
-where the last inequality absorbs $(\Lambda_{ii})^{-1}$ into the constant $C$ under the regularity conditions. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
-$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
-The spectral norm of the precison matrix $\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}$ equal to the inverse of the minimum eigenvalue of the covariance matrix, which is bounded above by the nugget effect variance $1/\sigma_\epsilon^2$. Then, taking $\sup_i$ and combining with Step~1 yields the stated bound.
+where the last inequality absorbs the term related to $\Lambda_{ii},\Lambda^\prime_{ii},\|\Lambda^\prime\|_{\text{op}}$ into the constant $C$ by the boundedness condition we showed at the beginning of this step. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
+$$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\leq C\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$ Then, taking $\sup_i$ and combining with Step~1 yields the stated bound.
 \end{proof}
 
-\begin{lemma}[$\ell_2$-Norm Bound on $\widehat{U}$ Perturbation]\label{lemma:widehat_U_diff_L2}
+\begin{lemma}[$\ell_2$-Norm Bound on $\widehat{U}$ Perturbation]\label{lemma:widehat_U_diff_psi_L2}
 Let $\widehat{\mathbf{U}}(\psi):=(\widehat{U}(S_1,\psi),\ldots,\widehat{U}(S_n,\psi))^\top$ and $\widehat{\mathbf{U}}(\psi^\prime):=(\widehat{U}(S_1,\psi^\prime),\ldots,\widehat{U}(S_n,\psi^\prime))^\top$ be computed via \eqref{eq:widehat_U_i} with precision matrices $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ and $\Lambda_n(\psi^\prime)=\Sigma_n(\psi^\prime)^{-1}$, respectively. Let $\widehat{\mathbf{R}}=(\widehat{R}_1,\ldots,\widehat{R}_n)^\top$ with $\widehat{R}_j=Y_j-f(A_j,X_j)$.  Under Assumption~\ref{condition:excess_risk:smooth},
 \begin{align*}
 \|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2
 \leq & C\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\,\|\widehat{\mathbf{R}}\|_2\\
-\leq & C\sqrt{n}\,\|\Sigma_n(\psi)^{-1}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+\leq & C\sqrt{n}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
 \end{align*}
 \end{lemma}
 
