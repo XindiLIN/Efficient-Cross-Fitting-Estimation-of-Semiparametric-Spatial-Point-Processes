@@ -2833,6 +2833,71 @@ $$\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n
 \end{proof}
 
 
+\begin{lemma}\label{lemma:L_i_derivative_U_diff_psi}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ and $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$. Let $U=(U(S_1),\ldots,U(S_n))$ and $X=(X_1,\ldots,X_n)$. Then, for $\psi,\psi^\prime$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$, the derivative of the conditional expectation of the loss difference with respect to $\widehat U(S_i,\psi)$ satisfies
+    \begin{align*}
+        &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i,\psi)}\,\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\Big|\,U,X\right]\right|\\
+        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Let $u=\widehat{U}(S_i,\psi)$, $u^\prime=\widehat{U}(S_i,\psi^\prime)$, and $\Delta:=\Delta\widehat{U}_i=u-u^\prime$ (treated as a fixed offset so that $u^\prime=u-\Delta$). Setting $F(u):=L^{(\delta_n)}_i(\theta;\psi;u)-L^{(\delta_n)}_i(\theta;\psi^\prime;u-\Delta)$, the ψ,ψ$^\prime$-difference $F(u)$ has the four-term decomposition of Lemma~\ref{lemma:L_i_diff_psi}:
+\begin{align*}
+F(u)
+=\;&\underbrace{-\Delta\bigl(\theta(X_i,u)-a_L\bigr)}_{\text{Term 1}}
++\underbrace{\int_{\theta(X_i,u^\prime)}^{\theta(X_i,u)}\!\bigl(\mathcal{T}-f(a,X_i)-u\bigr)\,\mathrm{d}a}_{\text{Term 2}}\\
+&+\underbrace{\Bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\Bigr)\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\text{Term 3}}\\
+&+\underbrace{\tfrac{Y_i-f-u}{p}\int_{\theta(X_i,u^\prime)}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\text{Term 4}},
+\end{align*}
+where $p=p(A_i|X_i,u)$, $p^\prime=p(A_i|X_i,u^\prime)$, $\theta=\theta(X_i,u)$, $\theta^\prime=\theta(X_i,u^\prime)$. Since $u^\prime=u-\Delta$ moves with $u$ (i.e.\ $\mathrm{d}u^\prime/\mathrm{d}u=1$), the Leibniz rule gives $F^\prime(u)=\mathrm{d}F/\mathrm{d}u$ with contributions from each term.
+
+\noindent\textbf{Conditional expectation and independence.}
+Given $(U,X)$, $\theta(X_i,u)$ depends on $\{\varepsilon_j\}_{j\neq i}$ via $u=\widehat{U}(S_i,\psi)$, while $A_i$ depends on $\xi_i$. Since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ given $(U,X)$ by the data-generating model, we may factor conditional expectations of products involving $A_i$ and integration limits.
+
+\noindent\textbf{Term (I): derivative of Term 1.}
+Differentiating $-\Delta(\theta(X_i,u)-a_L)$ with respect to $u$ (with $\Delta$ fixed) gives $-\Delta\,\partial_u\theta(X_i,u)$. Hence
+$$\left|\E\!\left[\mathrm{Term\,(I)}\,\big|\,U,X\right]\right|\leq|\Delta|\cdot\sup_u|\partial_u\theta|\leq\frac{C|\Delta|}{\gamma_n\sqrt{\lambda_n}},$$
+where we applied Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}.
+
+\noindent\textbf{Term (II): derivative of Term 2.}
+Since $u^\prime=u-\Delta$ also varies with $u$, the Leibniz rule applied to $\int_{\theta(u^\prime)}^{\theta(u)}(\mathcal{T}-f(a)-u)\,\mathrm{d}a$ yields
+\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d}u}\,\mathrm{Term\;2}
+=\;&\bigl(\mathcal{T}-f(\theta(u))-u\bigr)\partial_u\theta(u)
+-\bigl(\mathcal{T}-f(\theta(u^\prime))-u\bigr)\partial_{u^\prime}\theta(u^\prime)
+-\bigl(\theta(X_i,u)-\theta(X_i,u^\prime)\bigr).
+\end{align*}
+The last sub-term satisfies $|\theta(u)-\theta(u^\prime)|\leq\sup|\partial_u\theta|\cdot|\Delta|\leq C|\Delta|/(\gamma_n\sqrt{\lambda_n})$ by Lipschitz continuity of $\theta$ (Lemma~\ref{lemma:derivative_svm} and Lemma~\ref{lemma:bound_svm}). For the first two sub-terms, adding and subtracting shows their difference is $O(\gamma_n^{-2}\lambda_n^{-1/2}|\Delta|)$ (via $\|\partial^2_u\theta\|_\infty\leq C\gamma_n^{-2}\lambda_n^{-1/2}$ from Lemma~\ref{lemma:derivative_svm}), which is dominated. Hence
+$$\left|\E\!\left[\mathrm{Term\,(II)}\,\big|\,U,X\right]\right|\leq\frac{C|\Delta|}{\gamma_n\sqrt{\lambda_n}}.$$
+
+\noindent\textbf{Term (III): derivative of Term 3.}
+Applying the product rule to $\bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\bigr)\int_{a_L}^{\theta(u)}K\,\mathrm{d}a$, the derivative w.r.t.\ $u$ (with $u^\prime=u-\Delta$) produces two parts:
+\begin{align*}
+\text{Part (a):}&\quad\frac{\mathrm{d}}{\mathrm{d}u}\Bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\Bigr)\cdot\int_{a_L}^{\theta(u)}K\,\mathrm{d}a,\\
+\text{Part (b):}&\quad\Bigl(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}\Bigr)\cdot K_{\delta_n}(A_i-\theta(u))\,\partial_u\theta(u).
+\end{align*}
+For Part (a): differentiating each fraction with $\mathrm{d}u^\prime/\mathrm{d}u=1$ gives $\tfrac{\mathrm{d}}{\mathrm{d}u}(\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p})=(\tfrac{1}{p}-\tfrac{1}{p^\prime})+O(|\Delta|)$ by Lipschitz of $p$ and $\partial_u p$, so $|\tfrac{1}{p}-\tfrac{1}{p^\prime}|\leq C|\Delta|/c^{\prime 2}$ and the whole factor is $O(|\Delta|)$. Combined with Lemma~\ref{lemma:kernel_int_theta_bound}, $\left|\E[\mathrm{Part\,(a)}|U,X]\right|\leq C|\Delta|$.
+For Part (b): $|\tfrac{Y_i-f-u^\prime}{p^\prime}-\tfrac{Y_i-f-u}{p}|\leq C|\Delta|$ (Lipschitz), and applying Lemma~\ref{lemma:kernel_theta_exp_bound} and Lemma~\ref{lemma:derivative_svm}+\ref{lemma:bound_svm}, $\left|\E[\mathrm{Part\,(b)}|U,X]\right|\leq C|\Delta|\cdot C\cdot C\gamma_n^{-1}\lambda_n^{-1/2}$.
+Hence $\left|\E[\mathrm{Term\,(III)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$ (since $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ absorbs Part (a)).
+
+\noindent\textbf{Term (IV): derivative of Term 4.}
+Applying the product rule to $\tfrac{Y_i-f-u}{p}\int_{\theta(u^\prime)}^{\theta(u)}K\,\mathrm{d}a$:
+\begin{align*}
+\text{Part (c):}&\quad\partial_u\!\Bigl(\tfrac{Y_i-f-u}{p}\Bigr)\int_{\theta(u^\prime)}^{\theta(u)}K\,\mathrm{d}a,\\
+\text{Part (d):}&\quad\tfrac{Y_i-f-u}{p}\,\bigl[K_{\delta_n}(A_i-\theta(u))\partial_u\theta(u)-K_{\delta_n}(A_i-\theta(u^\prime))\partial_{u^\prime}\theta(u^\prime)\bigr].
+\end{align*}
+For Part (c): $|\partial_u(\tfrac{Y_i-f-u}{p})|\leq C$ (Assumption~\ref{condition:excess_risk:smooth},~\ref{condition:excess_risk:overlap}), and by the same Lipschitz argument as in Lemma~\ref{lemma:kernel_int_exp_bound}, $\E[\int_{\theta(u^\prime)}^{\theta(u)}K\,\mathrm{d}a|U,X]\leq C|\theta(u)-\theta(u^\prime)|\leq C|\Delta|/(\gamma_n\sqrt{\lambda_n})$.
+For Part (d): $|\tfrac{Y_i-f-u}{p}|\leq C^\prime$; using Lemma~\ref{lemma:kernel_theta_exp_bound} and the bound $\E[|K_{\delta_n}(A_i-\theta(u))-K_{\delta_n}(A_i-\theta(u^\prime))||U,X]\leq C|\theta(u)-\theta(u^\prime)|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$ (analogous to Lemma~\ref{lemma:kernel_exp_diff}), together with $|\partial_u\theta|\leq C\gamma_n^{-1}\lambda_n^{-1/2}$, $\left|\E[\mathrm{Part\,(d)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$.
+Hence $\left|\E[\mathrm{Term\,(IV)}|U,X]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta|$.
+
+\noindent\textbf{Final assembly.}
+Collecting Terms (I)--(IV), each bounded by $C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta\widehat{U}_i|$,
+$$\left|\partial_{\widehat{U}(S_i,\psi)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\big|\,U,X\right]\right|\leq C\gamma_n^{-1}\lambda_n^{-1/2}|\Delta\widehat{U}_i|.$$
+Applying the pathwise bound $|\Delta\widehat{U}_i|\leq C\sqrt{\log(n)}\|\Lambda_n(\psi)-\Lambda_n(\psi^\prime)\|_{\mathrm{op}}\leq C\sqrt{\log(n)}\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$ from Step~3 of Lemma~\ref{lemma:L_i_diff_psi}, and taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$, yields the stated bound.
+\end{proof}
+
+
 \begin{lemma}[Bound on Conditional Kernel Expectation]\label{lemma:kernel_exp_bound}
 Let $\theta\in\mathcal{H}_\mathcal{K}$ and let $p(a|X_i,\widehat{U}(S_i))$ denote the conditional density of $A_i$ given $(X_i,\widehat{U}(S_i))$. Under Assumption~\ref{condition:excess_risk:overlap}, there exists a constant $C'>0$ such that
 $$\E\!\left[K_{\delta_n}\!\left(A_i - \theta(X_i,\widehat{U}(S_i))\right)\bigg|U,X\right] \leq C'.$$
