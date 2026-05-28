@@ -2319,6 +2319,106 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because t
     \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
 \end{align*}
 
+\subsubsection{Sub-Gaussianity: Absolute Bound for $R_n$}
+\label{subsec:sub-gaussian-absolute}
+
+In this section we provide the upper bound for the centered absolute empirical risk:
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}.$$
+Unlike the difference-based bounds above, there is no cancellation: every term in $L_i^{(\delta_n)}$ is present and $Y_i$ appears directly in the IPW term. We decompose the $\psi_2$-norm into four layers of randomness as in \eqref{ref:randomness_decomposition} and bound each layer in turn.
+
+\noindent\textbf{First Layer Randomness: $\epsilon$}
+
+\noindent We first provide the upper bound of
+$$\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}.$$
+We treat the empirical risk as a function of the outcome error vector $(\epsilon_1,\ldots,\epsilon_n)$. Consider two realizations that differ only in the $i$-th coordinate. According to Table~\ref{tab:filled_jacobian}, a change from $\epsilon_i$ to $\epsilon_i^\prime$ affects $R_n^{(\delta_n)}$ through (i) the observed outcome $Y_i\to Y_i^\prime:=Y_i-\epsilon_i+\epsilon_i^\prime$, and (ii) the estimated latent confounder $\widehat U(S_j)$ for $j\neq i$ with $\alpha_{j,i}\neq 0$.
+
+The direct effect on the $i$-th loss is bounded using Lemma~\ref{lemma:L_i_bound}:
+\begin{align*}
+\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i^\prime,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)\right|
+\leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_i\right| \leq 2C.
+\end{align*}
+The indirect effect on each $j$-th loss (through $\widehat U^\prime(S_j)$, the value of $\widehat U(S_j)$ after the change) is similarly bounded:
+\begin{align*}
+\left|L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j),X_j);\theta,\psi,f,p)\right|
+\leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_j\right| \leq 2C,
+\end{align*}
+again by Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\log(n)$ (see \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in $R_n^{(\delta_n)}$ from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n)\,n^{-1}$, uniformly in $i$. Applying McDiarmid's inequality:
+\begin{align*}
+\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}
+\leq C\log(n)\,n^{-1/2}.
+\end{align*}
+
+\noindent\textbf{Second Layer of Randomness: $\xi_i$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U\right]\right\|_{\psi_2}.$$
+Fixing $X,U$, we view the conditional expectation as a function of $(\xi_1,\ldots,\xi_n)$. Consider two realizations that differ only in the $i$-th coordinate. According to Table~\ref{tab:filled_jacobian}, changing $\xi_i$ to $\xi_i^\prime$ only affects $A_i$; in particular, $\widehat U(S_j)$ is unaffected for all $j$. Let $A_i^\prime$ be the treatment under $\xi_i^\prime$. The perturbation in $R_n^{(\delta_n)}$ is bounded using Lemma~\ref{lemma:L_i_bound}:
+\begin{align*}
+\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i^\prime,\widehat U(S_i),X_i);\theta,\psi,f,p)\right|
+\leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_i\right| \leq 2C.
+\end{align*}
+Since $\xi_i$ has no cross-influence through $\widehat U$, the bounded-difference constant is $2C\,n^{-1}$ for each $i$. Applying McDiarmid's inequality:
+\begin{align*}
+\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U\right]\right\|_{\psi_2}
+\leq C\,n^{-1/2}.
+\end{align*}
+
+\noindent\textbf{Third Layer of Randomness: $U(S_i)$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]\right\|_{\psi_2}.$$
+The random variable $U$ is a Gaussian process with covariance matrix $\Sigma_n$. Let $\widetilde U=\Sigma_n^{-1/2}U$ where $\widetilde U\sim N(0,I_n)$. We view $\E[R_n^{(\delta_n)}|X,U]$ as a function of $\widetilde U$ and compute:
+\begin{align*}
+\partial_{\widetilde U}\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]
+= \Sigma_n^{1/2}\E\left[\partial_{U(S_1)}R_n^{(\delta_n)},\ldots,\partial_{U(S_n)}R_n^{(\delta_n)}\bigg|U,X\right].
+\end{align*}
+For every $i$, the derivative of $R_n^{(\delta_n)}$ with respect to $U(S_i)$ decomposes (via Table~\ref{tab:filled_jacobian}) as:
+\begin{align*}
+\E\left[\partial_{U(S_i)}R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]
+=&\;\sum_{j\neq i}\alpha_{i,j}\underbrace{\E\left[\partial_{\widehat U(S_j)}R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]}_{\text{bounded by Lemma~\ref{lemma:L_i_derivative_U}}}\\
+&+\underbrace{\E\left[\partial_{Y_i}R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]}_{\text{bounded by Lemma~\ref{lemma:L_i_derivative_Y}}}\\
+\leq &\; Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2} + Cn^{-1}\\
+\leq &\; Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2},
+\end{align*}
+where the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see \eqref{eq:vecchina_approximation_nonzero}), and the constant $Cn^{-1}$ term from the $\partial_{Y_i}$ contribution is absorbed since $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ in the relevant rate regime. The Lipschitz constant of $\E[R_n^{(\delta_n)}|X,U]$ with respect to $\widetilde U$ thus satisfies:
+\begin{align*}
+\left\|\partial_{\widetilde U}\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]\right\|_2
+\leq C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}.
+\end{align*}
+By Theorem~\ref{thm:gaussian_concentration}:
+\begin{align*}
+\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]\right\|_{\psi_2}
+\leq C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}.
+\end{align*}
+
+\noindent\textbf{Fourth Layer of Randomness: $X_i$}
+
+\noindent We provide the upper bound of
+$$\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}.$$
+We treat the conditional expectation as a function of $(X_1,\ldots,X_n)$. Consider two realizations that differ only in the $i$-th coordinate, $(X_1,\ldots,X_i,\ldots,X_n)$ and $(X_1,\ldots,X_i^\prime,\ldots,X_n)$. According to Table~\ref{tab:filled_jacobian}, a change from $X_i$ to $X_i^\prime$ affects $R_n^{(\delta_n)}$ directly through $L_i^{(\delta_n)}$ and indirectly through $\widehat U(S_j)$ for $j\neq i$ with $\alpha_{j,i}\neq 0$.
+
+Let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and $O_i^\prime$ be the observation with $X_i^\prime$. The direct perturbation on $L_i^{(\delta_n)}$ is bounded by Lemma~\ref{lemma:L_i_bound}:
+\begin{align*}
+\left|L^{(\delta_n)}(O_i;\theta,\psi,f,p) - L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p)\right|
+\leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_i\right| \leq 2C.
+\end{align*}
+Let $O_j^\prime$ denote the $j$-th observation with updated $\widehat U^\prime(S_j)$ after changing $X_i$. Each indirect perturbation on $L_j^{(\delta_n)}$ is also bounded by $2C$ from Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\log(n)$, the total perturbation in $R_n^{(\delta_n)}$ from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)\,n^{-1}$. Applying McDiarmid's inequality:
+\begin{align*}
+\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}
+\leq C\log(n)\,n^{-1/2}.
+\end{align*}
+
+\noindent\textbf{Sub-Gaussianity:} Combining the four layers:
+\begin{align*}
+&\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}\\
+\leq &\underbrace{\left\|R_n^{(\delta_n)}-\E\left[\cdots|X,U,\xi\right]\right\|_{\psi_2}}_{\text{Randomness in $\epsilon$}}
++\underbrace{\left\|\E\left[\cdots|X,U,\xi\right]-\E\left[\cdots|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
+&+\underbrace{\left\|\E\left[\cdots|X,U\right]-\E\left[\cdots|X\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}
++\underbrace{\left\|\E\left[\cdots|X\right]-\E\left[\cdots\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
+\leq &C\log(n)\,n^{-1/2} + C\,n^{-1/2} + C\|\Sigma_n\|_{\mathrm{op}}\log(n)\,\gamma_n^{-1}\lambda_n^{-1/2}\,n^{-1/2} + C\log(n)\,n^{-1/2}\\
+\leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}.
+\end{align*}
+
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
 
 \noindent\textbf{Lipschitz Property over $\theta$}
@@ -3132,6 +3232,119 @@ The argument is identical to that of Lemma~\ref{lemma:kernel_exp_bound}.  By the
 = \sup_a p_A(a) =: C,
 \end{align*}
 where $C<\infty$ by Assumption~\ref{condition:excess_risk:overlap}.
+\end{proof}
+
+\noindent\textbf{Auxiliary Lemmas for Sub-Gaussianity: Absolute Bound}
+
+\begin{lemma}\label{lemma:L_i_bound}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}.  Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, the loss is uniformly bounded:
+    \begin{align*}
+        \sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p)\right| \leq C.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+We bound each of the two terms in \eqref{eq:loss_function_i} separately.
+
+\noindent\textbf{First term.}  The integration interval $[a_L,\theta(x,u)]\subseteq[a_L,a_H]$ has length at most $a_H-a_L=|\mathcal{A}|$.  By Assumption~\ref{condition:excess_risk:smooth}, the integrand satisfies $|\mathcal{T}-f(a,x)-u|\leq C^\prime$ uniformly.  Therefore,
+\begin{align*}
+\left|\int_{a_L}^{\theta(x,u)}(\mathcal{T}-f(a,x)-u)\,\mathrm{d}a\right|
+\leq |\mathcal{A}|\cdot C^\prime.
+\end{align*}
+
+\noindent\textbf{Second term.}  By Assumption~\ref{condition:excess_risk:smooth}, $|y-f(a,x)-u|\leq C^\prime$.  By Assumption~\ref{condition:excess_risk:overlap}, $p(a|x,u)\geq c^\prime>0$.  The integrated kernel satisfies $\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime\leq\int_\R K_{\delta_n}(t)\,\mathrm{d}t=1$.  Therefore,
+\begin{align*}
+\left|\frac{y-f(a,x)-u}{p(a|x,u)}\int_{a_L}^{\theta(x,u)}K_{\delta_n}(a-a^\prime)\,\mathrm{d}a^\prime\right|
+\leq \frac{C^\prime}{c^\prime}.
+\end{align*}
+
+\noindent\textbf{Combining.}  Adding the two bounds and setting $C:=|\mathcal{A}|C^\prime+C^\prime/c^\prime$,
+\begin{align*}
+\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p)\right|\leq C.
+\end{align*}
+\end{proof}
+
+\begin{lemma}\label{lemma:L_i_derivative_U}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}.  Let $U=(U(S_1),\ldots,U(S_n))$ and $X=(X_1,\ldots,X_n)$ be as in \eqref{eq:data_generative_model_1}--\eqref{eq:data_generative_model_2}.  Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$, the conditional expectation of the $\widehat{U}(S_i)$-derivative of the loss satisfies
+    \begin{align*}
+        \sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)\,\big|\,U,X\right]\right|
+        \leq C\,\gamma_n^{-1}\lambda_n^{-1/2}.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+Let $u=\widehat U(S_i)$ for brevity.  Applying the Leibniz rule to $L^{(\delta_n)}_i$ in \eqref{eq:loss_function_i} with respect to $u$ yields five terms:
+\begin{align*}
+\partial_u L^{(\delta_n)}_i
+=\;&\underbrace{(\mathcal{T}-f(\theta(X_i,u),X_i)-u)\,\partial_u\theta(X_i,u)}_{\mathrm{Term\ (I)}}
+  - \underbrace{(\theta(X_i,u)-a_L)}_{\mathrm{Term\ (II)}}\\
+&+\underbrace{\frac{Y_i-f(A_i,X_i)-u}{p(A_i|X_i,u)}\,K_{\delta_n}(A_i-\theta(X_i,u))\,\partial_u\theta(X_i,u)}_{\mathrm{Term\ (III)}}\\
+&-\underbrace{\frac{1}{p(A_i|X_i,u)}\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (IV)}}\\
+&-\underbrace{\frac{(Y_i-f(A_i,X_i)-u)\,\partial_u p(A_i|X_i,u)}{p(A_i|X_i,u)^2}\int_{a_L}^{\theta(X_i,u)}K_{\delta_n}(A_i-a)\,\mathrm{d}a}_{\mathrm{Term\ (V)}},
+\end{align*}
+where Terms (I)--(II) arise from differentiating the first integral in \eqref{eq:loss_function_i} via the boundary and integrand, respectively, and Terms (III)--(V) arise from differentiating the IPW term via the upper limit of $\int K$, the residual numerator, and the propensity score denominator, respectively.
+
+\noindent\textbf{Conditional expectation and independence.}
+Given $(U,X)$, $\theta(X_i,\widehat{U}(S_i))$ depends on $\{\varepsilon_j\}_{j\neq i}$ while $A_i$ depends on $\xi_i$; since $\xi_i\perp\{\varepsilon_j\}_{j\neq i}$ given $(U,X)$, expectation of products of functions of $A_i$ and $\theta(X_i,\widehat{U}(S_i))$ factor conditionally on $(U,X)$.
+
+\noindent\textbf{Bounding Term (I).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|\mathcal{T}-f(\theta(X_i,u),X_i)-u|\leq C^\prime$.  By Lemmas~\ref{lemma:derivative_svm} and~\ref{lemma:bound_svm}, $|\partial_u\theta(X_i,u)|\leq C\gamma_n^{-1}\lambda_n^{-1/2}$.  Thus,
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (I)}\,\big|\,U,X\right]\right| \leq C^\prime\cdot C\gamma_n^{-1}\lambda_n^{-1/2}.
+\end{align*}
+
+\noindent\textbf{Bounding Term (II).}
+Since $\theta(X_i,u)\in[a_L,a_H]$, we have $|\theta(X_i,u)-a_L|\leq |\mathcal{A}|$.  This constant is absorbed into $C\gamma_n^{-1}\lambda_n^{-1/2}$ in the relevant rate regime.
+
+\noindent\textbf{Bounding Term (III).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|Y_i-f(A_i,X_i)-u|\leq C^\prime$.  By Assumption~\ref{condition:excess_risk:overlap}, $p\geq c^\prime>0$.  By Lemmas~\ref{lemma:derivative_svm} and~\ref{lemma:bound_svm}, $|\partial_u\theta|\leq C\gamma_n^{-1}\lambda_n^{-1/2}$.  Taking the conditional expectation and using Lemma~\ref{lemma:kernel_theta_exp_bound},
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (III)}\,\big|\,U,X\right]\right|
+\leq \frac{C^\prime}{c^\prime}\cdot C\gamma_n^{-1}\lambda_n^{-1/2}\cdot\E\!\left[K_{\delta_n}(A_i-\theta(X_i,u))\,\big|\,U,X\right]
+\leq \frac{C^\prime C^2}{c^\prime}\,\gamma_n^{-1}\lambda_n^{-1/2}.
+\end{align*}
+
+\noindent\textbf{Bounding Term (IV).}
+By Assumption~\ref{condition:excess_risk:overlap}, $1/p\leq 1/c^\prime$.  By Lemma~\ref{lemma:kernel_int_theta_bound},
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (IV)}\,\big|\,U,X\right]\right|
+\leq \frac{1}{c^\prime}\cdot C.
+\end{align*}
+This constant is absorbed into $C\gamma_n^{-1}\lambda_n^{-1/2}$ in the relevant rate regime.
+
+\noindent\textbf{Bounding Term (V).}
+By Assumption~\ref{condition:excess_risk:smooth}, $|Y_i-f-u|\leq C^\prime$ and $|\partial_u p|\leq C^\prime$.  By Assumption~\ref{condition:excess_risk:overlap}, $p\geq c^\prime$.  By Lemma~\ref{lemma:kernel_int_theta_bound},
+\begin{align*}
+\left|\E\!\left[\mathrm{Term\ (V)}\,\big|\,U,X\right]\right|
+\leq \frac{C^{\prime 2}}{c^{\prime 2}}\cdot C.
+\end{align*}
+This constant is similarly absorbed.
+
+\noindent\textbf{Final assembly.}
+Collecting the five bounds and noting that $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ in the relevant rate regime so that Terms (II), (IV), (V) are dominated by Terms (I) and (III),
+$$\left|\partial_{\widehat U(S_i)}\E\!\left[L^{(\delta_n)}_i(\theta;\psi,f,p)\,\big|\,U,X\right]\right|
+\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}.$$
+Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
+\end{proof}
+
+\begin{lemma}\label{lemma:L_i_derivative_Y}
+    Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}.  Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:overlap}, for fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$:
+    \begin{align*}
+        \sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)\right| \leq \frac{1}{c^\prime}.
+    \end{align*}
+\end{lemma}
+
+\begin{proof}
+From \eqref{eq:loss_function_i}, $Y_i$ appears only in the IPW term through the residual $(Y_i-f(A_i,X_i)-\widehat U(S_i))$ in the numerator; the first integral does not involve $Y_i$.  Differentiating with respect to $Y_i$,
+\begin{align*}
+\partial_{Y_i}L^{(\delta_n)}_i
+= \frac{1}{p(A_i|X_i,\widehat U(S_i))}\int_{a_L}^{\theta(X_i,\widehat U(S_i))}K_{\delta_n}(A_i-a)\,\mathrm{d}a.
+\end{align*}
+Bounding each factor: $1/p(A_i|X_i,\widehat U(S_i))\leq 1/c^\prime$ by Assumption~\ref{condition:excess_risk:overlap}, and $\int_{a_L}^{\theta}K_{\delta_n}(A_i-a)\,\mathrm{d}a\leq\int_\R K_{\delta_n}(t)\,\mathrm{d}t=1$.  Therefore,
+\begin{align*}
+\left|\partial_{Y_i}L^{(\delta_n)}_i\right| \leq \frac{1}{c^\prime}.
+\end{align*}
+Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated bound.
 \end{proof}
 
 \subsection{Weak Convergence Rate}
