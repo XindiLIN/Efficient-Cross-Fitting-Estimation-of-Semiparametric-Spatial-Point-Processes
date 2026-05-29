@@ -1531,7 +1531,7 @@ Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B)
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot (\tau +\ln|\mathcal{C}_\theta|+\ln|\mathcal{C}_p|+\ln|\mathcal{C}_\mu|)} + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta\\
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot }\left(\sqrt{\tau} +\sqrt{\ln|\mathcal{C}_\theta|}+\sqrt{\ln|\mathcal{C}_p|}+\sqrt{\ln|\mathcal{C}_\mu|}\right) + c_4\epsilon_\mu + c_5\epsilon_p + c_6\epsilon_\theta
 \end{align*}
-According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
+According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1).$$ 
 By Assumption \ref{condition:excess_risk:VC-type}, there exist constants $A\geq 1, V\geq 1$ such that $$\ln(|\mathcal{C}_\mu|)\leq V\ln\left(A/\epsilon_\mu\right),\ln(|\mathcal{C}_p|)\leq V\ln\left(A/\epsilon_p\right)$$
 Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}}$, $\epsilon_p \propto n^{-1}, \epsilon_\mu\propto n^{-1}$. It holds that with probability no less than $1-32e^{-\tau}$:
 \begin{align*}
@@ -1578,7 +1578,7 @@ Term (A) is upper bounded by Lemma \ref{lemma:svm_approximation_error}. Term (B)
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot\left(\tau +\ln|\mathcal{C}_\theta|\right)} + c_4\epsilon_\theta \\
    \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta} + \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n}{n}\cdot }\left(\sqrt{\tau} +\sqrt{\ln|\mathcal{C}_\theta|}\right) + c_4\epsilon_\theta
 \end{align*}
-According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
+According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1).$$ 
 Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}}$. It holds that with probability no less than $1-32e^{-\tau}$:
 \begin{align*}
    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
@@ -3378,8 +3378,8 @@ For $\psi,\psi^\prime\in\Psi$, we have
 Also, for the empirical loss, we have 
 \begin{align}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}\nonumber\\
-    \leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\\
-    & B_L(n).\label{eq:sub_gaussian_L}
+    \leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\nonumber\\
+    =& B_L(n).\label{eq:sub_gaussian_L}
 \end{align}
 
 \subsubsection{Covering Number of Parameter Space}
@@ -3536,13 +3536,16 @@ Denote $\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)$ as the centralized empirical lo
 $$\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi):=R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)].$$
 Then, we do the decomposition as follows:
 \begin{align*}
-    &\sup_{h,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
+    &\sup_{\theta,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
     =&\sup_{\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)+\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|\\
     \leq & \underbrace{\sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|}_{\text{\textbf{Term 1}}}+\underbrace{\sup_{\theta\in \mathcal{C}_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)\right|}_{\text{\textbf{Term 2}}}
 \end{align*}
 
 
-\noindent \textbf{Bounding Term 1:} First, we denote 
+\noindent \textbf{Bounding Term 1:} 
+By Lemma \ref{lemma:L_i_diff_theta}, term 1 is upper bounded by $\delta_n^{-1}\epsilon_\theta$.
+
+First, we denote 
 $$Z_n(\psi,f,p):=\sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|.$$
 With the sequence of $\mathcal{C}^k_p,\mathcal{C}^k_f,\mathcal{C}^k_\psi$, the chaining decomposition of $Z_n(\psi,f,p)$ is:
 $$Z_n(\psi,f,p) = \underbrace{Z_n(\pi_0(\psi),\pi_0(f),\pi_0(p))}_{\text{base term}}+\sum_{k=0}^\infty\underbrace{\left\{Z_n(\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p)) - Z_n(\pi_k(\psi),\pi_k(f),\pi_k(p))\right\}}_{\text{$k$-th increment: }\Delta_k(\psi,f,p)}.$$
@@ -3628,20 +3631,30 @@ Combine the high probability bound for base term and $k$-th incremen and let $\t
 
 \noindent\textbf{Finalizing} Combining the Upper Bound of Term 1 and Term 2, with probability no less than $1-12e^{-\tau}$, we have 
 \begin{align*}
-&\sup_{h,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
+&\sup_{\theta,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
     =&\sup_{\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)+\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|\\
     \leq & \underbrace{\sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|}_{\text{\textbf{Term 1}}}+\underbrace{\sup_{\theta\in \mathcal{C}_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)\right|}_{\text{\textbf{Term 2}}}\\
-    \leq & CB_L(n)\sqrt{\tau +\log(|\mathcal{C}_\theta|)} + \sigma_0(1+\sqrt{\tau}+\sqrt{\log(|\mathcal{C}_\theta|)}) + C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2})\\
-    \leq & B_\psi(n)(1+\sqrt{\tau}) + B_\psi(n) C_p\gamma_n^{-d/2}\lambda_n^{-p/2}\epsilon_\theta^{-p} + C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2})
+    \leq & \delta_n^{-1}\epsilon_\theta+CB_L(n)\sqrt{\tau +\log(|\mathcal{C}_\theta|)} + \sigma_0(1+\sqrt{\tau}+\sqrt{\log(|\mathcal{C}_\theta|)}) \\
+    % \leq & B_\psi(n)(1+\sqrt{\tau}) + B_\psi(n) C_p\gamma_n^{-d/2}\lambda_n^{-p/2}\epsilon_\theta^{-p} + C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2})
+    \leq & B_\psi(n)(1+\sqrt{\tau}) + B_\psi(n) C_p\gamma_n^{-d/2}\lambda_n^{-p/2}\epsilon_\theta^{-p} + \delta_n^{-1}\epsilon_\theta
 \end{align*}
-The last inequality follows from (i) $B_\psi(n)$ dominates $B_p(n)$, $B_L(n)$, $B_f(n)$; (i) According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1].$$ 
-Define $K_n = B_\psi(n) C_p \gamma_n^{-d/2}\lambda_n^{-p/2}$. If we choose  $\epsilon_\theta$ to balance $B^1_\theta(n) \epsilon_\theta$ and $K_n\epsilon_\theta^{-p}$, we have $\epsilon_{\theta, 1} \asymp \left( K_n/B^1_\theta(n) \right)^{\frac{1}{p+1}}$. If we choose $\epsilon_\theta$ to balance $B^2_\theta(n) \epsilon_\theta^{1/2}$ and $K_n\epsilon_\theta^{-p}$, we have 
-$\epsilon_{\theta, 2} \asymp \left( K_n/B^2_\theta(n) \right)^{\frac{2}{2p+1}}$. Specifically,
-\begin{gather*}
-    B^1_\theta(n) = C \log(n) n^{-1/2} \left( \delta_n^{-1} + \|\Sigma_n\|_{\text{op}} \gamma_n^{-1} \lambda_n^{-1/2} \right)\\
-    B^2_\theta(n) = C \log(n) n^{-1/2} \|\Sigma_n\|_{\text{op}} \gamma_n^{-1} \lambda_n^{-1/4}\\
-    B_\psi(n)  = C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}
-\end{gather*}
+The last inequality follows from (i) $B_\psi(n)$ dominates $B_p(n)$, $B_L(n)$, $B_f(n)$, i.e., $\sigma_0 \asymp B_\psi(n)$; (ii) According to Lemma \ref{thm:equivalence_covering_entropy}  and Lemma \ref{thm:entropy_gaussian}, $$\ln(|\mathcal{C}_\theta|)\leq C_p\gamma_n^{-d}\lambda_n^{-p}\epsilon_\theta^{-2p}\text{ for any }p\in(0,1).$$ 
+Define $K_n := B_\psi(n) C_p \gamma_n^{-d/2}\lambda_n^{-p/2}$. We choose $\epsilon_\theta \asymp (K_n\delta_n)^{1/(p+1)} $ to balance the rate of $\delta_n^{-1}\epsilon_\theta$ and $K_n\epsilon_\theta^{-p}$. Then, the final rate is $\delta_n^{-p/(p+1)}K_n^{1/(p+1)}$.
+
+If we further combine it with the plug-in error in Lemma \ref{lemma:risk_function_plug_in_error} and the approximation error in Lemma \ref{lemma:svm_approximation_error}. We have the excess risk of SVM as:
+\begin{align*}
+    B_\psi(n)(1+\sqrt{\tau}) + \delta_n^{-p/(p+1)}K_n^{1/(p+1)} +\delta_n +r_{\mu,n}r_{p,n} + \lambda_n \gamma_n^{-d} + \gamma_n^\beta.
+\end{align*}
+
+
+
+% Define $K_n = B_\psi(n) C_p \gamma_n^{-d/2}\lambda_n^{-p/2}$. If we choose  $\epsilon_\theta$ to balance $B^1_\theta(n) \epsilon_\theta$ and $K_n\epsilon_\theta^{-p}$, we have $\epsilon_{\theta, 1} \asymp \left( K_n/B^1_\theta(n) \right)^{\frac{1}{p+1}}$. If we choose $\epsilon_\theta$ to balance $B^2_\theta(n) \epsilon_\theta^{1/2}$ and $K_n\epsilon_\theta^{-p}$, we have 
+% $\epsilon_{\theta, 2} \asymp \left( K_n/B^2_\theta(n) \right)^{\frac{2}{2p+1}}$. Specifically,
+% \begin{gather*}
+%     B^1_\theta(n) = C \log(n) n^{-1/2} \left( \delta_n^{-1} + \|\Sigma_n\|_{\text{op}} \gamma_n^{-1} \lambda_n^{-1/2} \right)\\
+%     B^2_\theta(n) = C \log(n) n^{-1/2} \|\Sigma_n\|_{\text{op}} \gamma_n^{-1} \lambda_n^{-1/4}\\
+%     B_\psi(n)  = C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}
+% \end{gather*}
 
 
 
