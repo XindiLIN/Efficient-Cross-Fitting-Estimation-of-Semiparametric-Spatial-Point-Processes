@@ -3529,6 +3529,54 @@ K_\nu\!\!\left(\frac{\sqrt{2\nu}\|s-s'\|}{\ell}\right),
 whenever $\Psi$ is bounded away from $0$ in all coordinates $(\sigma^2,\ell,\nu)$, since the partial derivatives w.r.t.\ $(\sigma^2,\ell,\nu)$ are continuous and bounded on such sets.
 \end{remark}
 
+\begin{lemma}[Covering Number of Gaussian RKHS Ball]\label{lemma:covering_number_rkhs}
+Let $\mathcal{H}_{\gamma_n}$ be the RKHS of the Gaussian kernel $K_{\gamma_n}$ on a compact domain $\mathcal{X}\times\mathcal{U}\subset\mathbb{R}^d$, and let $B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2})=\{\theta\in\mathcal{H}_{\gamma_n}:\|\theta\|_{\mathcal{H}_{\gamma_n}}\leq\lambda_n^{-1/2}\}$ be the RKHS ball of radius $\lambda_n^{-1/2}$. For any $p\in(0,1]$, there exists a constant $C_p<\infty$ (depending on $p$, $d$, and the domain but not on $n$, $\gamma_n$, or $\lambda_n$) such that
+\[
+\ln\mathcal{N}\!\left(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\,\|\cdot\|_\infty,\,\epsilon_\theta\right)
+\;\leq\; C_p\,\gamma_n^{-d}\,\lambda_n^{-p}\,\epsilon_\theta^{-2p}.
+\]
+\end{lemma}
+
+\begin{proof}
+The proof combines Theorem~\ref{thm:entropy_gaussian} and Theorem~\ref{thm:equivalence_covering_entropy} in three steps.
+
+\noindent\textbf{Step 1: Entropy numbers of the unit RKHS ball.}
+By Theorem~\ref{thm:entropy_gaussian}, for any integer $m\geq 1$ and all $i\geq 1$,
+\[
+e_i\!\left(\mathrm{id}:H_{\gamma_n}(rX)\to\ell_\infty(rX)\right)
+\;\leq\; c_{m,d}(X)\,r^m\,\gamma_n^{-m}\,i^{-m/d},
+\]
+i.e., the unit RKHS ball $B_{\mathcal{H}_{\gamma_n}}(1)$ can be covered by $2^{i-1}$ sup-norm balls of radius $c_{m,d}(X)r^m\gamma_n^{-m}i^{-m/d}$.
+
+\noindent\textbf{Step 2: Scale to radius $\lambda_n^{-1/2}$.}
+Since entropy numbers scale linearly with the ball radius,
+\[
+e_i\!\left(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty\right)
+= \lambda_n^{-1/2}\cdot e_i\!\left(B_{\mathcal{H}_{\gamma_n}}(1),\|\cdot\|_\infty\right)
+\;\leq\; \underbrace{c_{m,d}(X)\,r^m\,\gamma_n^{-m}\,\lambda_n^{-1/2}}_{=:\,a}\cdot i^{-m/d}.
+\]
+
+\noindent\textbf{Step 3: Convert entropy numbers to covering numbers.}
+The bound in Step~2 has the form $e_i\leq a\cdot i^{-1/q}$ with $q=d/m$. Applying Theorem~\ref{thm:equivalence_covering_entropy},
+\begin{align*}
+\ln\mathcal{N}\!\left(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty,\epsilon_\theta\right)
+&\leq \ln(4)\left(\frac{a}{\epsilon_\theta}\right)^{d/m}\\
+&= \ln(4)\cdot c_{m,d}(X)^{d/m}\cdot r^d\cdot\gamma_n^{-d}\cdot\lambda_n^{-d/(2m)}\cdot\epsilon_\theta^{-d/m}.
+\end{align*}
+
+\noindent\textbf{Step 4: Reparametrize via $p=d/(2m)$ and absorb.}
+Given any target $p\in(0,1]$, choose the integer $m=\lceil d/(2p)\rceil$. Since $p\leq 1$ implies $m\geq d/2$, and since $m\geq d/(2p)$ gives $d/(2m)\leq p$ and $d/m\leq 2p$, we have (for $\lambda_n,\epsilon_\theta\leq 1$):
+\[
+\lambda_n^{-d/(2m)}\leq\lambda_n^{-p}, \qquad \epsilon_\theta^{-d/m}\leq\epsilon_\theta^{-2p}.
+\]
+Setting $C_p:=\ln(4)\cdot c_{m,d}(X)^{d/m}\cdot r^d$ (finite for each fixed $p$, $d$, and domain) yields
+\[
+\ln\mathcal{N}\!\left(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty,\epsilon_\theta\right)
+\;\leq\; C_p\,\gamma_n^{-d}\,\lambda_n^{-p}\,\epsilon_\theta^{-2p},
+\]
+as claimed.
+\end{proof}
+
 \subsubsection{Union Bound \& Chaining}
 Let $\mathcal{C}_\theta$ be the $\epsilon_\theta$-net of $\mathcal{H}_{\mathcal{K}}$ where $\theta$ belongs to. Let $\mathcal{C}_\psi^k$ be the $\epsilon_\psi^k$-net of $\Psi$. Here, $\epsilon_\psi^k = 2^{-k}D_{\Psi}$ where $D_{\Psi}$ is the diameter of the parameter space. Similarly, we let $\mathcal{C}_f^k$ be the $\epsilon_f^k$-net of $\mathcal{F}_f$, and let $\mathcal{C}_p^k$ be the $\epsilon_p^k$-net of $\mathcal{F}_p$. Let $\pi(\theta)$ be the element in $\mathcal{C}_\theta$ that is closest to $\theta$. Let $\pi_k(\psi)$ be the element in $\mathcal{C}_\psi^k$ that is closest to $\psi$. We define $\pi_k(p)$ and $\pi_k(f)$ in a similar way.
 
@@ -4540,7 +4588,11 @@ Then, for all $\varepsilon > 0$, we have
 \[
 e_i(\textnormal{id} : H_{\gamma}(rX) \to \ell_{\infty}(rX)) \le c_{m,d}(X)r^m \gamma^{-m} i^{-m/d}.
 \]
-
+Here, the $i$-th \emph{entropy number} $e_i(T:X\to Y)$ of a bounded operator $T$ between Banach spaces $X$ and $Y$ is defined as
+\[
+e_i(T:X\to Y) := \inf\!\left\{\varepsilon>0 : T(B_X)\subseteq \bigcup_{j=1}^{2^{i-1}}\!(y_j+\varepsilon B_Y)\text{ for some }y_1,\ldots,y_{2^{i-1}}\in Y\right\},
+\]
+i.e., $e_i$ is the smallest radius $\varepsilon$ such that the image of the unit ball $T(B_X)$ can be covered by $2^{i-1}$ balls of radius $\varepsilon$ in $Y$. In particular, $e_i(T)\leq\varepsilon$ if and only if $\mathcal{N}(T(B_X),\|\cdot\|_Y,\varepsilon)\leq 2^{i-1}$.
 \end{theorem}
     
 \end{document}
