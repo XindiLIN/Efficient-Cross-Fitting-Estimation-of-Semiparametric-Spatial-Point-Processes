@@ -3598,7 +3598,7 @@ Here, $\sigma_k$ is defined as:
     \sigma_k:= & C2^{-k}\{B_p(n) D_{p} + B_f(n)D_{f}+ B_\psi(n)D_{\psi}+ B_\theta^{(1)}(n)D_\theta\} + CB_\theta^{(2)}(n)\sqrt{2^{-k}D_\theta}\\
     =:& \sigma_0^{(1)}2^{-k} + \sigma_0^{(2)}2^{-k/2}
 \end{align*}
-The number of distinct values of $(\pi_{k}(\psi),\pi_{k}(f),\pi_{k}(p))$ is $N_{k} = |\mathcal{C}^{k}_\psi||\mathcal{C}^{k}_f||\mathcal{C}^{k}_p|$. The number of distinct values of $(\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p))$ is $N_{k+1} = |\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$. Also, we have $N_{k+1}\geq N_k$. By the union bound, for any $\tau_k>0$, 
+The number of distinct values of $(\pi_{k}(\theta),\pi_{k}(\psi),\pi_{k}(f),\pi_{k}(p))$ is $N_{k} = |\mathcal{C}^{k}_\theta||\mathcal{C}^{k}_\psi||\mathcal{C}^{k}_f||\mathcal{C}^{k}_p|$. The number of distinct values of $(\pi_{k+1}(\theta),\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p))$ is $N_{k+1} = |\mathcal{C}^{k+1}_\theta||\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$. Also, we have $N_{k+1}\geq N_k$. By the union bound, for any $\tau_k>0$, 
 \begin{align*}
 \pr\left(\sup_{\theta,\psi,f,p}|\Delta_k(\theta,\psi,f,p)|\geq t\right)
     \leq & N_{k+1}N_k\pr\left(|\Delta_k|\geq t\right)\\
@@ -3623,7 +3623,11 @@ Because $\sum_{k=0}^\infty \sqrt{k} 2^{-k}$ and $ \sum_{k=0}^\infty \sqrt{k} 2^{
 $$C\sum_{k=0}^\infty\sigma_k\sqrt{k} \leq C_2 \left( \sigma_0^{(1)} + \sigma_0^{(2)} \right).$$
 \noindent\textbf{Bounding Term 3: }Substitute $\sigma_k$ into the third sum, where $N_k$ is the covering number at scale $\epsilon_k = 2^{-k}$:
 $$C\sum_{k=0}^\infty\sigma_k\sqrt{2\log(N_k)} = C\sqrt{2} \left( \sigma_0^{(1)} \sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}} + \sigma_0^{(2)} \sum_{k=0}^\infty 2^{-k/2}\sqrt{\log N_{k+1}} \right).$$
-
+Since $N_{k+1} = |\mathcal{C}^{k+1}_\theta||\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$, and the cardinty of each $\epsilon$-net the is covering number of the corresponding parameter space, we then have
+\begin{align*}
+    &\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}\\
+    = & \sum_{k=0}^\infty 2^{-k}\sqrt{ \log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,D_f2^{-(k+1)}) + \log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,D_p2^{-(k+1)}) + \log\mathcal{N}(\Psi,\,\|\cdot\|_\Psi,\,D_\psi2^{-(k+1)}) + \log\mathcal{N}(\mathcal{K}_\mathcal{H},\,\|\cdot\|_\infty,\,D_\theta2^{-(k+1)})}
+\end{align*}
 
 
 
