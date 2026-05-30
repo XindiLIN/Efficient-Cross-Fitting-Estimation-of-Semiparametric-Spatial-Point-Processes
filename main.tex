@@ -3387,16 +3387,16 @@ Also, for the empirical loss, we have
 \noindent By Assumption \ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_{P,2}$ norm. We show below that under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ also satisfy the Donsker condition with respect to the supremum norm $\|\cdot\|_\infty$. The key ingredient is a Lipschitz interpolation inequality that converts the VC-type (logarithmic) entropy in $\|\cdot\|_{L_2(P)}$ into logarithmic entropy in $\|\cdot\|_\infty$. Assumption~\ref{condition:excess_risk:overlap} is not required for this result.
 
 \begin{lemma}[Donsker Condition under $L^\infty$]\label{lemma:covering_number_Linfty}
-Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, the function classes $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_\infty$. Specifically, for every $\eta\in(0,1)$,
+Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, the function classes $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_\infty$. Specifically, for every $\epsilon > 0$,
 \begin{align*}
-\log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,\eta)
-&\;\leq\; \frac{V(d_{\mathcal{D}}+2)}{2}\,\log\!\frac{C'\!D}{\eta},\\
-\log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,\eta)
-&\;\leq\; \frac{V(d_{\mathcal{D}}+2)}{2}\,\log\!\frac{C'\!D}{\eta},
+\log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,\epsilon)
+&\;\leq\; \frac{V(d_{\mathcal{D}}+2)}{2}\,\log\!\frac{C'\!D}{\epsilon},\\
+\log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,\epsilon)
+&\;\leq\; \frac{V(d_{\mathcal{D}}+2)}{2}\,\log\!\frac{C'\!D}{\epsilon},
 \end{align*}
 where $V$ and $A$ are the VC-type constants in Assumption~\ref{condition:excess_risk:VC-type}, $D$ is the diameter of $\mathcal{D}=\mathcal{A}\times\mathcal{X}\times\mathcal{U}$, $d_{\mathcal{D}}=\dim\mathcal{D}$, and $C$ absorbs universal constants. In particular,
 \[
-\int_0^{D}\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta)}\,\mathrm{d}\eta \;<\;\infty,
+\int_0^{D}\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\epsilon)}\,\mathrm{d}\epsilon \;<\;\infty,
 \]
 and the same holds for $\mathcal{F}_p$.
 \end{lemma}
@@ -3419,32 +3419,32 @@ Minimising the right-hand side over $r>0$ by setting $r^* = \bigl(C\|h\|_{L^2}/(
 \noindent\textbf{Step 2 (Converting $L^2$ covers to $L^\infty$ covers).}
 Since Assumption~\ref{condition:excess_risk:VC-type} gives the VC-type bound for \emph{all} probability measures $Q$ — in particular for normalised Lebesgue measure $\mathrm{Leb}$ on $\mathcal{D}$ — we have:
 \[
-\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_{L^2(\mathrm{Leb})},\epsilon) \;\leq\; V\log\frac{A}{\epsilon}.
+\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_{L^2(\mathrm{Leb})},\epsilon_0) \;\leq\; V\log\frac{A}{\epsilon_0}.
 \]
-Now let $\{f_1,\ldots,f_N\}$ be a minimal $\epsilon$-cover of $\mathcal{F}_f$ in $\|\cdot\|_{L^2(\mathrm{Leb})}$. For any $f\in\mathcal{F}_f$, pick $f_j$ with $\|f-f_j\|_{L^2(\mathrm{Leb})}\leq\epsilon$. By \eqref{eq:lipschitz_interpolation}:
+Now let $\{f_1,\ldots,f_N\}$ be a minimal $\epsilon_0$-cover of $\mathcal{F}_f$ in $\|\cdot\|_{L^2(\mathrm{Leb})}$. For any $f\in\mathcal{F}_f$, pick $f_j$ with $\|f-f_j\|_{L^2(\mathrm{Leb})}\leq\epsilon_0$. By \eqref{eq:lipschitz_interpolation}:
 \[
-\|f-f_j\|_\infty \;\leq\; C\,(2C')^{d_{\mathcal{D}}/(d_{\mathcal{D}}+2)}\,\epsilon^{2/(d_{\mathcal{D}}+2)}.
+\|f-f_j\|_\infty \;\leq\; C\,(2C')^{d_{\mathcal{D}}/(d_{\mathcal{D}}+2)}\,\epsilon_0^{2/(d_{\mathcal{D}}+2)}.
 \]
-Hence the same set $\{f_1,\ldots,f_N\}$ is a $\eta$-cover in $\|\cdot\|_\infty$ with $\eta = C(2C')^{d/(d+2)}\epsilon^{2/(d+2)}$. Inverting: to achieve an $\eta$-cover in $\|\cdot\|_\infty$, it suffices to take $\epsilon = (\eta/(C(2C')^{d/(d+2)}))^{(d+2)/2}$. Therefore:
+Hence the same set $\{f_1,\ldots,f_N\}$ is an $\epsilon$-cover in $\|\cdot\|_\infty$ with $\epsilon = C(2C')^{d/(d+2)}\epsilon_0^{2/(d+2)}$. Inverting: to achieve an $\epsilon$-cover in $\|\cdot\|_\infty$, it suffices to take $\epsilon_0 = (\epsilon/(C(2C')^{d/(d+2)}))^{(d+2)/2}$. Therefore:
 \[
-\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta) \;\leq\; \mathcal{N}\!\left(\mathcal{F}_f,\|\cdot\|_{L^2(\mathrm{Leb})},\left(\frac{\eta}{C(2C')^{d/(d+2)}}\right)^{(d+2)/2}\right).
+\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\epsilon) \;\leq\; \mathcal{N}\!\left(\mathcal{F}_f,\|\cdot\|_{L^2(\mathrm{Leb})},\left(\frac{\epsilon}{C(2C')^{d/(d+2)}}\right)^{(d+2)/2}\right).
 \]
 
 \noindent\textbf{Step 3 (Logarithmic entropy bound in $L^\infty$).}
 Substituting the VC-type bound:
 \begin{align*}
-\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta)
-&\;\leq\; V\log\frac{A}{(\eta/(C(2C')^{d/(d+2)}))^{(d+2)/2}}\\
-&\;=\; V\cdot\frac{d_{\mathcal{D}}+2}{2}\cdot\log\frac{C'D}{\eta},
+\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\epsilon)
+&\;\leq\; V\log\frac{A}{(\epsilon/(C(2C')^{d/(d+2)}))^{(d+2)/2}}\\
+&\;=\; V\cdot\frac{d_{\mathcal{D}}+2}{2}\cdot\log\frac{C'D}{\epsilon},
 \end{align*}
 where all constants $(A, C, 2C')$ have been absorbed into the diameter $D$ and constant prefactors.
 
 \noindent\textbf{Step 4 (Entropy integral).}
 \[
-\int_0^D\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\eta)}\,\mathrm{d}\eta
-\;\leq\; \sqrt{\frac{V(d_{\mathcal{D}}+2)}{2}}\int_0^D\sqrt{\log\frac{C'D}{\eta}}\,\mathrm{d}\eta.
+\int_0^D\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\epsilon)}\,\mathrm{d}\epsilon
+\;\leq\; \sqrt{\frac{V(d_{\mathcal{D}}+2)}{2}}\int_0^D\sqrt{\log\frac{C'D}{\epsilon}}\,\mathrm{d}\epsilon.
 \]
-Substituting $\eta = C'D\,e^{-t}$ transforms this into $C'D\int_0^\infty \sqrt{t}\,e^{-t}\,\mathrm{d}t = C'D\,\Gamma(3/2) = C'D\sqrt{\pi}/2 < \infty$.
+Substituting $\epsilon = D\,e^{-t}$ gives $\mathrm{d}\epsilon = D e^{-t}\,\mathrm{d}t$ and $\log(C'D/\epsilon) = \log C' + t$, so the integral becomes $D\int_0^\infty\sqrt{\log C'+t}\,e^{-t}\,\mathrm{d}t \leq D\int_0^\infty(\sqrt{\log C'}+\sqrt{t})\,e^{-t}\,\mathrm{d}t = D(\sqrt{\log C'} + \Gamma(3/2)) < \infty$.
 \end{proof}
 
 \begin{remark}
