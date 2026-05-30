@@ -681,7 +681,7 @@ We make the following assumptions about the estimated nuisance functions $\wideh
  \begin{enumerate}[label=(C\arabic*)]
      \item \label{condition:excess_risk:smooth} (Regularity Conditions on Nuisance Functions) $\widehat\mu,\mu^*,\widehat p,p^*$ are uniformly continuously differentiable with respect to the treatment level $a\in\mathcal{A}$, and the covariates $(X_i,U_i)$\XL{density function is a smooth w.r.t. $X_i,U_i$. Yes, it might not hold for covariate balancing but I think it is necessary for doubly robust properties}. Also,
      %\item \label{condition:excess_risk:boundedness} (Boundedness) 
-     there exists a constant $C>0$ such that $\widehat\mu,\mu^*, \widehat p, p$ and their first-order derivatives \XL{with respect to $(a,x,u)$}are uniformly bounded by $C^\prime$. 
+     there exists a constant $C^\prime>0$ such that $\widehat\mu,\mu^*, \widehat p, p$ and their first-order derivatives \XL{with respect to $(a,x,u)$}are uniformly bounded by $C^\prime$. 
      \item \label{condition:excess_risk:overlap}(Strict Overlap) There exists a constant $c^\prime >0$ such that
      $\widehat p,p^*$ and their first order-derivative are uniformly bounded below by $c^\prime$.  
      \item \label{condition:excess_risk:nuisance}(Consistency of Nuisance Estimation) Let $r_{p,n},r_{\mu,n}$ and $\rho_n$ be sequences of real numbers, which are $o(1)$ as $n\rightarrow\infty$. We assume $\|\widehat{p} - p^*\|_{P,2} \leq r_{p,n}$ \XL{integrate over $a$} and $\|\widehat{\mu} - \mu^*\|_{P,2} \leq r_{\mu,n}$ with probability no less than $1 - \rho_n$, where $\|\cdot\|_{P,2}$ denotes the $L_2(P)$ norm.
@@ -3637,10 +3637,11 @@ Since $N_{k+1}$ is the product of the cardinality of each $\epsilon$-net, i.e., 
 For any function class $\mathcal{F}$ with diameter $D$ under the relevant norm, the covering-number map $\epsilon\mapsto\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}$ is decreasing. Setting $\epsilon_k := D\cdot 2^{-k}$, the interval widths are $\epsilon_k - \epsilon_{k+1} = D\cdot 2^{-(k+1)}$, so
 \begin{align*}
      \sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F},D\,2^{-(k+1)})}
-     =  & \frac{4}{D}\sum_{k=0}^\infty (\epsilon_{k+2}-\epsilon_{k+1})\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})}\\
-     = & \frac{4}{D}\sum_{k=0}^\infty\int_{\epsilon_{k+2}}^{\epsilon_{k+1}} \sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})} \mathrm{d}\epsilon\\
-     \leq & \frac{4}{D}\sum_{k=0}^\infty\int_{\epsilon_{k+2}}^{\epsilon_{k+1}} \sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)} \mathrm{d}\epsilon\\
-     \leq & \frac{4}{D}\int_{0}^D\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)} \mathrm{d}\epsilon
+      = 2 & \sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F},D\,2^{-k})}\\
+     =  & \frac{4}{D}\sum_{k=0}^\infty (\epsilon_{k}-\epsilon_{k+1})\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k})}\\
+     = & \frac{4}{D}\sum_{k=0}^\infty\int_{\epsilon_{k+1}}^{\epsilon_{k}} \sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k})} \mathrm{d}\epsilon\\
+     \leq & \frac{4}{D}\sum_{k=0}^\infty\int_{\epsilon_{k+1}}^{\epsilon_{k}} \sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)} \mathrm{d}\epsilon\\
+     = & \frac{4}{D}\int_{0}^{D}\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)} \mathrm{d}\epsilon
 \end{align*}
 where the inequality holds because the right-endpoint Riemann sum of a decreasing function underestimates the integral. Applying this bound to each of the four spaces and invoking the covering-number lemmas:
 
