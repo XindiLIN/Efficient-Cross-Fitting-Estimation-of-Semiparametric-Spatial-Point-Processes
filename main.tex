@@ -703,7 +703,7 @@ Let $\sigma_{n} = \sup_{\psi\in \Psi_{\text{Mat\'ern}}}\|\mathbf{C}_n(\psi)\|_2$
 % \CP{How should I understand $R(\theta)$ in Lemma \ref{lemma:risk_db} when $X$ is a fixed object?} \XL{Now I change it to i.i.d.}
  \XL{will unify all to Theorem/Proposition}
  \begin{theorem}[Excess Risk Bound of SVM Estimator] \label{thm:excess_risk}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. If the surrogate kernel bandwidth $\delta_n$ decays no faster than $n^{-1}$, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. If the surrogate kernel bandwidth $\delta_n$ decays no faster than $n^{-1}$, for any $p\in(0,1)$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right)\leq &c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \nonumber\\
    & \qquad + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}\nonumber\\
@@ -763,7 +763,7 @@ A popular technique to avoid the complexity Assumption \ref{condition:excess_ris
 While independent data splitting may not always be feasible in spatial datasets, we nevertheless follow \citet{gilbert2021causal} and consider a setup where $(Y, A, X, S)$ is identically distributed and exhibits spatial dependence according to a locally covariance random field. Under this setup, Bernstein blocking can be employed to obtain independent subsets of a spatial dataset, which then enables cross-fitting and relaxes Assumption \ref{condition:excess_risk:VC-type} to accommodate flexible machine learning estimators. Theorem \ref{thm:excess_risk_cross_fitting} extends our theoretical analysis to this cross-fitting regime.
 
  \begin{theorem}[Excess Risk Bound of Cross-Fitting Estimator] \label{thm:excess_risk_cross_fitting}
-     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. \XL{Suppose the observations are distributed identically and according to a locally covariant spatial random field, and the nuisance estimators $\widehat\mu,\widehat p$ and the target estimator $\widehat\theta$ are estimated using independent subsets obtained via Bernstein blocking (see Section 5.2 of \citet{gilbert2021causal} for details).}. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Then, for any $p\in(0,1]$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
+     Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. \XL{Suppose the observations are distributed identically and according to a locally covariant spatial random field, and the nuisance estimators $\widehat\mu,\widehat p$ and the target estimator $\widehat\theta$ are estimated using independent subsets obtained via Bernstein blocking (see Section 5.2 of \citet{gilbert2021causal} for details).}. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Then, for any $p\in(0,1)$, $\tau>0$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}-\rho_n$:
 \begin{align}
        R(\widehat\theta)-R\left(\theta^*\right) 
        \leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_5r_{\mu,n}r_{p,n} + c_6{\delta_n}. \label{eq:excess_risk_cross_fitting}
@@ -1500,7 +1500,7 @@ The first equality follows from the construction of $\theta_0$, obtained by appl
 \end{proof}
 
 \begin{lemma}[SVM Estimation Error]\label{lemma:svm_estimation_error}
-    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1)$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
    \begin{align*}
    \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + \sqrt{\frac{ c_4\gamma_n^{-2}\lambda_n^{-1}\sigma_n\ln(n)}{n}} \\
    & + c_5\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} + c_6n^{-1}
@@ -1548,7 +1548,7 @@ Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sig
 \end{proof}
 
 \begin{lemma}[SVM Estimation Error with Cross-Fitting]\label{lemma:svm_estimation_error_cross_fitting}
-    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. Suppose the nuisance estimation $\widehat\mu, \widehat p$ are estimated with independent dataset. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+    Suppose Assumption \ref{condition:monotonicity}, Assumption \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:nuisance} hold. Suppose the nuisance estimation $\widehat\mu, \widehat p$ are estimated with independent dataset. In addition, suppose that $\tilde\theta$ belongs to a Besov space on $\R^{d+1}$ with smoothness parameter $\beta>0$, i.e., $\mathcal{B}_{1,\infty}^\beta(\R^{d+1}) = \{f\in L_\infty(\R^{d+1})|\sup_{t>0}t^{-\beta\{\omega_{r,L_1(\R^{d+1})}(f,t)\}}\}$ where $\omega_r$ is the modulus of continuity of order $r$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1)$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
    \begin{align*}
   \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & c_1 \lambda_n\gamma_n^{-d} + c_2\gamma_n^{\beta}+ \sqrt{\frac{ c_3\gamma_n^{-2}\lambda_n^{-1}\sigma_n\tau}{n}} + c_4\left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sigma_n\right)^{\frac{1}{2+2p}} 
 \end{align*}
@@ -1588,7 +1588,7 @@ Let $\epsilon_\theta \propto \left(\gamma_n^{-(d+2)}\lambda_n^{-(p+1)}n^{-1}\sig
 
 
 \begin{lemma}[Parametric Estimation Error]\label{lemma:parametric_estimation_error}
-Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a parametric space $\{\beta^\top(x,u):\beta\in \R^{d+1},\|\beta\|_{\infty}<C_\beta\}$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1]$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
+Suppose Assumptions \ref{condition:monotonicity} and \ref{condition:excess_risk:smooth} - \ref{condition:excess_risk:VC-type} hold. In addition, suppose that $\theta^*$ in \eqref{eq:identification} belongs to a parametric space $\{\beta^\top(x,u):\beta\in \R^{d+1},\|\beta\|_{\infty}<C_\beta\}$. Suppose the surrogate loss bandwidth $\delta_n$ converge to zero no faster than $n^{-1}$. Then, for $p\in(0,1)$, we have the following excess risk bound for $\widehat\theta$ with probability $1-32e^{-\tau}$:
    \begin{align*}
     \widehat R^{({\delta_n})}(\widehat\theta) - \widehat R^{({\delta_n})}(\tilde\theta)\leq & \sqrt{\frac{c_1\sigma_n\tau}{n}} + \sqrt{\frac{ c_2\sigma_n\ln(n)}{n}}  + c_3n^{-1}
 \end{align*}
@@ -3383,7 +3383,6 @@ Also, for the empirical loss, we have
 \end{align}
 
 \subsubsection{Covering Number of Parameter Space}
-\textcolor{red}{This session is generated by AI and hasn't been checked.}
 
 \noindent By Assumption \ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_{P,2}$ norm. We show below that under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, $\mathcal{F}_f$ and $\mathcal{F}_p$ also satisfy the Donsker condition with respect to the supremum norm $\|\cdot\|_\infty$. The key ingredient is a Lipschitz interpolation inequality that converts the VC-type (logarithmic) entropy in $\|\cdot\|_{L_2(P)}$ into logarithmic entropy in $\|\cdot\|_\infty$. Assumption~\ref{condition:excess_risk:overlap} is not required for this result.
 
@@ -3530,7 +3529,7 @@ whenever $\Psi$ is bounded away from $0$ in all coordinates $(\sigma^2,\ell,\nu)
 \end{remark}
 
 \begin{lemma}[Covering Number of Gaussian RKHS Ball]\label{lemma:covering_number_rkhs}
-Let $\mathcal{H}_{\gamma_n}$ be the RKHS of the Gaussian kernel $K_{\gamma_n}$ on a compact domain $\mathcal{X}\times\mathcal{U}\subset\mathbb{R}^d$, and let $B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2})=\{\theta\in\mathcal{H}_{\gamma_n}:\|\theta\|_{\mathcal{H}_{\gamma_n}}\leq\lambda_n^{-1/2}\}$ be the RKHS ball of radius $\lambda_n^{-1/2}$. For any $p\in(0,1]$, there exists a constant $C_p<\infty$ (depending on $p$, $d$, and the domain but not on $n$, $\gamma_n$, or $\lambda_n$) such that
+Let $\mathcal{H}_{\gamma_n}$ be the RKHS of the Gaussian kernel $K_{\gamma_n}$ on a compact domain $\mathcal{X}\times\mathcal{U}\subset\mathbb{R}^d$, and let $B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2})=\{\theta\in\mathcal{H}_{\gamma_n}:\|\theta\|_{\mathcal{H}_{\gamma_n}}\leq\lambda_n^{-1/2}\}$ be the RKHS ball of radius $\lambda_n^{-1/2}$. For any $p\in(0,1)$, there exists a constant $C_p<\infty$ (depending on $p$, $d$, and the domain but not on $n$, $\gamma_n$, or $\lambda_n$) such that
 \[
 \ln\mathcal{N}\!\left(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\,\|\cdot\|_\infty,\,\epsilon_\theta\right)
 \;\leq\; C_p\,\gamma_n^{-d}\,\lambda_n^{-p}\,\epsilon_\theta^{-2p}.
@@ -3565,7 +3564,7 @@ The bound in Step~2 has the form $e_i\leq a\cdot i^{-1/q}$ with $q=d/m$. Applyin
 \end{align*}
 
 \noindent\textbf{Step 4: Reparametrize via $p=d/(2m)$ and absorb.}
-Given any target $p\in(0,1]$, choose the integer $m=\lceil d/(2p)\rceil$. Since $p\leq 1$ implies $m\geq d/2$, and since $m\geq d/(2p)$ gives $d/(2m)\leq p$ and $d/m\leq 2p$, we have (for $\lambda_n,\epsilon_\theta\leq 1$):
+Given any target $p\in(0,1)$, choose the integer $m=\lceil d/(2p)\rceil$. Since $p\leq 1$ implies $m\geq d/2$, and since $m\geq d/(2p)$ gives $d/(2m)\leq p$ and $d/m\leq 2p$, we have (for $\lambda_n,\epsilon_\theta\leq 1$):
 \[
 \lambda_n^{-d/(2m)}\leq\lambda_n^{-p}, \qquad \epsilon_\theta^{-d/m}\leq\epsilon_\theta^{-2p}.
 \]
@@ -3578,57 +3577,60 @@ as claimed.
 \end{proof}
 
 \subsubsection{Union Bound \& Chaining}
-Let $\mathcal{C}_\theta$ be the $\epsilon_\theta$-net of $\mathcal{H}_{\mathcal{K}}$ where $\theta$ belongs to. Let $\mathcal{C}_\psi^k$ be the $\epsilon_\psi^k$-net of $\Psi$. Here, $\epsilon_\psi^k = 2^{-k}D_{\Psi}$ where $D_{\Psi}$ is the diameter of the parameter space. Similarly, we let $\mathcal{C}_f^k$ be the $\epsilon_f^k$-net of $\mathcal{F}_f$, and let $\mathcal{C}_p^k$ be the $\epsilon_p^k$-net of $\mathcal{F}_p$. Let $\pi(\theta)$ be the element in $\mathcal{C}_\theta$ that is closest to $\theta$. Let $\pi_k(\psi)$ be the element in $\mathcal{C}_\psi^k$ that is closest to $\psi$. We define $\pi_k(p)$ and $\pi_k(f)$ in a similar way.
 
-Denote $\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)$ as the centralized empirical loss:
+
+Let $D_\theta$ be the diameter of of $\mathcal{H}_{\mathcal{K}}$. By Lemma \ref{lemma:bound_svm}, $D_\theta = O(\lambda_n^{-1/2})$. Let $\mathcal{C}^k_\theta$ be the $\epsilon^k_\theta$-net of $\mathcal{H}_{\mathcal{K}}$ where $\epsilon^k_\theta = D_\theta 2^{-k}$. We let $\pi^k(\theta)$ be the element in $\mathcal{C}^k_\theta$ that is closest to $\theta$ in $\mathcal{H}_\mathcal{K}$. We also define parallel notations for parameter class $\mathcal{F}_f,\mathcal{F}_p$ and $\Psi$. Denote $\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)$ as the centralized empirical loss:
 $$\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi):=R_n^{(\delta_n)}(\theta;f,p,\psi)-\E[R_n^{(\delta_n)}(\theta;f,p,\psi)].$$
-Then, we do the decomposition as follows:
+Then, we do the chaining decomposition as follows:
+ The chaining decomposition of $\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)$ is:
 \begin{align*}
-    &\sup_{\theta,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
-    =&\sup_{\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)+\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|\\
-    \leq & \underbrace{\sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|}_{\text{\textbf{Term 1}}}+\underbrace{\sup_{\theta\in \mathcal{C}_\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)\right|}_{\text{\textbf{Term 2}}}
+   \bar{R}_n^{(\delta_n)}(\theta;f,p,\psi) &= \underbrace{\bar{R}_n^{(\delta_n)}(\pi_0(\theta);\pi_0(f),\pi_0(p),\pi_0(\psi))}_{\text{base term}}\\
+   & +\sum_{k=0}^\infty\underbrace{\left\{\bar{R}_n^{(\delta_n)}(\pi_{k+1}(\theta);\pi_{k+1}(f),\pi_{k+1}(p),\pi_{k+1}(\psi)) - \bar{R}_n^{(\delta_n)}(\pi_{k}(\theta);\pi_{k}(f),\pi_{k}(p),\pi_{k}(\psi))\right\}}_{\text{$k$-th increment: }\Delta_k(\theta,\psi,f,p)}. 
 \end{align*}
-
-
-\noindent \textbf{Bounding Term 1:} 
-By Lemma \ref{lemma:L_i_diff_theta}, term 1 is upper bounded by $\delta_n^{-1}\epsilon_\theta$.
-
-First, we denote 
-$$Z_n(\psi,f,p):=\sup_{|\theta-\theta^\prime|_\infty\leq \epsilon_\theta}\left|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)-\bar{R}_n^{(\delta_n)}(\pi(\theta);f,p,\psi)\right|.$$
-With the sequence of $\mathcal{C}^k_p,\mathcal{C}^k_f,\mathcal{C}^k_\psi$, the chaining decomposition of $Z_n(\psi,f,p)$ is:
-$$Z_n(\psi,f,p) = \underbrace{Z_n(\pi_0(\psi),\pi_0(f),\pi_0(p))}_{\text{base term}}+\sum_{k=0}^\infty\underbrace{\left\{Z_n(\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p)) - Z_n(\pi_k(\psi),\pi_k(f),\pi_k(p))\right\}}_{\text{$k$-th increment: }\Delta_k(\psi,f,p)}.$$
-By the upper bound of the sub-Gaussian norm of with respect to $\theta$ in equation \eqref{eq:sub_gaussian_theta}, we have that for any $\tau>0$, with probability no less than $1-2e^{-\tau}$, the base term has the following bound: 
-$$\left|Z_n(\pi_0(\psi),\pi_0(f),\pi_0(p))\right|\leq C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2}).$$
-By the sub-Gaussianity w.r.t. $f,p$ and $\psi$ in Equation \eqref{eq:sub_gaussian_f}, \eqref{eq:sub_gaussian_p}, \eqref{eq:sub_gaussian_psi}, and the triangular inequality, we have 
-\begin{gather*}
-    \|Z_n(\psi,f,p)-Z_n(\psi^\prime,f,p)\|\leq 2B_\psi(n)\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
-    \|Z_n(\psi,f,p)-Z_n(\psi,f^\prime,p)\|\leq 2B_f(n) \|f-f^\prime\|_\infty\\
-    \|Z_n(\psi,f,p)-Z_n(\psi,f,p^\prime)\|\leq 2B_p(n)\|p-p^\prime\|_\infty
-\end{gather*}
-Thus, the $k$-th increment satisfies:
-$$\|\Delta_k(\psi,f,p)\|_{\psi_2}\leq C(B_p(n)2^{-k} D_{p} + B_f(n)2^{-k} D_{f}+ B_\psi(n)2^{-k} D_{\psi}).$$
-The number of distinct values of $(\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p))$ is $N_{k+1} = |\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$.
-To minimize notation, we denote
+By the sub-Gaussianity of the empirical risk in equation \eqref{eq:sub_gaussian_L}, we have the following bound for base term with probability no less than $1-2e^{-\tau}$,
 \begin{align*}
- \sigma_0 := &C(B_p(n) D_{p} + B_f(n)D_{f}+ B_\psi(n)D_{\psi})\\
-    \sigma_k:= & C(B_p(n)2^{-k} D_{p} + B_f(n)2^{-k} D_{f}+ B_\psi(n)2^{-k} D_{\psi}) = \sigma_0 2^{-k}.
+    \left|\bar{R}_n^{(\delta_n)}(\theta;\pi_0(f),\pi_0(p),\pi_0(\psi))\right|\leq CB_L(n)\sqrt{\tau}
 \end{align*}
-The number of distinct values of $(\pi_{k}(\psi),\pi_{k}(f),\pi_{k}(p))$ is $N_{k} = |\mathcal{C}^{k}_\psi||\mathcal{C}^{k}_f||\mathcal{C}^{k}_p|$, and $N_k\leq N_{k+1}$. Then, by the union bound, for any $\tau_k>0$, 
+By the sub-Gaussianity of the empirical risk w.r.t. $\theta,f,p$ and $\psi$ in Equation \eqref{eq:sub_gaussian_theta}, \eqref{eq:sub_gaussian_f}, \eqref{eq:sub_gaussian_p}, \eqref{eq:sub_gaussian_psi}, the $k$-th increment satisfies:
+$$\|\Delta_k(\theta,\psi,f,p)\|_{\psi_2}\leq \sigma_k = \sigma_0^{(1)}2^{-k} + \sigma_0^{(2)}2^{-k/2}.$$
+Here, $\sigma_k$ is defined as:
 \begin{align*}
-    \pr\left(\sup_{\psi,f,p}|\Delta_k|\geq t\right)
-    \leq N_{k+1}^2 \pr\left(|\Delta_k|\geq t\right)
-    \leq 2N_{k+1}^2\exp\left(-\frac{Ct^2}{\sigma_k^2}\right)
+    \sigma_k:= & C2^{-k}\{B_p(n) D_{p} + B_f(n)D_{f}+ B_\psi(n)D_{\psi}+ B_\theta^{(1)}(n)D_\theta\} + CB_\theta^{(2)}(n)\sqrt{2^{-k}D_\theta}\\
+    =:& \sigma_0^{(1)}2^{-k} + \sigma_0^{(2)}2^{-k/2}
+\end{align*}
+The number of distinct values of $(\pi_{k}(\psi),\pi_{k}(f),\pi_{k}(p))$ is $N_{k} = |\mathcal{C}^{k}_\psi||\mathcal{C}^{k}_f||\mathcal{C}^{k}_p|$. The number of distinct values of $(\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p))$ is $N_{k+1} = |\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$. Also, we have $N_{k+1}\geq N_k$. By the union bound, for any $\tau_k>0$, 
+\begin{align*}
+\pr\left(\sup_{\theta,\psi,f,p}|\Delta_k(\theta,\psi,f,p)|\geq t\right)
+    \leq & N_{k+1}N_k\pr\left(|\Delta_k|\geq t\right)\\
+    \leq & N_{k+1}^2\pr\left(|\Delta_k|\geq t\right)\\
+    \leq & \exp\left(-Ct^2/\sigma_k^2+2\log(N_{k+1})\right)
 \end{align*}
 Thus, for any $\tau_k>0$, with probability no less than $1-2e^{-\tau_k}$, 
-$$\sup|\Delta_k|\leq C\sigma_k\sqrt{\tau_k +2\log(N_k)}.$$
-Combine the high probability bound for base term and $k$-th incremen and let $\tau_k = \tau+k$, we have that with probability no less than $1-2e^{-\tau}(1+\sum_{k=1}^\infty e^{-k})\geq 1- 6e^{-\tau}$, 
+$$\sup_{\theta,\psi,f,p}|\Delta_k(\theta,\psi,f,p)|\leq C\sigma_k\sqrt{\tau_k +2\log(N_{k+1}))}.$$
+Combine the high probability bound for base term and $k$-th increment and let $\tau_k = \tau+k$, we have that with probability no less than $1-2e^{-\tau}(1+\sum_{k=1}^\infty e^{-k})\geq 1- 6e^{-\tau}$, 
 \begin{align*}
-    & \sup_{\psi,f,p}|Z(\psi,f,p)|\\
-    \leq & |Z(\pi_0(\psi),\pi_0(f),\pi_0(p))|+\sum_{k=0}^\infty\sup_{\psi,f,p}\left|Z_n(\pi_{k+1}(\psi),\pi_{k+1}(f),\pi_{k+1}(p)) - Z_n(\pi_k(\psi),\pi_k(f),\pi_k(p))\right|\\
-    \leq & C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2}) + C\sum_{k=0}^\infty\sigma_k\sqrt{\tau + k +2\log(N_k)}\\
-    \leq & C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2}) + C\sqrt{\tau}\sum_{k=0}^\infty\sigma_k + C\sum_{k=0}^\infty\sigma_k\sqrt{k} + C\sum_{k=0}^\infty\sigma_k\sqrt{2\log(N_k)}\\
-    \leq & C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2}) + C\sqrt{\tau}\sigma_0\underbrace{\sum_{k=0}^\infty2^{-k}}_{\text{bounded}} + C\sigma_0\underbrace{\sum_{k=0}^\infty2^{-k}\sqrt{k}}_{\text{bounded}} + C\sigma_0\underbrace{\sum_{k=0}^\infty2^{-k}\sqrt{2\log(N_k)}}_{\text{bounded by Dudley's entropy integral}}
+    & \sup_{\theta,\psi,f,p}|\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)|\\
+    \leq & \left|\bar{R}_n^{(\delta_n)}(\pi_0(\theta);\pi_0(f),\pi_0(p),\pi_0(\psi))\right|\\
+    & +\sum_{k=0}^\infty\sup_{\theta,\psi,f,p}\left|\bar{R}_n^{(\delta_n)}(\pi_{k+1}(\theta);\pi_{k+1}(f),\pi_{k+1}(p),\pi_{k+1}(\psi)) - \bar{R}_n^{(\delta_n)}(\pi_{k}(\theta);\pi_{k}(f),\pi_{k}(p),\pi_{k}(\psi))\right|\\
+    \leq & CB_L(n)\sqrt{\tau} + C\sum_{k=0}^\infty\sigma_k\sqrt{\tau + k +2\log(N_{k+1}))}\\
+    \leq & CB_L(n)\sqrt{\tau}+C\underbrace{\sqrt{\tau}\sum_{k=0}^\infty\sigma_k}_{\text{Term 1}} + C\underbrace{\sum_{k=0}^\infty\sigma_k\sqrt{k}}_{\text{Term 2}} + C\underbrace{\sum_{k=0}^\infty\sigma_k\sqrt{2\log(N_{k+1})}}_{\text{Term 3}}
 \end{align*}
+\noindent\textbf{Bounding Term 1: }Substitute $\sigma_k$ into the first sum. This splits into two standard geometric series:$$C\sqrt{\tau}\sum_{k=0}^\infty\sigma_k = C\sqrt{\tau} \left( \sigma_0^{(1)} \sum_{k=0}^\infty 2^{-k} + \sigma_0^{(2)} \sum_{k=0}^\infty 2^{-k/2} \right).$$
+Because $\sum_{k=0}^\infty 2^{-k} = 2$ and $\sum_{k=0}^\infty 2^{-k/2} = \frac{1}{1 - 1/\sqrt{2}} = 2 + \sqrt{2}$, they can be absorbed into $C$:
+$$C\sqrt{\tau}\sum_{k=0}^\infty\sigma_k \leq C \sqrt{\tau} \left( \sigma_0^{(1)} + \sigma_0^{(2)} \right).$$
+\noindent\textbf{Bounding Term 2: }Substitute $\sigma_k$ into the second sum. This splits into:$$C\sum_{k=0}^\infty\sigma_k\sqrt{k} = C \left( \sigma_0^{(1)} \sum_{k=0}^\infty \sqrt{k} 2^{-k} + \sigma_0^{(2)} \sum_{k=0}^\infty \sqrt{k} 2^{-k/2} \right)$$
+Because $\sum_{k=0}^\infty \sqrt{k} 2^{-k}$ and $ \sum_{k=0}^\infty \sqrt{k} 2^{-k/2}$ are finite, they can be absorbed into $C$:
+$$C\sum_{k=0}^\infty\sigma_k\sqrt{k} \leq C_2 \left( \sigma_0^{(1)} + \sigma_0^{(2)} \right).$$
+\noindent\textbf{Bounding Term 3: }Substitute $\sigma_k$ into the third sum, where $N_k$ is the covering number at scale $\epsilon_k = 2^{-k}$:
+$$C\sum_{k=0}^\infty\sigma_k\sqrt{2\log(N_k)} = C\sqrt{2} \left( \sigma_0^{(1)} \sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}} + \sigma_0^{(2)} \sum_{k=0}^\infty 2^{-k/2}\sqrt{\log N_{k+1}} \right).$$
+
+
+
+
+\textcolor{red}{Mark Here. Below are old proof might need to be replaced.}
+
+
+
 The first sum $\sum_{k=0}^\infty 2^{-k}$ and the second sum $\sum_{k=0}^\infty 2^{-k}\sqrt{k}$ are bounded, the third sum  $\sum_{k=0}^\infty2^{-k}\sqrt{2\log(N_k)}$ can be bounded by Dudley's entropy integral as follows:
 \begin{align*}
     &\sum_{k=0}^\infty 2^{-k} \sqrt{2\log(N_k)}\\ = & 2\sqrt{2} \sum_{k=0}^\infty (2^{-k} - 2^{-(k+1)}) \left(\sqrt{\log(|\mathcal{C}^{k}_\psi|)} + \sqrt{\log(|\mathcal{C}^{k}_f|)} + \sqrt{\log(|\mathcal{C}^{k}_p|)}\right)\\
