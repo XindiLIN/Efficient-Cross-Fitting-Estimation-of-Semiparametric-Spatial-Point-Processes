@@ -3623,15 +3623,11 @@ Because $\sum_{k=0}^\infty \sqrt{k} 2^{-k}$ and $ \sum_{k=0}^\infty \sqrt{k} 2^{
 $$C\sum_{k=0}^\infty\sigma_k\sqrt{k} \leq C_2 \left( \sigma_0^{(1)} + \sigma_0^{(2)} \right).$$
 \noindent\textbf{Bounding Term 3: }Substitute $\sigma_k$ into the third sum, where $N_k$ is the covering number at scale $\epsilon_k = 2^{-k}$:
 $$C\sum_{k=0}^\infty\sigma_k\sqrt{2\log(N_k)} = C\sqrt{2} \left( \sigma_0^{(1)} \sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}} + \sigma_0^{(2)} \sum_{k=0}^\infty 2^{-k/2}\sqrt{\log N_{k+1}} \right).$$
-Since $N_{k+1} = |\mathcal{C}^{k+1}_\theta||\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$, and the cardinty of each $\epsilon$-net the is covering number of the corresponding parameter space, we then have
+Since $N_{k+1}$ is the product of the cardinality of each $\epsilon$-net, i.e.,  the covering number of the corresponding parameter space, then, wusing the subadditivity of the square root, ($\sqrt{\sum_{j=1}^4 a_j}\leq\sum_{j=1}^4\sqrt{a_j}$ for $a_j\geq 0$), we have
 \begin{align*}
-    &\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}\\
-    = & \sum_{k=0}^\infty 2^{-k}\sqrt{ \log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,D_f2^{-(k+1)}) + \log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,D_p2^{-(k+1)}) + \log\mathcal{N}(\Psi,\,\|\cdot\|_\Psi,\,D_\psi2^{-(k+1)}) + \log\mathcal{N}(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\,\|\cdot\|_\infty,\,D_\theta2^{-(k+1)})}
-\end{align*}
-Using the subadditivity of the square root, $\sqrt{\sum_{j=1}^4 a_j}\leq\sum_{j=1}^4\sqrt{a_j}$ for $a_j\geq 0$:
-\begin{align*}
-\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}
-\;\leq\;&\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,D_f2^{-(k+1)})}
+&\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}
+\;\\
+\leq\;&\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,D_f2^{-(k+1)})}
 +\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F}_p,\|\cdot\|_\infty,D_p2^{-(k+1)})}\\
 &+\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,D_\psi2^{-(k+1)})}
 +\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty,D_\theta2^{-(k+1)})}.
@@ -3639,11 +3635,13 @@ Using the subadditivity of the square root, $\sqrt{\sum_{j=1}^4 a_j}\leq\sum_{j=
 
 \noindent\textbf{Step 3a: Riemann-sum-to-Dudley-integral.}
 For any function class $\mathcal{F}$ with diameter $D$ under the relevant norm, the covering-number map $\epsilon\mapsto\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}$ is decreasing. Setting $\epsilon_k := D\cdot 2^{-k}$, the interval widths are $\epsilon_k - \epsilon_{k+1} = D\cdot 2^{-(k+1)}$, so
-\[
-\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F},D\,2^{-(k+1)})}
-\;=\; \frac{2}{D}\sum_{k=0}^\infty (\epsilon_k-\epsilon_{k+1})\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})}
-\;\leq\; \frac{2}{D}\int_0^D\!\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}\,\mathrm{d}\epsilon,
-\]
+\begin{align*}
+     \sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F},D\,2^{-(k+1)})}
+     =  & \frac{4}{D}\sum_{k=0}^\infty (\epsilon_{k+2}-\epsilon_{k+1})\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})}\\
+     = & \frac{4}{D}\sum_{k=0}^\infty\int_{\epsilon_{k+2}}^{\epsilon_{k+1}} \sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})} \mathrm{d}\epsilon\\
+     \leq & \frac{4}{D}\sum_{k=0}^\infty\int_{\epsilon_{k+2}}^{\epsilon_{k+1}} \sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)} \mathrm{d}\epsilon\\
+     \leq & \frac{4}{D}\int_{0}^D\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)} \mathrm{d}\epsilon
+\end{align*}
 where the inequality holds because the right-endpoint Riemann sum of a decreasing function underestimates the integral. Applying this bound to each of the four spaces and invoking the covering-number lemmas:
 
 \noindent\textbf{(i) $\mathcal{F}_f$ and $\mathcal{F}_p$.}
