@@ -3626,25 +3626,105 @@ $$C\sum_{k=0}^\infty\sigma_k\sqrt{2\log(N_k)} = C\sqrt{2} \left( \sigma_0^{(1)} 
 Since $N_{k+1} = |\mathcal{C}^{k+1}_\theta||\mathcal{C}^{k+1}_\psi||\mathcal{C}^{k+1}_f||\mathcal{C}^{k+1}_p|$, and the cardinty of each $\epsilon$-net the is covering number of the corresponding parameter space, we then have
 \begin{align*}
     &\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}\\
-    = & \sum_{k=0}^\infty 2^{-k}\sqrt{ \log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,D_f2^{-(k+1)}) + \log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,D_p2^{-(k+1)}) + \log\mathcal{N}(\Psi,\,\|\cdot\|_\Psi,\,D_\psi2^{-(k+1)}) + \log\mathcal{N}(\mathcal{K}_\mathcal{H},\,\|\cdot\|_\infty,\,D_\theta2^{-(k+1)})}
+    = & \sum_{k=0}^\infty 2^{-k}\sqrt{ \log\mathcal{N}(\mathcal{F}_f,\,\|\cdot\|_\infty,\,D_f2^{-(k+1)}) + \log\mathcal{N}(\mathcal{F}_p,\,\|\cdot\|_\infty,\,D_p2^{-(k+1)}) + \log\mathcal{N}(\Psi,\,\|\cdot\|_\Psi,\,D_\psi2^{-(k+1)}) + \log\mathcal{N}(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\,\|\cdot\|_\infty,\,D_\theta2^{-(k+1)})}
+\end{align*}
+Using the subadditivity of the square root, $\sqrt{\sum_{j=1}^4 a_j}\leq\sum_{j=1}^4\sqrt{a_j}$ for $a_j\geq 0$:
+\begin{align*}
+\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}
+\;\leq\;&\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,D_f2^{-(k+1)})}
++\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F}_p,\|\cdot\|_\infty,D_p2^{-(k+1)})}\\
+&+\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,D_\psi2^{-(k+1)})}
++\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty,D_\theta2^{-(k+1)})}.
 \end{align*}
 
+\noindent\textbf{Step 3a: Riemann-sum-to-Dudley-integral.}
+For any function class $\mathcal{F}$ with diameter $D$ under the relevant norm, the covering-number map $\epsilon\mapsto\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}$ is decreasing. Setting $\epsilon_k := D\cdot 2^{-k}$, the interval widths are $\epsilon_k - \epsilon_{k+1} = D\cdot 2^{-(k+1)}$, so
+\[
+\sum_{k=0}^\infty 2^{-k}\sqrt{\log\mathcal{N}(\mathcal{F},D\,2^{-(k+1)})}
+\;=\; \frac{2}{D}\sum_{k=0}^\infty (\epsilon_k-\epsilon_{k+1})\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})}
+\;\leq\; \frac{2}{D}\int_0^D\!\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}\,\mathrm{d}\epsilon,
+\]
+where the inequality holds because the right-endpoint Riemann sum of a decreasing function underestimates the integral. Applying this bound to each of the four spaces and invoking the covering-number lemmas:
 
+\noindent\textbf{(i) $\mathcal{F}_f$ and $\mathcal{F}_p$.}
+By Lemma~\ref{lemma:covering_number_Linfty},
+\[
+\frac{2}{D_f}\int_0^{D_f}\!\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\epsilon)}\,\mathrm{d}\epsilon
+\;\leq\; \frac{2}{D_f}\sqrt{\frac{V(d_\mathcal{D}+2)}{2}}
+\int_0^{D_f}\!\sqrt{\log\frac{C'D_f}{\epsilon}}\,\mathrm{d}\epsilon.
+\]
+Using the substitution $\epsilon = D_f e^{-t}$ from the proof of Lemma~\ref{lemma:covering_number_Linfty}:
+\[
+\frac{1}{D_f}\int_0^{D_f}\!\sqrt{\log\frac{C'D_f}{\epsilon}}\,\mathrm{d}\epsilon
+= \int_0^\infty\!\sqrt{\log C' + t}\;e^{-t}\,\mathrm{d}t
+\;\leq\; \sqrt{\log C'} + \Gamma\!\left(\tfrac{3}{2}\right) < \infty.
+\]
+Hence $\dfrac{2}{D_f}\int_0^{D_f}\!\sqrt{\log\mathcal{N}(\mathcal{F}_f,\|\cdot\|_\infty,\epsilon)}\,\mathrm{d}\epsilon \leq C_{f} < \infty$, a universal constant independent of $n$, $\lambda_n$, and $\gamma_n$. The same bound holds for $\mathcal{F}_p$ with constant $C_p'<\infty$.
 
-\textcolor{red}{Mark Here. Below are old proof might need to be replaced.}
+\noindent\textbf{(ii) $\Psi$.}
+By Lemma~\ref{lemma:covering_number_psi} and Step~4 of its proof,
+\[
+\frac{2}{D_\psi}\int_0^{D_\psi}\!\sqrt{\log\mathcal{N}(\Psi,\|\cdot\|_\Psi,\epsilon)}\,\mathrm{d}\epsilon
+\;\leq\; \frac{2}{D_\psi}\sqrt{d_\Psi}\int_0^{D_\psi}\!\sqrt{\log\frac{D_\psi}{\epsilon}}\,\mathrm{d}\epsilon
+\;=\; \sqrt{d_\Psi\,\pi} \;=:\; C_\psi < \infty,
+\]
+where $d_\Psi = \dim\Psi$ and we used the substitution $\epsilon = D_\psi e^{-t}$.
 
-
-
-The first sum $\sum_{k=0}^\infty 2^{-k}$ and the second sum $\sum_{k=0}^\infty 2^{-k}\sqrt{k}$ are bounded, the third sum  $\sum_{k=0}^\infty2^{-k}\sqrt{2\log(N_k)}$ can be bounded by Dudley's entropy integral as follows:
+\noindent\textbf{(iii) $B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2})$.}
+By Lemma~\ref{lemma:covering_number_rkhs}, for any $p\in(0,1)$, with $D_\theta = 2\lambda_n^{-1/2}$:
 \begin{align*}
-    &\sum_{k=0}^\infty 2^{-k} \sqrt{2\log(N_k)}\\ = & 2\sqrt{2} \sum_{k=0}^\infty (2^{-k} - 2^{-(k+1)}) \left(\sqrt{\log(|\mathcal{C}^{k}_\psi|)} + \sqrt{\log(|\mathcal{C}^{k}_f|)} + \sqrt{\log(|\mathcal{C}^{k}_p|)}\right)\\
-    \leq & 2\sqrt{2} \int_{0}^1 \sqrt{\log N(\Psi,\|\cdot\|_{\Psi}, \epsilon)} d\epsilon + 2\int_{0}^1 \sqrt{\log N(\mathcal{F}_f,\|\cdot\|_{\infty}, \epsilon)} d\epsilon + 2\int_{0}^1 \sqrt{\log N(\mathcal{F}_p,\|\cdot\|_{\infty}, \epsilon)} d\epsilon\\
-    \leq & C
+\frac{2}{D_\theta}\int_0^{D_\theta}\!\sqrt{\log\mathcal{N}(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty,\epsilon)}\,\mathrm{d}\epsilon
+&\;\leq\; \frac{2\sqrt{C_p}\,\gamma_n^{-d/2}\lambda_n^{-p/2}}{D_\theta}
+\int_0^{D_\theta}\!\epsilon^{-p}\,\mathrm{d}\epsilon\\
+&\;=\; \frac{2\sqrt{C_p}\,\gamma_n^{-d/2}\lambda_n^{-p/2}}{D_\theta}\cdot\frac{D_\theta^{1-p}}{1-p}\\
+&\;=\; \frac{2\sqrt{C_p}\,\gamma_n^{-d/2}\lambda_n^{-p/2}}{1-p}\cdot D_\theta^{-p}.
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:covering_number_Linfty} and \ref{lemma:covering_number_psi}. Thus, with probability no less than $1- 6e^{-\tau}$, we have 
+Substituting $D_\theta^{-p} = (2\lambda_n^{-1/2})^{-p} = 2^{-p}\lambda_n^{p/2}$:
+\[
+\frac{2}{D_\theta}\int_0^{D_\theta}\!\sqrt{\log\mathcal{N}(B_{\mathcal{H}_{\gamma_n}}(\lambda_n^{-1/2}),\|\cdot\|_\infty,\epsilon)}\,\mathrm{d}\epsilon
+\;\leq\; \frac{2^{1-p}\sqrt{C_p}\,\gamma_n^{-d/2}}{1-p}.
+\]
+The factors $\lambda_n^{-p/2}$ (from the covering-number bound) and $\lambda_n^{p/2}$ (from $D_\theta^{-p}$) cancel exactly, leaving no dependence on $\lambda_n$.
+
+Combining (i)--(iii):
+\begin{equation}\label{eq:dudley_2k}
+\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}
+\;\leq\; C_{f} + C_{f}' + C_\psi + \frac{2^{1-p}\sqrt{C_p}\,\gamma_n^{-d/2}}{1-p}
+\;\leq\; C\,\gamma_n^{-d/2},
+\end{equation}
+where $C<\infty$ absorbs all constants from parts~(i)--(ii), and the last step uses $\gamma_n \leq 1$.
+
+\noindent\textbf{Step 3b: Bounding $\sum_{k=0}^\infty 2^{-k/2}\sqrt{\log N_{k+1}}$.}
+The same square-root subadditivity splits this into four pieces. Observing that $2^{-k/2} = \sqrt{2}\,(\epsilon_{k+1}/D)^{1/2}$ and $\epsilon_k - \epsilon_{k+1} = \epsilon_{k+1}$, the sum is a right-endpoint Riemann sum for the weighted integrand $\epsilon^{-1/2}\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}$:
+\[
+\sum_{k=0}^\infty 2^{-k/2}\sqrt{\log\mathcal{N}(\mathcal{F},D\,2^{-(k+1)})}
+\;=\; \frac{\sqrt{2}}{\sqrt{D}}\sum_{k=0}^\infty\epsilon_{k+1}^{-1/2}\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon_{k+1})}\,(\epsilon_k-\epsilon_{k+1})
+\;\leq\; \frac{\sqrt{2}}{\sqrt{D}}\int_0^D\!\epsilon^{-1/2}\sqrt{\log\mathcal{N}(\mathcal{F},\epsilon)}\,\mathrm{d}\epsilon.
+\]
+For the fixed spaces $\mathcal{F}_f$, $\mathcal{F}_p$, and $\Psi$, whose covering numbers are at most logarithmic, a direct bound using Lemma~\ref{lemma:covering_number_Linfty} gives:
+\[
+\sum_{k=0}^\infty 2^{-k/2}\sqrt{\log\mathcal{N}(\mathcal{F}_f,D_f2^{-(k+1)})}
+\;\leq\; \sqrt{\frac{V(d_\mathcal{D}+2)}{2}}\sum_{k=0}^\infty 2^{-k/2}\sqrt{(k+1)\log 2 + \log C'}
+\;<\;\infty,
+\]
+since $\sum_{k=0}^\infty 2^{-k/2}\sqrt{k} < \infty$ (the geometric factor dominates). For the RKHS ball, the weighted integral bound with Lemma~\ref{lemma:covering_number_rkhs} gives, for $p\in(0,\tfrac{1}{2})$:
 \begin{align*}
-    \sup_{\psi,f,p}|Z(\psi,f,p)|
-    \leq C\sqrt{\tau}(B^1_\theta(n) \epsilon_\theta + B^2_\theta(n) \epsilon_\theta^{1/2}) + \sigma_0(1+\sqrt{\tau})
+\frac{\sqrt{2}}{\sqrt{D_\theta}}\int_0^{D_\theta}\!\epsilon^{-1/2}\sqrt{C_p\gamma_n^{-d}\lambda_n^{-p}}\,\epsilon^{-p}\,\mathrm{d}\epsilon
+&\;=\; \frac{\sqrt{2C_p}\,\gamma_n^{-d/2}\lambda_n^{-p/2}}{\sqrt{D_\theta}}\cdot\frac{D_\theta^{1/2-p}}{1/2-p}
+\;=\; \frac{2^{1/2-p}\sqrt{C_p}\,\gamma_n^{-d/2}}{1/2-p},
+\end{align*}
+where $\lambda_n^{-p/2}\cdot D_\theta^{-p} = \lambda_n^{-p/2}\cdot(2\lambda_n^{-1/2})^{-p} = 2^{-p}\lambda_n^{-p/2+p/2}=2^{-p}$ cancels $\lambda_n$ exactly. The integral converges for $p\in(0,\frac{1}{2})$ (so that $1/2-p > 0$). Combining:
+\begin{equation}\label{eq:dudley_2k_half}
+\sum_{k=0}^\infty 2^{-k/2}\sqrt{\log N_{k+1}} \;\leq\; C\,\gamma_n^{-d/2}, \qquad p\in\left(0,\tfrac{1}{2}\right).
+\end{equation}
+
+\noindent\textbf{Final bound for Term~3.}
+Substituting \eqref{eq:dudley_2k} and \eqref{eq:dudley_2k_half} into Term~3 (choosing $p\in(0,\frac{1}{2})$ so that both bounds hold):
+\begin{align*}
+C\sum_{k=0}^\infty\sigma_k\sqrt{2\log N_{k+1}}
+&\;=\; C\sqrt{2}\left(\sigma_0^{(1)}\sum_{k=0}^\infty 2^{-k}\sqrt{\log N_{k+1}}
++\sigma_0^{(2)}\sum_{k=0}^\infty 2^{-k/2}\sqrt{\log N_{k+1}}\right)\\
+&\;\leq\; C\,\gamma_n^{-d/2}\!\left(\sigma_0^{(1)}+\sigma_0^{(2)}\right).
 \end{align*}
 
 \noindent \textbf{Bounding Term 2:} The chaining decomposition of $\bar{R}_n^{(\delta_n)}(\theta;f,p,\psi)$ is:
