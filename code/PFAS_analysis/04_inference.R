@@ -1,9 +1,9 @@
 library(mgcv)
 library(ggplot2)
 library(gratia)
-source('code/semi_spp_functions.R')
+source('code/simulation/semi_spp_functions.R')
 
-load("output/PFAS/fitted_models.RData")
+source("code/PFAS_analysis/03_fit_ipp.R")
 
 target_covariate_names   = covariate_names[1:5]
 nuisance_covariate_names = covariate_names[6:8]
@@ -42,10 +42,10 @@ results_df <- data.frame(
 )
 
 print(results_df)
-write.csv(results_df, "output/inference_results.csv", row.names = FALSE)
+write.csv(results_df, "output/PFAS/inference_results.csv", row.names = FALSE)
 
 ###### plot nuisance nonlinear effect
-draw(gamfit_semi, select = "s(Median.Earnings.Inflation.Adj.2020)", rug = FALSE, ci_alpha = 0) +
+p_nuisance <- draw(gamfit_semi, select = "s(Median.Earnings.Inflation.Adj.2020)", rug = FALSE, ci_alpha = 0) +
   geom_line(color = "#0479A8", linewidth = 1.0) +
   coord_cartesian(xlim = c(15000, 66000)) +
   labs(
@@ -54,3 +54,7 @@ draw(gamfit_semi, select = "s(Median.Earnings.Inflation.Adj.2020)", rug = FALSE,
   ) +
   theme_bw() +
   theme(panel.grid.major = element_blank())
+
+print(p_nuisance)
+ggsave("output/PFAS/nuisance_effect_median_earnings.png", plot = p_nuisance,
+       width = 6, height = 4, dpi = 300)

@@ -2,8 +2,7 @@ library(ggplot2)
 library(sf)
 library(gstat)
 
-load("output/PFAS/prepared_data.RData")
-load("output/PFAS/fitted_models.RData")
+source("code/PFAS_analysis/03_fit_ipp.R")
 
 ##### get fitted intensity
 pred_intensity      = exp(predict(gamfit_semi, df_ext))
@@ -11,9 +10,6 @@ pred_intensity_para = exp(predict(gamfit_para, df_ext))
 
 df_pred      = data.frame(Latitude = df_ext$Latitude, Longitude = df_ext$Longitude, intensity = pred_intensity)
 df_pred_para = data.frame(Latitude = df_ext$Latitude, Longitude = df_ext$Longitude, intensity = pred_intensity_para)
-
-write.csv(df_pred,      'output/pred_intensity.csv',      row.names = FALSE)
-write.csv(df_pred_para, 'output/pred_intensity_para.csv', row.names = FALSE)
 
 sf_pred      = st_as_sf(df_pred,      coords = c("Longitude", "Latitude"), crs = 4326)
 sf_pred_para = st_as_sf(df_pred_para, coords = c("Longitude", "Latitude"), crs = 4326)
@@ -55,7 +51,7 @@ grid_sf_ll      <- st_transform(grid_sf, crs = 4326)
 us_mainland_ll  <- st_transform(us_mainland, crs = 4326)
 
 ##### semiparametric model map
-ggplot() +
+p_semi <- ggplot() +
   geom_sf(data = grid_sf_ll, aes(fill = pred_intensity_qt), color = NA, lwd = 0.1) +
   geom_sf(data = us_mainland_ll, color = "grey90", fill = NA) +
   scale_fill_manual(values = my_custom_palette, name = 'Quantiles', labels = qt_labels, na.value = "transparent") +
@@ -63,14 +59,22 @@ ggplot() +
   theme_void() +
   theme(legend.position = "right")
 
+print(p_semi)
+ggsave("output/PFAS/intensity_map_semiparametric.png", plot = p_semi,
+       width = 10, height = 6, dpi = 300)
+
 ##### parametric model map
-ggplot() +
+p_para <- ggplot() +
   geom_sf(data = grid_sf_ll, aes(fill = pred_intensity_qt_para), color = NA, lwd = 0.1) +
   geom_sf(data = us_mainland_ll, color = 'grey', fill = NA) +
   scale_fill_manual(values = my_custom_palette, name = NULL, labels = qt_labels, na.value = "transparent") +
   labs(title = "Quantile Map of Fitted Intensity of Parametric Model") +
   theme_void() +
   theme(legend.position = "right")
+
+print(p_para)
+ggsave("output/PFAS/intensity_map_parametric.png", plot = p_para,
+       width = 10, height = 6, dpi = 300)
 
 save(grid_sf, sf_pred_projected, sf_pred_para_projected,
      quartile_breaks, my_custom_palette, qt_labels,

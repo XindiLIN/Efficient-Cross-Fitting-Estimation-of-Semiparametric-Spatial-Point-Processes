@@ -24,16 +24,9 @@ semiparametric_formula = as.formula(paste0(
 ppmfit_para = ppm(parametric_formula, data = covariate_images, use.gam = TRUE, method = "mpl")
 ppmfit_semi = ppm(semiparametric_formula, data = covariate_images, use.gam = TRUE, method = "mpl")
 
-# Extract lightweight components needed by downstream scripts instead of
-# saving the full ppm objects, which are very slow to serialize.
 gamfit_semi <- ppmfit_semi$internal$glmfit
 gamfit_para <- ppmfit_para$internal$glmfit
 coef_semi   <- ppmfit_semi$coef
 coef_para   <- ppmfit_para$coef
 vcov_para   <- vcov(ppmfit_para)
 wt_semi     <- ppmfit_semi$Q$w
-
-save(gamfit_semi, gamfit_para,
-     coef_semi, coef_para, vcov_para, wt_semi,
-     covariate_names,
-     file = "output/PFAS/fitted_models.RData")

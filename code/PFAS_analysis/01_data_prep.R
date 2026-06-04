@@ -8,7 +8,7 @@ library(mgcv)
 library(stats)
 library(tidyverse)
 library(gratia)
-source('code/semi_spp_functions.R')
+source('code/simulation/semi_spp_functions.R')
 
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")

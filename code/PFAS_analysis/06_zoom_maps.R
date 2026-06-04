@@ -30,7 +30,7 @@ grid_Alabama_sf$pred_intensity_qt_para <- cut(grid_Alabama_sf$pred_intensity_par
 grid_Alabama_sf_ll <- st_transform(grid_Alabama_sf, crs = 4326)
 us_Alabama_ll      <- st_transform(us_Alabama,      crs = 4326)
 
-ggplot() +
+p_Alabama_para <- ggplot() +
   geom_sf(data = grid_Alabama_sf_ll, aes(fill = pred_intensity_qt_para), color = NA, lwd = 0.1) +
   geom_sf(data = us_Alabama_ll, color = 'grey', fill = NA) +
   scale_fill_manual(values = my_custom_palette, name = NULL, labels = qt_labels, na.value = "transparent") +
@@ -38,13 +38,21 @@ ggplot() +
   theme_void() +
   theme(legend.position = "right")
 
-ggplot() +
+print(p_Alabama_para)
+ggsave("output/PFAS/intensity_map_parametric_Alabama.png", plot = p_Alabama_para,
+       width = 6, height = 6, dpi = 300)
+
+p_Alabama_semi <- ggplot() +
   geom_sf(data = grid_Alabama_sf_ll, aes(fill = pred_intensity_qt), color = NA, lwd = 0.1) +
   geom_sf(data = us_Alabama_ll, color = 'grey', fill = NA) +
   scale_fill_manual(values = my_custom_palette, name = NULL, labels = qt_labels, na.value = "transparent") +
   labs(title = "Quantile Intensity Map using Semi-Parametric Model — Alabama") +
   theme_void() +
   theme(legend.position = "right")
+
+print(p_Alabama_semi)
+ggsave("output/PFAS/intensity_map_semiparametric_Alabama.png", plot = p_Alabama_semi,
+       width = 6, height = 6, dpi = 300)
 
 
 ##### Zoom in California
@@ -74,7 +82,7 @@ us_California_ll      <- st_transform(us_California,      crs = 4326)
 
 sf_All_ab_California <- st_filter(sf_All_ab, usa_states[usa_states$name == "California", ])
 
-ggplot() +
+p_California_para <- ggplot() +
   geom_sf(data = grid_California_sf_ll, aes(fill = pred_intensity_qt_para), color = NA, lwd = 0.1) +
   geom_sf(data = us_California_ll, color = 'grey', fill = NA) +
   geom_sf(data = sf_All_ab_California, color = 'lightgreen', size = 0.5) +
@@ -83,7 +91,11 @@ ggplot() +
   theme_void() +
   theme(legend.position = "right")
 
-ggplot() +
+print(p_California_para)
+ggsave("output/PFAS/intensity_map_parametric_California.png", plot = p_California_para,
+       width = 6, height = 7, dpi = 300)
+
+p_California_semi <- ggplot() +
   geom_sf(data = grid_California_sf_ll, aes(fill = pred_intensity_qt), color = NA, lwd = 0.1) +
   geom_sf(data = us_California_ll, color = 'grey', fill = NA) +
   geom_sf(data = sf_All_ab_California, color = 'lightgreen', size = 0.5) +
@@ -91,3 +103,7 @@ ggplot() +
   labs(title = "Quantile Intensity Map using Semi-Parametric Model — California") +
   theme_void() +
   theme(legend.position = "right")
+
+print(p_California_semi)
+ggsave("output/PFAS/intensity_map_semiparametric_California.png", plot = p_California_semi,
+       width = 6, height = 7, dpi = 300)

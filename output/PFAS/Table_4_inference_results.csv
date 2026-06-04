@@ -1,0 +1,6 @@
+"Coefficient","Semi_Estimate","Semi_SE","Para_Estimate","Para_SE"
+"DistanceToAirport",-0.1837,0.0224,-0.199,0.0222
+"DistanceToMilitaryBase",-0.2067,0.0216,-0.223,0.0209
+"DistanceToLandfill",-0.1978,0.0209,-0.2143,0.0211
+"DistanceToApparel",-0.0455,0.0199,-0.0896,0.019
+"DistanceToFurniture",-0.2582,0.021,-0.2142,0.0209
