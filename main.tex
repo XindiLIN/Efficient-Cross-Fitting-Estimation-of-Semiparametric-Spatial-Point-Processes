@@ -1639,9 +1639,9 @@ Denote $\Lambda_n(\psi)$ as the inverse of the covariance matrix $\Sigma_n(\psi)
 \end{gather*}
 Theorem 2.1 in \cite{schafer2021compression} shows that for any $\epsilon>0$, there exists a sparse Cholesky factor $L$ with  at most $O(\log(n/\epsilon)$ nonzero entries each column such tha
 $$\|\Lambda - LL^\top\|_{\text{Fro}}\leq \epsilon.$$
-Here, $\|\cdot\|_{\text{Fro}}$ is the Frobenious norm of the matrix. In practice, we use such sparse approximation pattern, i.e, Vecchia approximation (see Section \ref{sec:vecchia}), to accelerate the calculation regarding the the precision matrix $\Lambda_n$. Though the sparsity structure is affected by the nugget effect of the Gaussian process, i.e., $\epsilon_i$ in \eqref{eq:data_generative_model_1}, detailed characterization of the approximation error from Vecchia approximation is out the scope of this work. In this paper,  we simply our problem by assuming that for every $i$, the number of nonzero $\alpha_{i,j}$ is of rate $\log(n)$, i.e.,
+Here, $\|\cdot\|_{\text{Fro}}$ is the Frobenious norm of the matrix. In practice, we use such sparse approximation pattern, i.e, Vecchia approximation (see Section \ref{sec:vecchia}), to accelerate the calculation regarding the the precision matrix $\Lambda_n$. Though the sparsity structure is affected by the nugget effect of the Gaussian process, i.e., $\epsilon_i$ in \eqref{eq:data_generative_model_1}, detailed characterization of the approximation error from Vecchia approximation is out the scope of this work. In this paper,  we simply our problem by assuming that for every $i$, the number of nonzero $\alpha_{i,j}$ is of rate $(\log(n))^2$, i.e.,
 \begin{equation}\label{eq:vecchina_approximation_nonzero}
-    \sup_{i\in[n]}|\{j:\alpha_{i,j}\neq 0\}| = \mathcal{O}(\log(n)).
+    \sup_{i\in[n]}|\{j:\alpha_{i,j}\neq 0\}| = \mathcal{O}((\log(n))^2).
 \end{equation}
 
 \subsubsection{Proof Skeleton}
@@ -1835,10 +1835,10 @@ Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining 
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
         \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:L_i_diff_theta}. Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality follows from Lemma \ref{lemma:L_i_diff_theta}. Because the number of non-zero $\alpha_{j,1}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C(\log(n))^2 n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
+    \leq & C(\log(n))^2 n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -1874,17 +1874,17 @@ Furthermore, for every $i$, the derivative of the empirical risk with respect to
     &\E\left[\partial_{U(S_i)}\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\}| U,X\right]\\
     = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta^\prime;\psi,f,p)\right\}| U,X\right]}_{\text{bounded by Lemma \ref{L_i_derivative_U_diff}}}\\
     &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta^\prime;\psi,f,p)| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff}}}\\
-    \leq &Cn^{-1}\log(n)\cdot\left( \gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1/2}\|\theta-\theta'\|_\infty
+    \leq &Cn^{-1}(\log(n))^2\cdot\left( \gamma_n^{-1/2}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1/2}\|\theta-\theta'\|_\infty
 \end{align*}
 The last inequality follows from Lemma \ref{lemma:L_i_derivative_Y_diff}, Lemma \ref{L_i_derivative_U_diff}, and equation \eqref{eq:vecchina_approximation_nonzero}. Then, the Lipschitz constant of the conditional expectation of the empirical risk with respect to $\tilde U$ given $U,X$,i.e., the $L_2$-norm of $\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]$, has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)| U,X\right]\right\|_2\\
-    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty\right\}.
+    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1}(\log(n))^2\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1}\|\theta-\theta'\|_\infty\right\}.
 \end{align*}
 By Theorem \ref{thm:gaussian_concentration}, we have 
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}\\
-    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1/2}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1/2}\|\theta-\theta'\|_\infty\right\}.
+    \leq & C\|\Sigma_n\|_{\text{op}} \left\{n^{-1/2}(\log(n))^2\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) + Cn^{-1/2}\|\theta-\theta'\|_\infty\right\}.
 \end{align*}
 
 
@@ -1910,10 +1910,10 @@ Additionally, $X_i$ propagates to the empirical risk indirectly through the rema
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
         \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
-Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+Because the number of non-zero $\alpha_{j,1}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C(\log(n))^2 n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
+    \leq & C(\log(n))^2 n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
 \end{align*}
 
 \noindent \textbf{Sub-Gaussianity:} Combining the results above, we have 
@@ -1923,7 +1923,7 @@ Because the number of non-zero $\alpha_{j,1}$ is of rate $\log(n)$ (see equation
     & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
     & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
     & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) 
+    \leq & C(\log(n))^2 n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1}(\log(n))^2\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right)
 \end{align*}
 \subsubsection{Sub-Gaussianity over $f$}
 In this section, for any $f,f^\prime\in\mathcal{F}_{f}$, we provide the upper bound for
@@ -1958,10 +1958,10 @@ Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining 
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|\\
         \leq & C\|f-f^\prime\|_\infty
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\|f - f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality follows from Lemma \ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C(\log(n))^2 n^{-1}\|f - f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U,\xi\right]\right\|_{\psi_2}\\
-    \leq & C\log(n) n^{-1/2}\|f - f^\prime\|_{\infty}.
+    \leq & C(\log(n))^2 n^{-1/2}\|f - f^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -1997,17 +1997,17 @@ Furthermore, for every $i$, the derivative of the empirical risk difference with
     &\E\left[\partial_{U(S_i)}\left\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right\}\bigg| U,X\right]\\
     = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f^\prime,p)\right\}\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_U_diff_f}}}\\
     &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]}_{=\;0}\\
-    \leq &\;Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
+    \leq &\;Cn^{-1}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
-The $\partial_{Y_i}$ term vanishes because $Y_i$ does not appear in $L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)$ (see the preamble of this section). The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_f}, and the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
+The $\partial_{Y_i}$ term vanishes because $Y_i$ does not appear in $L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)$ (see the preamble of this section). The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_f}, and the $(\log(n))^2$ factor accounts for the $O((\log n)^2)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]\right\|_2\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
 By Theorem \ref{thm:gaussian_concentration}, we have
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|U\right]\right\|_{\psi_2}\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
 
 
@@ -2033,10 +2033,10 @@ The last inequality follows from Lemma~\ref{lemma:L_i_diff_f}. Additionally, $X_
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|\\
         \leq & C\|f-f^\prime\|_\infty
 \end{align*}
-The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)n^{-1}\|f-f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C(\log(n))^2 n^{-1}\|f-f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}\\
-    \leq & C\log(n)\,n^{-1/2}\|f-f^\prime\|_{\infty}.
+    \leq & C(\log(n))^2\,n^{-1/2}\|f-f^\prime\|_{\infty}.
 \end{align*}
 
 \noindent \textbf{Sub-Gaussianity:} Combining the results above, we have
@@ -2046,8 +2046,8 @@ The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the
     & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
     & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
     & + \underbrace{\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
-    \leq & C\log(n)\,n^{-1/2}\|f-f^\prime\|_\infty + C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty\\
-    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|f-f^\prime\|_\infty.
+    \leq & C(\log(n))^2\,n^{-1/2}\|f-f^\prime\|_\infty + C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)(\log(n))^2\,n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
 
 
@@ -2085,10 +2085,10 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Additionall
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
         \leq  C\|p-p^\prime\|_\infty,
 \end{align*}
-where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\|p - p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C(\log(n))^2 n^{-1}\|p - p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U,\xi\right]\right\|_{\psi_2}\\
-    \leq & C\log(n) n^{-1/2}\|p - p^\prime\|_{\infty}.
+    \leq & C(\log(n))^2 n^{-1/2}\|p - p^\prime\|_{\infty}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -2122,18 +2122,18 @@ Furthermore, for every $i$, the derivative of the empirical risk difference with
     &\E\left[\partial_{U(S_i)}\left\{R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right\}\bigg| U,X\right]\\
     = & \sum_{j\neq i}^n  \alpha_{i,j}\underbrace{\E\left[\left\{\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p)-\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\right\}\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_U_diff_p}}}\\
     &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff_p}}}\\
-    \leq &\;Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|p-p^\prime\|_\infty + Cn^{-1}\|p-p^\prime\|_\infty\\
-    \leq &\;Cn^{-1}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
+    \leq &\;Cn^{-1}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|p-p^\prime\|_\infty + Cn^{-1}\|p-p^\prime\|_\infty\\
+    \leq &\;Cn^{-1}(\log(n))^2\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
 \end{align*}
-The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_p}, and the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). The $\partial_{Y_i}$ term is bounded by Lemma~\ref{lemma:L_i_derivative_Y_diff_p} and contributes an $O(n^{-1})$ factor. Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
+The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_p}, and the $(\log(n))^2$ factor accounts for the $O((\log n)^2)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). The $\partial_{Y_i}$ term is bounded by Lemma~\ref{lemma:L_i_derivative_Y_diff_p} and contributes an $O(n^{-1})$ factor. Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]\right\|_2\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}(\log(n))^2\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
 \end{align*}
 By Theorem \ref{thm:gaussian_concentration}, we have
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|U\right]\right\|_{\psi_2}\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
+    \leq & C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}(\log(n))^2\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
 \end{align*}
 
 \noindent\textbf{Fourth Layer of Randomness: $X_i$}
@@ -2156,10 +2156,10 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Additionall
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
         \leq  C\|p-p^\prime\|_\infty,
 \end{align*}
-where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)n^{-1}\|p-p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C(\log(n))^2 n^{-1}\|p-p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}\\
-    \leq & C\log(n)\,n^{-1/2}\|p-p^\prime\|_{\infty}.
+    \leq & C(\log(n))^2\,n^{-1/2}\|p-p^\prime\|_{\infty}.
 \end{align*}
 
 \noindent \textbf{Sub-Gaussianity:} Combining the results above, we have
@@ -2169,8 +2169,8 @@ where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Becau
     & + \underbrace{\left\|\E\left[\cdots|X,U,\xi\right]-\E\left[\cdots|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
     & + \underbrace{\left\|\E\left[\cdots|X,U\right]-\E\left[\cdots|U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
     & + \underbrace{\left\|\E\left[\cdots|X\right]-\E\left[\cdots\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
-    \leq & C\log(n)\,n^{-1/2}\|p-p^\prime\|_\infty + C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}\log(n)\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty\\
-    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|p-p^\prime\|_\infty.
+    \leq & C(\log(n))^2\,n^{-1/2}\|p-p^\prime\|_\infty + C\|\Sigma_n\|_{\text{op}}\cdot n^{-1/2}(\log(n))^2\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)(\log(n))^2\,n^{-1/2}\|p-p^\prime\|_\infty.
 \end{align*}
 
 
@@ -2186,9 +2186,9 @@ Specifically,
 where, by contrast with the $f$- and $p$-perturbation cases, the parameter $\psi$ enters the $i$-th term through the estimated latent confounder $\widehat{U}(S_i,\psi)=\sum_{j\neq i}\alpha_{ij}(\psi)\widehat{R}_j$: both the data fed into the loss and the implicit structure of the loss itself change when $\psi$ varies. Lemma~\ref{lemma:L_i_diff_psi} already accounts for both effects and yields
 \begin{align}
     \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}_i(\theta;\psi,f,p) - L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\right|
-    \leq C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.\label{eq:Lipschitz_psi}
+    \leq C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\log(n)\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.\label{eq:Lipschitz_psi}
 \end{align}
-For brevity, we write $B_{\psi,\psi^\prime}:= C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}$ for the right-hand side of \eqref{eq:Lipschitz_psi}.
+For brevity, we write $B_{\psi,\psi^\prime}:= C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\log(n)\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}$ for the right-hand side of \eqref{eq:Lipschitz_psi}.
 We use the conditional expectation to decompose the $\psi_2$-norm into four terms as in \eqref{ref:randomness_decomposition} and provide the upper bound of each.
 
 % \textcolor{red}{To bound this one, we should not use the same technique as the previous case where we investigate the change in $L_i$ first, then aggregate them to calculate the change in empirical risk $R_n$. This is because the upper bound in Lemma \ref{lemma:L_i_diff_psi} is too loose. If we use $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|$ as the norm, to upper bound the change in matrix/vector is much tighter than upper bounding the change in a single entry.}
@@ -2220,11 +2220,11 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additiona
 %     \leq & \gamma_n^{-1/2}\lambda_n^{-1/2}\left\{\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\right\}^{1/2}\left(\|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2 + \|\widehat{\mathbf{U}}^\prime(\psi)-\widehat{\mathbf{U}^\prime}(\psi^\prime)\|_2\right)\\
 %     \leq &C\sqrt{\log(n)n}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}
 % \end{align*}
-where the last inequality follows from Lemma~\ref{lemma:widehat_U_diff_psi_L2}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+where the last inequality follows from Lemma~\ref{lemma:widehat_U_diff_psi_L2}. Because the number of non-zero $\alpha_{j,i}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C(\log(n))^2 n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
-    \leq & C\log(n)\, n^{-1/2} B_\psi
-    = C\log(n)^{3/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    \leq & C(\log(n))^2\, n^{-1/2} B_\psi
+    = C\log(n)^3\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -2242,7 +2242,7 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. There is 
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]\right\|_{\psi_2}\\
     \leq & C\, n^{-1/2} B_\psi
-    = C\log(n)^{1/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+    = C\log(n)\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
 \end{align*}
 
 \noindent\textbf{Third Layer of Randomness: $U(S_i)$}
@@ -2262,21 +2262,21 @@ Furthermore, for every $i$, the derivative of the empirical risk difference with
     \leq & \sum_{j\neq i}^n  \left\{\alpha_{i,j}(\psi)\underbrace{\E\left[\partial_{\widehat U(S_j)}R_n^{(\delta)}(\theta;\psi,f,p) - \partial_{\widehat U^\prime(S_j)}R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_U_diff_psi}}}\right\}\\
     & + \sum_{j\neq i}^n  \left\{\underbrace{\left(\alpha_{i,j}(\psi)-\alpha_{i,j}(\psi^\prime)\right)}_{\text{bounded by $\|\Sigma_n(\psi)-\Sigma_n(\psi)^\prime\|_{\text{op}}$}}\underbrace{\E\left[\partial_{\widehat U^\prime(S_j)}R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]}_{\text{bounded by $C\gamma_n^{-1}\lambda_n^{-1/2}$}}\right\}\\
     & + \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]}_{\text{bounded by Lemma \ref{lemma:L_i_derivative_Y_diff_psi}}}\\
-    \leq & C\log(n)\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\log(n)^{1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
-    & + C\log(n)^{1/2}\gamma_n^{-1}\lambda^{-1/2}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
-    & + C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
-    \leq & C\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}
+    \leq & C(\log(n))^2\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    & + C\log(n)\gamma_n^{-1}\lambda^{-1/2}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    & + C\,\gamma_n^{-1}\lambda_n^{-1/2}\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    \leq & C\log(n)^3\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}
 \end{align*}
 
 Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi^\prime,f,p)\bigg| U,X\right]\right\|_2\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+    \leq & C\|\Sigma_n\|_{\text{op}}\log(n)^3\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
 \end{align*}
 By Theorem \ref{thm:gaussian_concentration}, we have
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|U\right]\right\|_{\psi_2}\\
-    \leq & C\|\Sigma_n\|_{\text{op}}\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+    \leq & C\|\Sigma_n\|_{\text{op}}\log(n)^3\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
 \end{align*}
 
 \noindent\textbf{Fourth Layer of Randomness: $X_i$}
@@ -2298,11 +2298,11 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additiona
     \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
     \leq & 2B_{\psi,\psi^\prime}.
 \end{align*}
-where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $\log(n)B_{\psi,\psi^\prime}$. Consequently, applying McDiarmid's inequality yields:
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $(\log(n))^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $(\log(n))^2 B_{\psi,\psi^\prime}$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}\\
-    \leq &\log(n)n^{-1/2}B_{\psi,\psi^\prime}\\
-    \leq & C\log(n)^{3/2}n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
+    \leq &(\log(n))^2 n^{-1/2}B_{\psi,\psi^\prime}\\
+    \leq & C\log(n)^3 n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
 \end{align*}
 
 \noindent \textbf{Sub-Gaussianity:} Combining the results above i.e., sub-Gaussianity from four layers of randomness, we have
@@ -2312,11 +2312,11 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because t
     & + \underbrace{\left\|\E\left[\cdots|X,U,\xi\right]-\E\left[\cdots|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
     & + \underbrace{\left\|\E\left[\cdots|X,U\right]-\E\left[\cdots|U\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}\\
     & + \underbrace{\left\|\E\left[\cdots|X\right]-\E\left[\cdots\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
-    \leq & C\log(n)^{3/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
-    & + C\log(n)^{1/2}\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
-    & + C\|\Sigma_n\|_{\text{op}}\log(n)^{3/2}\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
-    & +C\log(n)^{3/2}n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
-    \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
+    \leq & C\log(n)^3\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
+    & + C\log(n)\,n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
+    & + C\|\Sigma_n\|_{\text{op}}\log(n)^3\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\\
+    & +C\log(n)^3 n^{-1/2}\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\\
+    \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^3\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}
 \end{align*}
 
 \subsubsection{Sub-Gaussianity: Absolute Bound for $R_n$}
@@ -2342,10 +2342,10 @@ The indirect effect on each $j$-th loss (through $\widehat U^\prime(S_j)$, the v
 \left|L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j),X_j);\theta,\psi,f,p)\right|
 \leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_j\right| \leq 2C,
 \end{align*}
-again by Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\log(n)$ (see \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in $R_n^{(\delta_n)}$ from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n)\,n^{-1}$, uniformly in $i$. Applying McDiarmid's inequality:
+again by Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $(\log(n))^2$ (see \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in $R_n^{(\delta_n)}$ from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C(\log(n))^2\,n^{-1}$, uniformly in $i$. Applying McDiarmid's inequality:
 \begin{align*}
 \left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}
-\leq C\log(n)\,n^{-1/2}.
+\leq C(\log(n))^2\,n^{-1/2}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -2377,18 +2377,18 @@ For every $i$, the derivative of $R_n^{(\delta_n)}$ with respect to $U(S_i)$ dec
 \E\left[\partial_{U(S_i)}R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]
 =&\;\sum_{j\neq i}\alpha_{i,j}\underbrace{\E\left[\partial_{\widehat U(S_j)}R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]}_{\text{bounded by Lemma~\ref{lemma:L_i_derivative_U}}}\\
 &+\underbrace{\E\left[\partial_{Y_i}R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]}_{\text{bounded by Lemma~\ref{lemma:L_i_derivative_Y}}}\\
-\leq &\; Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2} + Cn^{-1}\\
-\leq &\; Cn^{-1}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2},
+\leq &\; Cn^{-1}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2} + Cn^{-1}\\
+\leq &\; Cn^{-1}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2},
 \end{align*}
-where the $\log(n)$ factor accounts for the $O(\log n)$ nonzero $\alpha_{i,j}$ (see \eqref{eq:vecchina_approximation_nonzero}), and the constant $Cn^{-1}$ term from the $\partial_{Y_i}$ contribution is absorbed since $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ in the relevant rate regime. The Lipschitz constant of $\E[R_n^{(\delta_n)}|X,U]$ with respect to $\widetilde U$ thus satisfies:
+where the $(\log(n))^2$ factor accounts for the $O((\log n)^2)$ nonzero $\alpha_{i,j}$ (see \eqref{eq:vecchina_approximation_nonzero}), and the constant $Cn^{-1}$ term from the $\partial_{Y_i}$ contribution is absorbed since $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ in the relevant rate regime. The Lipschitz constant of $\E[R_n^{(\delta_n)}|X,U]$ with respect to $\widetilde U$ thus satisfies:
 \begin{align*}
 \left\|\partial_{\widetilde U}\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\bigg|U,X\right]\right\|_2
-\leq C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}.
+\leq C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}.
 \end{align*}
 By Theorem~\ref{thm:gaussian_concentration}:
 \begin{align*}
 \left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]\right\|_{\psi_2}
-\leq C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}\log(n)\cdot\gamma_n^{-1}\lambda_n^{-1/2}.
+\leq C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}(\log(n))^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}.
 \end{align*}
 
 \noindent\textbf{Fourth Layer of Randomness: $X_i$}
@@ -2402,10 +2402,10 @@ Let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and $O_i^\prime$ be the observation wit
 \left|L^{(\delta_n)}(O_i;\theta,\psi,f,p) - L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p)\right|
 \leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_i\right| \leq 2C.
 \end{align*}
-Let $O_j^\prime$ denote the $j$-th observation with updated $\widehat U^\prime(S_j)$ after changing $X_i$. Each indirect perturbation on $L_j^{(\delta_n)}$ is also bounded by $2C$ from Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\log(n)$, the total perturbation in $R_n^{(\delta_n)}$ from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)\,n^{-1}$. Applying McDiarmid's inequality:
+Let $O_j^\prime$ denote the $j$-th observation with updated $\widehat U^\prime(S_j)$ after changing $X_i$. Each indirect perturbation on $L_j^{(\delta_n)}$ is also bounded by $2C$ from Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $(\log(n))^2$, the total perturbation in $R_n^{(\delta_n)}$ from changing $X_i$ to $X_i^\prime$ is bounded by $C(\log(n))^2\,n^{-1}$. Applying McDiarmid's inequality:
 \begin{align*}
 \left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}
-\leq C\log(n)\,n^{-1/2}.
+\leq C(\log(n))^2\,n^{-1/2}.
 \end{align*}
 
 \noindent\textbf{Sub-Gaussianity:} Combining the four layers:
@@ -2415,8 +2415,8 @@ Let $O_j^\prime$ denote the $j$-th observation with updated $\widehat U^\prime(S
 +\underbrace{\left\|\E\left[\cdots|X,U,\xi\right]-\E\left[\cdots|X,U\right]\right\|_{\psi_2}}_{\text{Randomness in $\xi$}}\\
 &+\underbrace{\left\|\E\left[\cdots|X,U\right]-\E\left[\cdots|X\right]\right\|_{\psi_2}}_{\text{Randomness in $U$}}
 +\underbrace{\left\|\E\left[\cdots|X\right]-\E\left[\cdots\right]\right\|_{\psi_2}}_{\text{Randomness in $X$}}\\
-\leq &C\log(n)\,n^{-1/2} + C\,n^{-1/2} + C\|\Sigma_n\|_{\mathrm{op}}\log(n)\,\gamma_n^{-1}\lambda_n^{-1/2}\,n^{-1/2} + C\log(n)\,n^{-1/2}\\
-\leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}.
+\leq &C(\log(n))^2\,n^{-1/2} + C\,n^{-1/2} + C\|\Sigma_n\|_{\mathrm{op}}(\log(n))^2\,\gamma_n^{-1}\lambda_n^{-1/2}\,n^{-1/2} + C(\log(n))^2\,n^{-1/2}\\
+\leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)(\log(n))^2\,n^{-1/2}.
 \end{align*}
 
 \subsubsection{Auxiliary Calculations for Sub-Gaussianity}
@@ -2795,7 +2795,7 @@ Taking the supremum over $(Y_i,A_i,\widehat{U}(S_i),X_i)$ yields the stated boun
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ is computed from the precision matrix $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ via \eqref{eq:widehat_U_i}. Let $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$ be the corresponding estimate under $\psi^\prime$. Under Assumptions~\ref{condition:excess_risk:smooth} and \ref{condition:excess_risk:overlap},
     \begin{align*}
         &\sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
-        \leq &  C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\sqrt{\log(n)}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
+        \leq &  C\gamma_n^{-1}\lambda_n^{-1/2}\delta_n^{-1}\log(n)\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
@@ -2861,11 +2861,11 @@ Taking absolute values and applying Cauchy--Schwarz ($|x^\top y|\leq\|x\|_2\|y\|
 &\leq \|\Lambda^\prime\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2\cdot\frac{|\Lambda_{ii}-\Lambda^\prime_{ii}|}{\Lambda_{ii}\Lambda^\prime_{ii}}
 + \frac{\|\Lambda^\prime-\Lambda\|_{\mathrm{op}}\|\widehat{R}_{N(i)}\|_2}{\Lambda_{ii}},
 \end{align*}
-where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to the $O(\log n)$ nonzero neighbours of $i$ in the Vecchia approximation \eqref{eq:vecchina_approximation_nonzero}, so $\|\widehat{R}_{N(i)}\|_2=O(\sqrt{\log n})$ is bounded. Since $|\Lambda_{ii}-\Lambda^\prime_{ii}|=|e_i^\top(\Lambda-\Lambda^\prime)e_i|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$, we factor:
+where $\widehat{R}_{N(i)}$ denotes the subvector of $\widehat{R}$ restricted to the $O((\log n)^2)$ nonzero neighbours of $i$ in the Vecchia approximation \eqref{eq:vecchina_approximation_nonzero}, so $\|\widehat{R}_{N(i)}\|_2=O(\log n)$ is bounded. Since $|\Lambda_{ii}-\Lambda^\prime_{ii}|=|e_i^\top(\Lambda-\Lambda^\prime)e_i|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$, we factor:
 \begin{align*}
 |\Delta\widehat U_i|
 \leq \|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\,\|\widehat{R}_{N(i)}\|_2\left(\frac{\|\Lambda^\prime\|_{\mathrm{op}}}{\Lambda_{ii}\Lambda^\prime_{ii}}+\frac{1}{\Lambda_{ii}}\right)
-\leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
+\leq C\log(n)\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},
 \end{align*}
 where the last inequality absorbs the term related to $\Lambda_{ii},\Lambda^\prime_{ii},\|\Lambda^\prime\|_{\text{op}}$ into the constant $C$ by the boundedness condition we showed at the beginning of this step. Finally, using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ and sub-multiplicativity of the operator norm:
 $$\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\leq C\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$ Then, taking $\sup_i$ and combining with Step~1 yields the stated bound.
@@ -2950,7 +2950,7 @@ Since $\widehat{R}_j=Y_j-f(A_j,X_j)$ and $|Y_j-f(A_j,X_j)|\leq C^\prime$ uniform
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ and $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$.  Let $U=(U(S_1),\ldots,U(S_n))$ and $X=(X_1,\ldots,X_n)$.  Then, for $\psi,\psi^\prime$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$, the derivative of the conditional expectation of the loss difference with respect to the response satisfies
     \begin{align*}
         &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\,\Big|\,U,X\right]\right|\\
-        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+        &\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
@@ -2980,10 +2980,10 @@ Writing the difference of reciprocal propensities as
 $$\left|\frac{1}{p(A_i|X_i,\widehat U^\prime)}-\frac{1}{p(A_i|X_i,\widehat U)}\right| = \frac{|p(A_i|X_i,\widehat U)-p(A_i|X_i,\widehat U^\prime)|}{p\cdot p^\prime}\leq \frac{C^\prime|\Delta\widehat U_i|}{c^{\prime 2}},$$
 where we used the Lipschitz bound $|p(\cdot|x,u)-p(\cdot|x,u^\prime)|\leq C^\prime|u-u^\prime|$ from Assumption~\ref{condition:excess_risk:smooth} and $p,p^\prime\geq c^\prime>0$ from Assumption~\ref{condition:excess_risk:overlap}.  Since $\int_{a_L}^{\theta}K_{\delta_n}\,\mathrm{d}a\leq \int_\R K_{\delta_n}\,\mathrm{d}a = 1$,
 $$\left|\E\!\left[\mathrm{Term\ (A)}\,\big|\,U,X\right]\right| \leq \frac{C^\prime}{c^{\prime 2}}\,\E\!\left[|\Delta\widehat U_i|\,\big|\,U,X\right].$$
-By the pathwise bound $|\Delta\widehat U_i|\leq C\sqrt{\log(n)}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$ established in Step~3 of Lemma~\ref{lemma:L_i_diff_psi}, the operator-norm identity $\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$, and the boundedness of $\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}$ established in Step 2 in Lemma \ref{lemma:L_i_diff_psi}, 
+By the pathwise bound $|\Delta\widehat U_i|\leq C\log(n)\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$ established in Step~3 of Lemma~\ref{lemma:L_i_diff_psi}, the operator-norm identity $\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$, and the boundedness of $\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}$ established in Step 2 in Lemma \ref{lemma:L_i_diff_psi}, 
 \begin{align}
 \left|\E\!\left[\mathrm{Term\ (A)}\,\big|\,U,X\right]\right|
-\leq C\sqrt{\log(n)}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.\label{eq:termA_psi}
+\leq C\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.\label{eq:termA_psi}
 \end{align}
 
 \noindent\textbf{Bounding Term (B).}
@@ -2994,14 +2994,14 @@ Applying the Lipschitz bound $|\theta(x,u)-\theta(x,u^\prime)|\leq \sup_u|\parti
 \begin{align}
 \left|\E\!\left[\mathrm{Term\ (B)}\,\big|\,U,X\right]\right|
 &\leq \frac{1}{c^\prime}\cdot\frac{CC^\prime}{\gamma_n\sqrt{\lambda_n}}\,\E\!\left[|\Delta\widehat U_i|\,\big|\,U,X\right]\nonumber\\
-&\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.\label{eq:termB_psi}
+&\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.\label{eq:termB_psi}
 \end{align}
 
 \noindent\textbf{Final assembly.}
 
 Adding \eqref{eq:termA_psi} and \eqref{eq:termB_psi} and noting that $\gamma_n^{-1}\lambda_n^{-1/2}\geq 1$ in the relevant rate regime (so Term (A) is absorbed into the Term (B) bound),
 $$\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n)}_i(\psi)-L^{(\delta_n)}_i(\psi^\prime)\,\big|\,U,X\right]\right|
-\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\sqrt{\log(n)}\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
+\leq C\,\gamma_n^{-1}\lambda_n^{-1/2}\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.$$
 \end{proof}
 
 
@@ -3009,7 +3009,7 @@ $$\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\partial_{Y_i}\,\E\!\left[L^{(\delta_n
     Let $L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p)$ be the loss defined in \eqref{eq:loss_function_i}, where $\widehat U(S_i)=\widehat U(S_i,\psi)$ and $\widehat U^\prime(S_i)=\widehat U(S_i,\psi^\prime)$. Let $U=(U(S_1),\ldots,U(S_n))$ and $X=(X_1,\ldots,X_n)$. Then, for $\psi,\psi^\prime$ and fixed $\theta\in\mathcal{H}_\mathcal{K}$, $f\in\mathcal{F}_f$, $p\in\mathcal{F}_p$, the derivative of the conditional expectation of the loss difference with respect to $\widehat U(S_i,\psi)$ satisfies
     \begin{align*}
         &\sup_{Y_i,A_i,\widehat U(S_i),X_i}\left|\E\!\left[\partial_{\widehat U(S_i,\psi)}\,L^{(\delta_n)}_i(\theta;\psi,f,p) - \partial_{\widehat U(S_i,\psi^\prime)}\,L^{(\delta_n)}_i(\theta;\psi^\prime,f,p)\,\Big|\,U,X\right]\right|\\
-        &\leq C\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\sqrt{\log(n)}\,\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+        &\leq C\,(\gamma_n^{-1}+\gamma_n^{-2})\lambda_n^{-1/2}\log(n)\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
     \end{align*}
 \end{lemma}
 
@@ -3354,31 +3354,31 @@ $$\sup_{\theta\in\mathcal{H}_\mathcal{K}, f\in\mathcal{F}_f, p\in\mathcal{F}_p, 
 For $\theta,\theta^\prime\in\mathcal{H}_\mathcal{K}$, we have  
 \begin{align}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\nonumber\\
-    \leq & C\log(n) n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1/2}\log(n)\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) \nonumber\\
+    \leq & C(\log(n))^2 n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty} + C\|\Sigma_n\|_{\text{op}}n^{-1/2}(\log(n))^2\cdot\left( \gamma_n^{-1}\lambda_n^{-1/4}\sqrt{\|\theta-\theta'\|_\infty} + \gamma_n^{-1}\lambda_n^{-1/2}\|\theta-\theta'\|_\infty\right) \nonumber\\
     = & B^1_\theta(n)\|\theta - \theta^\prime\| + B^2_\theta(n)\|\theta - \theta^\prime\|^{1/2}\label{eq:sub_gaussian_theta}
 \end{align}
 For $ f,f^\prime\in\mathcal{F}_f$, we have 
 \begin{align}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}\nonumber\\
-    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|f-f^\prime\|_\infty\nonumber\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)(\log(n))^2\,n^{-1/2}\|f-f^\prime\|_\infty\nonumber\\
     = & B_f(n) \|f-f^\prime\|_\infty. \label{eq:sub_gaussian_f}
 \end{align}
 For $ p,p^\prime\in\mathcal{F}_p$, we have 
 \begin{align}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}\nonumber\\
-    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\|p-p^\prime\|_\infty\nonumber\\
+    \leq & C\left(1+\|\Sigma_n\|_{\text{op}}\gamma_n^{-1}\lambda_n^{-1/2}\right)(\log(n))^2\,n^{-1/2}\|p-p^\prime\|_\infty\nonumber\\
     = & B_p(n)\|p-p^\prime\|_\infty. \label{eq:sub_gaussian_p}
 \end{align}
 For $\psi,\psi^\prime\in\Psi$, we have 
 \begin{align}
 &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}\nonumber\\
-    \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^{3/2}\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\nonumber\\
+    \leq & C\left(\delta_n^{-1}+\|\Sigma_n\|_{\text{op}}(1+\gamma_n^{-1})\right)\gamma_n^{-1}\lambda_n^{-1/2}\log(n)^3\,n^{-1/2}\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}\nonumber\\
     = & B_\psi(n)\left\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\right\|_{\mathrm{op}}. \label{eq:sub_gaussian_psi} 
 \end{align}
 Also, for the empirical loss, we have 
 \begin{align}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}\nonumber\\
-    \leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)\log(n)\,n^{-1/2}\nonumber\\
+    \leq &C\left(1+\|\Sigma_n\|_{\mathrm{op}}\,\gamma_n^{-1}\lambda_n^{-1/2}\right)(\log(n))^2\,n^{-1/2}\nonumber\\
     =& B_L(n).\label{eq:sub_gaussian_L}
 \end{align}
 
