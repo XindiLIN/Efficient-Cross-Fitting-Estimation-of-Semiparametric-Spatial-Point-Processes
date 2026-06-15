@@ -1,5 +1,6 @@
 % I am updating my proof. I put a lof of efforts in the previous proof so I keep them here.
 
+
 \section{Proof of Lemmas and Theorems}\label{sec:proof}
 
 \subsection{Proof of Lemma \ref{lemma:risk_db}}
@@ -1197,7 +1198,9 @@ e_i(\textnormal{id} : H_{\gamma}(rX) \to \ell_{\infty}(rX)) \le c_{m,d}(X)r^m \g
 \]
 
 \end{theorem}
-    % new previous proof
+% new previous proof
+
+\section{Trash Can for Theorems/Lemmas in new version of the proofs}
 \begin{lemma}[Donsker Condition under $L^\infty$]\label{lemma:covering_number_Linfty}
 Under Assumptions~\ref{condition:excess_risk:smooth} and~\ref{condition:excess_risk:VC-type}, the function classes $\mathcal{F}_f$ and $\mathcal{F}_p$ satisfy the Donsker condition with respect to $\|\cdot\|_\infty$. Specifically, for every $\epsilon > 0$,
 \begin{align*}
@@ -1262,3 +1265,78 @@ Substituting $\epsilon = D\,e^{-t}$ gives $\mathrm{d}\epsilon = D e^{-t}\,\mathr
 \begin{remark}
 The Lipschitz structure is essential: without it, converting $L^2(P)$ Donsker to $L^\infty$ Donsker may fail. For instance, a class with $\log\mathcal{N}(\mathcal{F},\|\cdot\|_{L^2},\epsilon)\leq C\epsilon^{-2\alpha}$ (Donsker for $\alpha<1$) would yield $\log\mathcal{N}(\mathcal{F},\|\cdot\|_\infty,\eta)\leq C\eta^{-\alpha(d+2)}$, whose entropy integral diverges for $\alpha(d+2)\geq 2$. The VC-type (logarithmic) structure in Assumption~\ref{condition:excess_risk:VC-type} is what keeps the $L^\infty$ entropy logarithmic after the norm conversion.
 \end{remark}
+
+\begin{lemma}[$\ell_2$-Norm Bound on $\widehat{U}$ Perturbation]\label{lemma:widehat_U_diff_psi_L2}
+Let $\widehat{\mathbf{U}}(\psi):=(\widehat{U}(S_1,\psi),\ldots,\widehat{U}(S_n,\psi))^\top$ and $\widehat{\mathbf{U}}(\psi^\prime):=(\widehat{U}(S_1,\psi^\prime),\ldots,\widehat{U}(S_n,\psi^\prime))^\top$ be computed via \eqref{eq:widehat_U_i} with precision matrices $\Lambda_n(\psi)=\Sigma_n(\psi)^{-1}$ and $\Lambda_n(\psi^\prime)=\Sigma_n(\psi^\prime)^{-1}$, respectively. Let $\widehat{\mathbf{R}}=(\widehat{R}_1,\ldots,\widehat{R}_n)^\top$ with $\widehat{R}_j=Y_j-f(A_j,X_j)$.  Under Assumption~\ref{condition:excess_risk:smooth},
+\begin{align*}
+\|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2
+\leq & C\,\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\,\|\widehat{\mathbf{R}}\|_2\\
+\leq & C\sqrt{n}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}.
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+\noindent\textbf{Step 1: Matrix representation of $\widehat{\mathbf{U}}(\psi)$.}
+
+From $\widehat U(S_i,\psi)=\widehat R_i - e_i^\top\Lambda\widehat{\mathbf{R}}/\Lambda_{ii}$ (see the proof of Lemma~\ref{lemma:L_i_diff_psi}), the full vector satisfies
+\begin{align*}
+\widehat{\mathbf{U}}(\psi) = \widehat{\mathbf{R}} - D(\Lambda)^{-1}\Lambda\,\widehat{\mathbf{R}} = M(\Lambda)\,\widehat{\mathbf{R}},
+\qquad M(\Lambda):=I - D(\Lambda)^{-1}\Lambda,
+\end{align*}
+where $\Lambda:=\Lambda_n(\psi)$ and $D(\Lambda):=\mathrm{diag}(\Lambda_{11},\ldots,\Lambda_{nn})$.  Note that $[M(\Lambda)]_{ii}=1-\Lambda_{ii}/\Lambda_{ii}=0$, confirming that $\widehat U(S_i,\psi)$ does not depend on $\widehat{R}_i$.  Similarly, $\widehat{\mathbf{U}}(\psi^\prime)=M(\Lambda^\prime)\widehat{\mathbf{R}}$ with $\Lambda^\prime:=\Lambda_n(\psi^\prime)$.
+
+\noindent\textbf{Step 2: Bounding $\|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}$.}
+
+The matrix difference is
+\begin{align*}
+M(\Lambda^\prime)-M(\Lambda) = D(\Lambda)^{-1}\Lambda - D(\Lambda^\prime)^{-1}\Lambda^\prime
+= \underbrace{D(\Lambda^\prime)^{-1}(\Lambda-\Lambda^\prime)}_{\text{numerator perturbation}}
++ \underbrace{(D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1})\Lambda}_{\text{denominator perturbation}}.
+\end{align*}
+\emph{Numerator perturbation.}
+Since the diagonal entries of the precision matrix are bounded below as:
+\begin{align*}
+    \Lambda_{ii} =& 1/\text{Var}(U(S_i)+\epsilon_i|U_{-i})\\
+    \geq & 1/\text{Var}(U(S_i)+\epsilon_i)\\
+    = & 1/(\sigma_\epsilon^{2} +\sigma_{\text{gp}}^{2})
+\end{align*}
+where $\sigma_\epsilon^{2}$ and $\sigma_{gp}^{2}$ are the coefficients of the nugget effect variance corresponding to the covariance parameter $\psi$. Thus, we have
+$\|D(\Lambda^\prime)^{-1}\|_{\mathrm{op}}\leq C$ for some positive constant $C$.  Hence
+$$\|D(\Lambda^\prime)^{-1}(\Lambda-\Lambda^\prime)\|_{\mathrm{op}}\leq \|D(\Lambda^\prime)^{-1}\|_{\mathrm{op}}\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}.$$
+\emph{Denominator perturbation.}
+$D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1}$ is diagonal with $i$-th entry $\Lambda_{ii}^{-1}-(\Lambda_{ii}^\prime)^{-1}=(\Lambda_{ii}^\prime-\Lambda_{ii})/(\Lambda_{ii}\Lambda_{ii}^\prime)$. In addition to be bounded below, diagonal entries of the precision matrix are above as:
+\begin{align*}
+    \Lambda_{ii} =& 1/\text{Var}(U(S_i)+\epsilon_i|U_{-i})\\
+    = & 1/\left\{\text{Var}(U(S_i)|U_{-i})+\text{Var}(\epsilon_i|U_{-i})\right\}\\
+    \leq & 1/\text{Var}(\epsilon_i|U_{-i})\\
+    = & 1/\text{Var}(\epsilon_i) = \sigma_\epsilon^2
+\end{align*}
+where $\sigma_\epsilon^{2}$ is the coefficients of the nugget effect variance corresponding to the covariance parameter $\psi$. So,
+$$\|D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1}\|_{\mathrm{op}} = \max_i\frac{|\Lambda_{ii}-\Lambda_{ii}^\prime|}{\Lambda_{ii}\Lambda_{ii}^\prime}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}},$$
+since $|\Lambda_{ii}-\Lambda_{ii}^\prime|\leq\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}$ and the denominators are bounded below. Combined with 
+\begin{align*}
+\|\Lambda\|_{\mathrm{op}}=&\|\Sigma^{-1}\|_{\mathrm{op}}\\
+    =& (\lambda_{\min}(\Sigma))^{-1}\\
+    \leq & 1/\sigma^2_\epsilon.
+\end{align*}
+We then have
+$$\|(D(\Lambda)^{-1}-D(\Lambda^\prime)^{-1})\Lambda\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}.$$
+Adding the two parts,
+$$\|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}\leq C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}.$$
+
+\noindent\textbf{Step 3: Translating to $\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}$.}
+
+Applying the operator norm and using the identity $\Lambda-\Lambda^\prime=\Sigma^{-1}(\Sigma^\prime-\Sigma)(\Sigma^\prime)^{-1}$ as in Lemma~\ref{lemma:L_i_diff_psi},
+\begin{align*}
+\|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2
+= &\|(M(\Lambda^\prime)-M(\Lambda))\widehat{\mathbf{R}}\|_2
+\leq \|M(\Lambda^\prime)-M(\Lambda)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2\\
+\leq & C\|\Lambda-\Lambda^\prime\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2\\
+\leq &C\|\Sigma_n(\psi)^{-1}\|_{\mathrm{op}}^2\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2\\
+& C \|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}\|\widehat{\mathbf{R}}\|_2
+\end{align*}
+
+\noindent\textbf{Step 4: Bounding $\|\widehat{\mathbf{R}}\|_2$.}
+
+Since $\widehat{R}_j=Y_j-f(A_j,X_j)$ and $|Y_j-f(A_j,X_j)|\leq C^\prime$ uniformly by Assumption~\ref{condition:excess_risk:smooth}, we have $\|\widehat{\mathbf{R}}\|_2\leq C^\prime\sqrt{n}$.  Substituting yields the stated bound.
+\end{proof}
