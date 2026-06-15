@@ -1697,7 +1697,7 @@ Denote $\Lambda_n(\psi)$ as the inverse of the covariance matrix $\Sigma_n(\psi)
 \end{gather*}
 Theorem 2.1 in \cite{schafer2021compression} shows that for any $\epsilon>0$, there exists a sparse Cholesky factor $L$ with  at most $O(\log(n/\epsilon)$ nonzero entries each column such tha
 $$\|\Lambda - LL^\top\|_{\text{Fro}}\leq \epsilon.$$
-Here, $\|\cdot\|_{\text{Fro}}$ is the Frobenious norm of the matrix. In practice, we use such sparse approximation pattern, i.e, Vecchia approximation (see Section \ref{sec:vecchia}), to accelerate the calculation regarding the the precision matrix $\Lambda_n$. Though the sparsity structure is affected by the nugget effect of the Gaussian process, i.e., $\epsilon_i$ in \eqref{eq:data_generative_model_1}, detailed characterization of the approximation error from Vecchia approximation is out the scope of this work. In this paper, we simply assume that the number of non-zero entries in every row of $L$ is $O(\log(n))$. Then, for every $i\in[n]$, $|\{j:\Lambda_{i,j}\neq 0\}| = O(\log(n))$. This is because $\Lambda_{i,j} = \sum_{k=1}^n L_{ik}L_{jk}$. In this way, we simply our problem by assuming that for every $i$, the number of nonzero $\alpha_{i,j}$ is of rate $\log(n)$, i.e.,
+Here, $\|\cdot\|_{\text{Fro}}$ is the Frobenious norm of the matrix. In practice, we use such sparse approximation pattern, i.e, Vecchia approximation (see Section \ref{sec:vecchia}), to accelerate the calculation regarding the the precision matrix $\Lambda_n$. Though the sparsity structure is affected by the nugget effect of the Gaussian process, i.e., $\epsilon_i$ in \eqref{eq:data_generative_model_1}, detailed characterization of the approximation error from Vecchia approximation is out the scope of this work. In this paper, we simply assume that the number of non-zero entries in every row of $L$ is $O(\log(n))$. Then, for every $i\in[n]$, $|\{j:\Lambda_{i,j}\neq 0\}| = O(\log(n))$. This is because $\Lambda_{i,j} = \sum_{k=1}^n L_{ik}L_{jk}$. In this way, we simply our problem by assuming that for every $i$, the number of nonzero $\alpha_{i,j}$ is of rate $(\log(n))^2$, i.e.,
 \begin{equation}\label{eq:vecchina_approximation_nonzero}
     \sup_{i\in[n]}|\{j:\alpha_{i,j}\neq 0\}| = O\left\{(\log(n))^2\right\}.
 \end{equation}
@@ -1893,7 +1893,7 @@ Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining 
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
         \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:L_i_diff_theta}. Because the number of non-zero $\alpha_{j,1}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality follows from Lemma \ref{lemma:L_i_diff_theta}. Because the number of non-zero $\alpha_{j,1}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
     \leq & C\{\log(n)\}^2 n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
@@ -1968,7 +1968,7 @@ Additionally, $X_i$ propagates to the empirical risk indirectly through the rema
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta^\prime,\psi,f,p)\right|\\
         \leq & C\delta_n^{-1}\|\theta-\theta^\prime\|
 \end{align*}
-Because the number of non-zero $\alpha_{j,1}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n) n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+Because the number of non-zero $\alpha_{j,1}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1}\delta_n^{-1}\|h - h^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta^\prime;\psi,f,p)\right]\right\|_{\psi_2}\\
     \leq & C\{\log(n)\}^2 n^{-1/2}\delta_n^{-1}\|\theta - \theta^\prime\|_{\infty}.
@@ -2016,7 +2016,7 @@ Additionally, $\epsilon_i$ propagates to $R_n$ indirectly through the remaining 
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|\\
         \leq & C\|f-f^\prime\|_\infty
 \end{align*}
-The last inequality follows from Lemma \ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\|f - f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality follows from Lemma \ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1}\|f - f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X,U,\xi\right]\right\|_{\psi_2}\\
     \leq & C\{\log(n)\}^2 n^{-1/2}\|f - f^\prime\|_{\infty}.
@@ -2057,7 +2057,7 @@ Furthermore, for every $i$, the derivative of the empirical risk difference with
     &+ \underbrace{\E\left[\partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f,p)   - \partial_{Y_i}R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]}_{=\;0}\\
     \leq &\;Cn^{-1}\{\log(n)\}^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
 \end{align*}
-The $\partial_{Y_i}$ term vanishes because $Y_i$ does not appear in $L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)$ (see the preamble of this section). The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_f}, and the $\log(n)$ factor accounts for the $\mathcal{O}(\{\log(n)\}^2)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
+The $\partial_{Y_i}$ term vanishes because $Y_i$ does not appear in $L^{(\delta_n)}_i(\theta;\psi,f,p)-L^{(\delta_n)}_i(\theta;\psi,f^\prime,p)$ (see the preamble of this section). The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_f}, and the $\{\log(n)\}^2$ factor accounts for the $\mathcal{O}(\{\log(n)\}^2)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f^\prime,p)\bigg| U,X\right]\right\|_2\\
     \leq & C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}\{\log(n)\}^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|f-f^\prime\|_\infty.
@@ -2091,7 +2091,7 @@ The last inequality follows from Lemma~\ref{lemma:L_i_diff_f}. Additionally, $X_
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f^\prime,p)\right|\\
         \leq & C\|f-f^\prime\|_\infty
 \end{align*}
-The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)n^{-1}\|f-f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+The last inequality again follows from Lemma~\ref{lemma:L_i_diff_f}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1}\|f-f^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f^\prime,p)\right]\right\|_{\psi_2}\\
     \leq & C\{\log(n)\}^2\,n^{-1/2}\|f-f^\prime\|_{\infty}.
@@ -2143,7 +2143,7 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Additionall
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
         \leq  C\|p-p^\prime\|_\infty,
 \end{align*}
-where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1}\|p - p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1}\|p - p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields the following $\psi_2$-norm concentration bound for the centered process:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X,U,\xi\right]\right\|_{\psi_2}\\
     \leq & C\{\log(n)\}^2 n^{-1/2}\|p - p^\prime\|_{\infty}.
@@ -2183,7 +2183,7 @@ Furthermore, for every $i$, the derivative of the empirical risk difference with
     \leq &\;Cn^{-1}\{\log(n)\}^2\cdot\gamma_n^{-1}\lambda_n^{-1/2}\|p-p^\prime\|_\infty + Cn^{-1}\|p-p^\prime\|_\infty\\
     \leq &\;Cn^{-1}\{\log(n)\}^2\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
 \end{align*}
-The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_p}, and the $\log(n)$ factor accounts for the $\mathcal{O}(\{\log(n)\}^2)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). The $\partial_{Y_i}$ term is bounded by Lemma~\ref{lemma:L_i_derivative_Y_diff_p} and contributes an $O(n^{-1})$ factor. Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
+The bound on the $\partial_{\widehat U(S_j)}$ term follows from Lemma~\ref{lemma:L_i_derivative_U_diff_p}, and the $\{\log(n)\}^2$ factor accounts for the $\mathcal{O}(\{\log(n)\}^2)$ nonzero $\alpha_{i,j}$ (see equation \eqref{eq:vecchina_approximation_nonzero}). The $\partial_{Y_i}$ term is bounded by Lemma~\ref{lemma:L_i_derivative_Y_diff_p} and contributes an $O(n^{-1})$ factor. Then, the Lipschitz constant of the conditional expectation of the empirical risk difference with respect to $\widetilde U$ given $U,X$ has the following bound:
 \begin{align*}
     &\left\|\partial_{ \widetilde U}\E\left[R_n^{(\delta)}(\theta;\psi,f,p)-R_n^{(\delta)}(\theta;\psi,f,p^\prime)\bigg| U,X\right]\right\|_2\\
     \leq & C\|\Sigma_n\|_{\mathrm{op}}\cdot n^{-1/2}\{\log(n)\}^2\cdot\left(\gamma_n^{-1}\lambda_n^{-1/2}+1\right)\|p-p^\prime\|_\infty.
@@ -2214,7 +2214,7 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_p}. Additionall
         \leq  & 2\sup_{y,a,u,x}\left|L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p) - L^{(\delta_n)}((y,a,u,x);\theta,\psi,f,p^\prime)\right|
         \leq  C\|p-p^\prime\|_\infty,
 \end{align*}
-where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)n^{-1}\|p-p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+where the last inequality again follows from Lemma~\ref{lemma:L_i_diff_p}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1}\|p-p^\prime\|_{\infty}$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi,f,p^\prime)\right]\right\|_{\psi_2}\\
     \leq & C\{\log(n)\}^2\,n^{-1/2}\|p-p^\prime\|_{\infty}.
@@ -2280,10 +2280,10 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additiona
 %     \leq & \gamma_n^{-1/2}\lambda_n^{-1/2}\left\{\sum_{j\neq i} 1(\alpha_{i,j}\neq 0)\right\}^{1/2}\left(\|\widehat{\mathbf{U}}(\psi)-\widehat{\mathbf{U}}(\psi^\prime)\|_2 + \|\widehat{\mathbf{U}}^\prime(\psi)-\widehat{\mathbf{U}^\prime}(\psi^\prime)\|_2\right)\\
 %     \leq &C\sqrt{\log(n)n}\|\Sigma_n(\psi)-\Sigma_n(\psi^\prime)\|_{\mathrm{op}}
 % \end{align*}
-where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n) n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\{\log(n)\}^2 n^{-1} B_\psi$ and this uniformly holds for all $i$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X,U,\xi\right]\right\|_{\psi_2}\\
-    \leq & C\log(n)\, n^{-1/2} B_{\psi,\psi^\prime}.
+    \leq & C\{\log(n)\}^2\, n^{-1/2} B_{\psi,\psi^\prime}.
 \end{align*}
 
 \noindent\textbf{Second Layer of Randomness: $\xi_i$}
@@ -2356,10 +2356,10 @@ where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Additiona
     \leq & 2 \sup_{Y_i,A_i,X_i}\left|L^{(\delta_n)}((Y_i,A_i,\widehat U(S_i),X_i);\theta,\psi,f,p) - L^{(\delta_n)}((Y_i,A_i,\widehat U^\prime(S_i),X_i);\theta,\psi^\prime,f,p)\right|\\
     \leq & 2B_{\psi,\psi^\prime}.
 \end{align*}
-where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\log(n)$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $\log(n)B_{\psi,\psi^\prime}$. Consequently, applying McDiarmid's inequality yields:
+where the last inequality follows from Lemma~\ref{lemma:L_i_diff_psi}. Because the number of non-zero $\alpha_{j,i}$ is of rate $\{\log(n)\}^2$ (see equation \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in the empirical risk resulting from changing $X_i$ to $X_i^\prime$ is bounded by $\{\log(n)\}^2 B_{\psi,\psi^\prime}$. Consequently, applying McDiarmid's inequality yields:
 \begin{align*}
     &\left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)-R_n^{({\delta_n})}(\theta;\psi^\prime,f,p)\right]\right\|_{\psi_2}\\
-    \leq &\log(n)n^{-1/2}B_{\psi,\psi^\prime}
+    \leq &\{\log(n)\}^2 n^{-1/2}B_{\psi,\psi^\prime}
 \end{align*}
 
 \noindent \textbf{Sub-Gaussianity:} Combining the results above i.e., sub-Gaussianity from four layers of randomness, we have
@@ -2399,7 +2399,7 @@ The indirect effect on each $j$-th loss (through $\widehat U^\prime(S_j)$, the v
 \left|L^{(\delta_n)}((Y_j,A_j,\widehat U(S_j),X_j);\theta,\psi,f,p) - L^{(\delta_n)}((Y_j,A_j,\widehat U^\prime(S_j),X_j);\theta,\psi,f,p)\right|
 \leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_j\right| \leq 2C,
 \end{align*}
-again by Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\{\log(n)\}^2$ (see \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in $R_n^{(\delta_n)}$ from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\log(n)\,n^{-1}$, uniformly in $i$. Applying McDiarmid's inequality:
+again by Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\{\log(n)\}^2$ (see \eqref{eq:vecchina_approximation_nonzero}), the total perturbation in $R_n^{(\delta_n)}$ from changing $\epsilon_i$ to $\epsilon_i^\prime$ is bounded by $C\{\log(n)\}^2\,n^{-1}$, uniformly in $i$. Applying McDiarmid's inequality:
 \begin{align*}
 \left\|R_n^{(\delta_n)}(\theta;\psi,f,p)-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X,U,\xi\right]\right\|_{\psi_2}
 \leq C\{\log(n)\}^2\,n^{-1/2}.
@@ -2459,7 +2459,7 @@ Let $O_i:=(Y_i,A_i,\widehat U(S_i),X_i)$ and $O_i^\prime$ be the observation wit
 \left|L^{(\delta_n)}(O_i;\theta,\psi,f,p) - L^{(\delta_n)}(O_i^\prime;\theta,\psi,f,p)\right|
 \leq 2\sup_{y,a,u,x}\left|L^{(\delta_n)}_i\right| \leq 2C.
 \end{align*}
-Let $O_j^\prime$ denote the $j$-th observation with updated $\widehat U^\prime(S_j)$ after changing $X_i$. Each indirect perturbation on $L_j^{(\delta_n)}$ is also bounded by $2C$ from Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\{\log(n)\}^2$, the total perturbation in $R_n^{(\delta_n)}$ from changing $X_i$ to $X_i^\prime$ is bounded by $C\log(n)\,n^{-1}$. Applying McDiarmid's inequality:
+Let $O_j^\prime$ denote the $j$-th observation with updated $\widehat U^\prime(S_j)$ after changing $X_i$. Each indirect perturbation on $L_j^{(\delta_n)}$ is also bounded by $2C$ from Lemma~\ref{lemma:L_i_bound}. Because the number of non-zero $\alpha_{j,i}$ is of order $\{\log(n)\}^2$, the total perturbation in $R_n^{(\delta_n)}$ from changing $X_i$ to $X_i^\prime$ is bounded by $C\{\log(n)\}^2\,n^{-1}$. Applying McDiarmid's inequality:
 \begin{align*}
 \left\|\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)|X\right]-\E\left[R_n^{(\delta_n)}(\theta;\psi,f,p)\right]\right\|_{\psi_2}
 \leq C\{\log(n)\}^2\,n^{-1/2}.
